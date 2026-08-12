@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Virginia Valor FC — Meeting Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0c0c0d; --black2:#17181a; --gold:#c19a5b; --gold-dark:#8a713f; --gold-light:#e8d9ba;
+    --chalk:#f6f3ec; --card:#ffffff; --hairline:#e0d7c0; --ink:#1c1913; --ink-muted:#6f6656;
+    --pitch:#2f6b45; --pitch-bg:#eaf3ec; --cardred:#c8202f; --cardred-bg:#fbe4e6;
+    --font-display:'Oswald','Arial Narrow',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;min-height:100vh;font-family:var(--font-body);background:linear-gradient(165deg,var(--black) 0%,var(--black2) 100%);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+  .wrap{width:100%;max-width:420px;}
+  .brand{text-align:center;margin-bottom:20px;}
+  .eyebrow{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .clubName{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--gold-light);text-transform:uppercase;line-height:1.1;}
+  .clubSub{font-size:13px;color:#a89a78;margin-top:8px;}
+
+  .card{background:var(--card);border-radius:12px;padding:26px 22px 24px;box-shadow:0 14px 40px rgba(0,0,0,.35);}
+  label{display:block;font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted);margin:0 0 8px;}
+  .field{margin-bottom:18px;}
+  select{width:100%;padding:14px 12px;font-size:16px;font-family:var(--font-body);border:1px solid var(--hairline);border-radius:8px;background:#fff;color:var(--ink);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9'><path d='M1 1l6 6 6-6' stroke='%236f6656' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");background-repeat:no-repeat;background-position:right 14px center;}
+  select:disabled{background-color:#f3f0e8;color:var(--ink-muted);}
+
+  button.submit{width:100%;padding:15px;font-family:var(--font-display);font-size:15px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--gold);color:#221a08;border:none;border-radius:8px;cursor:pointer;margin-top:6px;}
+  button.submit:disabled{background:#d9cdb0;color:#8a7f66;cursor:not-allowed;}
+  button.submit:not(:disabled):active{background:#cba869;}
+
+  .state{text-align:center;padding:36px 4px;}
+  .state .icon{font-size:40px;margin-bottom:12px;}
+  .state h2{font-family:var(--font-display);font-size:19px;text-transform:uppercase;margin:0 0 8px;}
+  .state p{font-size:14px;color:var(--ink-muted);margin:0;line-height:1.5;}
+  .state.success h2{color:var(--pitch);}
+  .state.error h2{color:var(--cardred);}
+  .again{margin-top:20px;background:transparent;border:1px solid var(--hairline);color:var(--ink);padding:10px 16px;border-radius:8px;font-family:var(--font-display);font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;}
+
+  .hint{font-size:12px;color:var(--ink-muted);text-align:center;margin-top:16px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="eyebrow">Est. 2021</div>
+    <div class="clubName">Virginia<br>Valor FC</div>
+    <div class="clubSub">Meeting Check-In</div>
+  </div>
+
+  <div class="card" id="cardArea">
+    <div class="state" id="loadingState">
+      <p>Loading…</p>
+    </div>
+  </div>
+
+  <div class="hint" id="pageHint" style="display:none;">Checking in for the wrong meeting? Ask your coordinator for the right QR code.</div>
+</div>
+
+<script>
+// ---- Config ----
+// Paste the Apps Script /exec URL here after deploying Code.gs.
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZxNDveka8o4Tp5fZbfDvD0vtbL5EI2-QxbfyLZMEStwuOeh1rcDjnr2EeKIL5Zy9CdA/exec';
+
+// Optional: hard-code a specific meeting if this QR code should always
+// check people into ONE event (skip the meeting picker entirely).
+// Set both to match an Events row exactly, or leave FIXED_EVENT_NAME as
+// null to let people pick from upcoming/recent meetings.
+const FIXED_EVENT_NAME = null;
+const FIXED_EVENT_DATE = null;
+
+let staffList = [];
+let eventList = [];
+
+function daysFromToday(dateStr){
+  if(!dateStr) return null;
+  const d = new Date(dateStr+'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.round((d-today)/86400000);
+}
+
+async function init(){
+  const cardArea = document.getElementById('cardArea');
+  try{
+    const res = await fetch(WEB_APP_URL);
+    const json = await res.json();
+    if(!json.ok) throw new Error(json.error || 'Failed to load');
+
+    staffList = (json.data.Staff || []).filter(s=> s.status === 'Active')
+      .sort((a,b)=> a.name.localeCompare(b.name));
+
+    eventList = (json.data.Events || []).filter(e=>{
+      const d = daysFromToday(e.date);
+      return d !== null && d >= -1 && d <= 14;
+    }).sort((a,b)=> (a.date||'').localeCompare(b.date||''));
+
+    if(FIXED_EVENT_NAME){
+      eventList = eventList.filter(e=> e.name === FIXED_EVENT_NAME && e.date === FIXED_EVENT_DATE);
+    }
+
+    renderForm();
+  }catch(err){
+    cardArea.innerHTML = `<div class="state error">
+      <div class="icon">⚠️</div>
+      <h2>Couldn't load</h2>
+      <p>Check your connection and try again. If this keeps happening, let your coordinator know.</p>
+      <button class="again" onclick="location.reload()">Try Again</button>
+    </div>`;
+  }
+}
+
+function fmtDate(dateStr){
+  if(!dateStr) return '';
+  const d = new Date(dateStr+'T00:00:00');
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+function renderForm(){
+  const cardArea = document.getElementById('cardArea');
+  document.getElementById('pageHint').style.display = '';
+
+  if(!eventList.length){
+    cardArea.innerHTML = `<div class="state">
+      <div class="icon">📅</div>
+      <h2>No Meetings Open</h2>
+      <p>There's no meeting scheduled to check into right now. Check back closer to your next meeting or education night.</p>
+    </div>`;
+    return;
+  }
+
+  // Options reference staff/events by their position in the arrays we
+  // already have in memory — no id field needed anywhere.
+  const eventOptions = eventList.map((e,i)=>
+    `<option value="${i}">${fmtDate(e.date)} — ${escapeHtml(e.name)}</option>`
+  ).join('');
+  const staffOptions = staffList.map((s,i)=>
+    `<option value="${i}">${escapeHtml(s.name)}</option>`
+  ).join('');
+
+  cardArea.innerHTML = `
+    <div class="field">
+      <label for="staffSelect">Your Name</label>
+      <select id="staffSelect">
+        <option value="">Select your name…</option>
+        ${staffOptions}
+      </select>
+    </div>
+    ${FIXED_EVENT_NAME ? '' : `
+    <div class="field">
+      <label for="eventSelect">Meeting</label>
+      <select id="eventSelect">
+        <option value="">Select the meeting…</option>
+        ${eventOptions}
+      </select>
+    </div>`}
+    <button class="submit" id="submitBtn" disabled onclick="submitCheckin()">Check In</button>
+  `;
+
+  document.getElementById('staffSelect').addEventListener('change', updateSubmitState);
+  const eventSelect = document.getElementById('eventSelect');
+  if(eventSelect) eventSelect.addEventListener('change', updateSubmitState);
+
+  if(eventList.length === 1 && eventSelect){
+    eventSelect.value = '0';
+  }
+  updateSubmitState();
+}
+
+function updateSubmitState(){
+  const staffIdx = document.getElementById('staffSelect').value;
+  const eventSelect = document.getElementById('eventSelect');
+  const eventIdx = FIXED_EVENT_NAME ? '0' : (eventSelect ? eventSelect.value : '');
+  document.getElementById('submitBtn').disabled = !(staffIdx !== '' && eventIdx !== '');
+}
+
+function escapeHtml(str){
+  return String(str||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+async function submitCheckin(){
+  const btn = document.getElementById('submitBtn');
+  const staffIdx = document.getElementById('staffSelect').value;
+  const eventSelect = document.getElementById('eventSelect');
+  const eventIdx = FIXED_EVENT_NAME ? '0' : (eventSelect ? eventSelect.value : '');
+  if(staffIdx === '' || eventIdx === '') return;
+
+  const staff = staffList[staffIdx];
+  const event = FIXED_EVENT_NAME ? {name:FIXED_EVENT_NAME, date:FIXED_EVENT_DATE} : eventList[eventIdx];
+
+  btn.disabled = true;
+  btn.textContent = 'Checking In…';
+
+  try{
+    const res = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      // No explicit Content-Type header — keeps this a "simple request"
+      // so the browser doesn't send a CORS preflight the Apps Script
+      // web app can't answer. Code.gs parses the body as JSON regardless.
+      body: JSON.stringify({
+        action: 'checkin',
+        staffName: staff.name,
+        eventName: event.name,
+        eventDate: event.date
+      })
+    });
+    const json = await res.json();
+    if(!json.ok) throw new Error(json.error || 'Check-in failed');
+
+    document.getElementById('cardArea').innerHTML = `<div class="state success">
+      <div class="icon">✅</div>
+      <h2>You're Checked In</h2>
+      <p>${escapeHtml(staff.name)}, you're marked present for ${escapeHtml(event.name)}. Thanks!</p>
+      <button class="again" onclick="renderForm()">Check In Someone Else</button>
+    </div>`;
+  }catch(err){
+    document.getElementById('cardArea').innerHTML = `<div class="state error">
+      <div class="icon">⚠️</div>
+      <h2>Check-In Failed</h2>
+      <p>Something went wrong submitting that. Please try again.</p>
+      <button class="again" onclick="renderForm()">Try Again</button>
+    </div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
