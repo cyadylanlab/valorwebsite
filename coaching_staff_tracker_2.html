@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virginia Valor FC — Coaching Staff Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0c0c0d; --black2:#17181a; --gold:#c19a5b; --gold-dark:#8a713f; --gold-light:#e8d9ba;
+    --chalk:#f6f3ec; --card:#ffffff; --hairline:#e0d7c0; --ink:#1c1913; --ink-muted:#6f6656;
+    --pitch:#2f6b45; --pitch-bg:#eaf3ec;
+    --cardyellow:#f4c430; --cardyellow-bg:#fdf6dc; --cardyellow-ink:#6b4e00;
+    --cardred:#c8202f; --cardred-bg:#fbe4e6; --cardred-ink:#7d0f1c;
+    --amber:#d97706; --amber-bg:#fff3e0;
+    --accent:#a52f7f; --accent-bg:#f5e3ef;
+    --slate:#3d5a73; --slate-bg:#eaf1f5; --slate-border:#c3d6e0;
+    --font-display:'Oswald','Arial Narrow',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-body);background:var(--chalk);color:var(--ink);}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* ---- Shell: sidebar + content, no top header bar ---- */
+  .appShell{display:flex;align-items:stretch;min-height:100vh;}
+  .sidebar{width:224px;flex-shrink:0;background:linear-gradient(165deg,var(--black) 0%,var(--black2) 100%);display:flex;flex-direction:column;position:sticky;top:0;align-self:flex-start;height:100vh;}
+  .mainWrap{flex:1;min-width:0;}
+  main{padding:20px 36px 48px;max-width:1180px;margin:0 auto;}
+
+  .brandBlock{display:flex;flex-direction:column;align-items:flex-start;padding:30px 24px 22px;border-bottom:1px solid rgba(193,154,91,.22);}
+  .crestMark{width:62px;height:auto;display:block;margin-bottom:16px;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55));}
+  .eyebrow{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+  .clubName{font-family:var(--font-display);font-size:23px;font-weight:700;color:var(--gold-light);text-transform:uppercase;line-height:1.05;}
+  .clubSub{font-family:var(--font-body);font-size:11px;color:#a89a78;margin-top:10px;line-height:1.45;}
+
+  .sideNav{display:flex;flex-direction:column;padding:14px 0;flex:1;overflow-y:auto;}
+  .sideNav button{font-family:var(--font-display);background:none;border:none;text-align:left;padding:11px 24px;font-size:12.5px;font-weight:600;color:#998f78;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;border-left:3px solid transparent;}
+  .sideNav button.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(193,154,91,.09);}
+  .sideNav button:hover{color:#fff;}
+
+  .utilityBar{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:1180px;margin:0 auto;padding:22px 36px 0;}
+
+  @media (max-width:860px){
+    .appShell{flex-direction:column;}
+    .sidebar{width:100%;height:auto;position:relative;flex-direction:row;flex-wrap:wrap;align-items:center;}
+    .brandBlock{flex-direction:row;align-items:center;border-bottom:none;border-right:1px solid rgba(193,154,91,.2);padding:12px 16px;}
+    .crestMark{width:38px;margin:0 10px 0 0;}
+    .clubName{font-size:16px;}
+    .clubSub{display:none;}
+    .sideNav{flex-direction:row;flex:1;overflow-x:auto;padding:0;}
+    .sideNav button{padding:14px 12px;border-left:none;border-bottom:3px solid transparent;white-space:nowrap;}
+    .sideNav button.active{border-left:none;border-bottom-color:var(--gold);background:none;}
+    main{padding:8px 16px 32px;}
+    .utilityBar{padding:14px 16px 0;max-width:none;}
+  }
+
+  /* ---- Scoreboard hero (the one deliberately bold element) ---- */
+  .scoreboard{background:repeating-linear-gradient(115deg,#0c0c0d 0px,#0c0c0d 28px,#131313 28px,#131313 56px);border-radius:6px;padding:24px 8px;display:flex;flex-wrap:wrap;box-shadow:0 8px 22px rgba(0,0,0,.2);}
+  .scoreSeg{flex:1 1 140px;text-align:center;padding:4px 12px;border-right:1px solid rgba(193,154,91,.25);}
+  .scoreSeg:last-child{border-right:none;}
+  .scoreNum{font-family:var(--font-mono);font-weight:700;font-size:32px;color:var(--gold-light);line-height:1;font-variant-numeric:tabular-nums;}
+  .scoreNum.warn{color:var(--cardyellow);}
+  .scoreLabel{font-family:var(--font-display);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#a89f8c;margin-top:8px;}
+
+  /* ---- Containers: real boxes, but tonally distinct rather than uniform white ---- */
+  .panel{background:var(--card);border:1px solid var(--hairline);border-radius:8px;padding:20px 22px;margin-bottom:22px;box-shadow:0 2px 10px rgba(20,15,5,.05);}
+  .panel h2{font-family:var(--font-display);font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;color:var(--ink);margin:0 0 15px 0;padding-bottom:9px;border-bottom:3px solid var(--gold);}
+
+  .panel.tone-alert{background:#1c1913;border-color:#3a3022;}
+  .panel.tone-alert h2{color:var(--gold-light);border-bottom-color:var(--cardred);}
+  .panel.tone-alert .attnRow{border-bottom-color:rgba(232,217,186,.14);}
+  .panel.tone-alert .attnPrimary{color:#f3ece0;}
+  .panel.tone-alert .attnSecondary{color:#b9ac91;}
+
+  .panel.tone-gold{background:#fbf3e2;border-color:var(--gold-dark);}
+  .panel.tone-gold h2{border-bottom-color:var(--gold-dark);}
+
+  .panel.tone-green{background:var(--pitch-bg);border-color:#bfe0c8;}
+  .panel.tone-green h2{border-bottom-color:var(--pitch);}
+
+  .panel.tone-slate{background:var(--slate-bg);border-color:var(--slate-border);}
+  .panel.tone-slate h2{border-bottom-color:var(--slate);}
+
+  .dashStack{display:flex;flex-direction:column;gap:24px;}
+  .dashGrid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:stretch;}
+  .dashRow{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;}
+  .dashGrid>.panel,.dashRow>.panel{margin-bottom:0;display:flex;flex-direction:column;}
+  .dashGrid>.panel>.attnList,.dashGrid>.panel>.suggestList,.dashRow>.panel table{flex:1;}
+  @media (max-width:860px){
+    .dashGrid,.dashRow{grid-template-columns:1fr;}
+  }
+
+  .attnRow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:11px 0;border-bottom:1px solid var(--hairline);}
+  .attnRow:last-child{border-bottom:none;}
+  .attnText{flex:1 1 160px;min-width:160px;}
+  .attnPrimary{font-weight:600;font-size:13.5px;color:var(--ink);}
+  .attnSecondary{font-size:12px;color:var(--ink-muted);margin-top:2px;}
+  .attnAction{flex:0 0 auto;margin-left:auto;white-space:nowrap;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--hairline);}
+  th{font-family:var(--font-display);color:var(--ink-muted);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid var(--gold);}
+  tr:hover td{background:#f3ecd9;}
+  .badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:11px;font-weight:700;}
+  .badge.green{background:var(--pitch-bg);color:var(--pitch);}
+  .badge.amber{background:var(--amber-bg);color:var(--amber);}
+  .badge.red{background:var(--cardred-bg);color:var(--cardred);}
+  .badge.gray{background:#efece3;color:var(--ink-muted);}
+  .badge.gold{background:var(--gold-light);color:#5c481f;}
+  .badge.accent{background:var(--accent-bg);color:var(--accent);}
+  .cardChip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border-radius:3px;font-family:var(--font-display);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+  .cardChip::before{content:'';display:inline-block;width:9px;height:13px;border-radius:2px;transform:rotate(-8deg);flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.3);}
+  .cardChip.yellow{background:var(--cardyellow-bg);color:var(--cardyellow-ink);}
+  .cardChip.yellow::before{background:var(--cardyellow);}
+  .cardChip.red{background:var(--cardred-bg);color:var(--cardred-ink);}
+  .cardChip.red::before{background:var(--cardred);}
+  .flagChip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border-radius:3px;background:var(--amber-bg);color:#7a4a00;font-family:var(--font-display);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+  .flagChip::before{content:'';display:inline-block;width:0;height:0;border-style:solid;border-width:6px 0 6px 9px;border-color:transparent transparent transparent var(--amber);flex-shrink:0;}
+  .btn{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.04em;background:var(--black);color:var(--gold-light);border:1px solid var(--black);padding:8px 16px;border-radius:3px;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .btn:hover{background:#000;}
+  .btn.gold{background:var(--gold);color:#221a08;border-color:var(--gold);}
+  .btn.gold:hover{background:#cba869;}
+  .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--hairline);}
+  .btn.secondary:hover{background:#fff;border-color:var(--gold);}
+  .btn.danger{background:transparent;color:var(--cardred);border:1px solid transparent;padding:8px 10px;}
+  .btn.danger:hover{background:var(--cardred-bg);}
+  .btn.small{padding:5px 10px;font-size:11px;}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=url],select,textarea{
+    padding:7px 9px;border:1px solid var(--hairline);border-radius:3px;font-size:13px;font-family:var(--font-body);background:#fff;color:var(--ink);
+  }
+  .formGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:10px;}
+  .formGrid label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-muted);font-weight:600;}
+  .modalOverlay{position:fixed;inset:0;background:rgba(12,12,13,.6);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:50;}
+  .modalOverlay.active{display:flex;}
+  .modal{background:#fff;border-radius:4px;padding:22px;max-width:620px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35);border-top:4px solid var(--gold);}
+  .modal.wide{max-width:800px;}
+  .modal h3{font-family:var(--font-display);margin:0 0 14px 0;font-size:17px;color:var(--ink);text-transform:uppercase;letter-spacing:.02em;font-weight:600;}
+  .modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+  .empty{color:var(--ink-muted);font-size:13px;padding:20px 0;text-align:center;}
+  .attnList .empty,.suggestList .empty{flex:1;display:flex;align-items:center;justify-content:center;min-height:80px;}
+  .muted{color:var(--ink-muted);}
+  .attRow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--hairline);gap:10px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:#efece3;border-radius:100px;padding:3px 10px;cursor:pointer;user-select:none;}
+  .chip input{margin:0;}
+  .fileHint{font-size:11px;color:var(--ink-muted);margin-top:4px;}
+  footer{padding:24px;text-align:center;color:var(--ink-muted);font-size:11px;}
+  ::placeholder{color:#b8b0a0;}
+  .infoBox{background:#fbf6ea;border:1px solid var(--gold-light);border-radius:4px;padding:12px 14px;font-size:12.5px;color:#5c481f;margin-bottom:14px;line-height:1.5;}
+  .infoBox code{background:#fff;padding:1px 5px;border-radius:3px;border:1px solid var(--gold-light);}
+  .stepTabs{display:flex;gap:6px;margin-bottom:14px;}
+  .stepTabs .step{flex:1;text-align:center;padding:6px 4px;font-family:var(--font-display);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);border-bottom:3px solid var(--hairline);}
+  .stepTabs .step.active{color:var(--ink);border-bottom-color:var(--gold);}
+  .mapGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-bottom:12px;}
+  .mapGrid label{font-size:12px;font-weight:600;color:var(--ink-muted);display:flex;flex-direction:column;gap:4px;}
+  .previewTableWrap{max-height:220px;overflow:auto;border:1px solid var(--hairline);border-radius:4px;margin-bottom:12px;}
+  .previewTableWrap table{font-size:11.5px;}
+  .resultBox{background:var(--pitch-bg);border:1px solid #bfe0c8;border-radius:4px;padding:12px 14px;font-size:13px;color:#125a2e;}
+  .tag{display:inline-block;flex:0 0 auto;white-space:nowrap;font-family:var(--font-display);font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.03em;}
+  .tag.levelup{background:#e6f0ff;color:#1d4ed8;}
+  .tag.renewal{background:var(--amber-bg);color:var(--amber);}
+  .tag.newcert{background:var(--accent-bg);color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div class="appShell">
+  <aside class="sidebar">
+    <div class="brandBlock">
+      <img class="crestMark" src="valor_logo.png" alt="Virginia Valor FC">
+      <div class="eyebrow">Est. 2021</div>
+      <div class="clubName">Virginia<br>Valor FC</div>
+      <div class="clubSub">Staff Licensing &amp; Development Tracker</div>
+    </div>
+    <nav class="sideNav">
+      <button class="navBtn active" data-view="dashboard">Dashboard</button>
+      <button class="navBtn" data-view="staff">Staff / Coaches</button>
+      <button class="navBtn" data-view="licenses">Licensing</button>
+      <button class="navBtn" data-view="courses">Upcoming Courses</button>
+      <button class="navBtn" data-view="events">Meetings &amp; Education Nights</button>
+      <button class="navBtn" data-view="teams">Teams Coached</button>
+      <button class="navBtn" data-view="compliance">Compliance</button>
+    </nav>
+  </aside>
+
+  <div class="mainWrap">
+    <div class="utilityBar">
+      <button class="btn gold small" onclick="openImportModal()">Import from Sheet / CSV</button>
+      <button class="btn secondary small" onclick="exportData()">Export Backup</button>
+      <label class="btn secondary small" style="cursor:pointer;">
+        Import Backup
+        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+      </label>
+      <button class="btn secondary small" onclick="loadSampleData()">Load Sample Data</button>
+    </div>
+    <main>
+
+  <!-- DASHBOARD -->
+  <div class="view active" id="view-dashboard">
+    <div class="dashStack">
+      <div class="scoreboard" id="scoreboard"></div>
+
+      <div class="dashGrid">
+        <div class="panel tone-alert">
+          <h2>Needs Attention</h2>
+          <div class="attnList" id="needsAttentionList"></div>
+        </div>
+        <div class="panel tone-gold">
+          <h2>Suggested Courses</h2>
+          <div class="suggestList" id="suggestList"></div>
+        </div>
+      </div>
+
+      <div class="dashRow">
+        <div class="panel tone-green">
+          <h2>Upcoming Courses</h2>
+          <table id="dashCoursesTable"><thead><tr><th>Date</th><th>Course</th><th>Track</th></tr></thead><tbody></tbody></table>
+        </div>
+        <div class="panel tone-slate">
+          <h2>Meetings &amp; Education Nights</h2>
+          <table id="dashEventsTable"><thead><tr><th>Date</th><th>Event</th><th>Type</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:0;">
+        <h2>Attendance Record</h2>
+        <table id="dashAttendanceTable"><thead><tr><th>Staff</th><th>Attended</th><th>Total events</th><th>Rate</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAFF -->
+  <div class="view" id="view-staff">
+    <div class="toolbar">
+      <div class="filters">
+        <input type="text" id="staffSearch" placeholder="Search name / email..." oninput="renderStaff()">
+        <select id="staffStatusFilter" onchange="renderStaff()">
+          <option value="">All statuses</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+      <button class="btn gold" onclick="openStaffModal()">+ Add Staff</button>
+    </div>
+    <div class="panel">
+      <table id="staffTable"><thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Status</th><th>Licenses</th><th>Teams</th><th>Suggestions</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="staffEmpty" style="display:none;">No staff yet. Click "+ Add Staff" to get started.</div>
+    </div>
+  </div>
+
+  <!-- LICENSES -->
+  <div class="view" id="view-licenses">
+    <div class="toolbar">
+      <div class="filters">
+        <select id="licenseStatusFilter" onchange="renderLicenses()">
+          <option value="">All statuses</option>
+          <option value="Valid">Valid</option>
+          <option value="Expiring Soon">Expiring Soon</option>
+          <option value="Expired">Expired</option>
+        </select>
+      </div>
+      <button class="btn gold" onclick="openLicenseModal()">+ Add License</button>
+    </div>
+    <div class="panel">
+      <table id="licenseTable"><thead><tr><th>Staff</th><th>Track / License Type</th><th>Level</th><th>Year Obtained</th><th>Cert #</th><th>Issued</th><th>Expires</th><th>Status</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="licenseEmpty" style="display:none;">No licenses recorded yet.</div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <div class="view" id="view-courses">
+    <div class="toolbar">
+      <div class="filters">
+        <input type="text" id="courseTrackFilter" placeholder="Filter by track..." oninput="renderCourses()">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+          <input type="checkbox" id="courseUpcomingOnly" checked onchange="renderCourses()"> Upcoming only
+        </label>
+      </div>
+      <button class="btn gold" onclick="openCourseModal()">+ Add Course</button>
+    </div>
+    <div class="panel">
+      <table id="coursesTable"><thead><tr><th>Date</th><th>Course</th><th>Track</th><th>Level</th><th>Provider / Location</th><th>Attendance</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="coursesEmpty" style="display:none;">No courses added yet.</div>
+    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <div class="view" id="view-events">
+    <div class="toolbar">
+      <div class="filters">
+        <select id="eventTypeFilter" onchange="renderEvents()">
+          <option value="">All types</option>
+          <option value="Meeting">Meeting</option>
+          <option value="Education Night">Education Night</option>
+        </select>
+      </div>
+      <button class="btn gold" onclick="openEventModal()">+ Add Event</button>
+    </div>
+    <div class="panel">
+      <table id="eventsTable"><thead><tr><th>Date</th><th>Event</th><th>Type</th><th>Attendance</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="eventsEmpty" style="display:none;">No meetings or education nights logged yet.</div>
+    </div>
+  </div>
+
+  <!-- TEAMS -->
+  <div class="view" id="view-teams">
+    <div class="toolbar">
+      <div class="filters">
+        <input type="text" id="teamSeasonFilter" placeholder="Filter by season..." oninput="renderTeams()">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+          <input type="checkbox" id="teamShowArchived" onchange="renderTeams()"> Show archived seasons
+        </label>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn secondary" onclick="openSeasonsModal()">Manage Seasons</button>
+        <button class="btn gold" onclick="openTeamModal()">+ Add Team Assignment</button>
+      </div>
+    </div>
+    <div class="panel">
+      <table id="teamsTable"><thead><tr><th>Team</th><th>Coach</th><th>Coach Role</th><th>Season</th><th>Age Group</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="teamsEmpty" style="display:none;">No team assignments yet.</div>
+    </div>
+  </div>
+
+  <!-- COMPLIANCE -->
+  <div class="view" id="view-compliance">
+    <div class="toolbar">
+      <div class="filters"><span class="muted" style="font-size:12.5px;max-width:520px;display:inline-block;">Define which certifications each role must hold (matched against each coach's "Role" field on the Staff tab), then see who's missing them.</span></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn secondary" onclick="printComplianceReport()">Print / Export Report</button>
+        <button class="btn gold" onclick="openRequirementModal()">+ Add Requirement</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Certification requirements by role</h2>
+      <table id="requirementsTable"><thead><tr><th>Role</th><th>Required Track</th><th>Min Level</th><th></th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="requirementsEmpty" style="display:none;">No requirements defined yet — add one to start tracking compliance gaps.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Coaches missing requirements</h2>
+      <table id="complianceGapsTable"><thead><tr><th>Coach</th><th>Role</th><th>Required Track</th><th>Status</th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="complianceGapsEmpty" style="display:none;">No gaps found — everyone meets their role's requirements (or no requirements are defined yet).</div>
+    </div>
+
+    <div class="panel">
+      <h2>Team roster gaps</h2>
+      <table id="teamGapsTable"><thead><tr><th>Team</th><th>Season</th><th>Issue</th><th>Current Coaches</th></tr></thead><tbody></tbody></table>
+      <div class="empty" id="teamGapsEmpty" style="display:none;">No roster gaps found.</div>
+    </div>
+  </div>
+
+    </main>
+  </div>
+</div>
+
+<footer>Data is stored locally in this browser. Use "Export Backup" regularly to save a copy — clearing browser data will erase everything here. Keep <code>valor_logo.png</code> in the same folder as this file.</footer>
+
+<!-- MODALS -->
+<div class="modalOverlay" id="staffModalOverlay">
+  <div class="modal">
+    <h3 id="staffModalTitle">Add Staff / Coach</h3>
+    <input type="hidden" id="staffId">
+    <div class="formGrid">
+      <label>Name <input type="text" id="staffName" placeholder="Jane Smith"></label>
+      <label>Role <input type="text" id="staffRole" placeholder="Head Coach, Assistant, Volunteer..." list="roleList"></label>
+      <label>Email <input type="email" id="staffEmail"></label>
+      <label>Phone <input type="tel" id="staffPhone"></label>
+      <label>Status
+        <select id="staffStatus"><option>Active</option><option>Inactive</option></select>
+      </label>
+    </div>
+    <label style="font-size:12px;color:var(--muted);font-weight:600;">Notes<br>
+      <textarea id="staffNotes" rows="2" style="width:100%;margin-top:4px;"></textarea>
+    </label>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('staffModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveStaff()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="licenseModalOverlay">
+  <div class="modal">
+    <h3 id="licenseModalTitle">Add License</h3>
+    <input type="hidden" id="licenseId">
+    <div class="formGrid">
+      <label>Staff
+        <select id="licenseStaff"></select>
+      </label>
+      <label>Track / License Type <input type="text" id="licenseType" placeholder="e.g. State Coaching License, Safe Sport, CPR/First Aid" list="trackList"></label>
+      <label>Level (number, optional) <input type="number" id="licenseLevel" placeholder="e.g. 1, 2, 3"></label>
+      <label>Year Obtained (if exact date unknown) <input type="number" id="licenseYear" placeholder="e.g. 2022" min="1990" max="2100"></label>
+      <label>Certificate # <input type="text" id="licenseCert"></label>
+      <label>Issue Date (optional, if known) <input type="date" id="licenseIssue"></label>
+      <label>Expiry Date <input type="date" id="licenseExpiry"></label>
+    </div>
+    <datalist id="trackList"></datalist>
+    <label style="font-size:12px;color:var(--muted);font-weight:600;">Notes<br>
+      <textarea id="licenseNotes" rows="2" style="width:100%;margin-top:4px;"></textarea>
+    </label>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('licenseModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveLicense()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="courseModalOverlay">
+  <div class="modal">
+    <h3 id="courseModalTitle">Add Upcoming Course</h3>
+    <input type="hidden" id="courseId">
+    <div class="formGrid">
+      <label>Course Name <input type="text" id="courseName" placeholder="e.g. State D License Course"></label>
+      <label>Track / License Type <input type="text" id="courseTrack" placeholder="Must match license track to power suggestions" list="trackList"></label>
+      <label>Level (number, optional) <input type="number" id="courseLevel" placeholder="e.g. 2"></label>
+      <label>Date <input type="date" id="courseDate"></label>
+      <label>Provider <input type="text" id="courseProvider" placeholder="e.g. State Soccer Association"></label>
+      <label>Location <input type="text" id="courseLocation"></label>
+      <label>Capacity (optional) <input type="number" id="courseCapacity"></label>
+    </div>
+    <label style="font-size:12px;color:var(--muted);font-weight:600;">Notes<br>
+      <textarea id="courseNotes" rows="2" style="width:100%;margin-top:4px;"></textarea>
+    </label>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('courseModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveCourse()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="eventModalOverlay">
+  <div class="modal">
+    <h3 id="eventModalTitle">Add Meeting / Education Night</h3>
+    <input type="hidden" id="eventId">
+    <div class="formGrid">
+      <label>Event Name <input type="text" id="eventName" placeholder="e.g. Fall Coaches Meeting"></label>
+      <label>Date <input type="date" id="eventDate"></label>
+      <label>Type
+        <select id="eventType"><option>Meeting</option><option>Education Night</option></select>
+      </label>
+    </div>
+    <label style="font-size:12px;color:var(--muted);font-weight:600;">Notes<br>
+      <textarea id="eventNotes" rows="2" style="width:100%;margin-top:4px;"></textarea>
+    </label>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('eventModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveEvent()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="attendanceModalOverlay">
+  <div class="modal">
+    <h3>Take Attendance</h3>
+    <input type="hidden" id="attEventId">
+    <div id="attEventLabel" class="muted" style="margin-bottom:10px;font-size:13px;"></div>
+    <div id="attList"></div>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('attendanceModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveAttendance()">Save Attendance</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="interestModalOverlay">
+  <div class="modal">
+    <h3>Course Attendance</h3>
+    <input type="hidden" id="interestCourseId">
+    <div id="interestCourseLabel" class="muted" style="margin-bottom:10px;font-size:13px;"></div>
+    <p class="muted" style="font-size:12px;">Mark a coach "Completed" once they've finished the course — you'll get a shortcut to add the resulting license.</p>
+    <div id="interestList"></div>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('interestModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveInterest()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="teamModalOverlay">
+  <div class="modal">
+    <h3 id="teamModalTitle">Add Team Assignment</h3>
+    <input type="hidden" id="teamId">
+    <div class="formGrid">
+      <label>Team Name <input type="text" id="teamName" placeholder="e.g. U12 Boys Red"></label>
+      <label>Coach
+        <select id="teamStaff"></select>
+      </label>
+      <label>Coach Role
+        <select id="teamCoachRole"><option>Head Coach</option><option>Assistant Coach</option><option>Team Manager</option></select>
+      </label>
+      <label>Season <input type="text" id="teamSeason" placeholder="e.g. Fall 2025"></label>
+      <label>Age Group <input type="text" id="teamAgeGroup" placeholder="e.g. U12"></label>
+    </div>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('teamModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveTeam()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="seasonsModalOverlay">
+  <div class="modal">
+    <h3>Manage Seasons</h3>
+    <p class="muted" style="font-size:12.5px;">Archiving a season hides its team assignments from the main Teams view by default (toggle "Show archived seasons" there to see them again). Nothing is deleted.</p>
+    <div id="seasonsList"></div>
+    <div class="modalActions">
+      <button class="btn gold" onclick="closeModal('seasonsModalOverlay')">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="modalOverlay" id="requirementModalOverlay">
+  <div class="modal">
+    <h3 id="requirementModalTitle">Add Requirement</h3>
+    <input type="hidden" id="requirementId">
+    <div class="formGrid">
+      <label>Role <input type="text" id="requirementRole" placeholder="e.g. Head Coach" list="roleList"></label>
+      <label>Track / License Type <input type="text" id="requirementTrack" placeholder="e.g. Safe Sport Certification" list="trackList"></label>
+      <label>Minimum Level (optional) <input type="number" id="requirementLevel"></label>
+    </div>
+    <datalist id="roleList"></datalist>
+    <div class="modalActions">
+      <button class="btn secondary" onclick="closeModal('requirementModalOverlay')">Cancel</button>
+      <button class="btn gold" onclick="saveRequirement()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modalOverlay" id="importModalOverlay">
+  <div class="modal wide">
+    <h3>Import Coaches from a Google Form / Sheet or CSV</h3>
+    <div class="infoBox">
+      There's no direct live connection to Google Forms/Sheets from this file (it runs entirely in your browser, offline). The reliable way in:
+      open your Sheet &rarr; <code>File &gt; Download &gt; Comma Separated Values (.csv)</code> &rarr; upload it below.
+      <br><br>
+      If your Sheet is shared as <strong>"Anyone with the link can view"</strong>, you can instead paste its URL below and try fetching it directly — this sometimes works, but browsers often block it, so the file upload is the dependable option.
+      <br><br>
+      <strong>Suggested Google Form questions</strong> for coaches to fill out: Full Name, Email, Phone, Role, License Track/Type, License Level, Certificate Number, Issue Date, Expiry Date, and a checkbox list "Which upcoming course(s) do you plan to attend?" (using the exact course names from the Upcoming Courses tab).
+    </div>
+
+    <div class="stepTabs" id="importSteps">
+      <div class="step active" data-step="1">1. Load Data</div>
+      <div class="step" data-step="2">2. Map Columns</div>
+      <div class="step" data-step="3">3. Review &amp; Import</div>
+    </div>
+
+    <div id="importStep1">
+      <div class="formGrid">
+        <label>Upload CSV file
+          <input type="file" id="importCsvFile" accept=".csv" onchange="handleImportFile(event)">
+        </label>
+        <label>...or paste a public Google Sheet URL
+          <input type="url" id="importSheetUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+        </label>
+      </div>
+      <button class="btn gold small" onclick="fetchImportUrl()">Fetch from URL</button>
+      <div class="fileHint" id="importLoadStatus"></div>
+    </div>
+
+    <div id="importStep2" style="display:none;">
+      <p class="muted" style="font-size:12.5px;">Match your sheet's column headers to tracker fields. Leave as "-- skip --" for anything you don't want to import.</p>
+      <div class="mapGrid" id="mapGrid"></div>
+      <div class="previewTableWrap"><table id="importPreviewTable"></table></div>
+      <div class="modalActions">
+        <button class="btn secondary" onclick="closeModal('importModalOverlay')">Cancel</button>
+        <button class="btn gold" onclick="runImport()">Import Rows</button>
+      </div>
+    </div>
+
+    <div id="importStep3" style="display:none;">
+      <div class="resultBox" id="importResultBox"></div>
+      <div class="modalActions">
+        <button class="btn gold" onclick="closeModal('importModalOverlay')">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- Data layer ----------
+const STORAGE_KEY = 'valorCoachTrackerData_v3';
+let data = { staff: [], licenses: [], events: [], attendance: [], teams: [], courses: [], courseInterest: [], requirements: [] };
+
+function load(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{ data = JSON.parse(raw); }catch(e){ console.error('Failed to parse saved data', e); }
+  }
+  data.staff = data.staff || [];
+  data.licenses = data.licenses || [];
+  data.events = data.events || [];
+  data.attendance = data.attendance || [];
+  data.teams = data.teams || [];
+  data.courses = data.courses || [];
+  data.courseInterest = data.courseInterest || [];
+  data.requirements = data.requirements || [];
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function normTrack(s){ return (s||'').trim().toLowerCase(); }
+
+// ---------- Navigation ----------
+document.querySelectorAll('.navBtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+    renderAll();
+  });
+});
+
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+
+// ---------- Helpers ----------
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dateStr+'T00:00:00');
+  if(isNaN(d.getTime())) return null;
+  return Math.round((d - today)/86400000);
+}
+function licenseStatus(expiry){
+  const days = daysUntil(expiry);
+  if(days === null) return {label:'Unknown', cls:'gray'};
+  if(days < 0) return {label:'Expired', cls:'red'};
+  if(days <= 60) return {label:'Expiring Soon', cls:'amber'};
+  return {label:'Valid', cls:'green'};
+}
+function staffName(id){ const s = data.staff.find(x=>x.id===id); return s ? s.name : '(deleted staff)'; }
+function licenseChip(status){
+  if(status.label==='Expired') return '<span class="cardChip red">Expired</span>';
+  if(status.label==='Expiring Soon') return '<span class="cardChip yellow">Expiring Soon</span>';
+  if(status.label==='Valid') return '<span class="badge green">Valid</span>';
+  return '<span class="badge gray">Unknown</span>';
+}
+function issueChip(issue){ return `<span class="cardChip red">${escapeHtml(issue)}</span>`; }
+function rosterGapChip(issue){ return `<span class="flagChip">${escapeHtml(issue)}</span>`; }
+function fmtDate(d){ if(!d) return ''; const dt = new Date(d+'T00:00:00'); if(isNaN(dt.getTime())) return d; return dt.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
+function escapeHtml(str){
+  if(str===undefined || str===null) return '';
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function allTracks(){
+  const set = new Set();
+  data.licenses.forEach(l=>{ if(l.type) set.add(l.type); });
+  data.courses.forEach(c=>{ if(c.track) set.add(c.track); });
+  return [...set].sort();
+}
+function refreshTrackList(){
+  const dl = document.getElementById('trackList');
+  dl.innerHTML = allTracks().map(t=>`<option value="${escapeHtml(t)}">`).join('');
+}
+function refreshRoleList(){
+  const dl = document.getElementById('roleList');
+  const roles = [...new Set(data.staff.map(s=>s.role).filter(Boolean))].sort();
+  dl.innerHTML = roles.map(r=>`<option value="${escapeHtml(r)}">`).join('');
+}
+
+// ---------- Staff ----------
+function openStaffModal(id){
+  refreshRoleList();
+  document.getElementById('staffModalTitle').textContent = id ? 'Edit Staff / Coach' : 'Add Staff / Coach';
+  document.getElementById('staffId').value = id || '';
+  const s = id ? data.staff.find(x=>x.id===id) : null;
+  document.getElementById('staffName').value = s ? s.name : '';
+  document.getElementById('staffRole').value = s ? s.role : '';
+  document.getElementById('staffEmail').value = s ? s.email : '';
+  document.getElementById('staffPhone').value = s ? s.phone : '';
+  document.getElementById('staffStatus').value = s ? s.status : 'Active';
+  document.getElementById('staffNotes').value = s ? s.notes||'' : '';
+  openModal('staffModalOverlay');
+}
+function saveStaff(){
+  const id = document.getElementById('staffId').value;
+  const name = document.getElementById('staffName').value.trim();
+  if(!name){ alert('Name is required.'); return; }
+  const rec = {
+    id: id || uid(),
+    name,
+    role: document.getElementById('staffRole').value.trim(),
+    email: document.getElementById('staffEmail').value.trim(),
+    phone: document.getElementById('staffPhone').value.trim(),
+    status: document.getElementById('staffStatus').value,
+    notes: document.getElementById('staffNotes').value.trim()
+  };
+  if(id){ const idx = data.staff.findIndex(x=>x.id===id); data.staff[idx] = rec; }
+  else{ data.staff.push(rec); }
+  save(); closeModal('staffModalOverlay'); renderAll();
+}
+function deleteStaff(id){
+  if(!confirm('Delete this staff member? Their licenses, attendance, and team assignments will remain but show as unlinked. Continue?')) return;
+  data.staff = data.staff.filter(x=>x.id!==id);
+  save(); renderAll();
+}
+function renderStaff(){
+  const search = (document.getElementById('staffSearch')?.value || '').toLowerCase();
+  const statusFilter = document.getElementById('staffStatusFilter')?.value || '';
+  const tbody = document.querySelector('#staffTable tbody');
+  tbody.innerHTML = '';
+  let rows = data.staff.filter(s=>{
+    const matchesSearch = !search || s.name.toLowerCase().includes(search) || (s.email||'').toLowerCase().includes(search);
+    const matchesStatus = !statusFilter || s.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+  rows.sort((a,b)=>a.name.localeCompare(b.name));
+  document.getElementById('staffEmpty').style.display = rows.length ? 'none' : 'block';
+  const suggestions = computeSuggestions();
+  rows.forEach(s=>{
+    const licCount = data.licenses.filter(l=>l.staffId===s.id).length;
+    const teamCount = data.teams.filter(t=>t.staffId===s.id).length;
+    const suggCount = suggestions.filter(x=>x.staffId===s.id).length;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${escapeHtml(s.name)}</strong></td>
+      <td>${escapeHtml(s.role||'')}</td>
+      <td>${escapeHtml(s.email||'')}</td>
+      <td>${escapeHtml(s.phone||'')}</td>
+      <td><span class="badge ${s.status==='Active'?'green':'gray'}">${s.status}</span></td>
+      <td>${licCount}</td>
+      <td>${teamCount}</td>
+      <td>${suggCount ? `<span class="badge gold">${suggCount}</span>` : '<span class="muted">—</span>'}</td>
+      <td>
+        <button class="btn secondary small" onclick="openStaffModal('${s.id}')">Edit</button>
+        <button class="btn danger small" onclick="deleteStaff('${s.id}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- Licenses ----------
+function populateStaffSelect(selectEl){
+  selectEl.innerHTML = data.staff.slice().sort((a,b)=>a.name.localeCompare(b.name))
+    .map(s=>`<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('');
+}
+function openLicenseModal(id){
+  refreshTrackList();
+  document.getElementById('licenseModalTitle').textContent = id ? 'Edit License' : 'Add License';
+  document.getElementById('licenseId').value = id || '';
+  populateStaffSelect(document.getElementById('licenseStaff'));
+  const l = id ? data.licenses.find(x=>x.id===id) : null;
+  if(l) document.getElementById('licenseStaff').value = l.staffId;
+  document.getElementById('licenseType').value = l ? l.type : '';
+  document.getElementById('licenseLevel').value = l && l.level ? l.level : '';
+  document.getElementById('licenseYear').value = l && l.yearObtained ? l.yearObtained : '';
+  document.getElementById('licenseCert').value = l ? l.certNumber||'' : '';
+  document.getElementById('licenseIssue').value = l ? l.issueDate||'' : '';
+  document.getElementById('licenseExpiry').value = l ? l.expiryDate||'' : '';
+  document.getElementById('licenseNotes').value = l ? l.notes||'' : '';
+  if(!data.staff.length){ alert('Add a staff member first.'); return; }
+  openModal('licenseModalOverlay');
+}
+function saveLicense(){
+  const id = document.getElementById('licenseId').value;
+  const type = document.getElementById('licenseType').value.trim();
+  if(!type){ alert('Track / license type is required.'); return; }
+  const levelVal = document.getElementById('licenseLevel').value;
+  const yearVal = document.getElementById('licenseYear').value;
+  const rec = {
+    id: id || uid(),
+    staffId: document.getElementById('licenseStaff').value,
+    type,
+    level: levelVal ? parseInt(levelVal) : null,
+    yearObtained: yearVal ? parseInt(yearVal) : null,
+    certNumber: document.getElementById('licenseCert').value.trim(),
+    issueDate: document.getElementById('licenseIssue').value,
+    expiryDate: document.getElementById('licenseExpiry').value,
+    notes: document.getElementById('licenseNotes').value.trim()
+  };
+  if(id){ const idx = data.licenses.findIndex(x=>x.id===id); data.licenses[idx] = rec; }
+  else{ data.licenses.push(rec); }
+  save(); closeModal('licenseModalOverlay'); renderAll();
+}
+function deleteLicense(id){
+  if(!confirm('Delete this license record?')) return;
+  data.licenses = data.licenses.filter(x=>x.id!==id);
+  save(); renderAll();
+}
+function renderLicenses(){
+  const statusFilter = document.getElementById('licenseStatusFilter')?.value || '';
+  const tbody = document.querySelector('#licenseTable tbody');
+  tbody.innerHTML = '';
+  let rows = data.licenses.map(l=>({...l, status: licenseStatus(l.expiryDate)}));
+  if(statusFilter) rows = rows.filter(l=>l.status.label === statusFilter);
+  rows.sort((a,b)=> (a.expiryDate||'').localeCompare(b.expiryDate||''));
+  document.getElementById('licenseEmpty').style.display = rows.length ? 'none' : 'block';
+  rows.forEach(l=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(staffName(l.staffId))}</td>
+      <td>${escapeHtml(l.type)}</td>
+      <td>${l.level ?? ''}</td>
+      <td>${l.yearObtained ?? (l.issueDate ? new Date(l.issueDate+'T00:00:00').getFullYear() : '')}</td>
+      <td>${escapeHtml(l.certNumber||'')}</td>
+      <td>${fmtDate(l.issueDate)}</td>
+      <td>${fmtDate(l.expiryDate)}</td>
+      <td>${licenseChip(l.status)}</td>
+      <td>
+        <button class="btn secondary small" onclick="openLicenseModal('${l.id}')">Edit</button>
+        <button class="btn danger small" onclick="deleteLicense('${l.id}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- Courses ----------
+function openCourseModal(id){
+  refreshTrackList();
+  document.getElementById('courseModalTitle').textContent = id ? 'Edit Course' : 'Add Upcoming Course';
+  document.getElementById('courseId').value = id || '';
+  const c = id ? data.courses.find(x=>x.id===id) : null;
+  document.getElementById('courseName').value = c ? c.name : '';
+  document.getElementById('courseTrack').value = c ? c.track : '';
+  document.getElementById('courseLevel').value = c && c.level ? c.level : '';
+  document.getElementById('courseDate').value = c ? c.date : '';
+  document.getElementById('courseProvider').value = c ? c.provider||'' : '';
+  document.getElementById('courseLocation').value = c ? c.location||'' : '';
+  document.getElementById('courseCapacity').value = c && c.capacity ? c.capacity : '';
+  document.getElementById('courseNotes').value = c ? c.notes||'' : '';
+  openModal('courseModalOverlay');
+}
+function saveCourse(){
+  const id = document.getElementById('courseId').value;
+  const name = document.getElementById('courseName').value.trim();
+  if(!name){ alert('Course name is required.'); return; }
+  const levelVal = document.getElementById('courseLevel').value;
+  const capVal = document.getElementById('courseCapacity').value;
+  const rec = {
+    id: id || uid(),
+    name,
+    track: document.getElementById('courseTrack').value.trim(),
+    level: levelVal ? parseInt(levelVal) : null,
+    date: document.getElementById('courseDate').value,
+    provider: document.getElementById('courseProvider').value.trim(),
+    location: document.getElementById('courseLocation').value.trim(),
+    capacity: capVal ? parseInt(capVal) : null,
+    notes: document.getElementById('courseNotes').value.trim()
+  };
+  if(id){ const idx = data.courses.findIndex(x=>x.id===id); data.courses[idx] = rec; }
+  else{ data.courses.push(rec); }
+  save(); closeModal('courseModalOverlay'); renderAll();
+}
+function deleteCourse(id){
+  if(!confirm('Delete this course and any attendance records for it?')) return;
+  data.courses = data.courses.filter(x=>x.id!==id);
+  data.courseInterest = data.courseInterest.filter(x=>x.courseId!==id);
+  save(); renderAll();
+}
+function openInterestModal(courseId){
+  const c = data.courses.find(x=>x.id===courseId);
+  if(!c) return;
+  document.getElementById('interestCourseId').value = courseId;
+  document.getElementById('interestCourseLabel').textContent = `${c.name} — ${fmtDate(c.date)}${c.track? ' · '+c.track:''}`;
+  const list = document.getElementById('interestList');
+  list.innerHTML = '';
+  const staffSorted = data.staff.slice().sort((a,b)=>a.name.localeCompare(b.name));
+  if(!staffSorted.length){ list.innerHTML = '<div class="muted">No staff yet.</div>'; }
+  staffSorted.forEach(s=>{
+    const rec = data.courseInterest.find(ci=>ci.courseId===courseId && ci.staffId===s.id);
+    const status = rec ? rec.status : 'none';
+    const row = document.createElement('div');
+    row.className = 'attRow';
+    row.innerHTML = `<span>${escapeHtml(s.name)}</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select data-staffid="${s.id}" onchange="toggleCompleteBtn(this)">
+          <option value="none" ${status==='none'?'selected':''}>Not attending</option>
+          <option value="planned" ${status==='planned'?'selected':''}>Planning to attend</option>
+          <option value="completed" ${status==='completed'?'selected':''}>Completed</option>
+        </select>
+        <button type="button" class="btn gold small" style="display:${status==='completed'?'inline-block':'none'}" onclick="quickAddLicenseFromCourse('${c.id}','${s.id}')">+ Add License</button>
+      </div>`;
+    list.appendChild(row);
+  });
+  openModal('interestModalOverlay');
+}
+function toggleCompleteBtn(selectEl){
+  const btn = selectEl.parentElement.querySelector('button');
+  if(btn) btn.style.display = selectEl.value === 'completed' ? 'inline-block' : 'none';
+}
+function quickAddLicenseFromCourse(courseId, staffId){
+  const c = data.courses.find(x=>x.id===courseId);
+  if(!c) return;
+  closeModal('interestModalOverlay');
+  refreshTrackList();
+  document.getElementById('licenseModalTitle').textContent = 'Add License (from course completion)';
+  document.getElementById('licenseId').value = '';
+  populateStaffSelect(document.getElementById('licenseStaff'));
+  document.getElementById('licenseStaff').value = staffId;
+  document.getElementById('licenseType').value = c.track || '';
+  document.getElementById('licenseLevel').value = c.level || '';
+  document.getElementById('licenseYear').value = c.date ? new Date(c.date+'T00:00:00').getFullYear() : '';
+  document.getElementById('licenseCert').value = '';
+  document.getElementById('licenseIssue').value = c.date || '';
+  document.getElementById('licenseExpiry').value = '';
+  document.getElementById('licenseNotes').value = `Completed via course: ${c.name}`;
+  openModal('licenseModalOverlay');
+}
+function setInterestStatus(courseId, staffId, status){
+  let rec = data.courseInterest.find(ci=>ci.courseId===courseId && ci.staffId===staffId);
+  if(status === 'none'){
+    if(rec) data.courseInterest = data.courseInterest.filter(ci=>ci!==rec);
+  } else {
+    if(rec) rec.status = status; else data.courseInterest.push({id:uid(), courseId, staffId, status});
+  }
+}
+function saveInterest(){
+  const courseId = document.getElementById('interestCourseId').value;
+  document.querySelectorAll('#interestList select').forEach(sel=>{
+    setInterestStatus(courseId, sel.dataset.staffid, sel.value);
+  });
+  save(); closeModal('interestModalOverlay'); renderAll();
+}
+function renderCourses(){
+  const trackFilter = (document.getElementById('courseTrackFilter')?.value || '').toLowerCase();
+  const upcomingOnly = document.getElementById('courseUpcomingOnly')?.checked;
+  const tbody = document.querySelector('#coursesTable tbody');
+  tbody.innerHTML = '';
+  let rows = data.courses.filter(c=>{
+    const matchesTrack = !trackFilter || (c.track||'').toLowerCase().includes(trackFilter);
+    const d = daysUntil(c.date);
+    const matchesUpcoming = !upcomingOnly || (d!==null && d>=0);
+    return matchesTrack && matchesUpcoming;
+  });
+  rows.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  document.getElementById('coursesEmpty').style.display = rows.length ? 'none' : 'block';
+  rows.forEach(c=>{
+    const planned = data.courseInterest.filter(ci=>ci.courseId===c.id && ci.status==='planned').length;
+    const completed = data.courseInterest.filter(ci=>ci.courseId===c.id && ci.status==='completed').length;
+    const capLabel = c.capacity ? ` / ${c.capacity} cap` : '';
+    const attendanceLabel = `${planned} planned${completed ? ', '+completed+' completed' : ''}${capLabel}`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${fmtDate(c.date)}</td>
+      <td><strong>${escapeHtml(c.name)}</strong>${c.notes?`<div class="muted" style="font-size:11px;">${escapeHtml(c.notes)}</div>`:''}</td>
+      <td>${escapeHtml(c.track||'')}</td>
+      <td>${c.level ?? ''}</td>
+      <td>${escapeHtml(c.provider||'')}${c.location?' · '+escapeHtml(c.location):''}</td>
+      <td>${attendanceLabel}</td>
+      <td>
+        <button class="btn secondary small" onclick="openInterestModal('${c.id}')">Manage Attendees</button>
+        <button class="btn secondary small" onclick="openCourseModal('${c.id}')">Edit</button>
+        <button class="btn danger small" onclick="deleteCourse('${c.id}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- Events & Attendance ----------
+function openEventModal(id){
+  document.getElementById('eventModalTitle').textContent = id ? 'Edit Event' : 'Add Meeting / Education Night';
+  document.getElementById('eventId').value = id || '';
+  const e = id ? data.events.find(x=>x.id===id) : null;
+  document.getElementById('eventName').value = e ? e.name : '';
+  document.getElementById('eventDate').value = e ? e.date : '';
+  document.getElementById('eventType').value = e ? e.type : 'Meeting';
+  document.getElementById('eventNotes').value = e ? e.notes||'' : '';
+  openModal('eventModalOverlay');
+}
+function saveEvent(){
+  const id = document.getElementById('eventId').value;
+  const name = document.getElementById('eventName').value.trim();
+  if(!name){ alert('Event name is required.'); return; }
+  const rec = {
+    id: id || uid(),
+    name,
+    date: document.getElementById('eventDate').value,
+    type: document.getElementById('eventType').value,
+    notes: document.getElementById('eventNotes').value.trim()
+  };
+  if(id){ const idx = data.events.findIndex(x=>x.id===id); data.events[idx] = rec; }
+  else{ data.events.push(rec); }
+  save(); closeModal('eventModalOverlay'); renderAll();
+}
+function deleteEvent(id){
+  if(!confirm('Delete this event and its attendance records?')) return;
+  data.events = data.events.filter(x=>x.id!==id);
+  data.attendance = data.attendance.filter(x=>x.eventId!==id);
+  save(); renderAll();
+}
+function openAttendanceModal(eventId){
+  const ev = data.events.find(x=>x.id===eventId);
+  if(!ev) return;
+  document.getElementById('attEventId').value = eventId;
+  document.getElementById('attEventLabel').textContent = `${ev.name} — ${fmtDate(ev.date)} (${ev.type})`;
+  const list = document.getElementById('attList');
+  list.innerHTML = '';
+  const staffSorted = data.staff.slice().sort((a,b)=>a.name.localeCompare(b.name));
+  if(!staffSorted.length){ list.innerHTML = '<div class="muted">No staff to record attendance for yet.</div>'; }
+  staffSorted.forEach(s=>{
+    const existing = data.attendance.find(a=>a.eventId===eventId && a.staffId===s.id);
+    const present = existing ? existing.present : false;
+    const row = document.createElement('div');
+    row.className = 'attRow';
+    row.innerHTML = `<span>${escapeHtml(s.name)}</span>
+      <label class="chip"><input type="checkbox" data-staffid="${s.id}" ${present?'checked':''}> Present</label>`;
+    list.appendChild(row);
+  });
+  openModal('attendanceModalOverlay');
+}
+function saveAttendance(){
+  const eventId = document.getElementById('attEventId').value;
+  const checkboxes = document.querySelectorAll('#attList input[type=checkbox]');
+  checkboxes.forEach(cb=>{
+    const staffId = cb.dataset.staffid;
+    const present = cb.checked;
+    let rec = data.attendance.find(a=>a.eventId===eventId && a.staffId===staffId);
+    if(rec){ rec.present = present; }
+    else{ data.attendance.push({id: uid(), eventId, staffId, present}); }
+  });
+  save(); closeModal('attendanceModalOverlay'); renderAll();
+}
+function renderEvents(){
+  const typeFilter = document.getElementById('eventTypeFilter')?.value || '';
+  const tbody = document.querySelector('#eventsTable tbody');
+  tbody.innerHTML = '';
+  let rows = data.events.slice();
+  if(typeFilter) rows = rows.filter(e=>e.type===typeFilter);
+  rows.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  document.getElementById('eventsEmpty').style.display = rows.length ? 'none' : 'block';
+  rows.forEach(e=>{
+    const attRecords = data.attendance.filter(a=>a.eventId===e.id);
+    const presentCount = attRecords.filter(a=>a.present).length;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${fmtDate(e.date)}</td>
+      <td><strong>${escapeHtml(e.name)}</strong>${e.notes?`<div class="muted" style="font-size:11px;">${escapeHtml(e.notes)}</div>`:''}</td>
+      <td><span class="badge ${e.type==='Education Night'?'green':'gray'}">${e.type}</span></td>
+      <td>${presentCount} / ${data.staff.length} present</td>
+      <td>
+        <button class="btn secondary small" onclick="openAttendanceModal('${e.id}')">Take Attendance</button>
+        <button class="btn secondary small" onclick="openEventModal('${e.id}')">Edit</button>
+        <button class="btn danger small" onclick="deleteEvent('${e.id}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------- Teams ----------
+function openTeamModal(id){
+  document.getElementById('teamModalTitle').textContent = id ? 'Edit Team Assignment' : 'Add Team Assignment';
+  document.getElementById('teamId').value = id || '';
+  populateStaffSelect(document.getElementById('teamStaff'));
+  const t = id ? data.teams.find(x=>x.id===id) : null;
+  document.getElementById('teamName').value = t ? t.teamName : '';
+  if(t) document.getElementById('teamStaff').value = t.staffId;
+  document.getElementById('teamCoachRole').value = t ? t.coachRole : 'Head Coach';
+  document.getElementById('teamSeason').value = t ? t.season : '';
+  document.getElementById('teamAgeGroup').value = t ? t.ageGroup : '';
+  if(!data.staff.length){ alert('Add a staff member first.'); return; }
+  openModal('teamModalOverlay');
+}
+function saveTeam(){
+  const id = document.getElementById('teamId').value;
+  const teamName = document.getElementById('teamName').value.trim();
+  if(!teamName){ alert('Team name is required.'); return; }
+  const prior = id ? data.teams.find(x=>x.id===id) : null;
+  const rec = {
+    id: id || uid(),
+    teamName,
+    staffId: document.getElementById('teamStaff').value,
+    coachRole: document.getElementById('teamCoachRole').value,
+    season: document.getElementById('teamSeason').value.trim(),
+    ageGroup: document.getElementById('teamAgeGroup').value.trim(),
+    archived: prior ? !!prior.archived : false
+  };
+  if(id){ const idx = data.teams.findIndex(x=>x.id===id); data.teams[idx] = rec; }
+  else{ data.teams.push(rec); }
+  save(); closeModal('teamModalOverlay'); renderAll();
+}
+function deleteTeam(id){
+  if(!confirm('Delete this team assignment?')) return;
+  data.teams = data.teams.filter(x=>x.id!==id);
+  save(); renderAll();
+}
+function renderTeams(){
+  const seasonFilter = (document.getElementById('teamSeasonFilter')?.value || '').toLowerCase();
+  const showArchived = document.getElementById('teamShowArchived')?.checked;
+  const tbody = document.querySelector('#teamsTable tbody');
+  tbody.innerHTML = '';
+  let rows = data.teams.filter(t=> (!seasonFilter || (t.season||'').toLowerCase().includes(seasonFilter)) && (showArchived || !t.archived));
+  rows.sort((a,b)=> (b.season||'').localeCompare(a.season||'') || a.teamName.localeCompare(b.teamName));
+  document.getElementById('teamsEmpty').style.display = rows.length ? 'none' : 'block';
+  rows.forEach(t=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${escapeHtml(t.teamName)}</strong></td>
+      <td>${escapeHtml(staffName(t.staffId))}</td>
+      <td>${escapeHtml(t.coachRole)}</td>
+      <td>${escapeHtml(t.season)}${t.archived?' <span class="badge gray">Archived</span>':''}</td>
+      <td>${escapeHtml(t.ageGroup)}</td>
+      <td>
+        <button class="btn secondary small" onclick="openTeamModal('${t.id}')">Edit</button>
+        <button class="btn danger small" onclick="deleteTeam('${t.id}')">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+function distinctSeasons(){
+  const map = {};
+  data.teams.forEach(t=>{
+    const key = t.season || '(no season)';
+    if(!map[key]) map[key] = {season:key, count:0, archivedCount:0};
+    map[key].count++;
+    if(t.archived) map[key].archivedCount++;
+  });
+  return Object.values(map).sort((a,b)=>b.season.localeCompare(a.season));
+}
+function openSeasonsModal(){
+  const list = document.getElementById('seasonsList');
+  const seasons = distinctSeasons();
+  list.innerHTML = '';
+  if(!seasons.length){ list.innerHTML = '<div class="muted">No team assignments yet.</div>'; }
+  seasons.forEach(s=>{
+    const allArchived = s.archivedCount === s.count;
+    const row = document.createElement('div');
+    row.className = 'attRow';
+    row.innerHTML = `<span>${escapeHtml(s.season)} <span class="muted">(${s.count} assignment${s.count!==1?'s':''}${s.archivedCount?', '+s.archivedCount+' archived':''})</span></span>`;
+    const btn = document.createElement('button');
+    btn.className = 'btn '+(allArchived?'secondary':'gold')+' small';
+    btn.textContent = allArchived ? 'Unarchive season' : 'Archive season';
+    btn.addEventListener('click', ()=>toggleSeasonArchived(s.season));
+    row.appendChild(btn);
+    list.appendChild(row);
+  });
+  openModal('seasonsModalOverlay');
+}
+function toggleSeasonArchived(season){
+  const rows = data.teams.filter(t=>(t.season||'(no season)')===season);
+  const allArchived = rows.every(t=>t.archived);
+  rows.forEach(t=> t.archived = !allArchived);
+  save(); openSeasonsModal(); renderAll();
+}
+
+// ---------- Requirements & Compliance ----------
+function openRequirementModal(id){
+  refreshRoleList(); refreshTrackList();
+  document.getElementById('requirementModalTitle').textContent = id ? 'Edit Requirement' : 'Add Requirement';
+  document.getElementById('requirementId').value = id || '';
+  const r = id ? data.requirements.find(x=>x.id===id) : null;
+  document.getElementById('requirementRole').value = r ? r.role : '';
+  document.getElementById('requirementTrack').value = r ? r.track : '';
+  document.getElementById('requirementLevel').value = r && r.minLevel ? r.minLevel : '';
+  openModal('requirementModalOverlay');
+}
+function saveRequirement(){
+  const id = document.getElementById('requirementId').value;
+  const role = document.getElementById('requirementRole').value.trim();
+  const track = document.getElementById('requirementTrack').value.trim();
+  if(!role || !track){ alert('Role and Track are required.'); return; }
+  const levelVal = document.getElementById('requirementLevel').value;
+  const rec = { id: id || uid(), role, track, minLevel: levelVal ? parseInt(levelVal) : null };
+  if(id){ const idx = data.requirements.findIndex(x=>x.id===id); data.requirements[idx] = rec; }
+  else data.requirements.push(rec);
+  save(); closeModal('requirementModalOverlay'); renderAll();
+}
+function deleteRequirement(id){
+  if(!confirm('Delete this requirement?')) return;
+  data.requirements = data.requirements.filter(x=>x.id!==id);
+  save(); renderAll();
+}
+function computeComplianceGaps(){
+  const gaps = [];
+  const activeStaff = data.staff.filter(s=>s.status==='Active');
+  activeStaff.forEach(s=>{
+    const role = normTrack(s.role);
+    if(!role) return;
+    const reqs = data.requirements.filter(r=>normTrack(r.role)===role);
+    reqs.forEach(req=>{
+      const track = normTrack(req.track);
+      const licsInTrack = data.licenses.filter(l=>l.staffId===s.id && normTrack(l.type)===track);
+      if(!licsInTrack.length){
+        gaps.push({staffId:s.id, role:s.role, track:req.track, minLevel:req.minLevel, issue:'Missing'});
+        return;
+      }
+      const maxLevel = Math.max(...licsInTrack.map(l=>Number(l.level)||0));
+      const withMaxLevel = licsInTrack.filter(l=>(Number(l.level)||0)===maxLevel);
+      const best = withMaxLevel.slice().sort((a,b)=>(b.expiryDate||'').localeCompare(a.expiryDate||''))[0];
+      const status = licenseStatus(best.expiryDate);
+      if(req.minLevel && maxLevel < req.minLevel){
+        gaps.push({staffId:s.id, role:s.role, track:req.track, minLevel:req.minLevel, issue:`Below required level (has L${maxLevel})`});
+      } else if(status.label === 'Expired'){
+        gaps.push({staffId:s.id, role:s.role, track:req.track, minLevel:req.minLevel, issue:'Expired'});
+      }
+    });
+  });
+  return gaps;
+}
+function computeTeamRosterGaps(){
+  const groups = {};
+  data.teams.filter(t=>!t.archived).forEach(t=>{
+    const key = t.teamName+'|'+t.season;
+    if(!groups[key]) groups[key] = {teamName:t.teamName, season:t.season, rows:[]};
+    groups[key].rows.push(t);
+  });
+  const gaps = [];
+  Object.values(groups).forEach(g=>{
+    const hasHead = g.rows.some(r=>r.coachRole==='Head Coach');
+    const hasAny = g.rows.some(r=>r.coachRole==='Head Coach' || r.coachRole==='Assistant Coach');
+    let issue = null;
+    if(!hasAny) issue = 'No head or assistant coach assigned';
+    else if(!hasHead) issue = 'No Head Coach assigned';
+    if(issue){
+      gaps.push({teamName:g.teamName, season:g.season, issue, coaches: g.rows.map(r=>`${staffName(r.staffId)} (${r.coachRole})`).join(', ')});
+    }
+  });
+  return gaps.sort((a,b)=> a.teamName.localeCompare(b.teamName));
+}
+function renderCompliance(){
+  refreshTrackList(); refreshRoleList();
+
+  const reqBody = document.querySelector('#requirementsTable tbody');
+  reqBody.innerHTML = '';
+  const reqs = data.requirements.slice().sort((a,b)=> a.role.localeCompare(b.role) || a.track.localeCompare(b.track));
+  document.getElementById('requirementsEmpty').style.display = reqs.length ? 'none' : 'block';
+  reqs.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(r.role)}</td><td>${escapeHtml(r.track)}</td><td>${r.minLevel ?? '—'}</td>
+      <td><button class="btn secondary small" onclick="openRequirementModal('${r.id}')">Edit</button>
+      <button class="btn danger small" onclick="deleteRequirement('${r.id}')">Delete</button></td>`;
+    reqBody.appendChild(tr);
+  });
+
+  const gaps = computeComplianceGaps().sort((a,b)=>staffName(a.staffId).localeCompare(staffName(b.staffId)));
+  const gapBody = document.querySelector('#complianceGapsTable tbody');
+  gapBody.innerHTML = '';
+  document.getElementById('complianceGapsEmpty').style.display = gaps.length ? 'none' : 'block';
+  gaps.forEach(g=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(staffName(g.staffId))}</td><td>${escapeHtml(g.role)}</td><td>${escapeHtml(g.track)}${g.minLevel?' (min L'+g.minLevel+')':''}</td><td>${issueChip(g.issue)}</td>`;
+    gapBody.appendChild(tr);
+  });
+
+  const teamGaps = computeTeamRosterGaps();
+  const teamGapBody = document.querySelector('#teamGapsTable tbody');
+  teamGapBody.innerHTML = '';
+  document.getElementById('teamGapsEmpty').style.display = teamGaps.length ? 'none' : 'block';
+  teamGaps.forEach(g=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escapeHtml(g.teamName)}</td><td>${escapeHtml(g.season)}</td><td>${rosterGapChip(g.issue)}</td><td>${escapeHtml(g.coaches)||'<span class="muted">None</span>'}</td>`;
+    teamGapBody.appendChild(tr);
+  });
+}
+function printComplianceReport(){
+  const gapsLic = computeComplianceGaps();
+  const gapsTeam = computeTeamRosterGaps();
+  const activeStaff = data.staff.filter(s=>s.status==='Active').sort((a,b)=>a.name.localeCompare(b.name));
+  const today = new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+
+  const rowsHtml = activeStaff.map(s=>{
+    const lics = data.licenses.filter(l=>l.staffId===s.id);
+    const licSummary = lics.length ? lics.map(l=>{
+      const st = licenseStatus(l.expiryDate);
+      return `${escapeHtml(l.type)}${l.level?' (L'+l.level+')':''}: ${st.label}${l.expiryDate?' — '+fmtDate(l.expiryDate):''}`;
+    }).join('<br>') : '<span style="color:#999;">No licenses on file</span>';
+    const myGaps = gapsLic.filter(g=>g.staffId===s.id);
+    const gapText = myGaps.length ? myGaps.map(g=>`${escapeHtml(g.track)}: ${escapeHtml(g.issue)}`).join('<br>') : '<span style="color:#16a34a;">Meets requirements</span>';
+    return `<tr><td>${escapeHtml(s.name)}</td><td>${escapeHtml(s.role||'')}</td><td>${licSummary}</td><td>${gapText}</td></tr>`;
+  }).join('');
+
+  const teamGapsHtml = gapsTeam.length
+    ? gapsTeam.map(g=>`<tr><td>${escapeHtml(g.teamName)}</td><td>${escapeHtml(g.season)}</td><td>${escapeHtml(g.issue)}</td><td>${escapeHtml(g.coaches)||'—'}</td></tr>`).join('')
+    : '<tr><td colspan="4" style="color:#16a34a;">No team roster gaps found.</td></tr>';
+
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Valor FC Compliance Report</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;color:#201d16;padding:32px;max-width:900px;margin:0 auto;}
+    h1{color:#0b0b0c;border-bottom:3px solid #b8965a;padding-bottom:8px;}
+    h2{color:#0b0b0c;margin-top:28px;border-left:4px solid #b8965a;padding-left:8px;font-size:16px;}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+    th,td{border:1px solid #ddd;padding:6px 8px;text-align:left;vertical-align:top;}
+    th{background:#0b0b0c;color:#e8d9ba;}
+    .meta{color:#666;font-size:12px;margin-bottom:20px;}
+    @media print { button{display:none;} }
+  </style></head><body>
+  <h1>Virginia Valor FC — Coaching Staff Compliance Report</h1>
+  <div class="meta">Generated ${today}</div>
+  <button onclick="window.print()">Print</button>
+  <h2>Active Coaches — License Status</h2>
+  <table><thead><tr><th>Coach</th><th>Role</th><th>Licenses on File</th><th>Compliance</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+  <h2>Team Roster Gaps</h2>
+  <table><thead><tr><th>Team</th><th>Season</th><th>Issue</th><th>Current Coaches</th></tr></thead><tbody>${teamGapsHtml}</tbody></table>
+  </body></html>`;
+
+  const w = window.open('', '_blank');
+  if(!w){ alert('Please allow pop-ups to view the report.'); return; }
+  w.document.open(); w.document.write(html); w.document.close();
+}
+
+// ---------- Suggestion engine ----------
+function computeSuggestions(){
+  const suggestions = [];
+  const activeStaff = data.staff.filter(s=>s.status==='Active');
+  const upcomingCourses = data.courses.filter(c=>{ const d = daysUntil(c.date); return d!==null && d>=0; });
+  if(!upcomingCourses.length || !activeStaff.length) return suggestions;
+  const tracksInCourses = [...new Set(upcomingCourses.map(c=>normTrack(c.track)).filter(Boolean))];
+
+  activeStaff.forEach(s=>{
+    const staffLic = data.licenses.filter(l=>l.staffId===s.id);
+    const byTrack = {};
+    staffLic.forEach(l=>{
+      const t = normTrack(l.type);
+      if(!t) return;
+      if(!byTrack[t]) byTrack[t]=[];
+      byTrack[t].push(l);
+    });
+
+    tracksInCourses.forEach(t=>{
+      if(!byTrack[t]){
+        const candidates = upcomingCourses.filter(c=>normTrack(c.track)===t)
+          .sort((a,b)=> ((a.level||0)-(b.level||0)) || (a.date||'').localeCompare(b.date||''));
+        if(candidates.length){
+          suggestions.push({staffId:s.id, type:'New Certification', tag:'newcert', track: candidates[0].track, course: candidates[0]});
+        }
+      }
+    });
+
+    Object.keys(byTrack).forEach(t=>{
+      const licsInTrack = byTrack[t];
+      const maxLevel = Math.max(...licsInTrack.map(l=>Number(l.level)||0));
+      const topLics = licsInTrack.filter(l=>(Number(l.level)||0)===maxLevel);
+      const topLic = topLics.slice().sort((a,b)=>(a.expiryDate||'').localeCompare(b.expiryDate||''))[0];
+      const status = licenseStatus(topLic.expiryDate);
+
+      if(status.label==='Expired' || status.label==='Expiring Soon'){
+        const renewal = upcomingCourses.filter(c=> normTrack(c.track)===t && (Number(c.level)||0)===maxLevel)
+          .sort((a,b)=>(a.date||'').localeCompare(b.date||''))[0];
+        if(renewal) suggestions.push({staffId:s.id, type:`Renewal (license ${status.label.toLowerCase()})`, tag:'renewal', track: renewal.track, course: renewal});
+      }
+
+      if(maxLevel>0){
+        const levelUp = upcomingCourses.filter(c=> normTrack(c.track)===t && (Number(c.level)||0)===maxLevel+1)
+          .sort((a,b)=>(a.date||'').localeCompare(b.date||''))[0];
+        if(levelUp) suggestions.push({staffId:s.id, type:`Level up (Level ${maxLevel} → ${maxLevel+1})`, tag:'levelup', track: levelUp.track, course: levelUp});
+      }
+    });
+  });
+
+  return suggestions;
+}
+function markInterest(courseId, staffId){
+  const existing = data.courseInterest.find(ci=>ci.courseId===courseId && ci.staffId===staffId);
+  if(existing) return;
+  data.courseInterest.push({id:uid(), courseId, staffId, status:'planned'});
+  save(); renderAll();
+}
+
+// ---------- Dashboard ----------
+function computeNeedsAttention(){
+  const items = [];
+  data.licenses.forEach(l=>{
+    const st = licenseStatus(l.expiryDate);
+    if(st.label==='Expired'){
+      items.push({severity:3, chip:'<span class="cardChip red">Expired</span>', primary:staffName(l.staffId), secondary:`${l.type}${l.level?' · L'+l.level:''} — expired ${fmtDate(l.expiryDate)}`});
+    } else if(st.label==='Expiring Soon'){
+      items.push({severity:2, chip:'<span class="cardChip yellow">Expiring Soon</span>', primary:staffName(l.staffId), secondary:`${l.type}${l.level?' · L'+l.level:''} — expires ${fmtDate(l.expiryDate)}`});
+    }
+  });
+  computeComplianceGaps().forEach(g=>{
+    items.push({severity:3, chip:issueChip(g.issue), primary:staffName(g.staffId), secondary:`${g.role} requires ${g.track}${g.minLevel?' (min L'+g.minLevel+')':''}`});
+  });
+  computeTeamRosterGaps().forEach(g=>{
+    items.push({severity:2, chip:rosterGapChip(g.issue), primary:`${g.teamName} · ${g.season}`, secondary: g.coaches ? `Currently: ${g.coaches}` : 'No coaches assigned yet'});
+  });
+  return items.sort((a,b)=> b.severity-a.severity || a.primary.localeCompare(b.primary));
+}
+function renderDashboard(){
+  const activeStaffCount = data.staff.filter(s=>s.status==='Active').length;
+  const upcomingEvents = data.events.filter(e=> daysUntil(e.date)!==null && daysUntil(e.date)>=0).length;
+  const upcomingCourses = data.courses.filter(c=> daysUntil(c.date)!==null && daysUntil(c.date)>=0).length;
+  const activeTeams = new Set(data.teams.filter(t=>!t.archived).map(t=>t.teamName+'|'+t.season)).size;
+  const needsAttention = computeNeedsAttention();
+
+  const segs = [
+    {num: activeStaffCount, label:'Active Coaches'},
+    {num: needsAttention.length, label:'Needs Attention', warn: needsAttention.length>0},
+    {num: upcomingCourses, label:'Courses Ahead'},
+    {num: upcomingEvents, label:'Meetings Ahead'},
+    {num: activeTeams, label:'Teams Fielded'}
+  ];
+  document.getElementById('scoreboard').innerHTML = segs.map(s=>
+    `<div class="scoreSeg"><div class="scoreNum${s.warn?' warn':''}">${s.num}</div><div class="scoreLabel">${s.label}</div></div>`
+  ).join('');
+
+  const attnList = document.getElementById('needsAttentionList');
+  if(!needsAttention.length){
+    attnList.innerHTML = '<div class="empty">Clean sheet — nothing needs attention right now.</div>';
+  } else {
+    attnList.innerHTML = needsAttention.map(it=>`
+      <div class="attnRow">
+        ${it.chip}
+        <div class="attnText">
+          <div class="attnPrimary">${escapeHtml(it.primary)}</div>
+          <div class="attnSecondary">${escapeHtml(it.secondary)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  const suggestions = computeSuggestions().sort((a,b)=> (a.course.date||'').localeCompare(b.course.date||''));
+  const suggestList = document.getElementById('suggestList');
+  if(!suggestions.length){
+    suggestList.innerHTML = '<div class="empty">No suggestions yet — add upcoming courses and coach licenses to see matches here.</div>';
+  } else {
+    suggestList.innerHTML = suggestions.map(sg=>{
+      const existing = data.courseInterest.find(ci=>ci.courseId===sg.course.id && ci.staffId===sg.staffId);
+      let action;
+      if(existing && existing.status==='completed') action = '<span class="badge green">Completed</span>';
+      else if(existing && existing.status==='planned') action = '<span class="badge gold">Planning to attend</span>';
+      else action = `<button class="btn gold small" onclick="markInterest('${sg.course.id}','${sg.staffId}')">Mark planning to attend</button>`;
+      return `<div class="attnRow">
+        <span class="tag ${sg.tag}">${escapeHtml(sg.type)}</span>
+        <div class="attnText">
+          <div class="attnPrimary">${escapeHtml(staffName(sg.staffId))}</div>
+          <div class="attnSecondary">${escapeHtml(sg.course.name)} · ${fmtDate(sg.course.date)}</div>
+        </div>
+        <div class="attnAction">${action}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const courseBody = document.querySelector('#dashCoursesTable tbody');
+  courseBody.innerHTML = '';
+  const upcCourses = data.courses.filter(c=>{const d=daysUntil(c.date); return d!==null && d>=0;})
+    .sort((a,b)=>(a.date||'').localeCompare(b.date||'')).slice(0,8);
+  if(!upcCourses.length){ courseBody.innerHTML = '<tr><td colspan="3" class="empty">No upcoming courses added yet.</td></tr>'; }
+  upcCourses.forEach(c=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${fmtDate(c.date)}</td><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.track||'')}${c.level? ' · L'+c.level:''}</td>`;
+    courseBody.appendChild(tr);
+  });
+
+  const evBody = document.querySelector('#dashEventsTable tbody');
+  evBody.innerHTML = '';
+  const upcoming = data.events.filter(e=>{const d=daysUntil(e.date); return d!==null && d>=0;})
+    .sort((a,b)=>(a.date||'').localeCompare(b.date||'')).slice(0,8);
+  if(!upcoming.length){ evBody.innerHTML = '<tr><td colspan="3" class="empty">No upcoming events scheduled.</td></tr>'; }
+  upcoming.forEach(e=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${fmtDate(e.date)}</td><td>${escapeHtml(e.name)}</td><td><span class="badge ${e.type==='Education Night'?'green':'gray'}">${e.type}</span></td>`;
+    evBody.appendChild(tr);
+  });
+
+  const attBody = document.querySelector('#dashAttendanceTable tbody');
+  attBody.innerHTML = '';
+  const totalEvents = data.events.length;
+  const rows = data.staff.map(s=>{
+    const attended = data.attendance.filter(a=>a.staffId===s.id && a.present).length;
+    const rate = totalEvents ? Math.round((attended/totalEvents)*100) : 0;
+    return {name:s.name, attended, rate};
+  }).sort((a,b)=>a.rate-b.rate);
+  if(!rows.length || !totalEvents){ attBody.innerHTML = '<tr><td colspan="4" class="empty">No attendance data recorded yet.</td></tr>'; }
+  else{
+    rows.forEach(r=>{
+      const cls = r.rate>=80?'green':(r.rate>=50?'amber':'red');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${escapeHtml(r.name)}</td><td>${r.attended}</td><td>${totalEvents}</td><td><span class="badge ${cls}">${r.rate}%</span></td>`;
+      attBody.appendChild(tr);
+    });
+  }
+}
+
+function renderAll(){
+  renderDashboard();
+  renderStaff();
+  renderLicenses();
+  renderCourses();
+  renderEvents();
+  renderTeams();
+  renderCompliance();
+}
+
+// ---------- Backup / Restore ----------
+function exportData(){
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url; a.download = `valor-coaching-tracker-backup-${stamp}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function importBackup(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      const imported = JSON.parse(e.target.result);
+      if(!imported || typeof imported !== 'object') throw new Error('Invalid file');
+      if(!confirm('This will replace all current data with the contents of the backup file. Continue?')) return;
+      data = {
+        staff: imported.staff || [],
+        licenses: imported.licenses || [],
+        events: imported.events || [],
+        attendance: imported.attendance || [],
+        teams: imported.teams || [],
+        courses: imported.courses || [],
+        courseInterest: imported.courseInterest || [],
+        requirements: imported.requirements || []
+      };
+      save(); renderAll();
+      alert('Backup imported successfully.');
+    }catch(err){
+      alert('Could not read that file. Make sure it is a JSON backup exported from this tool.');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ---------- CSV / Sheet import ----------
+let importParsed = null; // {headers, rows}
+const IMPORT_FIELDS = [
+  {key:'name', label:'Full Name', required:true},
+  {key:'email', label:'Email'},
+  {key:'phone', label:'Phone'},
+  {key:'role', label:'Role'},
+  {key:'licenseTrack', label:'License Track / Type'},
+  {key:'licenseLevel', label:'License Level'},
+  {key:'licenseYear', label:'License Year Obtained'},
+  {key:'cert', label:'Certificate #'},
+  {key:'issue', label:'License Issue Date'},
+  {key:'expiry', label:'License Expiry Date'},
+  {key:'courses', label:'Planned Courses (comma-separated names)'}
+];
+
+function openImportModal(){
+  importParsed = null;
+  document.getElementById('importStep1').style.display = '';
+  document.getElementById('importStep2').style.display = 'none';
+  document.getElementById('importStep3').style.display = 'none';
+  setImportStep(1);
+  document.getElementById('importLoadStatus').textContent = '';
+  document.getElementById('importCsvFile').value = '';
+  document.getElementById('importSheetUrl').value = '';
+  openModal('importModalOverlay');
+}
+function setImportStep(n){
+  document.querySelectorAll('#importSteps .step').forEach(el=>{
+    el.classList.toggle('active', parseInt(el.dataset.step)===n);
+  });
+}
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(inQuotes){
+      if(c === '"'){
+        if(text[i+1] === '"'){ field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if(c === '"') inQuotes = true;
+      else if(c === ','){ row.push(field); field=''; }
+      else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+      else if(c === '\r'){ /* skip */ }
+      else field += c;
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  if(!rows.length) return {headers:[], rows:[]};
+  const headers = rows.shift().map(h=>h.trim());
+  const dataRows = rows.filter(r=>r.some(c=>(c||'').trim()!=='')).map(r=>{
+    const obj = {};
+    headers.forEach((h,idx)=> obj[h] = r[idx]!==undefined ? r[idx] : '');
+    return obj;
+  });
+  return {headers, rows:dataRows};
+}
+function handleImportFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    importParsed = parseCSV(e.target.result);
+    document.getElementById('importLoadStatus').textContent = `Loaded ${importParsed.rows.length} rows, ${importParsed.headers.length} columns.`;
+    proceedToMapping();
+  };
+  reader.readAsText(file);
+}
+function toCsvExportUrl(url){
+  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if(m){
+    const id = m[1];
+    const gidMatch = url.match(/gid=([0-9]+)/);
+    const gid = gidMatch ? gidMatch[1] : '0';
+    return `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`;
+  }
+  return url;
+}
+async function fetchImportUrl(){
+  const url = document.getElementById('importSheetUrl').value.trim();
+  if(!url){ alert('Paste a Google Sheet URL first.'); return; }
+  const statusEl = document.getElementById('importLoadStatus');
+  statusEl.textContent = 'Fetching...';
+  try{
+    const csvUrl = toCsvExportUrl(url);
+    const resp = await fetch(csvUrl);
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const text = await resp.text();
+    importParsed = parseCSV(text);
+    statusEl.textContent = `Loaded ${importParsed.rows.length} rows, ${importParsed.headers.length} columns from URL.`;
+    proceedToMapping();
+  }catch(err){
+    statusEl.textContent = 'Could not fetch that URL directly (likely blocked by the browser). Please download the sheet as CSV and use the file upload option instead.';
+  }
+}
+function guessColumn(headers, keywords){
+  const norm = h => h.toLowerCase().replace(/[^a-z0-9]/g,'');
+  for(const h of headers){
+    const nh = norm(h);
+    for(const kw of keywords){ if(nh.includes(kw)) return h; }
+  }
+  return '';
+}
+function proceedToMapping(){
+  if(!importParsed || !importParsed.headers.length){ alert('No data loaded.'); return; }
+  document.getElementById('importStep1').style.display = 'none';
+  document.getElementById('importStep2').style.display = '';
+  setImportStep(2);
+
+  const headers = importParsed.headers;
+  const guesses = {
+    name: guessColumn(headers, ['fullname','name']),
+    email: guessColumn(headers, ['email']),
+    phone: guessColumn(headers, ['phone']),
+    role: guessColumn(headers, ['role']),
+    licenseTrack: guessColumn(headers, ['track','licensetype','license']),
+    licenseLevel: guessColumn(headers, ['level']),
+    licenseYear: guessColumn(headers, ['yearobtained','licenseyear','year']),
+    cert: guessColumn(headers, ['cert']),
+    issue: guessColumn(headers, ['issue']),
+    expiry: guessColumn(headers, ['expir']),
+    courses: guessColumn(headers, ['course','attend','interest'])
+  };
+
+  const mapGrid = document.getElementById('mapGrid');
+  mapGrid.innerHTML = IMPORT_FIELDS.map(f=>{
+    const options = ['<option value="">-- skip --</option>']
+      .concat(headers.map(h=>`<option value="${escapeHtml(h)}" ${guesses[f.key]===h?'selected':''}>${escapeHtml(h)}</option>`));
+    return `<label>${f.label}${f.required?' *':''}
+      <select data-field="${f.key}">${options.join('')}</select>
+    </label>`;
+  }).join('');
+
+  const previewRows = importParsed.rows.slice(0,5);
+  const table = document.getElementById('importPreviewTable');
+  table.innerHTML = '<thead><tr>'+headers.map(h=>`<th>${escapeHtml(h)}</th>`).join('')+'</tr></thead>'
+    +'<tbody>'+previewRows.map(r=>'<tr>'+headers.map(h=>`<td>${escapeHtml(r[h])}</td>`).join('')+'</tr>').join('')+'</tbody>';
+}
+function normalizeDate(str){
+  if(!str) return '';
+  str = str.trim();
+  if(!str) return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+  const d = new Date(str);
+  if(!isNaN(d.getTime())){
+    const yyyy = d.getFullYear(), mm=String(d.getMonth()+1).padStart(2,'0'), dd=String(d.getDate()).padStart(2,'0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  return '';
+}
+function runImport(){
+  const mapping = {};
+  document.querySelectorAll('#mapGrid select').forEach(sel=>{ mapping[sel.dataset.field] = sel.value; });
+  if(!mapping.name){ alert('You must map a Full Name column.'); return; }
+
+  let staffCreated=0, staffUpdated=0, licAdded=0, interestAdded=0;
+  const unmatchedCourses = new Set();
+
+  importParsed.rows.forEach(row=>{
+    const name = (row[mapping.name]||'').trim();
+    if(!name) return;
+    const email = mapping.email ? (row[mapping.email]||'').trim() : '';
+    let staffRec = data.staff.find(s=> (email && s.email && s.email.toLowerCase()===email.toLowerCase()) || s.name.toLowerCase()===name.toLowerCase());
+    if(!staffRec){
+      staffRec = {
+        id: uid(), name,
+        role: mapping.role ? (row[mapping.role]||'').trim() : '',
+        email, phone: mapping.phone ? (row[mapping.phone]||'').trim() : '',
+        status: 'Active', notes: 'Imported from sheet'
+      };
+      data.staff.push(staffRec); staffCreated++;
+    } else {
+      if(mapping.role && !staffRec.role) staffRec.role = (row[mapping.role]||'').trim();
+      if(mapping.phone && !staffRec.phone) staffRec.phone = (row[mapping.phone]||'').trim();
+      if(email && !staffRec.email) staffRec.email = email;
+      staffUpdated++;
+    }
+
+    const track = mapping.licenseTrack ? (row[mapping.licenseTrack]||'').trim() : '';
+    if(track){
+      const level = mapping.licenseLevel ? (parseInt(row[mapping.licenseLevel]) || null) : null;
+      const yearObtained = mapping.licenseYear ? (parseInt(row[mapping.licenseYear]) || null) : null;
+      const cert = mapping.cert ? (row[mapping.cert]||'').trim() : '';
+      const issue = mapping.issue ? normalizeDate(row[mapping.issue]) : '';
+      const expiry = mapping.expiry ? normalizeDate(row[mapping.expiry]) : '';
+      const exists = data.licenses.find(l=> l.staffId===staffRec.id && normTrack(l.type)===normTrack(track) && l.expiryDate===expiry);
+      if(!exists){
+        data.licenses.push({id:uid(), staffId:staffRec.id, type:track, level, yearObtained, certNumber:cert, issueDate:issue, expiryDate:expiry, notes:'Imported from sheet'});
+        licAdded++;
+      }
+    }
+
+    if(mapping.courses){
+      const raw = (row[mapping.courses]||'').trim();
+      if(raw){
+        raw.split(/[,;]/).map(s=>s.trim()).filter(Boolean).forEach(courseName=>{
+          const course = data.courses.find(c=>c.name.toLowerCase()===courseName.toLowerCase());
+          if(course){
+            const exists = data.courseInterest.find(ci=>ci.staffId===staffRec.id && ci.courseId===course.id);
+            if(!exists){ data.courseInterest.push({id:uid(), staffId:staffRec.id, courseId:course.id, status:'planned'}); interestAdded++; }
+          } else {
+            unmatchedCourses.add(courseName);
+          }
+        });
+      }
+    }
+  });
+
+  save();
+  document.getElementById('importStep2').style.display = 'none';
+  document.getElementById('importStep3').style.display = '';
+  setImportStep(3);
+  let html = `Imported ${importParsed.rows.length} rows.<br>
+    New staff created: <strong>${staffCreated}</strong><br>
+    Existing staff matched/updated: <strong>${staffUpdated}</strong><br>
+    Licenses added: <strong>${licAdded}</strong><br>
+    Course attendance interest recorded: <strong>${interestAdded}</strong>`;
+  if(unmatchedCourses.size){
+    html += `<br><br><strong>Course names not found</strong> (add these in the Upcoming Courses tab, using the exact same name, then re-import to link them): ${[...unmatchedCourses].map(escapeHtml).join(', ')}`;
+  }
+  document.getElementById('importResultBox').innerHTML = html;
+  renderAll();
+}
+
+// ---------- Sample data ----------
+function loadSampleData(){
+  if(data.staff.length && !confirm('This will add sample records alongside any existing data. Continue?')) return;
+  const s1 = {id:uid(), name:'Alex Rivera', role:'Head Coach', email:'alex.rivera@example.com', phone:'555-0101', status:'Active', notes:''};
+  const s2 = {id:uid(), name:'Jordan Lee', role:'Assistant Coach', email:'jordan.lee@example.com', phone:'555-0102', status:'Active', notes:''};
+  const s3 = {id:uid(), name:'Casey Morgan', role:'Head Coach', email:'casey.morgan@example.com', phone:'555-0103', status:'Active', notes:''};
+  data.staff.push(s1, s2, s3);
+
+  const today = new Date();
+  const inDays = n => { const d = new Date(today); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
+
+  data.licenses.push(
+    {id:uid(), staffId:s1.id, type:'State Coaching License', level:2, yearObtained:new Date(inDays(-700)).getFullYear(), certNumber:'SL-4432', issueDate:inDays(-700), expiryDate:inDays(20), notes:''},
+    {id:uid(), staffId:s1.id, type:'Safe Sport Certification', level:1, yearObtained:new Date(inDays(-300)).getFullYear(), certNumber:'SS-9981', issueDate:inDays(-300), expiryDate:inDays(400), notes:''},
+    {id:uid(), staffId:s2.id, type:'CPR / First Aid', level:1, yearObtained:new Date(inDays(-360)).getFullYear(), certNumber:'CPR-1123', issueDate:inDays(-360), expiryDate:inDays(-10), notes:''},
+    {id:uid(), staffId:s2.id, type:'State Coaching License', level:1, yearObtained:2020, certNumber:'SL-6610', issueDate:'', expiryDate:inDays(500), notes:'Exact issue date unknown — year only'},
+    {id:uid(), staffId:s3.id, type:'State Coaching License', level:1, yearObtained:new Date(inDays(-100)).getFullYear(), certNumber:'SL-5510', issueDate:inDays(-100), expiryDate:inDays(600), notes:''}
+  );
+
+  const e1 = {id:uid(), name:'Preseason Coaches Meeting', date:inDays(-40), type:'Meeting', notes:''};
+  const e2 = {id:uid(), name:'Concussion Awareness Night', date:inDays(-15), type:'Education Night', notes:''};
+  const e3 = {id:uid(), name:'Fall Kickoff Meeting', date:inDays(10), type:'Meeting', notes:''};
+  data.events.push(e1, e2, e3);
+
+  data.attendance.push(
+    {id:uid(), eventId:e1.id, staffId:s1.id, present:true},
+    {id:uid(), eventId:e1.id, staffId:s2.id, present:true},
+    {id:uid(), eventId:e1.id, staffId:s3.id, present:false},
+    {id:uid(), eventId:e2.id, staffId:s1.id, present:true},
+    {id:uid(), eventId:e2.id, staffId:s2.id, present:false},
+    {id:uid(), eventId:e2.id, staffId:s3.id, present:true}
+  );
+
+  data.teams.push(
+    {id:uid(), teamName:'U12 Boys Red', staffId:s1.id, coachRole:'Head Coach', season:'Fall 2025', ageGroup:'U12', archived:false},
+    {id:uid(), teamName:'U12 Boys Red', staffId:s2.id, coachRole:'Assistant Coach', season:'Fall 2025', ageGroup:'U12', archived:false},
+    {id:uid(), teamName:'U10 Girls Blue', staffId:s3.id, coachRole:'Head Coach', season:'Fall 2025', ageGroup:'U10', archived:false},
+    {id:uid(), teamName:'U14 Boys White', staffId:s2.id, coachRole:'Assistant Coach', season:'Fall 2025', ageGroup:'U14', archived:false},
+    {id:uid(), teamName:'U10 Girls Blue', staffId:s3.id, coachRole:'Head Coach', season:'Spring 2025', ageGroup:'U10', archived:true}
+  );
+
+  data.courses.push(
+    {id:uid(), name:'State Coaching License - Level 3', track:'State Coaching License', level:3, date:inDays(35), provider:'State Soccer Association', location:'Regional Training Center', capacity:20, notes:''},
+    {id:uid(), name:'State Coaching License - Level 2', track:'State Coaching License', level:2, date:inDays(25), provider:'State Soccer Association', location:'Regional Training Center', capacity:20, notes:''},
+    {id:uid(), name:'CPR / First Aid Recertification', track:'CPR / First Aid', level:1, date:inDays(18), provider:'Red Cross', location:'Valor Clubhouse', capacity:15, notes:''},
+    {id:uid(), name:'Safe Sport Renewal', track:'Safe Sport Certification', level:1, date:inDays(50), provider:'Safe Sport', location:'Online', capacity:null, notes:''}
+  );
+
+  data.requirements.push(
+    {id:uid(), role:'Head Coach', track:'State Coaching License', minLevel:2},
+    {id:uid(), role:'Head Coach', track:'Safe Sport Certification', minLevel:null},
+    {id:uid(), role:'Head Coach', track:'CPR / First Aid', minLevel:null},
+    {id:uid(), role:'Assistant Coach', track:'Safe Sport Certification', minLevel:null}
+  );
+
+  save(); renderAll();
+}
+
+// ---------- Init ----------
+load();
+renderAll();
+</script>
+</body>
+</html>
