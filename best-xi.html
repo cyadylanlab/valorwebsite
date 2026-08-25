@@ -70,21 +70,107 @@ body {
 .hdr-name { font-family: var(--font-d); color: #FFF; font-weight: 500; letter-spacing: 0.12em; font-size: 12px; line-height: 1.25; max-width: 105px; text-transform: uppercase; }
 .hdr-page { font-family: var(--font-d); font-size: 16px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-light); padding-left: 18px; }
 
-/* ─── WEEK RAIL ──────────────────────────────────────────── */
-.week-rail {
+/* ─── WEEK PANEL ─────────────────────────────────────────── */
+.week-panel {
   background: var(--black);
-  padding: 10px 22px;
-  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 0;
+  padding: 18px 22px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.wp-left { display: flex; flex-direction: column; gap: 2px; }
+.wp-status {
+  font-family: var(--font-c);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wp-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(163,153,100,0.22);
+  flex-shrink: 0;
+}
+.wp-week {
+  font-family: var(--font-d);
+  font-size: clamp(30px, 8vw, 40px);
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: #FFF;
+  line-height: 1.05;
+}
+.wp-games {
+  font-family: var(--font-c);
+  font-size: 13px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.wp-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding-left: 20px;
+  border-left: 2px solid var(--gold-deep);
+}
+.wp-due-label {
+  font-family: var(--font-c);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+.wp-due-when {
+  font-family: var(--font-d);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+.wp-countdown {
+  display: inline-block;
+  margin-top: 3px;
   font-family: var(--font-c);
   font-size: 12px;
-  letter-spacing: 0.05em;
-  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+  letter-spacing: .08em;
   text-transform: uppercase;
+  color: var(--gold-light);
+  background: rgba(163,153,100,0.16);
+  border: 1px solid rgba(163,153,100,0.4);
+  border-radius: 999px;
+  padding: 4px 12px;
 }
-.week-rail strong { color: var(--gold-light); font-weight: 700; }
-.week-rail .sep { margin: 0 .6em; color: rgba(255,255,255,0.18); }
-.week-rail .countdown { color: var(--gold); font-weight: 600; }
-.week-rail.closed { color: rgba(255,255,255,0.5); }
+.wp-countdown.urgent {
+  color: #FFD9D4;
+  background: rgba(190,60,50,0.22);
+  border-color: rgba(220,90,80,0.55);
+}
+.week-panel.closed { justify-content: flex-start; }
+.week-panel.closed .wp-status { color: rgba(255,255,255,0.5); }
+.week-panel.closed .wp-dot { background: rgba(255,255,255,0.35); box-shadow: none; }
+@media (max-width: 560px) {
+  .week-panel { padding: 16px 18px 18px; gap: 14px; }
+  .wp-right {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 13px;
+    width: 100%;
+  }
+}
 
 /* ─── LAYOUT ─────────────────────────────────────────────── */
 main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
@@ -140,8 +226,9 @@ main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
   border-radius: 7px;
   color: var(--near-black);
   font-family: var(--font-b);
-  font-size: 14.5px;
-  padding: 10px 13px;
+  /* 16px minimum: iOS Safari zooms the page on focus for anything smaller */
+  font-size: 16px;
+  padding: 13px 13px;
   width: 100%;
   appearance: none;
   -webkit-appearance: none;
@@ -154,7 +241,7 @@ main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
   box-shadow: 0 0 0 3px var(--gold-glow);
 }
 .fld input.err, .fld textarea.err { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-tint); }
-.fld textarea { resize: vertical; min-height: 76px; line-height: 1.5; }
+.fld textarea { resize: vertical; min-height: 104px; line-height: 1.5; }
 
 .lookup-status { font-family: var(--font-c); font-size: 12.5px; letter-spacing: .03em; margin-top: 12px; color: var(--mid-grey); min-height: 1.1em; }
 .lookup-status.editing { color: var(--gold-deep); font-weight: 600; }
@@ -172,7 +259,8 @@ main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
 }
 .badge.filled { border-color: var(--gold); color: var(--black); background: var(--gold-tint); }
 .slot-title { font-family: var(--font-c); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-grey); font-weight: 600; }
-.field-row { display: grid; grid-template-columns: 1fr 5.5rem; gap: 12px; margin-bottom: 12px; }
+.field-row { display: grid; grid-template-columns: 1fr 6rem; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 400px) { .field-row { grid-template-columns: 1fr 5rem; gap: 10px; } }
 .error-text { font-size: 11.5px; color: var(--red); margin-top: 6px; font-family: var(--font-c); letter-spacing: .03em; display: none; }
 .slot.invalid .error-text { display: block; }
 .slot.invalid input, .slot.invalid textarea { border-color: var(--red); }
@@ -219,7 +307,7 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
   <div class="hdr-page">Best XI</div>
 </header>
 
-<div class="week-rail" id="weekRail">Loading week…</div>
+<div class="week-panel" id="weekPanel">Loading week…</div>
 
 <main>
 
@@ -383,7 +471,7 @@ let weekInfo = getWeekInfo();
 let lookupTimer = null;
 
 /* ====== ELEMENTS ====== */
-const weekRail = document.getElementById('weekRail');
+const weekPanel = document.getElementById('weekPanel');
 const form = document.getElementById('bestXiForm');
 const closedPanel = document.getElementById('closedPanel');
 const submitBtn = document.getElementById('submitBtn');
@@ -393,23 +481,36 @@ const coachNameEl = document.getElementById('coachName');
 const teamEl = document.getElementById('team');
 const slots = Array.from(document.querySelectorAll('.slot'));
 
-function renderWeekRail() {
+function renderWeekPanel() {
   if (!weekInfo.open) {
-    weekRail.textContent = 'No Best XI week is currently open';
-    weekRail.classList.add('closed');
+    weekPanel.classList.add('closed');
+    weekPanel.innerHTML =
+      '<div class="wp-left">' +
+        '<div class="wp-status"><span class="wp-dot"></span>Submissions closed</div>' +
+        '<div class="wp-week">Season complete</div>' +
+      '</div>';
     form.style.display = 'none';
     closedPanel.style.display = 'block';
     return;
   }
   const { weekNumber, deadline, weekend, now } = weekInfo;
-  weekRail.innerHTML =
-    '<strong>WEEK ' + weekNumber + '</strong>' +
-    '<span class="sep">·</span>Games ' + fmtDate(weekend.sat) + '–' + fmtDate(weekend.sun) +
-    '<span class="sep">·</span>Picks due ' + fmtDate(deadline) + ' at ' + fmtTime(deadline) + ' ET' +
-    '<span class="sep">·</span><span class="countdown">' + countdownText(deadline, now) + '</span>';
+  const hoursLeft = (deadline - now) / 3600000;
+  const dueDay = deadline.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  weekPanel.innerHTML =
+    '<div class="wp-left">' +
+      '<div class="wp-status"><span class="wp-dot"></span>Nominations open</div>' +
+      '<div class="wp-week">Week ' + weekNumber + '</div>' +
+      '<div class="wp-games">Games ' + fmtDate(weekend.sat) + ' – ' + fmtDate(weekend.sun) + '</div>' +
+    '</div>' +
+    '<div class="wp-right">' +
+      '<div class="wp-due-label">Picks due</div>' +
+      '<div class="wp-due-when">' + dueDay + ', ' + fmtTime(deadline) + ' ET</div>' +
+      '<span class="wp-countdown' + (hoursLeft <= 24 ? ' urgent' : '') + '">' +
+        countdownText(deadline, now) + '</span>' +
+    '</div>';
 }
-renderWeekRail();
-setInterval(() => { weekInfo = getWeekInfo(); renderWeekRail(); }, 60000);
+renderWeekPanel();
+setInterval(() => { weekInfo = getWeekInfo(); renderWeekPanel(); }, 60000);
 
 /* ====== SLOT VALIDATION ====== */
 function readSlot(slotEl) {
