@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Holiday Mini Camps | Virginia Valor FC</title>
-<meta name="description" content="Virginia Valor FC Student Holiday Mini Camps, 2026-27. Eight days off school at EC Lawrence Park. Full day $150, half day $100. Open to all players.">
+<meta name="description" content="Virginia Valor FC Student Holiday Mini Camps, 2026-27. Club neutral. Eight days off school at EC Lawrence Park. Full day $150, half day $100.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
@@ -13,68 +13,33 @@
   --ink:#0a0a0a;
   --ink-2:#3a3a38;
   --ink-3:#77746c;
-  --gold:#a4926e;          /* crest tan */
-  --gold-lt:#c9bb9e;
-  --gold-dk:#6d5e42;       /* text-safe tan on white */
+  --gold:#a4926e;
+  --gold-dk:#6d5e42;
   --paper:#ffffff;
   --wash:#f6f4f0;
   --rule:#e2ded5;
   --rule-dk:#2a2823;
-  --maxw:1160px;
+  --maxw:1120px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Source Serif 4",Georgia,serif;font-size:17.5px;line-height:1.66;
+  font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.65;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100%;
-  overflow-wrap:break-word;word-break:normal;
+  overflow-wrap:break-word;
 }
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 @media(max-width:560px){.wrap{padding:0 20px}}
 a{color:inherit}
 h1,h2,h3,h4{font-family:"Big Shoulders Display",Impact,sans-serif;text-transform:uppercase;margin:0}
-.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
 
-/* ---------------- chevron mark (from the crest vee) ---------------- */
-.vee{display:inline-block;width:13px;height:8px;flex:0 0 13px;margin-top:5px}
+.vee{display:inline-block;width:12px;height:8px;flex:0 0 12px;margin-top:5px}
 .vee path{fill:none;stroke:var(--gold);stroke-width:2.6}
-
-/* ---------------- top bar ---------------- */
-.topbar{
-  position:sticky;top:0;z-index:60;background:rgba(255,255,255,.94);
-  backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--rule);
-}
-.topbar .wrap{display:flex;align-items:center;gap:14px;height:72px}
-.brand{display:flex;align-items:center;gap:13px;text-decoration:none}
-.brand img{width:40px;height:auto;display:block}
-.brand b{
-  font-family:"Big Shoulders Display",sans-serif;font-weight:800;font-size:20px;
-  letter-spacing:.1em;line-height:1;text-transform:uppercase;white-space:nowrap;
-}
-@media(max-width:560px){
-  .topbar .wrap{height:64px;gap:10px}
-  .brand img{width:32px}
-  .brand b{font-size:15.5px;letter-spacing:.06em}
-  .topbar nav{gap:14px}
-  .btn.sm{padding:10px 13px;font-size:10px;letter-spacing:.1em}
-}
-@media(max-width:380px){
-  .brand b{font-size:0;letter-spacing:0}
-  .brand b::after{content:"Valor FC";font-size:15px;letter-spacing:.06em}
-}
-.topbar nav{margin-left:auto;display:flex;align-items:center;gap:28px}
-.topbar nav a.nl{
-  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;
-  text-transform:uppercase;text-decoration:none;color:var(--ink-2);
-  padding-bottom:3px;border-bottom:1.5px solid transparent;
-}
-.topbar nav a.nl:hover{color:var(--ink);border-bottom-color:var(--gold)}
-@media(max-width:800px){.hide-sm{display:none!important}}
 
 /* ---------------- buttons ---------------- */
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:11px;
+  display:inline-flex;align-items:center;justify-content:center;
   font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
   letter-spacing:.15em;text-transform:uppercase;text-decoration:none;
   padding:15px 28px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;
@@ -85,186 +50,178 @@ h1,h2,h3,h4{font-family:"Big Shoulders Display",Impact,sans-serif;text-transform
 .btn.ghost:hover{background:var(--ink);border-color:var(--ink);color:#fff}
 .btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .btn.gold:hover{background:#fff;border-color:#fff}
-.btn.sm{padding:11px 19px;font-size:11px;letter-spacing:.13em}
-a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
 
 /* ---------------- hero ---------------- */
-.hero{position:relative;padding:84px 0 62px;border-bottom:1px solid var(--rule);overflow:hidden}
-.hero .ghostcrest{
-  position:absolute;right:-70px;top:50%;transform:translateY(-50%);
-  width:430px;opacity:.035;pointer-events:none;user-select:none;
-}
-@media(max-width:1000px){.hero .ghostcrest{display:none}}
-.hero .wrap{position:relative;z-index:2}
+.hero{padding:64px 0 54px;border-bottom:1px solid var(--rule)}
 .eyebrow{
-  display:flex;align-items:flex-start;gap:11px;
-  font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dk);margin:0 0 24px;
+  display:flex;align-items:flex-start;gap:10px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dk);margin:0 0 20px;
 }
-/* chiselled wordmark, echoing the beveled lettering on the crest */
-.wm{position:relative;margin:0;--bev:clamp(3px,.65vw,7px)}
+.wm{position:relative;margin:0;--bev:clamp(2px,.4vw,5px)}
 .wm span{
   display:block;font-family:"Big Shoulders Display",sans-serif;font-weight:900;
-  font-size:clamp(46px,11.6vw,152px);line-height:.84;letter-spacing:.004em;
+  font-size:clamp(44px,10.4vw,118px);line-height:.86;letter-spacing:.004em;
   text-transform:uppercase;position:relative;
 }
 .wm span::before{
-  content:attr(data-t);position:absolute;left:0;top:0;
-  color:var(--gold);-webkit-text-stroke:0;
+  content:attr(data-t);position:absolute;left:0;top:0;color:var(--gold);
   transform:translate(var(--bev),var(--bev));z-index:-1;
 }
-.wm .l2{color:var(--ink)}
-.wm .l2::before{color:var(--gold)}
-.lede{max-width:60ch;margin:32px 0 0;font-size:20.5px;line-height:1.58;color:var(--ink-2)}
-@media(max-width:620px){
-  body{font-size:16.5px}
-  .lede{font-size:18px;margin-top:26px}
-  .hero{padding:56px 0 48px}
-  .sec-head{margin-bottom:34px}
-  .sec-head p{font-size:17px}
-  .camp{padding:26px 0}
-  .opt{padding:30px 22px}
-  .price{font-size:64px}
-  .close{padding:70px 0}
-  .close p{font-size:17.5px}
-}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.lede{max-width:58ch;margin:28px 0 0;font-size:19px;line-height:1.58;color:var(--ink-2)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:13px;margin-top:30px}
 .hero-note{
-  margin:20px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+  margin:18px 0 0;font-family:"IBM Plex Mono",monospace;font-size:11px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
 }
 
 /* ---------------- facts ---------------- */
 .facts{background:var(--wash);border-bottom:1px solid var(--rule)}
 .facts .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
-.fact{padding:28px 28px 28px 0;border-right:1px solid var(--rule)}
-.fact:last-child{border-right:0}
+.fact{padding:32px 34px 34px 0}
+.fact+.fact{border-left:1px solid var(--rule);padding-left:38px}
 .fact dt{
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.19em;
-  text-transform:uppercase;color:var(--ink-3);margin:0 0 9px;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 8px;
 }
 .fact dd{margin:0;font-family:"Big Shoulders Display",sans-serif;font-weight:800;
-  font-size:32px;line-height:.98;text-transform:uppercase;letter-spacing:.015em}
+  font-size:30px;line-height:1;text-transform:uppercase;letter-spacing:.015em}
 .fact dd em{
   display:block;font-family:"Source Serif 4",serif;font-style:normal;font-weight:400;
-  font-size:14px;letter-spacing:0;text-transform:none;color:var(--ink-3);
-  margin-top:8px;line-height:1.42;
+  font-size:13.5px;letter-spacing:0;text-transform:none;color:var(--ink-3);
+  margin-top:7px;line-height:1.4;
 }
 @media(max-width:860px){
   .facts .wrap{grid-template-columns:1fr 1fr}
-  .fact:nth-child(2n){border-right:0}
-  .fact:nth-child(n+3){border-top:1px solid var(--rule)}
+  .fact{padding-right:28px}
+  .fact:nth-child(3){border-left:0;padding-left:0}
+  .fact:nth-child(n+3){border-top:1px solid var(--rule);padding-top:30px}
 }
 @media(max-width:520px){
   .facts .wrap{grid-template-columns:1fr}
-  .fact{border-right:0;padding-right:0}
-  .fact+.fact{border-top:1px solid var(--rule)}
+  .fact{padding:26px 0 28px}
+  .fact+.fact{border-left:0;padding-left:0;border-top:1px solid var(--rule)}
 }
 
 /* ---------------- sections ---------------- */
-.sec{padding:82px 0;scroll-margin-top:80px}
-@media(max-width:620px){.sec{padding:58px 0}}
-.sec-head{margin-bottom:46px;max-width:60ch}
-h2{font-weight:800;font-size:clamp(36px,5.6vw,60px);line-height:.94;letter-spacing:.008em}
-.sec-head p{margin:20px 0 0;color:var(--ink-2);font-size:18.5px}
+.sec{padding:72px 0;scroll-margin-top:20px}
+@media(max-width:620px){.sec{padding:52px 0}}
+.sec-head{margin-bottom:40px;max-width:58ch}
+h2{font-weight:800;font-size:clamp(34px,5.2vw,54px);line-height:.95;letter-spacing:.008em}
+.sec-head p{margin:18px 0 0;color:var(--ink-2);font-size:18px}
 .wash{background:var(--wash);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 
 /* ---------------- schedule ---------------- */
-.month{display:flex;align-items:center;gap:18px;padding:40px 0 4px;min-width:0}
-.month:first-of-type{padding-top:0}
-.month h3{font-weight:800;font-size:25px;letter-spacing:.16em;white-space:nowrap;flex:0 1 auto;min-width:0}
+.month{
+  display:flex;align-items:center;gap:16px;min-width:0;
+  margin:44px 0 0;padding-bottom:10px;
+}
+.month:first-of-type{margin-top:0}
+.month h3{font-weight:800;font-size:23px;letter-spacing:.15em;white-space:nowrap;flex:0 1 auto}
 .month .line{flex:1;height:1px;background:var(--rule)}
 .month .n{
-  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink-3);white-space:nowrap;flex:0 0 auto;
 }
 @media(max-width:620px){
-  .month{gap:14px;padding:34px 0 2px}
-  .month h3{font-size:21px;letter-spacing:.13em}
+  .month{gap:12px;margin-top:34px}
+  .month h3{font-size:20px;letter-spacing:.12em}
   .month .n{display:none}
 }
+
+/* one shared top rule per row keeps the two columns aligned */
 .camp{
-  display:grid;grid-template-columns:128px 1fr;gap:38px;
-  padding:32px 0;border-bottom:1px solid var(--rule);
-  opacity:1;transform:none;
+  display:grid;grid-template-columns:190px 1fr;gap:38px;
+  padding:24px 0 30px;border-top:2px solid var(--ink);
 }
-.reveal .camp{opacity:0;transform:translateY(18px)}
-.camp.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1)}
-.camp:last-of-type{border-bottom:0}
-.datecol{padding-left:18px;border-left:3px solid var(--gold);transition:border-color .2s}
-.camp:hover .datecol{border-left-color:var(--ink)}
-.dow{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
-  letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3);display:block}
-.dnum{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:74px;
-  line-height:.76;display:block;margin:10px 0 8px;white-space:nowrap;transition:color .2s}
-.camp:hover .dnum{color:var(--gold-dk)}
-.dmon{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.17em;
-  text-transform:uppercase;color:var(--ink-3);display:block;white-space:nowrap}
-.camp h4{font-weight:800;font-size:clamp(25px,3.6vw,36px);line-height:1.0;letter-spacing:.014em}
-.camp p{margin:14px 0 0;color:var(--ink-2);max-width:64ch}
-.tagrow{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:20px;max-width:64ch}
+.reveal .camp{opacity:0;transform:translateY(16px)}
+.camp.in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.3,1)}
+
+.datecol{align-self:start}
+.dow{
+  display:block;font-family:"Big Shoulders Display",sans-serif;font-weight:800;
+  font-size:25px;line-height:1;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);
+}
+.dnum{
+  display:block;font-family:"Big Shoulders Display",sans-serif;font-weight:900;
+  font-size:46px;line-height:.92;letter-spacing:.01em;text-transform:uppercase;
+  color:var(--gold-dk);margin:6px 0 5px;white-space:nowrap;
+}
+.dyear{
+  display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+}
+.campbody{min-width:0}
+.camp h4{font-weight:800;font-size:clamp(24px,3.3vw,33px);line-height:1.02;letter-spacing:.014em}
+.camp p{margin:12px 0 0;color:var(--ink-2);max-width:62ch}
+.tagrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .tag{
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2);
-  border:1px solid var(--rule);padding:6px 11px;background:var(--paper);
+  font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+  border:1px solid var(--rule);padding:6px 10px;background:var(--paper);
 }
+/* always on its own line, always in the same place */
 .rowlink{
-  margin-left:6px;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  display:inline-block;margin-top:18px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
   letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--gold-dk);
-  border-bottom:1.5px solid var(--gold);padding-bottom:2px;white-space:nowrap;
+  border-bottom:1.5px solid var(--gold);padding-bottom:3px;
 }
 .rowlink:hover{color:var(--ink);border-bottom-color:var(--ink)}
 @media(max-width:720px){
-  .camp{grid-template-columns:1fr;gap:16px}
-  .datecol{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 13px;padding-left:14px}
-  .dow{order:2}
-  .dnum{order:1;font-size:46px;margin:0}
-  .dmon{order:3;margin-left:0}
-  .rowlink{margin-left:0;margin-top:4px}
+  .camp{grid-template-columns:1fr;gap:14px;padding:20px 0 26px}
+  .datecol{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+  .dow{font-size:21px}
+  .dnum{font-size:30px;margin:0}
+  .dyear{margin-left:2px}
 }
 
 /* ---------------- options ---------------- */
 .opts{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule);background:var(--paper)}
-.opt{padding:40px 36px}
+.opt{padding:36px 32px;display:flex;flex-direction:column}
 .opt+.opt{border-left:1px solid var(--rule)}
-.opt h3{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
-  letter-spacing:.21em;color:var(--gold-dk);margin-bottom:20px}
-.price{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:78px;line-height:.82;margin:0}
-.price sup{font-size:27px;vertical-align:super;font-weight:700;margin-right:3px;color:var(--gold)}
-.opt ul{margin:24px 0 0;padding:0;list-style:none}
-.opt li{position:relative;padding:11px 0 11px 24px;border-top:1px solid var(--rule);
-  font-size:16.5px;color:var(--ink-2)}
-.opt li::before{content:"";position:absolute;left:0;top:20px;width:10px;height:2px;background:var(--gold)}
-.opt .btn{margin-top:26px}
+.opt h3{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;
+  letter-spacing:.2em;color:var(--gold-dk);margin-bottom:16px}
+.price{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:70px;line-height:.85;margin:0}
+.price sup{font-size:25px;vertical-align:super;font-weight:700;margin-right:3px;color:var(--gold)}
+.opt ul{margin:22px 0 0;padding:0;list-style:none;flex:1}
+.opt li{position:relative;padding:10px 0 10px 22px;border-top:1px solid var(--rule);
+  font-size:16px;color:var(--ink-2)}
+.opt li::before{content:"";position:absolute;left:0;top:19px;width:10px;height:2px;background:var(--gold)}
+.opt .btn{margin-top:24px;align-self:flex-start}
 @media(max-width:780px){
   .opts{grid-template-columns:1fr}
   .opt+.opt{border-left:0;border-top:1px solid var(--rule)}
+  .opt{padding:28px 22px}
+  .price{font-size:58px}
 }
 
 /* ---------------- know ---------------- */
-.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 40px}
-.qa div{padding-top:22px;border-top:2px solid var(--ink)}
-.qa h4{font-weight:800;font-size:21px;letter-spacing:.05em;margin-bottom:9px}
-.qa p{margin:0;color:var(--ink-2);font-size:16.5px}
+.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 36px}
+.qa div{padding:20px 0 4px;border-top:2px solid var(--ink)}
+.qa h4{font-weight:800;font-size:20px;letter-spacing:.05em;margin-bottom:8px}
+.qa p{margin:0;color:var(--ink-2);font-size:16px}
 .qa a{color:var(--gold-dk);overflow-wrap:anywhere}
 @media(max-width:860px){.qa{grid-template-columns:1fr;gap:0}
-  .qa div{padding:22px 0 24px}}
+  .qa div{padding:20px 0 22px}}
 
-/* ---------------- close (black band) ---------------- */
-.close{background:var(--ink);color:#fff;padding:96px 0;text-align:center}
-.close img{width:96px;height:auto;margin:0 auto 30px;display:block}
-.close h2{color:#fff;font-size:clamp(40px,7.4vw,84px);line-height:.9}
+/* ---------------- close ---------------- */
+.close{background:var(--ink);color:#fff;padding:82px 0;text-align:center}
+.close .mark{display:block;margin:0 auto 26px;width:34px;height:20px}
+.close .mark path{fill:none;stroke:var(--gold);stroke-width:2.6}
+.close h2{color:#fff;font-size:clamp(38px,6.6vw,74px);line-height:.92}
 .close h2 i{font-style:normal;color:var(--gold)}
-.close p{max-width:54ch;margin:22px auto 0;color:#cfcbc2;font-size:19px}
-.close .btn{margin-top:34px}
-.close .fine{margin-top:26px;font-family:"IBM Plex Mono",monospace;font-size:11px;
+.close p{max-width:52ch;margin:20px auto 0;color:#cfcbc2;font-size:18px}
+.close .btn{margin-top:30px}
+.close .fine{margin-top:24px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
   letter-spacing:.15em;text-transform:uppercase;color:#8b877e}
 
 /* ---------------- footer ---------------- */
-footer{background:var(--ink);color:#8b877e;padding:0 0 40px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:16px;align-items:center;
-  border-top:1px solid var(--rule-dk);padding-top:26px;
-  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+footer{background:var(--ink);color:#8b877e;padding:0 0 36px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+  border-top:1px solid var(--rule-dk);padding-top:24px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase}
 footer a{text-decoration:none}
 footer a:hover{color:var(--gold)}
 footer .r{margin-left:auto}
@@ -278,25 +235,9 @@ footer .r{margin-left:auto}
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap">
-    <a class="brand" href="https://www.virginiavalorfc.org">
-      <img src="valor-crest.png" alt="Virginia Valor FC crest">
-      <b>Virginia Valor FC</b>
-    </a>
-    <nav>
-      <a class="nl hide-sm" href="#schedule">Camp dates</a>
-      <a class="nl hide-sm" href="#options">Full &amp; half day</a>
-      <a class="nl hide-sm" href="#details">Details</a>
-      <a class="btn sm js-reg" href="#" target="_blank" rel="noopener">Register</a>
-    </nav>
-  </div>
-</header>
-
 <main>
 
   <section class="hero">
-    <img class="ghostcrest" src="valor-crest.png" alt="" aria-hidden="true">
     <div class="wrap">
       <p class="eyebrow">
         <svg class="vee" viewBox="0 0 13 8" aria-hidden="true"><path d="M1 1l5.5 6L12 1"/></svg>
@@ -304,7 +245,7 @@ footer .r{margin-left:auto}
       </p>
       <h1 class="wm">
         <span data-t="Student Holiday">Student Holiday</span>
-        <span class="l2" data-t="Mini Camps">Mini Camps</span>
+        <span data-t="Mini Camps">Mini Camps</span>
       </h1>
       <p class="lede">Club neutral camps, open to every player. Eight days off school, eight days on the ball. Each camp takes one part of the game and spends the whole day on it, from striking and goalkeeping to beating a defender 1v1, with competitive games running start to finish.</p>
       <div class="hero-cta">
@@ -336,81 +277,89 @@ footer .r{margin-left:auto}
       <div class="month"><h3>September 2026</h3><span class="line"></span><span class="n">3 camps</span></div>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Friday</span><span class="dnum">4</span><span class="dmon">SEP 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Friday</span><span class="dnum">Sep 4</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>Striking, Finishing &amp; Goalkeeping</h4>
           <p>The complete attacking and goalkeeping experience. Players develop powerful, accurate striking technique, learn to finish a range of chances, and work on scoring under pressure. Goalkeepers get specialized training in shot-stopping, positioning, handling, footwork, and confidence in goal. The day is packed with competitive activities and game-realistic situations built to help players make a difference at both ends of the field.</p>
-          <div class="tagrow"><span class="tag">Finishing</span><span class="tag">Goalkeeping</span><span class="tag">Shooting under pressure</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Sep 4</a></div>
+          <div class="tagrow"><span class="tag">Finishing</span><span class="tag">Goalkeeping</span><span class="tag">Shooting under pressure</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Friday, Sep 4</a>
         </div>
       </article>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Monday</span><span class="dnum">7</span><span class="dmon">SEP 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Monday</span><span class="dnum">Sep 7</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>World Cup Camp</h4>
           <p>The excitement of the World Cup, brought to the field. Players train, compete, and represent different countries while developing their technical and tactical skills. Expect fun competitions, challenges, small-sided games, and a real World Cup atmosphere all day long.</p>
-          <div class="tagrow"><span class="tag">Small-sided games</span><span class="tag">Team competition</span><span class="tag">All-day tournament</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Sep 7</a></div>
+          <div class="tagrow"><span class="tag">Small-sided games</span><span class="tag">Team competition</span><span class="tag">All-day tournament</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Monday, Sep 7</a>
         </div>
       </article>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Monday</span><span class="dnum">21</span><span class="dmon">SEP 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Monday</span><span class="dnum">Sep 21</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>Attacking Play</h4>
           <p>Build the confidence and creativity to become a dangerous attacking player. Players learn how to create chances, attack space, combine with teammates, take on defenders, and make effective decisions in the final third. Expect plenty of attacking opportunities, goals, and competitive games.</p>
-          <div class="tagrow"><span class="tag">Final third</span><span class="tag">Combination play</span><span class="tag">Decision making</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Sep 21</a></div>
+          <div class="tagrow"><span class="tag">Final third</span><span class="tag">Combination play</span><span class="tag">Decision making</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Monday, Sep 21</a>
         </div>
       </article>
 
       <div class="month"><h3>October 2026</h3><span class="line"></span><span class="n">1 camp</span></div>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Monday</span><span class="dnum">12</span><span class="dmon">OCT 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Monday</span><span class="dnum">Oct 12</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>1v1: How to Beat Your Opponent</h4>
           <p>Every great attacker needs the confidence to take on a defender. This camp focuses on 1v1 attacking skills, including changes of direction, speed, body movements, feints, and creative dribbling. Players learn how to create space, beat their opponent, and attack with confidence.</p>
-          <div class="tagrow"><span class="tag">1v1 attacking</span><span class="tag">Feints &amp; footwork</span><span class="tag">Creative dribbling</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Oct 12</a></div>
+          <div class="tagrow"><span class="tag">1v1 attacking</span><span class="tag">Feints &amp; footwork</span><span class="tag">Creative dribbling</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Monday, Oct 12</a>
         </div>
       </article>
 
-      <div class="month"><h3>November 2026</h3><span class="line"></span><span class="n">2 camps &middot; back to back</span></div>
+      <div class="month"><h3>November 2026</h3><span class="line"></span><span class="n">2 camps</span></div>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Monday</span><span class="dnum">2</span><span class="dmon">NOV 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Monday</span><span class="dnum">Nov 2</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>Complete Player Camp</h4>
           <p>A day for becoming a more complete and confident player. This camp covers every area of the game, including ball mastery, attacking, finishing, defending, decision-making, and game awareness. Players develop their skills through challenging activities and realistic game situations.</p>
-          <div class="tagrow"><span class="tag">Ball mastery</span><span class="tag">Attacking &amp; defending</span><span class="tag">Game awareness</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Nov 2</a></div>
+          <div class="tagrow"><span class="tag">Ball mastery</span><span class="tag">Attacking &amp; defending</span><span class="tag">Game awareness</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Monday, Nov 2</a>
         </div>
       </article>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Tuesday</span><span class="dnum">3</span><span class="dmon">NOV 2026</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Tuesday</span><span class="dnum">Nov 3</span><span class="dyear">2026</span></div>
+        <div class="campbody">
           <h4>Technical Ball Mastery</h4>
           <p>Great players are comfortable with the ball at their feet. This camp focuses on developing foot skills, first touch, dribbling, coordination, and creativity. Players get plenty of touches on the ball while building the confidence to play in tight spaces and under pressure.</p>
-          <div class="tagrow"><span class="tag">First touch</span><span class="tag">Foot skills</span><span class="tag">Tight spaces</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Nov 3</a></div>
+          <div class="tagrow"><span class="tag">First touch</span><span class="tag">Foot skills</span><span class="tag">Tight spaces</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Tuesday, Nov 3</a>
         </div>
       </article>
 
       <div class="month"><h3>January 2027</h3><span class="line"></span><span class="n">2 camps</span></div>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Monday</span><span class="dnum">18</span><span class="dmon">JAN 2027</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Monday</span><span class="dnum">Jan 18</span><span class="dyear">2027</span></div>
+        <div class="campbody">
           <h4>Small-Sided &amp; Tactical Play</h4>
           <!-- DRAFT COPY: no description supplied for this camp. Review or replace. -->
           <p>Learn to read the game in the moments that decide it. This camp lives in small-sided play, where every player is constantly involved: finding space, pressing as a group, switching the point of attack, and knowing when to keep the ball and when to go. Players get repeated exposure to game-realistic problems and the chance to solve them for themselves.</p>
-          <div class="tagrow"><span class="tag">Small-sided play</span><span class="tag">Pressing &amp; shape</span><span class="tag">Reading the game</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Jan 18</a></div>
+          <div class="tagrow"><span class="tag">Small-sided play</span><span class="tag">Pressing &amp; shape</span><span class="tag">Reading the game</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Monday, Jan 18</a>
         </div>
       </article>
 
       <article class="camp">
-        <div class="datecol"><span class="dow">Friday</span><span class="dnum">29</span><span class="dmon">JAN 2027</span></div>
-        <div>
+        <div class="datecol"><span class="dow">Friday</span><span class="dnum">Jan 29</span><span class="dyear">2027</span></div>
+        <div class="campbody">
           <h4>Complete Player Camp</h4>
           <p>A second run at the complete-player day, covering ball mastery, attacking, finishing, defending, decision-making, and game awareness. Players develop their skills through challenging activities and realistic game situations. A good fit for anyone who missed the November date or wants a mid-winter reset.</p>
-          <div class="tagrow"><span class="tag">Ball mastery</span><span class="tag">Attacking &amp; defending</span><span class="tag">Game awareness</span><a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Jan 29</a></div>
+          <div class="tagrow"><span class="tag">Ball mastery</span><span class="tag">Attacking &amp; defending</span><span class="tag">Game awareness</span></div>
+          <a class="rowlink js-reg" href="#" target="_blank" rel="noopener">Reserve Friday, Jan 29</a>
         </div>
       </article>
 
@@ -471,7 +420,7 @@ footer .r{margin-left:auto}
 
   <section class="close">
     <div class="wrap">
-      <img src="valor-crest.png" alt="" aria-hidden="true">
+      <svg class="mark" viewBox="0 0 34 20" aria-hidden="true"><path d="M2 2l15 16L32 2"/></svg>
       <h2>Pick a day.<br><i>We take it from there.</i></h2>
       <p>Registration is open now for all eight camps. Spots are limited, and the half day sessions go first.</p>
       <a class="btn gold js-reg" href="#" target="_blank" rel="noopener">Register a player</a>
@@ -489,9 +438,7 @@ footer .r{margin-left:auto}
 </footer>
 
 <script>
-/* -------------------------------------------------------------
-   One place to change the registration link.
-------------------------------------------------------------- */
+/* ---- One place to change the registration link ---- */
 var REGISTER_URL = "https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5Mjg1MTE2MHw3ZDVta3FGWUtLcU9DeFE2S2tRaVhDN2ZlZEMxU1Y2eDQyM1kwaHozaFNFPQ==&program_id=118416";
 
 document.querySelectorAll(".js-reg").forEach(function (a) { a.href = REGISTER_URL; });
@@ -500,16 +447,15 @@ document.querySelectorAll(".js-reg").forEach(function (a) { a.href = REGISTER_UR
 (function () {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!("IntersectionObserver" in window)) return;
-  var rows = document.querySelectorAll(".camp");
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e, i) {
       if (!e.isIntersecting) return;
       var el = e.target;
-      setTimeout(function () { el.classList.add("in"); }, i * 70);
+      setTimeout(function () { el.classList.add("in"); }, i * 60);
       io.unobserve(el);
     });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-  rows.forEach(function (r) { io.observe(r); });
+  }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
+  document.querySelectorAll(".camp").forEach(function (r) { io.observe(r); });
 })();
 </script>
 
