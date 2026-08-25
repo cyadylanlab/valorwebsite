@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best XI | Virginia Valor FC</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:       #A39964;
+  --gold-deep:  #7A7040;
+  --gold-light: #C4B882;
+  --gold-glow:  rgba(163,153,100,0.18);
+  --gold-tint:  rgba(163,153,100,0.08);
+  --black:      #1A1A1A;
+  --near-black: #2F2E2E;
+  --warm-grey:  #6B6560;
+  --mid-grey:   #B0AAA9;
+  --light-grey: #D1CAC9;
+  --page-bg:    #F0EDE8;
+  --card:       #FFFFFF;
+  --card-inner: #F7F5F2;
+  --border:     #E0DDD8;
+  --border-soft:#ECEAE6;
+  --red:        #8B2020;
+  --red-tint:   rgba(139,32,32,0.08);
+  --green:      #1E5C35;
+  --green-tint: rgba(30,92,53,0.08);
+  --font-d: 'Oswald', sans-serif;
+  --font-b: 'Barlow', sans-serif;
+  --font-c: 'Barlow Condensed', sans-serif;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --r: 10px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--page-bg);
+  color: var(--near-black);
+  font-family: var(--font-b);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─────────────────────────────────────────────── */
+.hdr {
+  background: linear-gradient(180deg, #232322 0%, var(--black) 100%);
+  padding: 10px 22px;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+.hdr::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold-light) 45%, var(--gold-deep) 90%);
+}
+.hdr { position: relative; }
+.hdr-brand { display: flex; align-items: center; gap: 13px; padding-right: 18px; border-right: 1px solid rgba(255,255,255,0.08); }
+.hdr-crest { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
+.hdr-name { font-family: var(--font-d); color: #FFF; font-weight: 500; letter-spacing: 0.12em; font-size: 12px; line-height: 1.25; max-width: 105px; text-transform: uppercase; }
+.hdr-page { font-family: var(--font-d); font-size: 16px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-light); padding-left: 18px; }
+
+/* ─── WEEK RAIL ──────────────────────────────────────────── */
+.week-rail {
+  background: var(--black);
+  padding: 10px 22px;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 0;
+  font-family: var(--font-c);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+.week-rail strong { color: var(--gold-light); font-weight: 700; }
+.week-rail .sep { margin: 0 .6em; color: rgba(255,255,255,0.18); }
+.week-rail .countdown { color: var(--gold); font-weight: 600; }
+.week-rail.closed { color: rgba(255,255,255,0.5); }
+
+/* ─── LAYOUT ─────────────────────────────────────────────── */
+main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
+
+/* ─── EYEBROW (chevron motif from the crest) ────────────────── */
+.eyebrow {
+  font-family: var(--font-c);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px; height: 7px; margin-right: 9px;
+  background: var(--gold);
+  clip-path: polygon(0 0, 26% 0, 50% 62%, 74% 0, 100% 0, 50% 100%);
+  flex-shrink: 0;
+}
+
+/* ─── CARD ───────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.03);
+}
+.card-inner { padding: 20px; }
+
+/* ─── FIELDS ─────────────────────────────────────────────── */
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) { .frow { grid-template-columns: 1fr; } }
+.fld { display: flex; flex-direction: column; gap: 5px; }
+.fld label {
+  font-family: var(--font-c);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+}
+.fld input, .fld textarea {
+  background: var(--card-inner);
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  color: var(--near-black);
+  font-family: var(--font-b);
+  font-size: 14.5px;
+  padding: 10px 13px;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.fld input:focus, .fld textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+.fld input.err, .fld textarea.err { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-tint); }
+.fld textarea { resize: vertical; min-height: 76px; line-height: 1.5; }
+
+.lookup-status { font-family: var(--font-c); font-size: 12.5px; letter-spacing: .03em; margin-top: 12px; color: var(--mid-grey); min-height: 1.1em; }
+.lookup-status.editing { color: var(--gold-deep); font-weight: 600; }
+
+/* ─── PLAYER SLOTS ───────────────────────────────────────── */
+.slot { border-top: 1px solid var(--border-soft); padding-top: 18px; margin-top: 18px; }
+.slot:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+.slot-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.badge {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); font-weight: 600; font-size: 14px;
+  color: var(--mid-grey); flex-shrink: 0; transition: all .15s;
+}
+.badge.filled { border-color: var(--gold); color: var(--black); background: var(--gold-tint); }
+.slot-title { font-family: var(--font-c); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--warm-grey); font-weight: 600; }
+.field-row { display: grid; grid-template-columns: 1fr 5.5rem; gap: 12px; margin-bottom: 12px; }
+.error-text { font-size: 11.5px; color: var(--red); margin-top: 6px; font-family: var(--font-c); letter-spacing: .03em; display: none; }
+.slot.invalid .error-text { display: block; }
+.slot.invalid input, .slot.invalid textarea { border-color: var(--red); }
+
+/* ─── SUBMIT ─────────────────────────────────────────────── */
+.submit-row { text-align: center; margin-top: 4px; }
+.btn-submit {
+  width: 100%;
+  background: var(--black);
+  border: none;
+  border-radius: 9px;
+  color: var(--gold-light);
+  font-family: var(--font-d);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  min-height: 56px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-submit:hover:not(:disabled) { background: var(--near-black); }
+.btn-submit:disabled { background: var(--light-grey); color: var(--mid-grey); cursor: not-allowed; }
+.submit-msg { margin-top: 12px; font-family: var(--font-c); font-size: 13px; letter-spacing: .03em; min-height: 1.2em; }
+.submit-msg.ok { color: var(--green); font-weight: 600; }
+.submit-msg.err { color: var(--red); font-weight: 600; }
+
+.closed-panel { text-align: center; padding: 48px 20px; }
+.closed-panel p { color: var(--warm-grey); margin-top: 6px; }
+
+footer { text-align: center; padding: 26px 16px; font-family: var(--font-c); font-size: 11px; letter-spacing: .08em; color: var(--mid-grey); text-transform: uppercase; }
+
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-brand">
+    <img class="hdr-crest" src="data:image/png;base64,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" alt="Virginia Valor FC">
+    <div class="hdr-name">Virginia<br>Valor FC</div>
+  </div>
+  <div class="hdr-page">Best XI</div>
+</header>
+
+<div class="week-rail" id="weekRail">Loading week…</div>
+
+<main>
+
+  <form id="bestXiForm" novalidate>
+
+    <div class="card">
+      <div class="card-inner">
+        <p class="eyebrow">Who's submitting</p>
+        <div class="frow">
+          <div class="fld">
+            <label for="coachName">Coach name</label>
+            <input type="text" id="coachName" autocomplete="name" required>
+          </div>
+          <div class="fld">
+            <label for="team">Team</label>
+            <input type="text" id="team" placeholder="e.g. 2015B ECNL" required>
+          </div>
+        </div>
+        <div class="lookup-status" id="lookupStatus"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+        <p class="eyebrow">This week's nominees — up to 3</p>
+
+        <div class="slot" data-slot="1">
+          <div class="slot-head">
+            <div class="badge" data-badge>1</div>
+            <div class="slot-title">Nominee one</div>
+          </div>
+          <div class="field-row">
+            <div class="fld">
+              <label for="name-1">Player full name</label>
+              <input type="text" id="name-1" data-field="name">
+            </div>
+            <div class="fld">
+              <label for="number-1">Number</label>
+              <input type="text" id="number-1" inputmode="numeric" maxlength="3" data-field="number">
+            </div>
+          </div>
+          <div class="fld">
+            <label for="writeup-1">Why this player</label>
+            <textarea id="writeup-1" data-field="writeup" placeholder="What did they do this weekend that earns the nod?"></textarea>
+          </div>
+          <div class="error-text">Add a name, number, and write-up to include this nominee — or clear all three to skip.</div>
+        </div>
+
+        <div class="slot" data-slot="2">
+          <div class="slot-head">
+            <div class="badge" data-badge>2</div>
+            <div class="slot-title">Nominee two</div>
+          </div>
+          <div class="field-row">
+            <div class="fld">
+              <label for="name-2">Player full name</label>
+              <input type="text" id="name-2" data-field="name">
+            </div>
+            <div class="fld">
+              <label for="number-2">Number</label>
+              <input type="text" id="number-2" inputmode="numeric" maxlength="3" data-field="number">
+            </div>
+          </div>
+          <div class="fld">
+            <label for="writeup-2">Why this player</label>
+            <textarea id="writeup-2" data-field="writeup" placeholder="What did they do this weekend that earns the nod?"></textarea>
+          </div>
+          <div class="error-text">Add a name, number, and write-up to include this nominee — or clear all three to skip.</div>
+        </div>
+
+        <div class="slot" data-slot="3">
+          <div class="slot-head">
+            <div class="badge" data-badge>3</div>
+            <div class="slot-title">Nominee three</div>
+          </div>
+          <div class="field-row">
+            <div class="fld">
+              <label for="name-3">Player full name</label>
+              <input type="text" id="name-3" data-field="name">
+            </div>
+            <div class="fld">
+              <label for="number-3">Number</label>
+              <input type="text" id="number-3" inputmode="numeric" maxlength="3" data-field="number">
+            </div>
+          </div>
+          <div class="fld">
+            <label for="writeup-3">Why this player</label>
+            <textarea id="writeup-3" data-field="writeup" placeholder="What did they do this weekend that earns the nod?"></textarea>
+          </div>
+          <div class="error-text">Add a name, number, and write-up to include this nominee — or clear all three to skip.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="btn-submit" id="submitBtn" disabled>Submit my picks</button>
+      <div class="submit-msg" id="submitMsg" role="status" aria-live="polite"></div>
+    </div>
+
+  </form>
+
+  <div class="closed-panel" id="closedPanel" style="display:none;">
+    <p class="eyebrow" style="justify-content:center;">Submissions closed</p>
+    <p>There's no open Best XI week right now. Check back before the next round of games.</p>
+  </div>
+
+</main>
+
+<footer>Virginia Valor FC — Best XI</footer>
+
+<script>
+/* ====== CONFIG — keep in sync with Code.gs ====== */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwDK9Ox7adtZUK2NsokYxvCXQIGUZgKrjg2FiRqpMhL-1SEKtyr5y2ELfX4SVIttR8y/exec";
+const TOTAL_WEEKS = 12;
+const SEASON_START_PARTS = { y: 2026, m: 7, d: 22 }; // Week 1 game weekend (Sat); month is 0-indexed: 7 = August
+
+/* ====== TIME HELPERS — Eastern wall-clock, DST-safe ====== */
+function nowEastern() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+  }).formatToParts(new Date());
+  const g = t => parts.find(p => p.type === t).value;
+  const hour = +g('hour') === 24 ? 0 : +g('hour');
+  return new Date(+g('year'), +g('month') - 1, +g('day'), hour, +g('minute'), +g('second'));
+}
+function seasonStart() { return new Date(SEASON_START_PARTS.y, SEASON_START_PARTS.m, SEASON_START_PARTS.d, 0, 0, 0); }
+function weekDeadline(w) {
+  const d = new Date(seasonStart().getTime());
+  d.setDate(d.getDate() + (w - 1) * 7 + 4);
+  d.setHours(17, 0, 0, 0);
+  return d;
+}
+function weekWeekend(w) {
+  const sat = new Date(seasonStart().getTime());
+  sat.setDate(sat.getDate() + (w - 1) * 7);
+  const sun = new Date(sat.getTime());
+  sun.setDate(sun.getDate() + 1);
+  return { sat, sun };
+}
+function getWeekInfo() {
+  const now = nowEastern();
+  for (let w = 1; w <= TOTAL_WEEKS; w++) {
+    if (now <= weekDeadline(w)) return { open: true, weekNumber: w, deadline: weekDeadline(w), weekend: weekWeekend(w), now };
+  }
+  return { open: false, weekNumber: null, now };
+}
+function fmtDate(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+function fmtTime(d) { return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); }
+function countdownText(deadline, now) {
+  let ms = deadline - now; if (ms < 0) ms = 0;
+  const totalMin = Math.floor(ms / 60000);
+  const days = Math.floor(totalMin / 1440), hours = Math.floor((totalMin % 1440) / 60), mins = totalMin % 60;
+  if (days > 0) return days + 'd ' + hours + 'h left';
+  if (hours > 0) return hours + 'h ' + mins + 'm left';
+  return mins + 'm left';
+}
+
+/* ====== STATE ====== */
+let weekInfo = getWeekInfo();
+let lookupTimer = null;
+
+/* ====== ELEMENTS ====== */
+const weekRail = document.getElementById('weekRail');
+const form = document.getElementById('bestXiForm');
+const closedPanel = document.getElementById('closedPanel');
+const submitBtn = document.getElementById('submitBtn');
+const submitMsg = document.getElementById('submitMsg');
+const lookupStatus = document.getElementById('lookupStatus');
+const coachNameEl = document.getElementById('coachName');
+const teamEl = document.getElementById('team');
+const slots = Array.from(document.querySelectorAll('.slot'));
+
+function renderWeekRail() {
+  if (!weekInfo.open) {
+    weekRail.textContent = 'No Best XI week is currently open';
+    weekRail.classList.add('closed');
+    form.style.display = 'none';
+    closedPanel.style.display = 'block';
+    return;
+  }
+  const { weekNumber, deadline, weekend, now } = weekInfo;
+  weekRail.innerHTML =
+    '<strong>WEEK ' + weekNumber + '</strong>' +
+    '<span class="sep">·</span>Games ' + fmtDate(weekend.sat) + '–' + fmtDate(weekend.sun) +
+    '<span class="sep">·</span>Picks due ' + fmtDate(deadline) + ' at ' + fmtTime(deadline) + ' ET' +
+    '<span class="sep">·</span><span class="countdown">' + countdownText(deadline, now) + '</span>';
+}
+renderWeekRail();
+setInterval(() => { weekInfo = getWeekInfo(); renderWeekRail(); }, 60000);
+
+/* ====== SLOT VALIDATION ====== */
+function readSlot(slotEl) {
+  return {
+    name: slotEl.querySelector('[data-field=name]').value.trim(),
+    number: slotEl.querySelector('[data-field=number]').value.trim(),
+    writeup: slotEl.querySelector('[data-field=writeup]').value.trim()
+  };
+}
+function slotState(s) {
+  const any = s.name || s.number || s.writeup;
+  const all = s.name && s.number && s.writeup;
+  if (!any) return 'empty';
+  return all ? 'complete' : 'incomplete';
+}
+function refreshValidity() {
+  let anyComplete = false, anyInvalid = false;
+  slots.forEach(slotEl => {
+    const state = slotState(readSlot(slotEl));
+    slotEl.classList.toggle('invalid', state === 'incomplete');
+    slotEl.querySelector('[data-badge]').classList.toggle('filled', state === 'complete');
+    if (state === 'complete') anyComplete = true;
+    if (state === 'incomplete') anyInvalid = true;
+  });
+  const idOk = coachNameEl.value.trim() && teamEl.value.trim();
+  const valid = idOk && anyComplete && !anyInvalid && weekInfo.open;
+  submitBtn.disabled = !valid;
+  return valid;
+}
+form.addEventListener('input', refreshValidity);
+refreshValidity();
+
+/* ====== LOOKUP EXISTING SUBMISSION ====== */
+function isPlaceholderUrl() { return !WEBAPP_URL || WEBAPP_URL.indexOf('PASTE_') === 0; }
+function clearSlots() {
+  slots.forEach(slotEl => {
+    slotEl.querySelector('[data-field=name]').value = '';
+    slotEl.querySelector('[data-field=number]').value = '';
+    slotEl.querySelector('[data-field=writeup]').value = '';
+  });
+}
+function fillSlots(players) {
+  slots.forEach((slotEl, i) => {
+    const p = players[i] || {};
+    slotEl.querySelector('[data-field=name]').value = p.name || '';
+    slotEl.querySelector('[data-field=number]').value = p.number || '';
+    slotEl.querySelector('[data-field=writeup]').value = p.writeup || '';
+  });
+}
+function scheduleLookup() {
+  clearTimeout(lookupTimer);
+  const name = coachNameEl.value.trim(), team = teamEl.value.trim();
+  if (!name || !team || !weekInfo.open) { lookupStatus.textContent = ''; return; }
+  lookupTimer = setTimeout(() => runLookup(name, team), 500);
+}
+async function runLookup(name, team) {
+  if (isPlaceholderUrl()) return;
+  lookupStatus.textContent = 'Checking for an existing submission…';
+  lookupStatus.className = 'lookup-status';
+  try {
+    const url = WEBAPP_URL + '?action=lookup&week=' + weekInfo.weekNumber +
+      '&coachName=' + encodeURIComponent(name) + '&team=' + encodeURIComponent(team);
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.found) {
+      fillSlots(data.players);
+      lookupStatus.textContent = 'Editing your Week ' + weekInfo.weekNumber + ' picks — change anything and resubmit.';
+      lookupStatus.classList.add('editing');
+    } else {
+      clearSlots();
+      lookupStatus.textContent = 'New submission for Week ' + weekInfo.weekNumber + '.';
+    }
+    refreshValidity();
+  } catch (err) { lookupStatus.textContent = ''; }
+}
+coachNameEl.addEventListener('blur', scheduleLookup);
+teamEl.addEventListener('blur', scheduleLookup);
+coachNameEl.addEventListener('input', () => { lookupStatus.textContent = ''; });
+teamEl.addEventListener('input', () => { lookupStatus.textContent = ''; });
+
+/* ====== SUBMIT ====== */
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!refreshValidity()) return;
+  if (isPlaceholderUrl()) {
+    submitMsg.textContent = "This page isn't connected to a submission sheet yet.";
+    submitMsg.className = 'submit-msg err';
+    return;
+  }
+  submitBtn.disabled = true;
+  submitMsg.textContent = 'Saving…';
+  submitMsg.className = 'submit-msg';
+
+  const players = slots.map(readSlot).filter(s => slotState(s) === 'complete');
+  const payload = {
+    action: 'submit',
+    week: weekInfo.weekNumber,
+    coachName: coachNameEl.value.trim(),
+    team: teamEl.value.trim(),
+    players
+  };
+
+  try {
+    const res = await fetch(WEBAPP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      submitMsg.textContent = 'Saved. You can come back and edit until the deadline.';
+      submitMsg.className = 'submit-msg ok';
+    } else {
+      submitMsg.textContent = data.error || 'Something went wrong. Try again.';
+      submitMsg.className = 'submit-msg err';
+    }
+  } catch (err) {
+    submitMsg.textContent = 'Could not reach the submission sheet. Check your connection and try again.';
+    submitMsg.className = 'submit-msg err';
+  }
+  refreshValidity();
+});
+</script>
+</body>
+</html>
