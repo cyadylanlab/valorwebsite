@@ -274,6 +274,38 @@ main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
 .slot.invalid .error-text { display: block; }
 .slot.invalid input, .slot.invalid textarea { border-color: var(--red); }
 
+.fld select {
+  background: var(--card-inner);
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  color: var(--near-black);
+  font-family: var(--font-b);
+  font-size: 16px;
+  padding: 13px 38px 13px 13px;
+  width: 100%;
+  min-height: 46px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236B6560' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
+  transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+.fld select:focus {
+  outline: none;
+  border-color: var(--gold);
+  background-color: #fff;
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+.fld select:disabled { color: var(--mid-grey); background-color: #EFEDE9; cursor: not-allowed; }
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) { .team-grid { grid-template-columns: 1fr; } }
+.team-league {
+  font-family: var(--font-c); font-size: 11.5px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--gold-deep); margin-top: 6px; min-height: 1em;
+}
+
 /* ─── MODAL ──────────────────────────────────────────────── */
 .modal-veil {
   position: fixed; inset: 0;
@@ -426,15 +458,32 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
     <div class="card">
       <div class="card-inner">
         <p class="eyebrow">Who's submitting</p>
-        <div class="frow">
+        <div class="fld">
+          <label for="coachName">Coach name</label>
+          <input type="text" id="coachName" autocomplete="name" required>
+        </div>
+        <div class="team-grid" style="margin-top:14px;">
           <div class="fld">
-            <label for="coachName">Coach name</label>
-            <input type="text" id="coachName" autocomplete="name" required>
+            <label for="gender">Gender</label>
+            <select id="gender">
+              <option value="">Select…</option>
+              <option value="M">Boys</option>
+              <option value="F">Girls</option>
+            </select>
           </div>
           <div class="fld">
-            <label for="team">Team</label>
-            <input type="text" id="team" placeholder="e.g. 2015B ECNL" required>
+            <label for="ageGroup">Age group</label>
+            <select id="ageGroup" disabled>
+              <option value="">Select gender first</option>
+            </select>
           </div>
+        </div>
+        <div class="fld" style="margin-top:14px;">
+          <label for="teamSelect">Team</label>
+          <select id="teamSelect" disabled>
+            <option value="">Select age group first</option>
+          </select>
+          <div class="team-league" id="teamLeague"></div>
         </div>
         <div class="fld" style="margin-top:14px;">
           <label for="email">Your email</label>
@@ -618,8 +667,72 @@ const closedPanel = document.getElementById('closedPanel');
 const submitBtn = document.getElementById('submitBtn');
 const submitMsg = document.getElementById('submitMsg');
 const lookupStatus = document.getElementById('lookupStatus');
+/* ====== TEAM ROSTER: [name, gender, age, league, label] ====== */
+const TEAMS = [
+  ["Virginia Valor FC B2008/09 Gold","M","U18","NCSL","B2008/09 Gold"],
+  ["Virginia Valor FC B2010/11 Gold","M","U16","NCSL","B2010/11 Gold"],
+  ["Virginia Valor FC B2011/12 Black","M","U15","NCSL","B2011/12 Black"],
+  ["Virginia Valor FC B2011/12 White","M","U15","NCSL","B2011/12 White"],
+  ["Virginia Valor FC B2012/13 Gold","M","U14","NCSL","B2012/13 Gold"],
+  ["Virginia Valor FC B2012/13 White","M","U14","NCSL","B2012/13 White"],
+  ["Virginia Valor FC B2013/14 Gold","M","U13","NCSL","B2013/14 Gold"],
+  ["Virginia Valor FC B2013/14 White","M","U13","NCSL","B2013/14 White"],
+  ["Virginia Valor FC B2014/15 Black","M","U12","NCSL","B2014/15 Black"],
+  ["Virginia Valor FC B2014/15 White","M","U12","NCSL","B2014/15 White"],
+  ["Virginia Valor FC B2015/16 White","M","U11","NCSL","B2015/16 White"],
+  ["Virginia Valor FC B2016/17 Black","M","U10","NCSL","B2016/17 Black"],
+  ["Virginia Valor FC B2016/17 Gold","M","U10","NCSL","B2016/17 Gold"],
+  ["Virginia Valor FC B2016/17 White","M","U10","NCSL","B2016/17 White"],
+  ["Virginia Valor FC B2017/18","M","U9","NCSL","B2017/18"],
+  ["Virginia Valor FC B2017/18 Black","M","U9","NCSL","B2017/18 Black"],
+  ["Virginia Valor FC B2017/18 Gold","M","U9","NCSL","B2017/18 Gold"],
+  ["Virginia Valor FC B2017/18 Silver","M","U9","NCSL","B2017/18 Silver"],
+  ["Virginia Valor FC B2017/18 White","M","U9","NCSL","B2017/18 White"],
+  ["Virginia Valor FC ECNL RL B2008/09","M","U19","ECNL-RL","ECNL RL B2008/09"],
+  ["Virginia Valor FC ECNL RL B2009/10","M","U17","ECNL-RL","ECNL RL B2009/10"],
+  ["Virginia Valor FC ECNL RL B2010/11","M","U16","ECNL-RL","ECNL RL B2010/11"],
+  ["Virginia Valor FC ECNL RL B2011/12","M","U15","ECNL-RL","ECNL RL B2011/12"],
+  ["Virginia Valor FC ECNL RL B2012/13","M","U14","ECNL-RL","ECNL RL B2012/13"],
+  ["Virginia Valor FC ECNL RL B2013/14","M","U13","ECNL-RL","ECNL RL B2013/14"],
+  ["Virginia Valor FC ECNL RL G2008/09","F","U18","ECNL-RL","ECNL RL G2008/09"],
+  ["Virginia Valor FC ECNL RL G2009/10","F","U17","ECNL-RL","ECNL RL G2009/10"],
+  ["Virginia Valor FC ECNL RL G2010/11","F","U16","ECNL-RL","ECNL RL G2010/11"],
+  ["Virginia Valor FC ECNL RL G2011/12","F","U15","ECNL-RL","ECNL RL G2011/12"],
+  ["Virginia Valor FC ECNL RL G2012/13","F","U14","ECNL-RL","ECNL RL G2012/13"],
+  ["Virginia Valor FC ECNL RL G2013/14","F","U13","ECNL-RL","ECNL RL G2013/14"],
+  ["Virginia Valor FC G2009/10 Gold","F","U17","NCSL","G2009/10 Gold"],
+  ["Virginia Valor FC G2010/11 Gold","F","U16","NCSL","G2010/11 Gold"],
+  ["Virginia Valor FC G2011/12 Gold","F","U15","NCSL","G2011/12 Gold"],
+  ["Virginia Valor FC G2011/12 White","F","U15","NCSL","G2011/12 White"],
+  ["Virginia Valor FC G2012/13 Gold","F","U14","NCSL","G2012/13 Gold"],
+  ["Virginia Valor FC G2014/15 White","F","U12","NCSL","G2014/15 White"],
+  ["Virginia Valor FC G2015/16 White","F","U11","NCSL","G2015/16 White"],
+  ["Virginia Valor FC G2016/17 Gold","F","U10","NCSL","G2016/17 Gold"],
+  ["Virginia Valor FC G2016/17 White","F","U10","NCSL","G2016/17 White"],
+  ["Virginia Valor FC G2017/18 Black","F","U9","NCSL","G2017/18 Black"],
+  ["Virginia Valor FC G2017/18 Gold","F","U9","NCSL","G2017/18 Gold"],
+  ["Virginia Valor FC G2017/18 White","F","U9","NCSL","G2017/18 White"],
+  ["Virginia Valor FC N1 B2011/12 Gold","M","U15","NCSL","N1 B2011/12 Gold"],
+  ["Virginia Valor FC Pre-ECNL B2014/15 Brave","M","U12","ECNL-RL","Pre-ECNL B2014/15 Brave"],
+  ["Virginia Valor FC Pre-ECNL B2014/15 Courage","M","U12","ECNL-RL","Pre-ECNL B2014/15 Courage"],
+  ["Virginia Valor FC Pre-ECNL B2015/16 Brave","M","U11","ECNL-RL","Pre-ECNL B2015/16 Brave"],
+  ["Virginia Valor FC Pre-ECNL B2015/16 Courage","M","U11","ECNL-RL","Pre-ECNL B2015/16 Courage"],
+  ["Virginia Valor FC Pre-ECNL G2014/15 Brave","F","U12","ECNL-RL","Pre-ECNL G2014/15 Brave"],
+  ["Virginia Valor FC Pre-ECNL G2015/16 Brave","F","U11","ECNL-RL","Pre-ECNL G2015/16 Brave"],
+  ["Virginia Valor FC Pre-ECNL G2015/16 Courage","F","U11","NCSL","Pre-ECNL G2015/16 Courage"],
+  ["Virginia Valor Pre-ECNL G2014/15 Courage","F","U12","NCSL","Pre-ECNL G2014/15 Courage"],
+  ["Virginia Valor U10B Silver","M","U10","NCSL","U10B Silver"],
+  ["Virginia Valor U10G Black","F","U10","NCSL","U10G Black"],
+  ["Virginia Valor U11B Black","M","U11","NCSL","U11B Black"],
+  ["Virginia Valor U13G Gold","F","U13","NCSL","U13G Gold"],
+  ["Virginia Valor U17B Gold","M","U17","NCSL","U17B Gold"],
+];
+
 const coachNameEl = document.getElementById('coachName');
-const teamEl = document.getElementById('team');
+const genderEl = document.getElementById('gender');
+const ageEl = document.getElementById('ageGroup');
+const teamEl = document.getElementById('teamSelect');
+const teamLeagueEl = document.getElementById('teamLeague');
 const emailEl = document.getElementById('email');
 const checkBtn = document.getElementById('checkBtn');
 const confirmVeil = document.getElementById('confirmVeil');
@@ -638,6 +751,62 @@ function escapeHtml(s) {
     return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
   });
 }
+
+/* ====== TEAM CASCADE ====== */
+function ageNum(a) { return parseInt(a.slice(1), 10); }
+
+function populateAges(gender, keep) {
+  const ages = [];
+  TEAMS.forEach(function (t) {
+    if (t[1] === gender && ages.indexOf(t[2]) === -1) ages.push(t[2]);
+  });
+  ages.sort(function (a, b) { return ageNum(a) - ageNum(b); });
+  ageEl.innerHTML = '<option value="">Select…</option>' +
+    ages.map(function (a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
+  ageEl.disabled = !gender;
+  if (!gender) ageEl.innerHTML = '<option value="">Select gender first</option>';
+  if (keep && ages.indexOf(keep) > -1) ageEl.value = keep;
+}
+
+function populateTeams(gender, age, keep) {
+  const list = TEAMS.filter(function (t) { return t[1] === gender && t[2] === age; });
+  list.sort(function (a, b) { return a[4].localeCompare(b[4]); });
+  teamEl.innerHTML = '<option value="">Select…</option>' +
+    list.map(function (t) {
+      return '<option value="' + t[0].replace(/"/g, '&quot;') + '">' + escapeHtml(t[4]) + '</option>';
+    }).join('');
+  teamEl.disabled = !(gender && age);
+  if (!gender) teamEl.innerHTML = '<option value="">Select gender first</option>';
+  else if (!age) teamEl.innerHTML = '<option value="">Select age group first</option>';
+  if (keep) teamEl.value = keep;
+  showLeague();
+}
+
+function showLeague() {
+  const t = TEAMS.filter(function (x) { return x[0] === teamEl.value; })[0];
+  teamLeagueEl.textContent = t ? t[3] : '';
+}
+
+// Set all three selects from a stored full team name.
+function setTeamByName(fullName) {
+  const t = TEAMS.filter(function (x) { return x[0] === fullName; })[0];
+  if (!t) return false;
+  genderEl.value = t[1];
+  populateAges(t[1], t[2]);
+  populateTeams(t[1], t[2], t[0]);
+  return true;
+}
+
+genderEl.addEventListener('change', function () {
+  populateAges(genderEl.value);
+  populateTeams(genderEl.value, '');
+  refreshValidity();
+});
+ageEl.addEventListener('change', function () {
+  populateTeams(genderEl.value, ageEl.value);
+  refreshValidity();
+});
+teamEl.addEventListener('change', function () { showLeague(); refreshValidity(); });
 
 function renderWeekPanel() {
   if (!weekInfo.open) {
@@ -698,7 +867,7 @@ function refreshValidity() {
     if (state === 'incomplete') anyInvalid = true;
   });
   const emailOk = validEmail(emailEl.value);
-  const idOk = coachNameEl.value.trim() && teamEl.value.trim() && emailOk;
+  const idOk = coachNameEl.value.trim() && teamEl.value && emailOk;
   checkBtn.disabled = !emailOk;
   const valid = idOk && anyComplete && !anyInvalid && weekInfo.open;
   submitBtn.disabled = !valid;
@@ -742,7 +911,7 @@ async function runLookup(email) {
     if (data.found) {
       fillSlots(data.players);
       if (data.coachName && !coachNameEl.value.trim()) coachNameEl.value = data.coachName;
-      if (data.team && !teamEl.value.trim()) teamEl.value = data.team;
+      if (data.team && !teamEl.value) setTeamByName(data.team);
       lookupStatus.textContent = 'Found your Week ' + weekInfo.weekNumber +
         ' picks — edit anything below and resubmit.';
       lookupStatus.classList.add('editing');
@@ -824,7 +993,7 @@ form.addEventListener('submit', async (e) => {
     week: weekInfo.weekNumber,
     coachName: coachNameEl.value.trim(),
     email: emailEl.value.trim(),
-    team: teamEl.value.trim(),
+    team: teamEl.value,
     players
   };
 
