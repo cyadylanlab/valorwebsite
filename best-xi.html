@@ -167,6 +167,35 @@ body {
   background: rgba(190,60,50,0.22);
   border-color: rgba(220,90,80,0.55);
 }
+.wp-countdown.passed {
+  color: #FFCFC8;
+  background: rgba(150,40,32,0.30);
+  border-color: rgba(210,80,70,0.6);
+}
+.wp-late-note {
+  margin-top: 8px;
+  font-family: var(--font-b);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.62);
+  max-width: 270px;
+}
+.week-panel.past .wp-status { color: #E8A79E; }
+.week-panel.past .wp-dot { background: #C9564A; box-shadow: 0 0 0 3px rgba(201,86,74,0.25); }
+.week-panel.past .wp-right { border-left-color: #8A3A31; }
+.week-panel.past .wp-due-when { color: rgba(255,255,255,0.55); text-decoration: line-through; text-decoration-thickness: 1px; }
+.late-banner {
+  background: #FDF3F1;
+  border: 1px solid #E8C4BD;
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin-bottom: 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #6B3A34;
+}
+.late-banner strong { color: var(--red); }
 .week-panel.closed .wp-inner { justify-content: flex-start; }
 .week-panel.closed .wp-status { color: rgba(255,255,255,0.5); }
 .week-panel.closed .wp-dot { background: rgba(255,255,255,0.35); box-shadow: none; }
@@ -453,6 +482,12 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
 
 <main>
 
+  <div class="late-banner" id="lateBanner" style="display:none;">
+    <strong>This week's deadline has passed.</strong> You can still submit and I'll
+    review what comes in, but picks sent after the Wednesday 5:00 PM cutoff aren't
+    guaranteed to make that week's Best XI.
+  </div>
+
   <form id="bestXiForm" novalidate>
 
     <div class="card">
@@ -638,12 +673,30 @@ function weekWeekend(w) {
   sun.setDate(sun.getDate() + 1);
   return { sat, sun };
 }
+// A week stays open until the NEXT weekend's games begin. The Wednesday
+// 5:00 PM deadline is a soft cutoff inside that window — past it, picks are
+// still accepted but flagged late.
+function weekStart(w) {
+  const d = new Date(seasonStart().getTime());
+  d.setDate(d.getDate() + (w - 1) * 7);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
 function getWeekInfo() {
   const now = nowEastern();
-  for (let w = 1; w <= TOTAL_WEEKS; w++) {
-    if (now <= weekDeadline(w)) return { open: true, weekNumber: w, deadline: weekDeadline(w), weekend: weekWeekend(w), now };
+  if (now < weekStart(1)) {
+    return { open: true, weekNumber: 1, late: false, deadline: weekDeadline(1), weekend: weekWeekend(1), now };
   }
-  return { open: false, weekNumber: null, now };
+  for (let w = 1; w <= TOTAL_WEEKS; w++) {
+    if (now < weekStart(w + 1)) {
+      return {
+        open: true, weekNumber: w,
+        late: now > weekDeadline(w),
+        deadline: weekDeadline(w), weekend: weekWeekend(w), now
+      };
+    }
+  }
+  return { open: false, weekNumber: null, late: false, now };
 }
 function fmtDate(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
 function fmtTime(d) { return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); }
@@ -662,6 +715,7 @@ let lookupTimer = null;
 
 /* ====== ELEMENTS ====== */
 const weekPanel = document.getElementById('weekPanel');
+const lateBanner = document.getElementById('lateBanner');
 const form = document.getElementById('bestXiForm');
 const closedPanel = document.getElementById('closedPanel');
 const submitBtn = document.getElementById('submitBtn');
@@ -811,6 +865,7 @@ teamEl.addEventListener('change', function () { showLeague(); refreshValidity();
 function renderWeekPanel() {
   if (!weekInfo.open) {
     weekPanel.classList.add('closed');
+    lateBanner.style.display = 'none';
     weekPanel.innerHTML =
       '<div class="wp-inner">' +
       '<div class="wp-left">' +
@@ -824,21 +879,29 @@ function renderWeekPanel() {
   }
   const { weekNumber, deadline, weekend, now } = weekInfo;
   const hoursLeft = (deadline - now) / 3600000;
+  const isLate = !!weekInfo.late;
   const dueDay = deadline.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  weekPanel.classList.toggle('past', isLate);
+  weekPanel.classList.remove('closed');
   weekPanel.innerHTML =
     '<div class="wp-inner">' +
     '<div class="wp-left">' +
-      '<div class="wp-status"><span class="wp-dot"></span>Nominations open</div>' +
+      '<div class="wp-status"><span class="wp-dot"></span>' +
+        (isLate ? 'Past deadline — still accepting' : 'Nominations open') + '</div>' +
       '<div class="wp-week">Week ' + weekNumber + '</div>' +
       '<div class="wp-games">Games ' + fmtDate(weekend.sat) + ' – ' + fmtDate(weekend.sun) + '</div>' +
     '</div>' +
     '<div class="wp-right">' +
       '<div class="wp-due-label">Picks due</div>' +
       '<div class="wp-due-when">' + dueDay + ', ' + fmtTime(deadline) + ' ET</div>' +
-      '<span class="wp-countdown' + (hoursLeft <= 24 ? ' urgent' : '') + '">' +
-        countdownText(deadline, now) + '</span>' +
+      '<span class="wp-countdown' + (isLate ? ' passed' : (hoursLeft <= 24 ? ' urgent' : '')) + '">' +
+        (isLate ? 'Deadline passed' : countdownText(deadline, now)) + '</span>' +
+      (isLate
+        ? '<div class="wp-late-note">You can still submit, but late picks aren\'t guaranteed a spot in this week\'s Best XI.</div>'
+        : '') +
     '</div>' +
     '</div>';
+  lateBanner.style.display = isLate ? 'block' : 'none';
 }
 renderWeekPanel();
 setInterval(() => { weekInfo = getWeekInfo(); renderWeekPanel(); }, 60000);
@@ -1006,19 +1069,23 @@ form.addEventListener('submit', async (e) => {
     const data = await res.json();
     if (data.success) {
       submitMsg.textContent = '';
-      confirmTitle.textContent = data.isEdit ? 'Picks updated' : 'Submitted';
+      const late = !!data.late;
+      confirmTitle.textContent = data.isEdit ? 'Picks updated' : (late ? 'Submitted late' : 'Submitted');
       confirmSub.innerHTML = (data.isEdit
         ? 'Your Week ' + data.week + ' nominations have been updated.'
-        : 'Your Week ' + data.week + ' nominations are in.');
+        : 'Your Week ' + data.week + ' nominations are in.') +
+        (late ? '<br><span style="color:var(--red);">This came in after the deadline, so it isn\'t guaranteed a spot this week.</span>' : '');
       confirmList.innerHTML = players.map(function (p, i) {
         return '<div class="modal-list-row">' +
           '<div class="ml-num">#' + escapeHtml(p.number) + '</div>' +
           '<div class="ml-name">' + escapeHtml(p.name) + '</div></div>';
       }).join('');
       const dl = weekInfo.deadline;
-      confirmNote.textContent = 'You can come back and change these until ' +
-        dl.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }) +
-        ' at ' + fmtTime(dl) + ' ET. Just re-enter your email to pull them back up.';
+      confirmNote.textContent = late
+        ? 'You can still edit these while Week ' + data.week + ' is open. Re-enter your email to pull them back up.'
+        : 'You can come back and change these until ' +
+          dl.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }) +
+          ' at ' + fmtTime(dl) + ' ET. Just re-enter your email to pull them back up.';
       openModal(confirmVeil);
     } else {
       submitMsg.textContent = data.error || 'Something went wrong. Try again.';
