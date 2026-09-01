@@ -430,6 +430,11 @@ main { max-width: 640px; margin: 0 auto; padding: 24px 18px 60px; }
   border-radius: 999px; padding: 2px 8px;
 }
 .hist-when { font-family: var(--font-c); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--mid-grey); }
+.hist-team {
+  font-family: var(--font-c); font-size: 12px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 6px;
+}
 .hist-player { font-size: 14px; color: var(--near-black); padding: 3px 0; }
 .hist-player span { font-family: var(--font-d); color: var(--gold-deep); font-weight: 600; margin-right: 7px; }
 .hist-empty { text-align: center; color: var(--warm-grey); padding: 18px 0; font-size: 14.5px; }
@@ -854,13 +859,24 @@ function setTeamByName(fullName) {
 genderEl.addEventListener('change', function () {
   populateAges(genderEl.value);
   populateTeams(genderEl.value, '');
+  clearSlots();
+  lookupStatus.textContent = '';
   refreshValidity();
 });
 ageEl.addEventListener('change', function () {
   populateTeams(genderEl.value, ageEl.value);
+  clearSlots();
+  lookupStatus.textContent = '';
   refreshValidity();
 });
-teamEl.addEventListener('change', function () { showLeague(); refreshValidity(); });
+teamEl.addEventListener('change', function () {
+  showLeague();
+  clearSlots();          // picks belong to a team, not to the coach
+  lookupStatus.textContent = '';
+  lookupStatus.className = 'lookup-status';
+  refreshValidity();
+  scheduleLookup();      // pull up this team's existing picks, if any
+});
 
 function renderWeekPanel() {
   if (!weekInfo.open) {
@@ -956,30 +972,38 @@ function fillSlots(players) {
     slotEl.querySelector('[data-field=writeup]').value = p.writeup || '';
   });
 }
+// A submission is identified by week + email + team, so a coach with more
+// than one team gets an independent set of picks per team.
 function scheduleLookup() {
   clearTimeout(lookupTimer);
   const email = emailEl.value.trim();
-  if (!validEmail(email) || !weekInfo.open) { lookupStatus.textContent = ''; return; }
-  lookupTimer = setTimeout(() => runLookup(email), 400);
+  const team = teamEl.value;
+  if (!validEmail(email) || !team || !weekInfo.open) { lookupStatus.textContent = ''; return; }
+  lookupTimer = setTimeout(() => runLookup(email, team), 400);
 }
-async function runLookup(email) {
+async function runLookup(email, team) {
   if (isPlaceholderUrl()) return;
+  const teamLabel = teamEl.options[teamEl.selectedIndex]
+    ? teamEl.options[teamEl.selectedIndex].textContent : team;
   lookupStatus.textContent = 'Checking for an existing submission…';
   lookupStatus.className = 'lookup-status';
   try {
     const url = WEBAPP_URL + '?action=lookup&week=' + weekInfo.weekNumber +
-      '&email=' + encodeURIComponent(email);
+      '&email=' + encodeURIComponent(email) + '&team=' + encodeURIComponent(team);
     const res = await fetch(url);
     const data = await res.json();
+    // Ignore a stale response if the coach switched teams mid-request.
+    if (teamEl.value !== team) return;
     if (data.found) {
       fillSlots(data.players);
       if (data.coachName && !coachNameEl.value.trim()) coachNameEl.value = data.coachName;
-      if (data.team && !teamEl.value) setTeamByName(data.team);
       lookupStatus.textContent = 'Found your Week ' + weekInfo.weekNumber +
-        ' picks — edit anything below and resubmit.';
+        ' picks for ' + teamLabel + ' — edit anything below and resubmit.';
       lookupStatus.classList.add('editing');
     } else {
-      lookupStatus.textContent = 'No Week ' + weekInfo.weekNumber + ' submission yet.';
+      clearSlots();
+      lookupStatus.textContent = 'New Week ' + weekInfo.weekNumber +
+        ' submission for ' + teamLabel + '.';
     }
     refreshValidity();
   } catch (err) { lookupStatus.textContent = ''; }
@@ -1025,12 +1049,16 @@ checkBtn.addEventListener('click', async () => {
         return '<div class="hist-player"><span>#' + escapeHtml(p.number) + '</span>' +
           escapeHtml(p.name) + '</div>';
       }).join('');
+      const shortTeam = String(w.team || '')
+        .replace(/^Virginia Valor FC /, '').replace(/^Virginia Valor /, '');
       return '<div class="hist-week' + (isCurrent ? ' current' : '') + '">' +
         '<div class="hist-head">' +
           '<div class="hist-wk">Week ' + w.week +
             (isCurrent ? '<span class="hist-open">Open</span>' : '') + '</div>' +
           '<div class="hist-when">' + escapeHtml(w.lastUpdated) + '</div>' +
-        '</div>' + rows + '</div>';
+        '</div>' +
+        (shortTeam ? '<div class="hist-team">' + escapeHtml(shortTeam) + '</div>' : '') +
+        rows + '</div>';
     }).join('');
   } catch (err) {
     histBody.innerHTML = '<div class="hist-empty">Could not load your submissions. Try again.</div>';
@@ -1071,9 +1099,11 @@ form.addEventListener('submit', async (e) => {
       submitMsg.textContent = '';
       const late = !!data.late;
       confirmTitle.textContent = data.isEdit ? 'Picks updated' : (late ? 'Submitted late' : 'Submitted');
+      const teamLabel = teamEl.options[teamEl.selectedIndex]
+        ? teamEl.options[teamEl.selectedIndex].textContent : '';
       confirmSub.innerHTML = (data.isEdit
-        ? 'Your Week ' + data.week + ' nominations have been updated.'
-        : 'Your Week ' + data.week + ' nominations are in.') +
+        ? 'Your Week ' + data.week + ' nominations for <strong>' + escapeHtml(teamLabel) + '</strong> have been updated.'
+        : 'Your Week ' + data.week + ' nominations for <strong>' + escapeHtml(teamLabel) + '</strong> are in.') +
         (late ? '<br><span style="color:var(--red);">This came in after the deadline, so it isn\'t guaranteed a spot this week.</span>' : '');
       confirmList.innerHTML = players.map(function (p, i) {
         return '<div class="modal-list-row">' +
