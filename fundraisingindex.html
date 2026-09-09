@@ -150,6 +150,75 @@
     margin: 0 0 12px;
   }
 
+  /* Share link */
+  .share-card {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+  }
+
+  .share-card .share-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .share-card .share-sub {
+    font-size: 0.86rem;
+    color: var(--grey);
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+
+  a.share-url {
+    display: block;
+    width: 100%;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88rem;
+    color: var(--black);
+    background: #FAFAFA;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 11px 12px;
+    word-break: break-all;
+    text-decoration: none;
+  }
+
+  a.share-url:hover { border-color: var(--gold); background: #F7F5F0; }
+
+  .share-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .share-actions button {
+    flex: 1 1 0;
+    width: auto;
+    margin-top: 0;
+    padding: 11px 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    background: var(--white);
+    color: var(--black);
+    border: 1px solid var(--border);
+  }
+
+  .share-actions button:hover:not(:disabled) {
+    background: #FAFAFA;
+    border-color: var(--gold);
+  }
+
+  .share-actions button.primary {
+    background: var(--black);
+    color: var(--gold);
+    border-color: var(--black);
+  }
+
+  .share-actions button.primary:hover:not(:disabled) { background: #232323; }
+
   .stats-row { display: flex; gap: 10px; margin-bottom: 34px; }
 
   .stat-box {
@@ -653,6 +722,9 @@
     .money-box.committed,
     .money-box.available { flex: 1 0 calc(50% - 5px); }
     .money-box .money-value { font-size: 1.55rem; }
+
+    .share-actions { flex-wrap: wrap; }
+    .share-actions button { flex: 1 1 calc(50% - 4px); }
 
     .stats-row { flex-wrap: wrap; }
     .stat-box { min-width: calc(50% - 5px); }
