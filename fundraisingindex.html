@@ -380,6 +380,47 @@
 
   .ledger-note strong { color: var(--black); font-weight: 600; }
 
+  .fee-breakdown {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--grey);
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 5px;
+  }
+
+  .fee-breakdown .fee-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 2px 0;
+  }
+
+  .fee-breakdown .fee-line.net {
+    font-weight: 700;
+    color: var(--black);
+    border-top: 1px solid rgba(166,135,61,0.3);
+    margin-top: 5px;
+    padding-top: 6px;
+  }
+
+  .fee-breakdown .fee-explain { margin-top: 8px; font-size: 0.8rem; }
+
+  .export-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--black);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 7px 12px;
+    width: auto;
+    border-radius: 4px;
+  }
+
+  .export-btn:hover:not(:disabled) { background: #FAFAFA; border-color: var(--gold); }
+
   .pending-note {
     font-size: 0.82rem;
     color: #8A5A00;
@@ -689,11 +730,28 @@
           <div class="money-value" id="money-available">$0</div>
         </div>
       </div>
+      <div class="fee-breakdown" id="fee-breakdown" style="display:none;">
+        <div class="fee-line"><span>Donations received</span><span id="fee-gross">$0</span></div>
+        <div class="fee-line"><span id="fee-label">Card processing fees</span><span id="fee-amount">$0</span></div>
+        <div class="fee-line net"><span>Net to your team</span><span id="fee-net">$0</span></div>
+        <div class="fee-explain" id="fee-explain"></div>
+      </div>
       <div class="pending-note" id="pending-note" style="display:none;"></div>
       <div class="ledger-note">
         <strong>This page is your team's running tally, not a bank account.</strong>
         Your money is held by the club, and the club's monthly financial reports remain the official record.
         "Committed" means an expense has been approved here &mdash; the club pays the vendor directly.
+      </div>
+    </div>
+
+    <div class="share-card" id="share-card" style="display:none;">
+      <div class="share-title">Your team's donation link</div>
+      <div class="share-sub">Share this with families, friends, and sponsors. It is the same link behind your QR code, so you can always get back to it here.</div>
+      <a class="share-url" id="share-url" href="#" target="_blank" rel="noopener noreferrer"></a>
+      <div class="share-actions">
+        <button class="primary" id="copy-link-btn">Copy Link</button>
+        <button id="share-link-btn" style="display:none;">Share</button>
+        <button id="qr-link-btn">Open Link</button>
       </div>
     </div>
 
@@ -782,7 +840,10 @@
     <div class="donations-section">
       <div class="section-head">
         <span class="section-label">Donations</span>
-        <span class="section-hint" style="margin:0;" id="donation-count"></span>
+        <span style="display:flex; align-items:center; gap:12px;">
+          <span class="section-hint" style="margin:0;" id="donation-count"></span>
+          <button class="export-btn" id="export-btn" title="Download as a spreadsheet">Export CSV</button>
+        </span>
       </div>
       <div id="donations-list"></div>
     </div>
@@ -811,6 +872,7 @@
         <p>Never use a personal Square account, Venmo, Cash App, PayPal, or Zelle &mdash; for the club's sake and yours (a personal account can end up with a 1099-K for club money).</p>
 
         <h3>Processing Fees</h3>
+        <p>Card fees come out of what your team raised, so the Net figure at the top of this page is what is actually available to spend. Your donation list shows the exact fee on each gift.</p>
         <ul>
           <li>Square link or QR code: 3.3% + $0.30</li>
           <li>Club reader at an event: 2.6% + $0.15</li>
@@ -1018,6 +1080,26 @@
     document.getElementById('money-committed').textContent = formatCurrency(fin.committed, false);
     document.getElementById('money-available').textContent = formatCurrency(fin.available, false);
 
+    // Fee transparency: show gross, what Square took, and what actually landed
+    const feeBox = document.getElementById('fee-breakdown');
+    if (fin.raised > 0) {
+      const fees = fin.fees || 0;
+      const net = fin.net != null ? fin.net : fin.raised - fees;
+      document.getElementById('fee-gross').textContent = formatCurrency(fin.raised);
+      document.getElementById('fee-amount').textContent = fees > 0 ? '\u2212' + formatCurrency(fees) : formatCurrency(0);
+      document.getElementById('fee-net').textContent = formatCurrency(net);
+
+      const pct = fin.raised > 0 ? (fees / fin.raised) * 100 : 0;
+      document.getElementById('fee-label').textContent =
+        'Card processing fees' + (fees > 0 ? ' (' + pct.toFixed(1) + '%)' : '');
+      document.getElementById('fee-explain').textContent = fees > 0
+        ? 'Square charges a fee on card donations, so a little less arrives than what donors gave. Cash and checks have no fee. Available is based on the net figure.'
+        : 'No card processing fees on this team\u2019s donations yet.';
+      feeBox.style.display = 'block';
+    } else {
+      feeBox.style.display = 'none';
+    }
+
     const pendingNote = document.getElementById('pending-note');
     if (fin.pending > 0) {
       pendingNote.textContent = formatCurrency(fin.pending, false) + ' in requests awaiting approval.';
@@ -1036,6 +1118,19 @@
     } else {
       document.getElementById('stat-top-amount').textContent = '\u2014';
       document.getElementById('stat-top-name').textContent = '';
+    }
+
+    // Team's own donation link, so a lost QR code is never a dead end
+    const shareCard = document.getElementById('share-card');
+    const shareUrl = document.getElementById('share-url');
+    if (data.squareLink) {
+      shareUrl.textContent = data.squareLink;
+      shareUrl.href = data.squareLink;
+      shareCard.style.display = 'block';
+      document.getElementById('share-link-btn').style.display =
+        (navigator.share ? 'block' : 'none');
+    } else {
+      shareCard.style.display = 'none';
     }
 
     renderGoals(data.goals || []);
@@ -1155,6 +1250,7 @@
       const when = formatTimestamp(t.date);
       if (when) metaParts.push(when);
       if (t.method) metaParts.push(t.method);
+      if (t.fee > 0) metaParts.push(formatCurrency(t.fee) + ' fee');
 
       div.innerHTML =
         '<div class="row1">' +
@@ -1481,6 +1577,132 @@
     }
   }
 
+
+
+  /* ---------- share link ---------- */
+
+  function currentShareLink() {
+    const el = document.getElementById('share-url');
+    return el ? el.textContent.trim() : '';
+  }
+
+  async function copyShareLink() {
+    const link = currentShareLink();
+    if (!link) return;
+
+    try {
+      await navigator.clipboard.writeText(link);
+      showToast('Link copied');
+      return;
+    } catch (e) {
+      // Clipboard API needs a secure context and permission; fall back to
+      // the old selection trick so this still works everywhere.
+    }
+
+    try {
+      const tmp = document.createElement('textarea');
+      tmp.value = link;
+      tmp.setAttribute('readonly', '');
+      tmp.style.position = 'fixed';
+      tmp.style.opacity = '0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(tmp);
+      showToast(ok ? 'Link copied' : 'Press and hold the link to copy it');
+    } catch (e) {
+      showToast('Press and hold the link to copy it');
+    }
+  }
+
+  async function shareTeamLink() {
+    const link = currentShareLink();
+    if (!link || !navigator.share) return;
+
+    let team = '';
+    try {
+      const saved = sessionStorage.getItem('valor_team_session');
+      if (saved) team = (JSON.parse(saved).data || {}).team || '';
+    } catch (e) {}
+
+    try {
+      await navigator.share({
+        title: team ? 'Support ' + team : 'Support our team',
+        text: team
+          ? 'Help support ' + team + ' at Virginia Valor FC:'
+          : 'Help support our team at Virginia Valor FC:',
+        url: link
+      });
+    } catch (e) {
+      // User dismissed the share sheet; nothing to do
+    }
+  }
+
+  function openTeamLink() {
+    const link = currentShareLink();
+    if (link) window.open(link, '_blank', 'noopener');
+  }
+
+  /* ---------- export ---------- */
+
+  function csvCell(value) {
+    const s = value == null ? '' : String(value);
+    // Quote anything containing a comma, quote, or newline; double internal quotes
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function exportDonationsCsv() {
+    let saved = null;
+    try { saved = sessionStorage.getItem('valor_team_session'); } catch (e) {}
+    if (!saved) { showToast('Nothing to export yet'); return; }
+
+    let data;
+    try { data = JSON.parse(saved).data || {}; } catch (e) { showToast('Nothing to export yet'); return; }
+
+    const rows = data.transactions || [];
+    if (!rows.length) { showToast('No donations to export yet'); return; }
+
+    const header = ['Date', 'Donor Name', 'Donor Email', 'Amount', 'Processing Fee', 'Net', 'Payment Method', 'Note'];
+    const lines = [header.map(csvCell).join(',')];
+
+    rows.forEach(function (t) {
+      const amount = Number(t.amount) || 0;
+      const fee = Number(t.fee) || 0;
+      lines.push([
+        formatTimestamp(t.date),
+        t.donorName || '',
+        t.donorEmail || '',
+        amount.toFixed(2),
+        fee.toFixed(2),
+        (amount - fee).toFixed(2),
+        t.method || '',
+        t.note || ''
+      ].map(csvCell).join(','));
+    });
+
+    // Totals row so the spreadsheet reconciles at a glance
+    const totalAmt = rows.reduce(function (s, t) { return s + (Number(t.amount) || 0); }, 0);
+    const totalFee = rows.reduce(function (s, t) { return s + (Number(t.fee) || 0); }, 0);
+    lines.push('');
+    lines.push(['', 'TOTAL', '', totalAmt.toFixed(2), totalFee.toFixed(2), (totalAmt - totalFee).toFixed(2), '', ''].map(csvCell).join(','));
+
+    // BOM so Excel opens accented names and the currency correctly
+    const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const teamSlug = (data.team || 'team').replace(/[^A-Za-z0-9]+/g, '');
+    const today = new Date().toISOString().slice(0, 10);
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ValorDonations_' + teamSlug + '_' + today + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+
+    showToast('Downloaded ' + rows.length + ' donation' + (rows.length === 1 ? '' : 's'));
+  }
+
   /* ---------- policy ---------- */
 
   function togglePolicy() {
@@ -1500,6 +1722,10 @@
   document.getElementById('goal-save-btn').addEventListener('click', saveGoal);
   document.getElementById('goal-cancel-btn').addEventListener('click', closeGoalForm);
   document.getElementById('policy-toggle').addEventListener('click', togglePolicy);
+  document.getElementById('export-btn').addEventListener('click', exportDonationsCsv);
+  document.getElementById('copy-link-btn').addEventListener('click', copyShareLink);
+  document.getElementById('share-link-btn').addEventListener('click', shareTeamLink);
+  document.getElementById('qr-link-btn').addEventListener('click', openTeamLink);
   document.getElementById('add-alloc-btn').addEventListener('click', function () { openAllocForm(null); });
   document.getElementById('alloc-save-btn').addEventListener('click', submitAllocation);
   document.getElementById('alloc-cancel-btn').addEventListener('click', closeAllocForm);
