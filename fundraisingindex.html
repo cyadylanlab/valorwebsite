@@ -586,6 +586,23 @@
   .donation .row1 { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .donation .donor { font-weight: 700; font-size: 1.02rem; }
   .donation .amount { font-weight: 700; font-size: 1.02rem; color: var(--gold); white-space: nowrap; }
+  .donation .amount-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .donation .amount-sub {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--grey);
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+
+  .donation .amount-sub .net-val { color: var(--black); font-weight: 700; }
+
   .donation .meta-line { color: var(--grey); font-size: 0.84rem; margin-top: 2px; }
 
   .donation .note {
@@ -1322,12 +1339,23 @@
       const when = formatTimestamp(t.date);
       if (when) metaParts.push(when);
       if (t.method) metaParts.push(t.method);
-      if (t.fee > 0) metaParts.push(formatCurrency(t.fee) + ' fee');
+
+      // Show the gift as given, then what Square took and what actually
+      // landed, right beside the amount so the math is obvious.
+      const fee = Number(t.fee) || 0;
+      const amount = Number(t.amount) || 0;
+      const amountSub = fee > 0
+        ? '<span class="amount-sub">\u2212' + formatCurrency(fee) + ' fee \u00b7 ' +
+          '<span class="net-val">' + formatCurrency(amount - fee) + ' net</span></span>'
+        : '';
 
       div.innerHTML =
         '<div class="row1">' +
           '<span class="donor">' + escapeHtml(t.donorName || 'Anonymous') + '</span>' +
-          '<span class="amount">' + formatCurrency(t.amount) + '</span>' +
+          '<span class="amount-block">' +
+            '<span class="amount">' + formatCurrency(amount) + '</span>' +
+            amountSub +
+          '</span>' +
         '</div>' +
         (metaParts.length ? '<div class="meta-line">' + escapeHtml(metaParts.join(' \u00b7 ')) + '</div>' : '') +
         (t.note ? '<div class="note">' + escapeHtml(t.note) + '</div>' : '');
