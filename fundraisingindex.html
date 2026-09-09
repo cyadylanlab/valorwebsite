@@ -150,21 +150,6 @@
     margin: 0 0 12px;
   }
 
-  .total-block .amount {
-    font-family: 'Anton', sans-serif;
-    font-size: 2.7rem;
-    color: var(--gold);
-    line-height: 1;
-  }
-
-  .total-block .amount-label {
-    font-size: 0.78rem;
-    color: var(--grey);
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    margin-top: 5px;
-  }
-
   .stats-row { display: flex; gap: 10px; margin-bottom: 34px; }
 
   .stat-box {
@@ -591,12 +576,50 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+  /* Comfortable tap targets for the small controls, on every screen size.
+     The goal Edit / delete buttons are the smallest things on the page. */
+  .icon-btn { min-width: 38px; min-height: 34px; }
+
   @media (max-width: 460px) {
-    .header-text h1 { font-size: 2rem; }
-    .header-crest { height: 54px; }
+    header { padding: 28px 18px 32px; }
+    main { padding: 28px 18px 52px; }
+
+    .header-inner { gap: 14px; }
+    .header-crest { height: 52px; }
+    .header-text h1 { font-size: 1.95rem; }
+
+    .total-block { padding: 18px 18px 20px; }
+
+    /* Three columns do not fit once a team clears four figures.
+       Raised becomes the headline; the other two share the row below. */
+    .money-row { flex-wrap: wrap; gap: 16px 10px; }
+    .money-box.raised { flex: 1 0 100%; }
+    .money-box.raised .money-value { font-size: 2.4rem; }
+    .money-box.committed,
+    .money-box.available { flex: 1 0 calc(50% - 5px); }
+    .money-box .money-value { font-size: 1.55rem; }
+
     .stats-row { flex-wrap: wrap; }
     .stat-box { min-width: calc(50% - 5px); }
-    .total-block .amount { font-size: 2.3rem; }
+
+    /* Stack form buttons so neither gets squeezed to an unreadable width */
+    .goal-form-actions { flex-direction: column-reverse; }
+    .goal-form-actions button { width: 100%; }
+
+    .icon-btn { min-width: 44px; min-height: 40px; font-size: 1rem; }
+
+    /* Roomier tap area on the footer links */
+    .footer-row { gap: 22px; }
+    .text-link { padding: 8px 0; }
+
+    .section-head { flex-wrap: wrap; gap: 2px 12px; }
+  }
+
+  @media (max-width: 340px) {
+    .money-box.committed,
+    .money-box.available { flex: 1 0 100%; }
+    .stat-box { min-width: 100%; }
+    .header-text h1 { font-size: 1.75rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
