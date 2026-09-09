@@ -420,6 +420,20 @@
     white-space: pre-line;
   }
 
+  .alloc-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .alloc-actions .icon-btn {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
   .status-chip {
     display: inline-block;
     font-size: 0.72rem;
@@ -843,6 +857,7 @@
   let currentPassword = '';
   let editingGoalId = null;
   let lastFinancials = null;
+  let editingAllocId = null;
 
   /* ---------- helpers ---------- */
 
@@ -1296,20 +1311,67 @@
         (meta ? '<div class="alloc-meta">' + escapeHtml(meta) + '</div>' : '') +
         (a.note ? '<div class="alloc-note">' + escapeHtml(a.note) + '</div>' : '');
 
+      // Only a pending request can be changed by the team. Once it has been
+      // decided, the record stands and they go through the office.
+      if (key === 'requested') {
+        const actions = document.createElement('div');
+        actions.className = 'alloc-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'icon-btn';
+        editBtn.type = 'button';
+        editBtn.textContent = 'Edit';
+        editBtn.setAttribute('aria-label', 'Edit request ' + (a.what || ''));
+        editBtn.addEventListener('click', function () { openAllocForm(a); });
+
+        const withdrawBtn = document.createElement('button');
+        withdrawBtn.className = 'icon-btn danger';
+        withdrawBtn.type = 'button';
+        withdrawBtn.textContent = 'Withdraw';
+        withdrawBtn.setAttribute('aria-label', 'Withdraw request ' + (a.what || ''));
+        withdrawBtn.addEventListener('click', function () { deleteAllocation(a.id, a.what); });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(withdrawBtn);
+        card.appendChild(actions);
+      }
+
       list.appendChild(card);
     });
   }
 
-  function openAllocForm() {
+  function openAllocForm(alloc) {
     hideError('alloc-error');
-    document.getElementById('alloc-what-input').value = '';
-    document.getElementById('alloc-amount-input').value = '';
-    document.getElementById('alloc-note-input').value = '';
+
+    const titleEl = document.querySelector('#alloc-form .goal-form-title');
+    const saveBtn = document.getElementById('alloc-save-btn');
+
+    if (alloc) {
+      editingAllocId = alloc.id;
+      titleEl.textContent = 'Edit request';
+      saveBtn.textContent = 'Save Changes';
+      document.getElementById('alloc-what-input').value = alloc.what || '';
+      document.getElementById('alloc-amount-input').value = alloc.amount || '';
+      document.getElementById('alloc-note-input').value = alloc.note || '';
+    } else {
+      editingAllocId = null;
+      titleEl.textContent = 'New spending request';
+      saveBtn.textContent = 'Submit Request';
+      document.getElementById('alloc-what-input').value = '';
+      document.getElementById('alloc-amount-input').value = '';
+      document.getElementById('alloc-note-input').value = '';
+    }
 
     const hint = document.getElementById('alloc-available-hint');
     if (lastFinancials) {
-      hint.textContent = formatCurrency(lastFinancials.spendable, false) + ' available to request' +
-        (lastFinancials.pending > 0 ? ' (after ' + formatCurrency(lastFinancials.pending, false) + ' already pending)' : '');
+      // When editing, this request's own amount is already counted as pending,
+      // so it is available to itself.
+      const own = alloc ? Number(alloc.amount) || 0 : 0;
+      const ceiling = lastFinancials.spendable + own;
+      hint.textContent = formatCurrency(ceiling, false) + ' available to request' +
+        (lastFinancials.pending - own > 0
+          ? ' (after ' + formatCurrency(lastFinancials.pending - own, false) + ' already pending)'
+          : '');
     } else {
       hint.textContent = '';
     }
@@ -1322,6 +1384,7 @@
   function closeAllocForm() {
     document.getElementById('alloc-form').style.display = 'none';
     document.getElementById('add-alloc-btn').style.display = 'block';
+    editingAllocId = null;
     hideError('alloc-error');
   }
 
@@ -1340,37 +1403,81 @@
       showError('alloc-error', 'Enter an amount greater than zero.');
       return;
     }
-    if (lastFinancials && amount > lastFinancials.spendable) {
-      showError('alloc-error', 'That is more than the ' + formatCurrency(lastFinancials.spendable, false) + ' currently available to request.');
-      return;
+    if (lastFinancials) {
+      const own = editingAllocId ? findAllocAmount(editingAllocId) : 0;
+      const ceiling = lastFinancials.spendable + own;
+      if (amount > ceiling) {
+        showError('alloc-error', 'That is more than the ' + formatCurrency(ceiling, false) + ' currently available to request.');
+        return;
+      }
     }
 
+    const wasEditing = !!editingAllocId;
+    const original = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Sending...';
 
     try {
-      const data = await callApi({
+      const params = {
         email: currentEmail,
         password: currentPassword,
-        action: 'requestAllocation',
+        action: wasEditing ? 'editAllocation' : 'requestAllocation',
         what: what,
         amount: amount,
         note: note
-      });
+      };
+      if (wasEditing) params.allocationId = editingAllocId;
+
+      const data = await callApi(params);
 
       if (!data.success) {
-        showError('alloc-error', data.error || 'Could not submit the request. Try again.');
+        showError('alloc-error', data.error || 'Could not save the request. Try again.');
         return;
       }
 
       closeAllocForm();
       await refreshDashboard(true);
-      showToast('Request sent for approval');
+      showToast(wasEditing ? 'Request updated' : 'Request sent for approval');
     } catch (err) {
       showError('alloc-error', 'Could not reach the portal. Check your connection and try again.');
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Submit Request';
+      btn.textContent = original;
+    }
+  }
+
+  function findAllocAmount(id) {
+    let saved = null;
+    try { saved = sessionStorage.getItem('valor_team_session'); } catch (e) {}
+    if (!saved) return 0;
+    try {
+      const allocs = (JSON.parse(saved).data || {}).allocations || [];
+      for (let i = 0; i < allocs.length; i++) {
+        if (allocs[i].id === id) return Number(allocs[i].amount) || 0;
+      }
+    } catch (e) {}
+    return 0;
+  }
+
+  async function deleteAllocation(allocId, what) {
+    const label = what ? '"' + what + '"' : 'this request';
+    if (!confirm('Withdraw ' + label + '?\n\nIt will be removed and the Valor admin team will no longer see it.')) return;
+
+    try {
+      const data = await callApi({
+        email: currentEmail,
+        password: currentPassword,
+        action: 'deleteAllocation',
+        allocationId: allocId
+      });
+      if (data.success) {
+        await refreshDashboard(true);
+        showToast('Request withdrawn');
+      } else {
+        showToast(data.error || 'Could not withdraw the request');
+      }
+    } catch (err) {
+      showToast('Could not reach the portal');
     }
   }
 
@@ -1393,7 +1500,7 @@
   document.getElementById('goal-save-btn').addEventListener('click', saveGoal);
   document.getElementById('goal-cancel-btn').addEventListener('click', closeGoalForm);
   document.getElementById('policy-toggle').addEventListener('click', togglePolicy);
-  document.getElementById('add-alloc-btn').addEventListener('click', openAllocForm);
+  document.getElementById('add-alloc-btn').addEventListener('click', function () { openAllocForm(null); });
   document.getElementById('alloc-save-btn').addEventListener('click', submitAllocation);
   document.getElementById('alloc-cancel-btn').addEventListener('click', closeAllocForm);
 
