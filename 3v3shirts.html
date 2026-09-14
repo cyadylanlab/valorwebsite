@@ -247,6 +247,7 @@
     .drop-prompt strong{display:block;font-size:15px;font-weight:750}
     .drop-prompt span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
     .drop-prompt .btn{margin-top:14px;min-height:42px;padding:10px 18px;font-size:14px}
+    .drop-shirt{width:118px;height:auto;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--soft)}
     .drop-prev{width:84px;height:84px;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--soft) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="8" height="8" fill="%23eef1f5"/><rect x="8" y="8" width="8" height="8" fill="%23eef1f5"/></svg>');background-size:16px;object-fit:contain}
     .drop-info{min-width:0}
     .drop-info b{display:block;font-size:14.5px;font-weight:750;overflow-wrap:anywhere}
@@ -299,7 +300,8 @@
       .kit-step{padding:22px 17px}
       .kit-foot{padding:18px 17px}
       #kit-error{margin-inline:17px}
-      .drop.filled{flex-direction:column;align-items:flex-start;gap:14px}
+      .drop.filled{flex-wrap:wrap;align-items:flex-start;gap:14px}
+      .drop-shirt{width:96px}
     }
 
     /* ---------- sponsors ---------- */
@@ -670,19 +672,20 @@
 
             <div class="kit-step">
               <h3><i>3</i>Sizes and quantities</h3>
-              <p class="hint">Order as many as you like. We buy from A4 once your payment clears, so stock is theirs rather than ours.</p>
+              <p class="hint">Mix youth and adult freely in one order. We buy from A4 once your payment clears, so stock is theirs rather than ours.</p>
               <div class="sizes" id="kit-sizes"></div>
             </div>
 
             <div class="kit-step">
               <h3><i>4</i>Upload your logo</h3>
-              <p class="hint">PNG, JPG or SVG. A transparent PNG at least 1500px wide prints best. Up to 8MB. Once it is in, scroll back up to step 2 and you will see it on the shirt.</p>
+              <p class="hint">PNG, JPG or SVG. A transparent PNG at least 1500px wide prints best. Up to 8MB. You will see it on the shirt as soon as it uploads.</p>
               <div class="drop" id="kit-drop">
                 <div class="drop-prompt" id="kit-prompt">
                   <strong>Drop your logo here</strong>
                   <span>or choose a file from your device</span>
                   <button class="btn ghost" type="button" id="kit-browse">Choose a file</button>
                 </div>
+                <canvas class="drop-shirt" id="kit-drop-canvas" hidden aria-label="Your logo on the selected garment"></canvas>
                 <img class="drop-prev" id="kit-prev" alt="" hidden>
                 <div class="drop-info" id="kit-info" hidden>
                   <b id="kit-fname"></b>
@@ -769,7 +772,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-f</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-h</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -889,7 +892,12 @@
         { id: 'navy',         name: 'Navy',         hex: '#2b3243' }
       ]
     },
-    sizes: { Adult: ['XS', 'S', 'M', 'L', 'XL'] },
+    /* A4 sells youth garments under their own product codes, so a youth
+       order is a different SKU from the adult one even at the same price. */
+    sizes: {
+      Youth: ['YXS', 'YS', 'YM', 'YL'],
+      Adult: ['XS', 'S', 'M', 'L', 'XL', '2XL']
+    },
     maxUploadMB: 8,
     maxDimension: 1800
   };
@@ -1000,6 +1008,13 @@
     async function paint() {
       const col = colourById(state.colour);
       const ok = await paintInto(canvas, garmentFor(state.style), col ? col.hex : null, true);
+      const dropCanvas = $('kit-drop-canvas');
+      if (state.logo && state.logo.img) {
+        dropCanvas.hidden = false;
+        await paintInto(dropCanvas, garmentFor(state.style), col ? col.hex : null, true);
+      } else {
+        dropCanvas.hidden = true;
+      }
       $('kit-preview-cap').textContent = !state.style ? 'Pick a style'
         : !ok ? 'Preview coming for this style'
         : col ? col.name : 'Pick a colour';
@@ -1138,6 +1153,7 @@
       state.logo = null; fileInput.value = '';
       paint();
       prev.hidden = true; info.hidden = true; prompt.hidden = false;
+      $('kit-drop-canvas').hidden = true;
       drop.classList.remove('filled');
     }
 
@@ -1155,6 +1171,7 @@
         });
         paint();
         prev.src = out.dataUrl; prev.hidden = false; prev.alt = 'Your uploaded logo';
+        $('kit-drop-canvas').hidden = false;
         $('kit-fname').textContent = file.name;
         $('kit-fmeta').textContent = (out.w ? out.w + ' by ' + out.h + ' pixels, ' : '') +
           Math.round(out.bytes / 1024) + 'KB' +
