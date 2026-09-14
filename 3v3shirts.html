@@ -210,7 +210,7 @@
     .style-opt{position:relative;border:1.5px solid var(--line-2);border-radius:10px;overflow:hidden;background:#fff;cursor:pointer;text-align:left;padding:0;transition:border-color .14s,box-shadow .14s}
     .style-opt:hover{border-color:#98a1af}
     .style-opt[aria-pressed="true"]{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(0,174,235,.16)}
-    .style-opt .shot{display:block;width:100%;height:auto;background:var(--soft);border-bottom:1px solid var(--line)}
+    .style-opt .shot{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:var(--soft);border-bottom:1px solid var(--line);padding:12px 12px 6px}
     .style-opt .ph{display:grid;place-items:center;width:100%;aspect-ratio:1/1;background:var(--soft);border-bottom:1px solid var(--line);color:#aab1bd;font-size:12px;font-weight:650}
     .style-opt .meta{display:block;padding:13px 15px 15px}
     .style-opt .nm{display:block;font-weight:750;font-size:15px;letter-spacing:-.01em}
@@ -271,7 +271,7 @@
       .styles{grid-template-columns:1fr;margin-left:0;gap:10px}
       .style-opt{display:grid;grid-template-columns:96px 1fr;align-items:center}
       .style-opt .shot,.style-opt .ph{border-bottom:0;border-right:1px solid var(--line)}
-      .style-opt .shot{object-fit:contain}
+      .style-opt .shot{aspect-ratio:1/1;padding:8px}
       .style-opt .ph{font-size:11px}
       .style-opt .meta{padding:12px 14px}
       .style-opt .pr{font-size:20px}
@@ -740,7 +740,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup</span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-b</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -868,12 +868,18 @@
         : '<span class="ph">Photo coming</span>') +
         '<span class="meta"><span class="nm">' + st.name + '</span><span class="pr">' + money(st.price) + '</span></span>';
       if (st.garment) paintInto(b.querySelector('canvas'), st.garment, '#8a919c');
-      b.addEventListener('click', () => {
-        state.style = st.id;
-        [...stylesHost.children].forEach(c => c.setAttribute('aria-pressed', String(c === b)));
-        buildColours(); recalc(); paint();
-      });
       stylesHost.appendChild(b);
+    });
+
+    function selectStyle(id) {
+      if (!APPAREL.styles.some(x => x.id === id)) return;
+      state.style = id;
+      [...stylesHost.children].forEach(c => c.setAttribute('aria-pressed', String(c.dataset.id === id)));
+      buildColours(); recalc(); paint();
+    }
+    stylesHost.addEventListener('click', ev => {
+      const btn = ev.target.closest('.style-opt');
+      if (btn && btn.dataset.id) selectStyle(btn.dataset.id);
     });
 
     /* ---------- colours, rebuilt whenever the style changes ---------- */
@@ -883,6 +889,13 @@
       return (st && APPAREL.palettes[st.colours]) || [];
     }
     function colourById(id) { return paletteFor(state.style).find(c => c.id === id); }
+    coloursHost.addEventListener('click', ev => {
+      const btn = ev.target.closest('.sw');
+      if (!btn || !btn.dataset.id) return;
+      state.colour = btn.dataset.id;
+      [...coloursHost.children].forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
+      recalc(); paint();
+    });
     function buildColours() {
       const list = paletteFor(state.style);
       coloursHost.replaceChildren();
@@ -900,11 +913,6 @@
         b.setAttribute('aria-pressed', String(state.colour === c.id));
         b.dataset.id = c.id;
         b.innerHTML = '<b style="background:' + c.hex + '"></b>' + c.name;
-        b.addEventListener('click', () => {
-          state.colour = c.id;
-          [...coloursHost.children].forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-          recalc(); paint();
-        });
         coloursHost.appendChild(b);
       });
     }
@@ -1149,7 +1157,7 @@
       }
     });
 
-    buildColours();
+    selectStyle(APPAREL.styles[0].id);   // open with a style chosen so colours are never empty
     recalc();
     paint();
   })();
