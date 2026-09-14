@@ -216,10 +216,10 @@
     .style-opt .nm{display:block;font-weight:750;font-size:15px;letter-spacing:-.01em}
     .style-opt .pr{display:block;margin-top:3px;font-weight:900;font-stretch:112%;font-size:22px;letter-spacing:-.03em;color:var(--ink)}
 
-    .colour-row{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start;margin-left:32px}
+    .colour-row{display:grid;grid-template-columns:330px minmax(0,1fr);gap:30px;align-items:start;margin-left:32px}
     .preview{border:1px solid var(--line);border-radius:11px;background:var(--soft);overflow:hidden}
     .preview canvas{display:block;width:100%;height:auto}
-    .preview-cap{margin:0;padding:9px 12px 11px;border-top:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:750;text-align:center}
+    .preview-cap{margin:0;padding:11px 12px 13px;font-size:13.5px;border-top:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:750;text-align:center}
     .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:9px;align-content:flex-start}
     .swatches p{grid-column:1/-1}
     .sw{width:38px;height:38px;padding:0;border-radius:50%;border:1px solid rgba(16,18,24,.22);cursor:pointer;transition:transform .12s,box-shadow .12s}
@@ -247,11 +247,16 @@
     .drop-prompt strong{display:block;font-size:15px;font-weight:750}
     .drop-prompt span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
     .drop-prompt .btn{margin-top:14px;min-height:42px;padding:10px 18px;font-size:14px}
-    .drop-shirt{width:118px;height:auto;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--soft)}
+    .drop-shirt{width:168px;height:auto;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--soft)}
     .drop-prev{width:84px;height:84px;flex:none;border-radius:9px;border:1px solid var(--line);background:var(--soft) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="8" height="8" fill="%23eef1f5"/><rect x="8" y="8" width="8" height="8" fill="%23eef1f5"/></svg>');background-size:16px;object-fit:contain}
     .drop-info{min-width:0}
     .drop-info b{display:block;font-size:14.5px;font-weight:750;overflow-wrap:anywhere}
     .drop-info span{display:block;margin-top:4px;font-size:13px;color:var(--muted)}
+    .cutout{display:grid;grid-template-columns:19px minmax(0,1fr);gap:10px;align-items:start;margin-top:12px;padding:11px 13px;background:var(--soft);border:1px solid var(--line);border-radius:9px;cursor:pointer}
+    .cutout input{width:19px;height:19px;margin:1px 0 0;accent-color:var(--blue-deep);cursor:pointer}
+    .cutout span{font-size:12.5px;line-height:1.5;color:var(--muted)}
+    .cutout b{display:block;font-size:13.5px;font-weight:750;color:var(--ink);margin-bottom:2px}
+    .cutout.busy{opacity:.55;pointer-events:none}
     .drop-info button{margin-top:8px;font-size:13.5px;font-weight:700;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
     .drop-info button:hover{color:#a01a3f}
 
@@ -287,7 +292,7 @@
       .style-opt .meta{padding:12px 14px}
       .style-opt .pr{font-size:20px}
       .colour-row{grid-template-columns:1fr;gap:18px;margin-left:0}
-      .preview{max-width:230px}
+      .preview{max-width:300px;margin-inline:auto}
       .swatches,.sizes,.drop{margin-left:0}
       .kit-step .hint{margin-left:0}
       .kit-step{padding:24px}
@@ -301,7 +306,7 @@
       .kit-foot{padding:18px 17px}
       #kit-error{margin-inline:17px}
       .drop.filled{flex-wrap:wrap;align-items:flex-start;gap:14px}
-      .drop-shirt{width:96px}
+      .drop-shirt{width:128px}
     }
 
     /* ---------- sponsors ---------- */
@@ -690,6 +695,10 @@
                 <div class="drop-info" id="kit-info" hidden>
                   <b id="kit-fname"></b>
                   <span id="kit-fmeta"></span>
+                  <label class="cutout" id="kit-cutout-wrap" hidden>
+                    <input type="checkbox" id="kit-cutout">
+                    <span><b>Knock out the background</b>Useful if your logo sits on a white or solid block. Leave it off if the file is already transparent.</span>
+                  </label>
                   <button type="button" id="kit-remove">Remove and choose another</button>
                 </div>
                 <input type="file" id="kit-file" accept="image/png,image/jpeg,image/svg+xml" hidden>
@@ -772,7 +781,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-h</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-i</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -1149,11 +1158,84 @@
     fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
     $('kit-remove').addEventListener('click', e => { e.stopPropagation(); clearLogo(); });
 
+    /* Flood fills inward from the edges, clearing anything close enough to the
+       corner colour. That removes a solid backing block without touching a
+       white shape in the middle of the artwork, which a plain colour swap
+       would have eaten. */
+    function knockOutBackground(img, tolerance) {
+      const w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) return null;
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const g = c.getContext('2d', { willReadFrequently: true });
+      g.drawImage(img, 0, 0);
+      const id = g.getImageData(0, 0, w, h), d = id.data;
+      const corners = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]]
+        .map(([x, y]) => (y * w + x) * 4);
+      const bg = [0, 1, 2].map(k => Math.round(corners.reduce((a, i) => a + d[i + k], 0) / 4));
+      const tol = (tolerance || 34) ** 2 * 3;
+      const near = i => {
+        const dr = d[i] - bg[0], dg = d[i + 1] - bg[1], db = d[i + 2] - bg[2];
+        return dr * dr + dg * dg + db * db <= tol;
+      };
+      const seen = new Uint8Array(w * h);
+      const q = new Int32Array(w * h);
+      let head = 0, tail = 0;
+      const seed = pp => { if (!seen[pp] && d[pp * 4 + 3] > 8 && near(pp * 4)) { seen[pp] = 1; q[tail++] = pp; } };
+      for (let x = 0; x < w; x++) { seed(x); seed((h - 1) * w + x); }
+      for (let y = 0; y < h; y++) { seed(y * w); seed(y * w + w - 1); }
+      if (!tail) return null;                        // nothing to strip
+      while (head < tail) {
+        const pp = q[head++], x = pp % w, y = (pp / w) | 0;
+        d[pp * 4 + 3] = 0;
+        if (x > 0) seed(pp - 1);
+        if (x < w - 1) seed(pp + 1);
+        if (y > 0) seed(pp - w);
+        if (y < h - 1) seed(pp + w);
+      }
+      g.putImageData(id, 0, 0);
+      return c.toDataURL('image/png');
+    }
+
+    function loadImage(src) {
+      return new Promise(res => {
+        const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src;
+      });
+    }
+
+    const cutout = $('kit-cutout'), cutoutWrap = $('kit-cutout-wrap');
+    cutout.addEventListener('change', async () => {
+      if (!state.logo || !state.logo.original) return;
+      cutoutWrap.classList.add('busy');
+      try {
+        if (cutout.checked) {
+          const base = await loadImage(state.logo.original);
+          const out = base ? knockOutBackground(base) : null;
+          if (!out) {
+            showError('That image does not have a background we can lift. It may already be transparent.');
+            cutout.checked = false;
+          } else {
+            state.logo.dataUrl = out;
+            state.logo.type = 'image/png';
+          }
+        } else {
+          state.logo.dataUrl = state.logo.original;
+          state.logo.type = state.logo.originalType;
+        }
+        state.logo.img = await loadImage(state.logo.dataUrl);
+        prev.src = state.logo.dataUrl;
+        paint();
+      } finally {
+        cutoutWrap.classList.remove('busy');
+      }
+    });
+
     function clearLogo() {
       state.logo = null; fileInput.value = '';
       paint();
       prev.hidden = true; info.hidden = true; prompt.hidden = false;
       $('kit-drop-canvas').hidden = true;
+      cutout.checked = false; cutoutWrap.hidden = true;
       drop.classList.remove('filled');
     }
 
@@ -1165,7 +1247,10 @@
         return showError('That file is over ' + APPAREL.maxUploadMB + 'MB. Export it smaller and try again.');
       try {
         const out = file.type === 'image/svg+xml' ? await readRaw(file) : await readScaled(file);
-        state.logo = { name: file.name.slice(0, 120), type: out.type, dataUrl: out.dataUrl, w: out.w, h: out.h };
+        state.logo = { name: file.name.slice(0, 120), type: out.type, dataUrl: out.dataUrl,
+                       original: out.dataUrl, originalType: out.type, w: out.w, h: out.h };
+        cutout.checked = false;
+        cutoutWrap.hidden = file.type === 'image/svg+xml';
         state.logo.img = await new Promise(res => {
           const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = out.dataUrl;
         });
