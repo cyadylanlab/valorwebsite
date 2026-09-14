@@ -260,6 +260,15 @@
     .kit-total em{font-style:normal;display:block;margin-top:3px}
     .kit-foot .btn{min-width:230px}
     .kit-note{margin-top:16px;font-size:13px;color:var(--muted)}
+    .ask-status{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px;margin-top:22px;padding:30px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:var(--radius)}
+    .ask-status h3{font-size:21px;font-weight:800;font-stretch:106%;letter-spacing:-.025em}
+    .ask-status > div > p{margin-top:12px;font-size:15px;line-height:1.6;color:var(--ink-2)}
+    .ask-status textarea{width:100%;min-width:0;padding:11px 13px;border:1.5px solid var(--line-2);border-radius:8px;background:#fff;font-size:16px;line-height:1.5;resize:vertical}
+    .ask-status textarea:focus{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(0,174,235,.16);outline:none}
+    .ask-status .invalid textarea{border-color:#c2264c;background:#fffafb}
+    .ask-status .btn{margin-top:18px}
+    .ask-status .form-error{margin:18px 0 0}
+    .st-done{grid-column:1/-1;margin:0;padding:15px 18px;background:#f3fbfd;border:1px solid #cfe8f1;border-radius:9px;font-size:14.5px;font-weight:650;color:var(--blue-deep)}
     #kit-error{margin:0 30px 20px}
     .kit-done{padding:40px 30px}
     .kit-done h3{font-size:27px;font-weight:900;font-stretch:112%;letter-spacing:-.03em}
@@ -282,6 +291,7 @@
       .kit-step .hint{margin-left:0}
       .kit-step{padding:24px}
       .kit-foot{padding:20px 24px}
+      .ask-status{grid-template-columns:1fr;gap:20px;padding:24px 20px}
       #kit-error{margin-inline:24px}
       .kit-foot .btn{width:100%}
     }
@@ -666,7 +676,7 @@
 
             <div class="kit-step">
               <h3><i>4</i>Upload your logo</h3>
-              <p class="hint">PNG, JPG or SVG. A transparent PNG at least 1500px wide prints best. Up to 8MB.</p>
+              <p class="hint">PNG, JPG or SVG. A transparent PNG at least 1500px wide prints best. Up to 8MB. Once it is in, scroll back up to step 2 and you will see it on the shirt.</p>
               <div class="drop" id="kit-drop">
                 <div class="drop-prompt" id="kit-prompt">
                   <strong>Drop your logo here</strong>
@@ -722,6 +732,24 @@
           </section>
         </div>
 
+        <section class="ask-status" id="order-status" aria-labelledby="status-title">
+          <div>
+            <h3 id="status-title">Already ordered? Check on it.</h3>
+            <p>Send us your order number and we will come straight back to you. This goes to Dylan and Beth together, so whoever gets to it first can answer.</p>
+          </div>
+          <form id="status-form" novalidate>
+            <div class="form-grid">
+              <div class="field" data-field><label for="st-order">Order number <span class="optional">(if you have it)</span></label><input id="st-order" maxlength="30" autocomplete="off" placeholder="VK26-0123"></div>
+              <div class="field" data-field><label for="st-name">Your name <span class="req">*</span></label><input id="st-name" required maxlength="100" autocomplete="name"><p class="field-msg" data-msg>Enter your name.</p></div>
+              <div class="field full" data-field><label for="st-email">Email address <span class="req">*</span></label><input id="st-email" type="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"><p class="field-msg" data-msg>Enter a valid email address.</p></div>
+              <div class="field full" data-field><label for="st-msg">What would you like to know? <span class="req">*</span></label><textarea id="st-msg" required maxlength="1200" rows="4" placeholder="Anything at all. Where the order is, a size change, a colour swap."></textarea><p class="field-msg" data-msg>Tell us what you need.</p></div>
+            </div>
+            <div class="form-error" id="st-error" role="alert" tabindex="-1" hidden></div>
+            <button class="btn ghost" type="submit" id="st-submit">Send the message</button>
+          </form>
+          <p class="st-done" id="st-done" hidden>Message sent. We will reply to that address, usually the same day.</p>
+        </section>
+
         <p class="kit-note">Short sleeve $20, long sleeve $25, hoodie $40. One logo per order, pressed on the front. Payment is taken by Square, and nothing goes to print until it clears. Virginia Valor FC does not hold stock. Garments come from A4, so if anything you ordered is unavailable we will be in touch quickly to work out a swap or a refund.</p>
       </div>
     </section>
@@ -741,7 +769,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-c</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-f</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -760,9 +788,9 @@
   const APPAREL = {
     endpoint: 'https://script.google.com/macros/s/AKfycbyhnNqmenkwIRzpwmqNevuENcOz2JhJYQaQ2EGJtGH_na3G8nLCIWHpvl_miGoqraD8Cw/exec',
     styles: [
-      { id: 'ss',     name: 'Short sleeve shirt', price: 20, garment: 'images/garment-ss.webp',     colours: 'tee' },
-      { id: 'ls',     name: 'Long sleeve shirt',  price: 25, garment: 'images/garment-ls.webp',     colours: 'tee' },
-      { id: 'hoodie', name: 'Hoodie',             price: 40, garment: 'images/garment-hoodie.webp', colours: 'hoodie' }
+      { id: 'ss',     name: 'Short sleeve shirt', price: 20, garment: 'images/garment-ss.webp',     chest: { x: .335, y: .255, w: .33, h: .21 }, colours: 'ss' },
+      { id: 'ls',     name: 'Long sleeve shirt',  price: 25, garment: 'images/garment-ls.webp',     chest: { x: .345, y: .235, w: .31, h: .20 }, colours: 'ls' },
+      { id: 'hoodie', name: 'Hoodie',             price: 40, garment: 'images/garment-hoodie.webp', chest: { x: .345, y: .245, w: .31, h: .18 }, colours: 'hoodie' }
     ],
 
     /* The hoodie only comes in three colours. The two shirts share a palette.
@@ -771,15 +799,20 @@
        than approximations. The NAMES below are descriptive, written here,
        not A4's catalogue names. Swap them for A4's names and numbers before
        you start ordering against them. The hoodie really does come in three. */
+    /* Sampled from A4's own swatch grids, one per garment. The short sleeve
+       and long sleeve ranges are both 37 but they are NOT the same 37, so
+       they are kept separate. The NAMES are descriptive, written here, not
+       A4's catalogue names. Swap them for A4's names and numbers before you
+       order against them. The hoodie really does come in three. */
     palettes: {
-      tee: [
+      ss: [
         { id: 'orange', name: 'Orange', hex: '#e55628' },
         { id: 'black', name: 'Black', hex: '#1c1c1f' },
         { id: 'chocolate', name: 'Dark chocolate', hex: '#35220e' },
         { id: 'cardinal', name: 'Cardinal', hex: '#7d161d' },
         { id: 'dusty-rose', name: 'Dusty rose', hex: '#cc6c71' },
         { id: 'light-blue', name: 'Light blue', hex: '#439ece' },
-        { id: 'dark-green', name: 'Dark green', hex: '#0f2e25' },
+        { id: 'forest', name: 'Forest', hex: '#0f2e25' },
         { id: 'watermelon', name: 'Watermelon', hex: '#de4366' },
         { id: 'gold', name: 'Gold', hex: '#f1b33f' },
         { id: 'graphite', name: 'Graphite', hex: '#393538' },
@@ -808,6 +841,45 @@
         { id: 'periwinkle', name: 'Periwinkle', hex: '#a0b8d1' },
         { id: 'sky', name: 'Sky blue', hex: '#4098c2' },
         { id: 'rust', name: 'Rust', hex: '#9d4c1b' },
+        { id: 'vegas-gold', name: 'Vegas gold', hex: '#eac38c' },
+        { id: 'white', name: 'White', hex: '#ffffff' }
+      ],
+      ls: [
+        { id: 'orange', name: 'Orange', hex: '#e55628' },
+        { id: 'black', name: 'Black', hex: '#1c1c1f' },
+        { id: 'taupe', name: 'Taupe', hex: '#5c524e' },
+        { id: 'copper', name: 'Copper', hex: '#b95638' },
+        { id: 'cardinal', name: 'Cardinal', hex: '#7d161d' },
+        { id: 'dusty-rose', name: 'Dusty rose', hex: '#cc6c71' },
+        { id: 'light-blue', name: 'Light blue', hex: '#439ece' },
+        { id: 'forest', name: 'Forest', hex: '#1c4539' },
+        { id: 'magenta', name: 'Magenta', hex: '#d54a87' },
+        { id: 'gold', name: 'Gold', hex: '#e8ab3b' },
+        { id: 'graphite', name: 'Graphite', hex: '#393538' },
+        { id: 'kelly', name: 'Kelly green', hex: '#3b8663' },
+        { id: 'pale-blue', name: 'Pale blue', hex: '#b5d7e4' },
+        { id: 'light-lime', name: 'Light lime', hex: '#c9fc7c' },
+        { id: 'cream', name: 'Cream', hex: '#faeeb0' },
+        { id: 'bright-lime', name: 'Bright lime', hex: '#76f94c' },
+        { id: 'maroon', name: 'Maroon', hex: '#520b1f' },
+        { id: 'coral', name: 'Coral', hex: '#f08b6a' },
+        { id: 'olive-drab', name: 'Olive drab', hex: '#4e4938' },
+        { id: 'navy', name: 'Navy', hex: '#04172d' },
+        { id: 'army', name: 'Army green', hex: '#40472b' },
+        { id: 'ice', name: 'Ice', hex: '#dbf9fa' },
+        { id: 'mint', name: 'Mint', hex: '#beede1' },
+        { id: 'lilac', name: 'Lilac', hex: '#e9d7e9' },
+        { id: 'plum', name: 'Plum', hex: '#473247' },
+        { id: 'royal', name: 'Royal', hex: '#082f7e' },
+        { id: 'safety-green', name: 'Safety green', hex: '#a1fa4e' },
+        { id: 'tangerine', name: 'Tangerine', hex: '#e7893b' },
+        { id: 'safety-yellow', name: 'Safety yellow', hex: '#e7e465' },
+        { id: 'bright-orange', name: 'Bright orange', hex: '#ed5e34' },
+        { id: 'stone', name: 'Stone', hex: '#d1c3ba' },
+        { id: 'deep-red', name: 'Deep red', hex: '#9b212a' },
+        { id: 'silver', name: 'Silver', hex: '#c4c7c8' },
+        { id: 'periwinkle', name: 'Periwinkle', hex: '#a0b8d1' },
+        { id: 'sky', name: 'Sky blue', hex: '#3c91c6' },
         { id: 'vegas-gold', name: 'Vegas gold', hex: '#eac38c' },
         { id: 'white', name: 'White', hex: '#ffffff' }
       ],
@@ -860,7 +932,28 @@
         im.src = src;
       });
     }
-    async function paintInto(target, src, hex) {
+    function styleById(id) { return APPAREL.styles.find(x => x.id === id); }
+
+    /* Draws the uploaded artwork onto the chest, scaled to fit the print area
+       without distorting it, then lets the garment's folds show through so it
+       reads as printed rather than pasted on. */
+    function drawLogo(g, target, st) {
+      if (!state.logo || !state.logo.img || !st || !st.chest) return;
+      const im = state.logo.img;
+      const box = {
+        x: st.chest.x * target.width, y: st.chest.y * target.height,
+        w: st.chest.w * target.width, h: st.chest.h * target.height
+      };
+      const k = Math.min(box.w / im.naturalWidth, box.h / im.naturalHeight);
+      const w = im.naturalWidth * k, h = im.naturalHeight * k;
+      const x = box.x + (box.w - w) / 2, y = box.y + (box.h - h) / 2;
+      g.save();
+      g.globalAlpha = .97;
+      g.drawImage(im, x, y, w, h);
+      g.restore();
+    }
+
+    async function paintInto(target, src, hex, withLogo) {
       const g = target.getContext('2d');
       if (!src) {
         g.fillStyle = '#eef1f5'; g.fillRect(0, 0, target.width, target.height);
@@ -880,12 +973,33 @@
         g.drawImage(im, 0, 0);
         g.globalCompositeOperation = 'source-over';
       }
+      if (withLogo && state.logo && state.logo.img) {
+        const st = styleById(state.style);
+        /* Build the print on its own layer, multiply the garment's shading
+           through it, then mask back to the artwork's own shape. Doing it
+           off to one side avoids leaving a darkened rectangle on the shirt. */
+        const off = document.createElement('canvas');
+        off.width = target.width; off.height = target.height;
+        const o = off.getContext('2d');
+        drawLogo(o, off, st);
+        o.globalCompositeOperation = 'multiply';
+        o.globalAlpha = .4;
+        o.drawImage(im, 0, 0);
+        o.globalCompositeOperation = 'destination-in';
+        o.globalAlpha = 1;
+        drawLogo(o, off, st);
+        g.globalCompositeOperation = 'source-over';
+        g.drawImage(off, 0, 0);
+        g.globalCompositeOperation = 'destination-in';
+        g.drawImage(im, 0, 0);
+        g.globalCompositeOperation = 'source-over';
+      }
       return true;
     }
 
     async function paint() {
       const col = colourById(state.colour);
-      const ok = await paintInto(canvas, garmentFor(state.style), col ? col.hex : null);
+      const ok = await paintInto(canvas, garmentFor(state.style), col ? col.hex : null, true);
       $('kit-preview-cap').textContent = !state.style ? 'Pick a style'
         : !ok ? 'Preview coming for this style'
         : col ? col.name : 'Pick a colour';
@@ -1022,6 +1136,7 @@
 
     function clearLogo() {
       state.logo = null; fileInput.value = '';
+      paint();
       prev.hidden = true; info.hidden = true; prompt.hidden = false;
       drop.classList.remove('filled');
     }
@@ -1035,6 +1150,10 @@
       try {
         const out = file.type === 'image/svg+xml' ? await readRaw(file) : await readScaled(file);
         state.logo = { name: file.name.slice(0, 120), type: out.type, dataUrl: out.dataUrl, w: out.w, h: out.h };
+        state.logo.img = await new Promise(res => {
+          const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = out.dataUrl;
+        });
+        paint();
         prev.src = out.dataUrl; prev.hidden = false; prev.alt = 'Your uploaded logo';
         $('kit-fname').textContent = file.name;
         $('kit-fmeta').textContent = (out.w ? out.w + ' by ' + out.h + ' pixels, ' : '') +
@@ -1197,6 +1316,61 @@
     selectStyle(APPAREL.styles[0].id);   // open with a style chosen so colours are never empty
     recalc();
     paint();
+
+    /* ---------- order status enquiry ----------
+       Goes to the same endpoint with action 'status'. Apps Script emails
+       Dylan and Beth with the customer as reply-to, so a reply lands
+       straight back in their inbox. */
+    const stForm = $('status-form'), stErr = $('st-error'), stBtn = $('st-submit');
+    let stBusy = false;
+    stForm.addEventListener('input', e => {
+      const w = e.target.closest('[data-field]');
+      if (w) w.classList.remove('invalid');
+      stErr.hidden = true;
+    });
+    stForm.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      if (stBusy) return;
+      if (!live) {
+        stErr.textContent = 'Messaging is not connected yet. Email ' + 'dsutherland@virginiavalorfc.org' + ' instead.';
+        stErr.hidden = false; return;
+      }
+      let bad = null;
+      [['st-name', v => v.trim().length > 0],
+       ['st-email', v => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim())],
+       ['st-msg', v => v.trim().length > 3]].forEach(([id, ok]) => {
+        const el = $(id), w = el.closest('[data-field]');
+        if (!ok(el.value)) { w.classList.add('invalid'); if (!bad) bad = el; }
+        else w.classList.remove('invalid');
+      });
+      if (bad) {
+        stErr.textContent = 'Fill in the highlighted fields and send again.';
+        stErr.hidden = false; bad.focus(); return;
+      }
+      stBusy = true; stBtn.disabled = true;
+      const label = stBtn.textContent; stBtn.textContent = 'Sending...';
+      try {
+        const res = await fetch(APPAREL.endpoint, {
+          method: 'POST', credentials: 'omit',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'status',
+            orderNumber: $('st-order').value.trim(),
+            name: $('st-name').value.trim(),
+            email: $('st-email').value.trim(),
+            message: $('st-msg').value.trim()
+          })
+        });
+        const out = await res.json().catch(() => null);
+        if (!out || !out.ok) throw new Error((out && out.error) || 'That message could not be sent. Try again, or email dsutherland@virginiavalorfc.org.');
+        stForm.hidden = true;
+        $('st-done').hidden = false;
+      } catch (err) {
+        stErr.textContent = err.message; stErr.hidden = false;
+      } finally {
+        stBusy = false; stBtn.disabled = false; stBtn.textContent = label;
+      }
+    });
   })();
   </script>
 </body>
