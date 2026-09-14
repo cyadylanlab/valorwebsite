@@ -220,11 +220,12 @@
     .preview{border:1px solid var(--line);border-radius:11px;background:var(--soft);overflow:hidden}
     .preview canvas{display:block;width:100%;height:auto}
     .preview-cap{margin:0;padding:9px 12px 11px;border-top:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:750;text-align:center}
-    .swatches{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
-    .sw{display:inline-flex;align-items:center;gap:9px;padding:8px 14px 8px 9px;border:1.5px solid var(--line-2);border-radius:22px;background:#fff;font-size:14px;font-weight:650;cursor:pointer}
-    .sw:hover{border-color:#98a1af}
-    .sw[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
-    .sw b{width:20px;height:20px;border-radius:50%;border:1px solid rgba(16,18,24,.22);flex:none}
+    .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:9px;align-content:flex-start}
+    .swatches p{grid-column:1/-1}
+    .sw{width:38px;height:38px;padding:0;border-radius:50%;border:1px solid rgba(16,18,24,.22);cursor:pointer;transition:transform .12s,box-shadow .12s}
+    .sw:hover{transform:scale(1.12)}
+    .sw[aria-pressed="true"]{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+    .sw:focus-visible{outline-offset:5px}
 
     .sizes{margin-left:32px}
     .size-group + .size-group{margin-top:20px}
@@ -740,7 +741,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-b</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-c</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -766,16 +767,49 @@
 
     /* The hoodie only comes in three colours. The two shirts share a palette.
        Swap these for the A4 names and numbers you decide to stock. */
+    /* Sampled from A4's own swatch grid, so the colours are theirs rather
+       than approximations. The NAMES below are descriptive, written here,
+       not A4's catalogue names. Swap them for A4's names and numbers before
+       you start ordering against them. The hoodie really does come in three. */
     palettes: {
       tee: [
-        { id: 'black',    name: 'Black',         hex: '#1c1c1f' },
-        { id: 'white',    name: 'White',         hex: '#ffffff' },
-        { id: 'graphite', name: 'Graphite',      hex: '#4a4f57' },
-        { id: 'navy',     name: 'Navy',          hex: '#1b2a4a' },
-        { id: 'royal',    name: 'Royal',         hex: '#1d4ed8' },
-        { id: 'cardinal', name: 'Cardinal',      hex: '#9b1b30' },
-        { id: 'safety',   name: 'Safety yellow', hex: '#e4e63a' },
-        { id: 'pink',     name: 'Power pink',    hex: '#f04e98' }
+        { id: 'orange', name: 'Orange', hex: '#e55628' },
+        { id: 'black', name: 'Black', hex: '#1c1c1f' },
+        { id: 'chocolate', name: 'Dark chocolate', hex: '#35220e' },
+        { id: 'cardinal', name: 'Cardinal', hex: '#7d161d' },
+        { id: 'dusty-rose', name: 'Dusty rose', hex: '#cc6c71' },
+        { id: 'light-blue', name: 'Light blue', hex: '#439ece' },
+        { id: 'dark-green', name: 'Dark green', hex: '#0f2e25' },
+        { id: 'watermelon', name: 'Watermelon', hex: '#de4366' },
+        { id: 'gold', name: 'Gold', hex: '#f1b33f' },
+        { id: 'graphite', name: 'Graphite', hex: '#393538' },
+        { id: 'kelly', name: 'Kelly green', hex: '#3b8663' },
+        { id: 'pale-blue', name: 'Pale blue', hex: '#c8d8e1' },
+        { id: 'light-lime', name: 'Light lime', hex: '#c9fc7c' },
+        { id: 'cream', name: 'Cream', hex: '#faeeb0' },
+        { id: 'sage', name: 'Sage', hex: '#86a352' },
+        { id: 'maroon', name: 'Maroon', hex: '#520b1f' },
+        { id: 'coral', name: 'Coral', hex: '#f08b6a' },
+        { id: 'olive-drab', name: 'Olive drab', hex: '#4e4938' },
+        { id: 'navy', name: 'Navy', hex: '#04172d' },
+        { id: 'olive', name: 'Olive', hex: '#545723' },
+        { id: 'ice', name: 'Ice', hex: '#dbf9fa' },
+        { id: 'mint', name: 'Mint', hex: '#beede1' },
+        { id: 'lilac', name: 'Lilac', hex: '#e9d7e9' },
+        { id: 'purple', name: 'Purple', hex: '#6a4c9b' },
+        { id: 'royal', name: 'Royal', hex: '#082f7e' },
+        { id: 'safety-green', name: 'Safety green', hex: '#a1fa4e' },
+        { id: 'tangerine', name: 'Tangerine', hex: '#e7893b' },
+        { id: 'safety-yellow', name: 'Safety yellow', hex: '#e7e465' },
+        { id: 'bright-orange', name: 'Bright orange', hex: '#ed5e34' },
+        { id: 'stone', name: 'Stone', hex: '#d1c3ba' },
+        { id: 'deep-red', name: 'Deep red', hex: '#8b1c21' },
+        { id: 'silver', name: 'Silver', hex: '#c4c7c8' },
+        { id: 'periwinkle', name: 'Periwinkle', hex: '#a0b8d1' },
+        { id: 'sky', name: 'Sky blue', hex: '#4098c2' },
+        { id: 'rust', name: 'Rust', hex: '#9d4c1b' },
+        { id: 'vegas-gold', name: 'Vegas gold', hex: '#eac38c' },
+        { id: 'white', name: 'White', hex: '#ffffff' }
       ],
       hoodie: [
         { id: 'black',        name: 'Black',        hex: '#1e1e21' },
@@ -912,7 +946,9 @@
         b.type = 'button'; b.className = 'sw';
         b.setAttribute('aria-pressed', String(state.colour === c.id));
         b.dataset.id = c.id;
-        b.innerHTML = '<b style="background:' + c.hex + '"></b>' + c.name;
+        b.style.background = c.hex;
+        b.title = c.name;
+        b.setAttribute('aria-label', c.name);
         coloursHost.appendChild(b);
       });
     }
@@ -1093,6 +1129,7 @@
         unitPrice: priceOf(state.style),
         colour: state.colour,
         colourName: colourById(state.colour).name,
+        colourHex: colourById(state.colour).hex,
         quantities: Object.fromEntries(Object.entries(state.qty).filter(([, v]) => v > 0)),
         units: unitCount(),
         total: total,
