@@ -202,6 +202,7 @@
     .gear-prices{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 0;padding:0}
     .gear-prices li{display:inline-flex;align-items:baseline;gap:9px;padding:8px 15px;background:#fff;border:1px solid #f0d2e6;border-radius:22px;font-size:13.5px;font-weight:650;color:var(--ink-2)}
     .gear-prices b{font-weight:900;font-stretch:112%;font-size:16px;letter-spacing:-.02em;color:var(--ink)}
+    .gear-tax{margin-top:10px;font-size:12.5px;color:var(--muted)}
     .gear-btn{white-space:nowrap}
 
     /* ---------- sponsors ---------- */
@@ -218,7 +219,7 @@
     .why div:nth-child(3) h3 span{color:var(--orange)}
     .why p{font-size:14.5px;line-height:1.6;color:#b9bfca}
 
-    .ask{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;margin-top:40px;align-items:start}
+    .ask{margin-top:34px;max-width:70ch}
     .ask-main{background:#14181f;border:1px solid #ffffff1f;border-left:4px solid var(--blue);border-radius:var(--radius);padding:30px 30px 32px}
     .ask-main h3{font-size:23px;font-weight:800;font-stretch:106%;letter-spacing:-.025em}
     .ask-main p{margin-top:14px;font-size:15px;line-height:1.65;color:#c3c8d2}
@@ -707,7 +708,7 @@
         <div class="rules-aside">
           <div class="rule-bar" aria-hidden="true"></div>
           <h2 id="rules-title" class="display">The rules.</h2>
-          <p>The Community Cup's playing rules carry forward for 2026. Read them with your team before tournament day, especially the goal box and the 12-goal mercy rule.</p>
+          <p>The Community Cup's playing rules carry forward for 2026. Read them with your team before tournament day, especially the goal box and the extra-player rule when a game runs away.</p>
           <div class="aside-links">
             <a class="chip" href="https://www.virginiavalorfc.org/3v3communitycup" target="_blank" rel="noopener noreferrer">Valor tournament page</a>
             <button class="chip" type="button" id="print-rules">Print this page</button>
@@ -729,7 +730,7 @@
 
             <details class="rule"><summary><span class="r-n">03</span> Field, goal box and scoring <span class="plus" aria-hidden="true"></span></summary><div class="r-body"><ul><li>Fields measure approximately 24 to 30 yards by 16 to 20 yards. Dimensions may vary with the venue.</li><li>The goal box measures 8 feet across and 4 feet deep. Players can move through it but cannot play the ball inside it.</li><li>A defender touching the ball in the box gives the opponent a goal. An attacker touching it in the box gives the defending team a goal kick.</li><li>A ball that comes to rest in the box results in a goal kick for the defending team.</li><li>A scoring shot must be taken from the attacking half.</li></ul></div></details>
 
-            <details class="rule"><summary><span class="r-n">04</span> Match format and substitutions <span class="plus" aria-hidden="true"></span></summary><div class="r-body"><ul><li>Play two 12-minute halves with a 2-minute halftime.</li><li><strong>Mercy rule.</strong> A game ends immediately once a team reaches 12 goals.</li><li>One-day events provide at least four games, potentially six or seven with playoffs. Multi-day formats provide at least six, potentially eight or more with playoffs.</li><li>Substitute during a stoppage with the referee's permission.</li><li>Pool matches can finish tied. Playoff matches require a winner.</li><li><strong>Blowout rule.</strong> A team six goals behind may add a fourth player. Once the margin comes back to five, that extra player comes off.</li></ul></div></details>
+            <details class="rule"><summary><span class="r-n">04</span> Match format and substitutions <span class="plus" aria-hidden="true"></span></summary><div class="r-body"><ul><li>Play two 12-minute halves with a 2-minute halftime.</li><li>One-day events provide at least four games, potentially six or seven with playoffs. Multi-day formats provide at least six, potentially eight or more with playoffs.</li><li>Substitute during a stoppage with the referee's permission.</li><li>Pool matches can finish tied. Playoff matches require a winner.</li><li><strong>Blowout rule.</strong> A team that falls <strong>six goals behind may add a fourth player</strong>. Once the margin comes back to five, that extra player comes off. There is no mercy rule and no early finish, every game plays its full two halves.</li></ul></div></details>
 
             <details class="rule"><summary><span class="r-n">05</span> Restarts and special playing rules <span class="plus" aria-hidden="true"></span></summary><div class="r-body"><ul><li>No offside. Sliding is prohibited and results in an indirect free kick.</li><li>Heading is permitted in U11 and older divisions.</li><li>Defenders stay at least 10 feet from the ball at dead-ball restarts.</li><li>Restart within five seconds, subject to referee discretion.</li><li>Use kick-ins in place of throw-ins. Restarts are indirect except for corner kicks and penalties.</li><li>Take goal kicks from anywhere on the end line, outside the goal box. Kickoffs may travel in any direction.</li><li>Take penalties from the center spot, with all other players behind midfield. A missed penalty does not remain live.</li></ul></div></details>
 
@@ -874,8 +875,9 @@
           <ul class="gear-prices">
             <li>Short sleeve<b>$20</b></li>
             <li>Long sleeve<b>$25</b></li>
-            <li>Hoodie<b>$40</b></li>
+            <li>Hoodie<b>$45</b></li>
           </ul>
+          <p class="gear-tax">Plus Virginia sales tax.</p>
         </div>
         <a class="btn primary gear-btn" href="3v3shirts.html">Design your team's gear</a>
       </div>
@@ -886,54 +888,14 @@
       <div class="wrap">
         <div class="rule" aria-hidden="true"></div>
         <h2 id="sponsors-title" class="display">Sponsor the Community Cup.</h2>
-        <p class="lede">This is a one-day youth tournament that doubles as a gift drive for families in childhood cancer treatment. Sponsoring it puts your name in front of a few hundred local parents on a Saturday morning, and it pays for a day those families do not have to think about.</p>
-
-        <div class="why">
-          <div>
-            <h3><span>Who is there</span>Local families, all morning</h3>
-            <p>Boys and girls U8 through U14, their parents, grandparents and siblings, on one site in Chantilly for a full day. Most of them live within fifteen minutes of your front door.</p>
-          </div>
-          <div>
-            <h3><span>What it funds</span>A real cause, not overhead</h3>
-            <p>Virginia Valor FC is a 501(c)(3). Sponsorship keeps entry fees low enough that a group of school friends can afford to enter, and it carries the gift drive for DC Candlelighters.</p>
-          </div>
-          <div>
-            <h3><span>What you get</span>Your name on the day</h3>
-            <p>Banners at the fields, your logo on the champion shirts players keep, placement on this page, and posts across the club's Instagram, Facebook and TikTok.</p>
-          </div>
-        </div>
+        <p class="lede">A one-day youth tournament that doubles as a gift drive for families in childhood cancer treatment. If your business would like its name on the day, we would like to hear from you.</p>
 
         <div class="ask">
           <div class="ask-main">
             <h3>Tell us what you have in mind.</h3>
-            <p>There are no set packages. This is the second year of the tournament and we would rather build something that fits your business than hand you a menu. Send an email, tell us roughly what you are thinking, and we will come back with a proposal.</p>
-            <p>Local businesses, family businesses and people who just want to help a cause are all equally welcome. So are clubs and organizations who want their name on the day.</p>
+            <p>There are no set packages yet. Send an email with roughly what you are thinking, whether that is money, gifts for the drive, water and snacks for a cold sideline, or covering entry for a team that cannot afford it. We will come back with a proposal.</p>
             <a class="btn primary" href="mailto:dsutherland@virginiavalorfc.org?subject=3v3%20Community%20Cup%20sponsorship">Email about sponsoring</a>
             <p class="fine">Dylan Sutherland, Tournament Director. Virginia Valor FC is a 501(c)(3) and we will send a receipt for your records.</p>
-          </div>
-          <div class="ask-side">
-            <div class="way">
-              <h3>How we can say thank you</h3>
-              <ul>
-                <li>Your banner at the fields and at check-in</li>
-                <li>Your logo on the champion shirts players keep</li>
-                <li>Tent or table space on site for the day</li>
-                <li>Named in tournament emails to every registered team</li>
-                <li>Posts across the club's Instagram, Facebook and TikTok</li>
-                <li>Logo and link on this page</li>
-              </ul>
-            </div>
-            <div class="way">
-              <h3>Help without writing a cheque</h3>
-              <ul>
-                <li>Gifts for the drive</li>
-                <li>Water and snacks for a cold sideline</li>
-                <li>Prizes for the divisions</li>
-                <li>Printing, banners or shirts</li>
-                <li>Covering entry for a team that cannot afford it</li>
-                <li>A few hours of your Saturday</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Virginia Valor FC">
   <meta property="og:title" content="Custom team gear for the 3v3 Community Cup">
-  <meta property="og:description" content="Pick a style and colour, upload your team logo, and we will press them. Short sleeve $20, long sleeve $25, hoodie $40.">
+  <meta property="og:description" content="Pick a style and colour, upload your team logo, and we will press them. Short sleeve $20, long sleeve $25, hoodie $45.">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -199,6 +199,10 @@
     .kit-head .rule{width:56px;height:5px;background:var(--pink);border-radius:2px;margin-bottom:22px}
     .kit-head h2{font-size:clamp(30px,3.6vw,46px)}
     .kit-head p{color:var(--ink-2);font-size:1.05rem;line-height:1.6}
+    .kit-facts{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px}
+    .kit-facts li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.55;color:var(--muted)}
+    .kit-facts li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--pink)}
+    .kit-facts b{display:block;font-weight:750;color:var(--ink)}
     .kit-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 2px rgba(16,18,24,.04)}
     .kit-step{padding:28px 30px;border-bottom:1px solid var(--line)}
     .kit-step:last-of-type{border-bottom:0}
@@ -241,6 +245,19 @@
     .qty input{width:30px;min-height:0;padding:0;border:0;background:none;text-align:center;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
     .qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
+    .add-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:22px 0 0 32px}
+    .add-sub{font-size:13.5px;color:var(--muted)}
+    .add-sub b{font-weight:800;color:var(--ink)}
+    .basket{margin-left:32px}
+    .basket-empty{padding:20px 22px;border:1.5px dashed var(--line-2);border-radius:10px;font-size:14px;color:var(--muted)}
+    .line{display:grid;grid-template-columns:54px minmax(0,1fr) auto auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+    .line:first-child{border-top:1px solid var(--line)}
+    .line canvas{width:54px;height:auto;border-radius:7px;background:var(--soft);border:1px solid var(--line)}
+    .line-main b{display:block;font-size:15px;font-weight:750;letter-spacing:-.012em}
+    .line-main span{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
+    .line-cost{font-weight:800;font-stretch:108%;font-size:17px;letter-spacing:-.02em;white-space:nowrap}
+    .line-drop{font-size:13px;font-weight:700;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:6px}
+    .line-drop:hover{color:#a01a3f}
     .drop{margin-left:32px;border:1.5px dashed var(--line-2);border-radius:11px;padding:26px;text-align:center;background:#fff;transition:border-color .14s,background .14s}
     .drop.over{border-color:var(--blue-deep);background:#f2fbfe}
     .drop.filled{border-style:solid;text-align:left;display:flex;align-items:center;gap:18px}
@@ -264,6 +281,9 @@
     .kit-total{font-size:13px;color:var(--muted)}
     .kit-total b{display:block;font-weight:900;font-stretch:118%;font-size:34px;line-height:1.1;letter-spacing:-.04em;color:var(--ink)}
     .kit-total em{font-style:normal;display:block;margin-top:3px}
+    .tax-lines{border-collapse:collapse;margin-top:8px;font-size:12.5px;color:var(--muted)}
+    .tax-lines td{padding:2px 0}
+    .tax-lines td:last-child{padding-left:18px;text-align:right;font-variant-numeric:tabular-nums}
     .kit-foot .btn{min-width:230px}
     .kit-note{margin-top:16px;font-size:13px;color:var(--muted)}
     .ask-status{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px;margin-top:22px;padding:30px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:var(--radius)}
@@ -291,6 +311,10 @@
       .style-opt .ph{font-size:11px}
       .style-opt .meta{padding:12px 14px}
       .style-opt .pr{font-size:20px}
+      .add-row,.basket{margin-left:0}
+      .line{grid-template-columns:44px minmax(0,1fr) auto;gap:12px}
+      .line canvas{width:44px}
+      .line-drop{grid-column:2/-1;justify-self:start;padding-left:0}
       .colour-row{grid-template-columns:1fr;gap:18px;margin-left:0}
       .preview{max-width:300px;margin-inline:auto}
       .swatches,.sizes,.drop{margin-left:0}
@@ -651,6 +675,12 @@
             <h2 id="kit-title" class="display">Custom team gear.</h2>
           </div>
           <p>Pick a style and a colour, tell us your sizes, drop in your team logo and we will press it for you. Collect at the CYA Fieldhouse, and we will email you the moment your gear is ready.</p>
+          <ul class="kit-facts">
+            <li><b>Order by Saturday, November 21</b>a week before the tournament, so there is time to press it</li>
+            <li><b>Ready in about a week</b>we press in batches and email you when yours is done</li>
+            <li><b>Collect at the CYA Fieldhouse</b>bring your order number</li>
+            <li><b>Prices exclude sales tax</b>Virginia sales tax is added at checkout and passed on to the Commonwealth</li>
+          </ul>
         </div>
 
         <div class="kit-shell" id="kit-shell">
@@ -679,6 +709,16 @@
               <h3><i>3</i>Sizes and quantities</h3>
               <p class="hint">Mix youth and adult freely in one order. We buy from A4 once your payment clears, so stock is theirs rather than ours.</p>
               <div class="sizes" id="kit-sizes"></div>
+              <div class="add-row">
+                <button class="btn ghost" type="button" id="kit-add">Add to order</button>
+                <span class="add-sub" id="kit-add-sub">Nothing selected yet</span>
+              </div>
+            </div>
+
+            <div class="kit-step">
+              <h3><i>&#10003;</i>Your order</h3>
+              <p class="hint">Add as many styles and colours as you like. One logo goes on everything in the order.</p>
+              <div class="basket" id="kit-basket"></div>
             </div>
 
             <div class="kit-step">
@@ -716,9 +756,9 @@
                 <div class="field full"><p class="field-hint">We email this address when the order is pressed and ready to collect.</p></div>
               </div>
               <div class="ack-box" style="margin-left:32px">
-                <div class="ack-row"><input id="kit-ack-art" name="artworkAcknowledged" type="checkbox" required><label for="kit-ack-art"><strong>The artwork is ours to use. <span class="req">*</span></strong>We own this logo or have permission to print it. Virginia Valor FC may decline artwork that belongs to someone else, including club crests, pro team badges and licensed characters.</label></div>
+                <div class="ack-row"><input id="kit-ack-art" name="artworkAcknowledged" type="checkbox" required><label for="kit-ack-art"><strong>The artwork is ours to use. <span class="req">*</span></strong>We own this logo or have permission to print it. Virginia Valor FC reserves the right to decline any design, and will refund the order in full if we are not comfortable printing it.</label></div>
                 <div class="ack-row"><input id="kit-ack-stock" name="stockAcknowledged" type="checkbox" required><label for="kit-ack-stock"><strong>Stock is not guaranteed. <span class="req">*</span></strong>We do not hold inventory. Orders go to A4 after payment clears, and now and then a colour or size is unavailable. If that happens to your order we will contact you as soon as we know and sort out a swap, a partial refund, or a full refund, whichever you prefer.</label></div>
-                <div class="ack-row"><input id="kit-ack-pick" name="pickupAcknowledged" type="checkbox" required><label for="kit-ack-pick"><strong>Collecting at the CYA Fieldhouse. <span class="req">*</span></strong>Orders are pressed in batches and collected in person. We will email when yours is ready. Custom printed items cannot be returned or exchanged.</label></div>
+                <div class="ack-row"><input id="kit-ack-pick" name="pickupAcknowledged" type="checkbox" required><label for="kit-ack-pick"><strong>Collecting at the CYA Fieldhouse. <span class="req">*</span></strong>Orders are usually ready about a week after ordering, and we email you when yours is. Custom printed items cannot be returned or exchanged. Anything still uncollected a month after the tournament is donated to DC Candlelighters along with the gift drive.</label></div>
               </div>
             </div>
 
@@ -726,8 +766,12 @@
 
             <div class="kit-foot">
               <div class="kit-total">
-                <b id="kit-amount">$0</b>
-                <em id="kit-breakdown">Nothing selected yet</em>
+                <b id="kit-amount">$0.00</b>
+                <em id="kit-breakdown">Nothing added yet</em>
+                <table class="tax-lines" id="kit-tax" hidden>
+                  <tr><td>Subtotal</td><td id="kit-sub">$0.00</td></tr>
+                  <tr><td id="kit-tax-label">Virginia sales tax</td><td id="kit-tax-amt">$0.00</td></tr>
+                </table>
               </div>
               <button class="btn submit-btn" type="submit" id="kit-submit">Continue to payment</button>
             </div>
@@ -735,11 +779,11 @@
 
           <section id="kit-done" class="kit-done" aria-live="polite" tabindex="-1" hidden>
             <div class="success-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></div>
-            <h3 class="display">Order in.</h3>
+            <h3 class="display">Almost there.</h3>
             <p id="kit-done-desc"></p>
-            <p>Your order number:</p>
+            <p>Hold on to this reference:</p>
             <strong class="confirmation" id="kit-order-no"></strong>
-            <p>Sending you to Square to pay. If nothing happens, use the button below.</p>
+            <p>Sending you to Square now. <b>Nothing is ordered and nothing is printed until payment clears.</b> Once it does you will get a confirmation email from us.</p>
             <a class="btn primary" id="kit-pay-link" href="#">Pay now</a>
           </section>
         </div>
@@ -762,7 +806,7 @@
           <p class="st-done" id="st-done" hidden>Message sent. We will reply to that address, usually the same day.</p>
         </section>
 
-        <p class="kit-note">Short sleeve $20, long sleeve $25, hoodie $40. One logo per order, pressed on the front. Payment is taken by Square, and nothing goes to print until it clears. Virginia Valor FC does not hold stock. Garments come from A4, so if anything you ordered is unavailable we will be in touch quickly to work out a swap or a refund.</p>
+        <p class="kit-note">Short sleeve $20, long sleeve $25, hoodie $45, plus Virginia sales tax. One logo per order, pressed on the front. Payment is taken by Square. Nothing is ordered, printed or confirmed until payment clears, and your confirmation email only arrives once it has. Ordering closes Saturday, November 21. Virginia Valor FC does not hold stock. Garments come from A4, so if anything you ordered is unavailable we will be in touch quickly to work out a swap or a refund.</p>
       </div>
     </section>
   </main>
@@ -781,7 +825,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-i</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-n</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -802,7 +846,7 @@
     styles: [
       { id: 'ss',     name: 'Short sleeve shirt', price: 20, garment: 'images/garment-ss.webp',     chest: { x: .335, y: .255, w: .33, h: .21 }, colours: 'ss' },
       { id: 'ls',     name: 'Long sleeve shirt',  price: 25, garment: 'images/garment-ls.webp',     chest: { x: .345, y: .235, w: .31, h: .20 }, colours: 'ls' },
-      { id: 'hoodie', name: 'Hoodie',             price: 40, garment: 'images/garment-hoodie.webp', chest: { x: .345, y: .245, w: .31, h: .18 }, colours: 'hoodie' }
+      { id: 'hoodie', name: 'Hoodie',             price: 45, garment: 'images/garment-hoodie.webp', chest: { x: .345, y: .245, w: .31, h: .18 }, colours: 'hoodie' }
     ],
 
     /* The hoodie only comes in three colours. The two shirts share a palette.
@@ -907,6 +951,11 @@
       Youth: ['YXS', 'YS', 'YM', 'YL'],
       Adult: ['XS', 'S', 'M', 'L', 'XL', '2XL']
     },
+    /* Northern Virginia general sales tax: 4.3% state, 1% local, 0.7%
+       regional transport. Chantilly is Fairfax County, so 6%. Collected for
+       the Commonwealth, not kept by the club. */
+    taxRate: 0.06,
+    taxLabel: 'Virginia sales tax (6%)',
     maxUploadMB: 8,
     maxDimension: 1800
   };
@@ -919,8 +968,11 @@
     const shell = $('kit-shell'), done = $('kit-done'), errorBox = $('kit-error');
     const submit = $('kit-submit'), amountEl = $('kit-amount'), breakdownEl = $('kit-breakdown');
 
-    const state = { style: null, colour: null, qty: {}, logo: null, submitting: false, key: '' };
+    const state = { style: null, colour: null, qty: {}, items: [], logo: null, submitting: false, key: '' };
     const money = n => '$' + n.toLocaleString('en-US');
+    const cents = n => Math.round(n * 100);
+    const fromCents = c => '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    function taxOn(subtotalCents) { return Math.round(subtotalCents * APPAREL.taxRate); }
 
     const live = /^https:\/\/script\.google\.com\/.*\/exec/.test(APPAREL.endpoint);
     if (!live) {
@@ -970,7 +1022,7 @@
       g.restore();
     }
 
-    async function paintInto(target, src, hex, withLogo) {
+    async function paintInto(target, src, hex, withLogo, styleId) {
       const g = target.getContext('2d');
       if (!src) {
         g.fillStyle = '#eef1f5'; g.fillRect(0, 0, target.width, target.height);
@@ -991,7 +1043,7 @@
         g.globalCompositeOperation = 'source-over';
       }
       if (withLogo && state.logo && state.logo.img) {
-        const st = styleById(state.style);
+        const st = styleById(styleId || state.style);
         /* Build the print on its own layer, multiply the garment's shading
            through it, then mask back to the artwork's own shape. Doing it
            off to one side avoids leaving a darkened rectangle on the shirt. */
@@ -1016,11 +1068,11 @@
 
     async function paint() {
       const col = colourById(state.colour);
-      const ok = await paintInto(canvas, garmentFor(state.style), col ? col.hex : null, true);
+      const ok = await paintInto(canvas, garmentFor(state.style), col ? col.hex : null, true, state.style);
       const dropCanvas = $('kit-drop-canvas');
       if (state.logo && state.logo.img) {
         dropCanvas.hidden = false;
-        await paintInto(dropCanvas, garmentFor(state.style), col ? col.hex : null, true);
+        await paintInto(dropCanvas, garmentFor(state.style), col ? col.hex : null, true, state.style);
       } else {
         dropCanvas.hidden = true;
       }
@@ -1045,7 +1097,7 @@
 
     function selectStyle(id) {
       if (!APPAREL.styles.some(x => x.id === id)) return;
-      state.style = id;
+      state.style = id; pendingStyle = id;
       [...stylesHost.children].forEach(c => c.setAttribute('aria-pressed', String(c.dataset.id === id)));
       buildColours(); recalc(); paint();
     }
@@ -1064,7 +1116,7 @@
     coloursHost.addEventListener('click', ev => {
       const btn = ev.target.closest('.sw');
       if (!btn || !btn.dataset.id) return;
-      state.colour = btn.dataset.id;
+      state.colour = btn.dataset.id; pendingColour = btn.dataset.id;
       [...coloursHost.children].forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
       recalc(); paint();
     });
@@ -1078,7 +1130,7 @@
         coloursHost.appendChild(note);
         return;
       }
-      if (state.colour && !list.some(c => c.id === state.colour)) state.colour = null;
+      if (state.colour && !list.some(c => c.id === state.colour)) { state.colour = null; pendingColour = null; }
       list.forEach(c => {
         const b = document.createElement('button');
         b.type = 'button'; b.className = 'sw';
@@ -1129,19 +1181,97 @@
     /* ---------- total ---------- */
     function priceOf(id) { const s = APPAREL.styles.find(x => x.id === id); return s ? s.price : 0; }
     function unitCount() { return Object.values(state.qty).reduce((a, b) => a + (b || 0), 0); }
+    function sizeList(q) { return Object.keys(q).map(k => k + ' x' + q[k]).join(', '); }
+    function orderUnits() { return state.items.reduce((a, it) => a + it.units, 0); }
+    function orderSubtotalCents() { return state.items.reduce((a, it) => a + cents(it.subtotal), 0); }
+    function orderTotal() { const sub = orderSubtotalCents(); return (sub + taxOn(sub)) / 100; }
+
     function recalc() {
       const n = unitCount(), unit = priceOf(state.style);
-      const total = n * unit;
-      amountEl.textContent = money(total);
       const st = APPAREL.styles.find(x => x.id === state.style);
       const col = colourById(state.colour);
-      breakdownEl.textContent = !n || !st
+      $('kit-add-sub').innerHTML = !n || !st
         ? 'Nothing selected yet'
-        : n + (n === 1 ? ' item' : ' items') + ' at ' + money(unit) +
-          ', ' + st.name.toLowerCase() + (col ? ' in ' + col.name.toLowerCase() : '');
+        : '<b>' + money(n * unit) + '</b> for ' + n + (n === 1 ? ' item' : ' items') + ', ' +
+          st.name.toLowerCase() + (col ? ' in ' + col.name.toLowerCase() : '');
+      $('kit-add').disabled = !n || !st || !col;
+
+      const sub = orderSubtotalCents(), tax = taxOn(sub), units = orderUnits();
+      amountEl.textContent = fromCents(sub + tax);
+      breakdownEl.textContent = !units
+        ? 'Nothing added yet'
+        : units + (units === 1 ? ' item' : ' items') + ' across ' +
+          state.items.length + (state.items.length === 1 ? ' line' : ' lines');
+      $('kit-tax').hidden = !units;
+      $('kit-sub').textContent = fromCents(sub);
+      $('kit-tax-label').textContent = APPAREL.taxLabel;
+      $('kit-tax-amt').textContent = fromCents(tax);
       errorBox.hidden = true;
-      return total;
+      return (sub + tax) / 100;
     }
+
+    /* ---------- the basket ---------- */
+    const basket = $('kit-basket');
+    function renderBasket() {
+      basket.replaceChildren();
+      if (!state.items.length) {
+        const p = document.createElement('p');
+        p.className = 'basket-empty';
+        p.textContent = 'Nothing added yet. Pick a style, a colour and your sizes above, then press Add to order.';
+        basket.appendChild(p);
+        return;
+      }
+      state.items.forEach((it, i) => {
+        const row = document.createElement('div');
+        row.className = 'line';
+        row.innerHTML =
+          '<canvas width="700" height="740" aria-hidden="true"></canvas>' +
+          '<span class="line-main"><b>' + it.styleName + ' in ' + it.colourName + '</b>' +
+          '<span>' + sizeList(it.quantities) + '  &middot;  ' + it.units +
+          (it.units === 1 ? ' item' : ' items') + ' at ' + money(it.unitPrice) + '</span></span>' +
+          '<span class="line-cost">' + money(it.subtotal) + '</span>' +
+          '<button class="line-drop" type="button" data-i="' + i + '">Remove</button>';
+        basket.appendChild(row);
+        const st = APPAREL.styles.find(x => x.id === it.style);
+        if (st && st.garment) paintInto(row.querySelector('canvas'), st.garment, it.colourHex, true, it.style);
+      });
+    }
+    let pendingStyle = null, pendingColour = null;
+    basket.addEventListener('click', ev => {
+      const btn = ev.target.closest('.line-drop');
+      if (!btn) return;
+      state.items.splice(Number(btn.dataset.i), 1);
+      pendingStyle = state.style; pendingColour = state.colour;
+      renderBasket(); recalc();
+    });
+
+    function addCurrentLine() {
+      const n = unitCount(), st = APPAREL.styles.find(x => x.id === state.style), col = colourById(state.colour);
+      if (!n || !st || !col) return false;
+      const quantities = Object.fromEntries(Object.entries(state.qty).filter(([, v]) => v > 0));
+      const match = state.items.find(it => it.style === st.id && it.colour === col.id);
+      if (match) {
+        Object.keys(quantities).forEach(k => { match.quantities[k] = (match.quantities[k] || 0) + quantities[k]; });
+        match.units = Object.values(match.quantities).reduce((a, b) => a + b, 0);
+        match.subtotal = match.units * st.price;
+      } else {
+        state.items.push({
+          style: st.id, styleName: st.name, unitPrice: st.price,
+          colour: col.id, colourName: col.name, colourHex: col.hex,
+          quantities: quantities, units: n, subtotal: n * st.price
+        });
+      }
+      Object.keys(state.qty).forEach(k => state.qty[k] = 0);
+      [...sizesHost.querySelectorAll('.qty')].forEach(cell => {
+        cell.classList.remove('on');
+        cell.querySelector('input').value = 0;
+        cell.querySelector('[data-step="-1"]').disabled = true;
+      });
+      pendingStyle = state.style; pendingColour = state.colour;
+      renderBasket(); recalc();
+      return true;
+    }
+    $('kit-add').addEventListener('click', addCurrentLine);
 
     /* ---------- logo ---------- */
     const drop = $('kit-drop'), fileInput = $('kit-file'), prompt = $('kit-prompt');
@@ -1162,36 +1292,75 @@
        corner colour. That removes a solid backing block without touching a
        white shape in the middle of the artwork, which a plain colour swap
        would have eaten. */
+    /* Flood fills inward from the edges, clearing anything close enough to the
+       corner colour. That removes a solid backing block without touching a
+       white shape in the middle of the artwork, which a plain colour swap
+       would have eaten.
+
+       The fill runs on a downscaled copy so an older phone is not walking
+       three million pixels in JavaScript. The resulting map says which
+       REGIONS are background; the full-size pass then only clears a pixel if
+       it is both in one of those regions and actually the background colour,
+       so the edges stay as sharp as the original. */
     function knockOutBackground(img, tolerance) {
       const w = img.naturalWidth, h = img.naturalHeight;
       if (!w || !h) return null;
+      const tol = (tolerance || 34) ** 2 * 3;
+
+      // pass one, region map at a size any phone can manage
+      const cap = 700;
+      const k = Math.min(1, cap / Math.max(w, h));
+      const sw = Math.max(1, Math.round(w * k)), sh = Math.max(1, Math.round(h * k));
+      const small = document.createElement('canvas');
+      small.width = sw; small.height = sh;
+      const sg = small.getContext('2d', { willReadFrequently: true });
+      sg.drawImage(img, 0, 0, sw, sh);
+      const sd = sg.getImageData(0, 0, sw, sh).data;
+      const corners = [[0, 0], [sw - 1, 0], [0, sh - 1], [sw - 1, sh - 1]]
+        .map(([x, y]) => (y * sw + x) * 4);
+      const bg = [0, 1, 2].map(c => Math.round(corners.reduce((a, i) => a + sd[i + c], 0) / 4));
+      const nearSmall = i => {
+        const dr = sd[i] - bg[0], dg = sd[i + 1] - bg[1], db = sd[i + 2] - bg[2];
+        return dr * dr + dg * dg + db * db <= tol;
+      };
+      const mask = new Uint8Array(sw * sh);
+      const q = new Int32Array(sw * sh);
+      let head = 0, tail = 0;
+      const seed = pp => { if (!mask[pp] && sd[pp * 4 + 3] > 8 && nearSmall(pp * 4)) { mask[pp] = 1; q[tail++] = pp; } };
+      for (let x = 0; x < sw; x++) { seed(x); seed((sh - 1) * sw + x); }
+      for (let y = 0; y < sh; y++) { seed(y * sw); seed(y * sw + sw - 1); }
+      if (!tail) return null;                        // nothing to strip
+      while (head < tail) {
+        const pp = q[head++], x = pp % sw, y = (pp / sw) | 0;
+        if (x > 0) seed(pp - 1);
+        if (x < sw - 1) seed(pp + 1);
+        if (y > 0) seed(pp - sw);
+        if (y < sh - 1) seed(pp + sw);
+      }
+
+      // pass two, apply at full size with a straight colour test, no recursion
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
       const g = c.getContext('2d', { willReadFrequently: true });
       g.drawImage(img, 0, 0);
       const id = g.getImageData(0, 0, w, h), d = id.data;
-      const corners = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]]
-        .map(([x, y]) => (y * w + x) * 4);
-      const bg = [0, 1, 2].map(k => Math.round(corners.reduce((a, i) => a + d[i + k], 0) / 4));
-      const tol = (tolerance || 34) ** 2 * 3;
-      const near = i => {
-        const dr = d[i] - bg[0], dg = d[i + 1] - bg[1], db = d[i + 2] - bg[2];
-        return dr * dr + dg * dg + db * db <= tol;
-      };
-      const seen = new Uint8Array(w * h);
-      const q = new Int32Array(w * h);
-      let head = 0, tail = 0;
-      const seed = pp => { if (!seen[pp] && d[pp * 4 + 3] > 8 && near(pp * 4)) { seen[pp] = 1; q[tail++] = pp; } };
-      for (let x = 0; x < w; x++) { seed(x); seed((h - 1) * w + x); }
-      for (let y = 0; y < h; y++) { seed(y * w); seed(y * w + w - 1); }
-      if (!tail) return null;                        // nothing to strip
-      while (head < tail) {
-        const pp = q[head++], x = pp % w, y = (pp / w) | 0;
-        d[pp * 4 + 3] = 0;
-        if (x > 0) seed(pp - 1);
-        if (x < w - 1) seed(pp + 1);
-        if (y > 0) seed(pp - w);
-        if (y < h - 1) seed(pp + w);
+      const grow = 1;                                 // tolerate the scale-down blur
+      for (let y = 0; y < h; y++) {
+        const my = Math.min(sh - 1, (y * k) | 0);
+        for (let x = 0; x < w; x++) {
+          const mx = Math.min(sw - 1, (x * k) | 0);
+          let inRegion = false;
+          for (let oy = -grow; oy <= grow && !inRegion; oy++) {
+            for (let ox = -grow; ox <= grow; ox++) {
+              const yy = my + oy, xx = mx + ox;
+              if (yy >= 0 && yy < sh && xx >= 0 && xx < sw && mask[yy * sw + xx]) { inRegion = true; break; }
+            }
+          }
+          if (!inRegion) continue;
+          const i = (y * w + x) * 4;
+          const dr = d[i] - bg[0], dg = d[i + 1] - bg[1], db = d[i + 2] - bg[2];
+          if (dr * dr + dg * dg + db * db <= tol) d[i + 3] = 0;
+        }
       }
       g.putImageData(id, 0, 0);
       return c.toDataURL('image/png');
@@ -1327,10 +1496,9 @@
       event.preventDefault();
       if (state.submitting || !live) return;
 
-      if (!state.style) return showError('Choose a style first.', $('kit-styles'));
-      if (!state.colour) return showError('Choose a colour.', $('kit-colours'));
+      if (unitCount() > 0) addCurrentLine();          // forgiving: nobody loses a line they forgot to add
       const total = recalc();
-      if (unitCount() < 1) return showError('Add at least one item.', $('kit-sizes'));
+      if (!state.items.length) return showError('Add at least one item to your order.', $('kit-sizes'));
       if (!state.logo) return showError('Upload the logo you want pressed on the front.', $('kit-drop'));
 
       let firstBad = null;
@@ -1345,14 +1513,14 @@
       if (missingAck) return showError('Tick all three boxes before you continue.', missingAck);
 
       const payload = {
-        style: state.style,
-        styleName: APPAREL.styles.find(s => s.id === state.style).name,
-        unitPrice: priceOf(state.style),
-        colour: state.colour,
-        colourName: colourById(state.colour).name,
-        colourHex: colourById(state.colour).hex,
-        quantities: Object.fromEntries(Object.entries(state.qty).filter(([, v]) => v > 0)),
-        units: unitCount(),
+        items: state.items.map(it => ({
+          style: it.style, styleName: it.styleName, unitPrice: it.unitPrice,
+          colour: it.colour, colourName: it.colourName, colourHex: it.colourHex,
+          quantities: it.quantities, units: it.units, subtotal: it.subtotal
+        })),
+        units: orderUnits(),
+        subtotal: orderSubtotalCents() / 100,
+        tax: taxOn(orderSubtotalCents()) / 100,
         total: total,
         teamName: $('kit-team').value.trim(),
         contactName: $('kit-name').value.trim(),
@@ -1387,9 +1555,9 @@
         if (!res.ok || !result || !result.orderNumber) {
           throw new Error((result && result.error) || 'That order could not be set up. Your selections are still here, so try again.');
         }
-        $('kit-done-desc').textContent = payload.units + (payload.units === 1 ? ' item' : ' items') +
-          ', ' + payload.styleName.toLowerCase() + ' in ' + payload.colourName.toLowerCase() +
-          ', ' + money(payload.total) + ' total.';
+        $('kit-done-desc').textContent = payload.items
+          .map(it => it.units + ' x ' + it.styleName.toLowerCase() + ' in ' + it.colourName.toLowerCase())
+          .join(', ') + '. ' + fromCents(cents(payload.total)) + ' including tax.';
         $('kit-order-no').textContent = result.orderNumber;
         const pay = $('kit-pay-link');
         if (result.checkoutUrl) {
@@ -1398,7 +1566,8 @@
         } else {
           pay.hidden = true;
           $('kit-done').querySelector('p:last-of-type').textContent =
-            'We will email you a Square invoice for this order shortly.';
+            'We could not open the payment page just now. Nothing has been ordered. Email ' +
+            'dsutherland@virginiavalorfc.org with your reference and we will send you a payment link.';
         }
         form.hidden = true; done.hidden = false;
         done.focus(); done.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -1416,6 +1585,7 @@
     });
 
     selectStyle(APPAREL.styles[0].id);   // open with a style chosen so colours are never empty
+    renderBasket();
     recalc();
     paint();
 
