@@ -203,6 +203,19 @@
     .kit-facts li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.55;color:var(--muted)}
     .kit-facts li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--pink)}
     .kit-facts b{display:block;font-weight:750;color:var(--ink)}
+    .deals{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+    .deal{position:relative;padding:22px 24px 24px;background:#fff;border:1px solid var(--line);
+      border-left:4px solid var(--blue);border-radius:var(--radius)}
+    .deal-tag{display:inline-block;margin-bottom:11px;padding:4px 10px;border-radius:5px;background:var(--blue);
+      color:#04222c;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+    .deal h3{font-size:18px;font-weight:800;font-stretch:106%;letter-spacing:-.02em}
+    .deal p{margin-top:5px;font-size:14px;color:var(--muted)}
+    .deal-price{margin-top:12px!important;display:flex;align-items:baseline;gap:10px}
+    .deal-price b{font-weight:900;font-stretch:114%;font-size:27px;letter-spacing:-.035em;color:var(--ink)}
+    .deal-price s{font-size:15px;color:var(--muted)}
+    .deal-note{grid-column:1/-1;margin:0;font-size:13px;color:var(--muted)}
+    .nudge{margin:14px 0 0 32px;padding:12px 15px;background:#f3fbfd;border:1px solid #cfe8f1;border-radius:9px;
+      font-size:13.5px;line-height:1.55;color:var(--blue-deep);font-weight:650}
     .kit-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 1px 2px rgba(16,18,24,.04)}
     .kit-step{padding:28px 30px;border-bottom:1px solid var(--line)}
     .kit-step:last-of-type{border-bottom:0}
@@ -229,6 +242,13 @@
     .sw{width:38px;height:38px;padding:0;border-radius:50%;border:1px solid rgba(16,18,24,.22);cursor:pointer;transition:transform .12s,box-shadow .12s}
     .sw:hover{transform:scale(1.12)}
     .sw[aria-pressed="true"]{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink)}
+    .sw.taken::after{content:attr(data-taken);position:absolute;right:-3px;bottom:-3px;min-width:17px;height:17px;
+      border-radius:9px;background:var(--ink);color:#fff;font-size:10.5px;font-weight:800;line-height:17px;
+      text-align:center;padding:0 4px;border:2px solid #fff}
+    .sw{position:relative}
+    .clash{margin:12px 0 0;padding:11px 14px;background:#fff6ee;border-left:4px solid var(--orange);
+      border-radius:8px;font-size:13.5px;line-height:1.55;color:var(--ink-2)}
+    .clash b{font-weight:750;color:var(--ink)}
     .sw:focus-visible{outline-offset:5px}
 
     .sizes{margin-left:32px}
@@ -244,6 +264,22 @@
     .qty button:disabled{opacity:.35}
     .qty input{width:30px;min-height:0;padding:0;border:0;background:none;text-align:center;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
     .qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+    .sub-label{margin:0 0 9px;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .backing{margin:24px 0 0 32px;padding-top:20px;border-top:1px solid var(--line)}
+    .backing-opts,.size-opts{display:flex;flex-wrap:wrap;gap:9px}
+    .opt{display:inline-flex;align-items:baseline;gap:8px;padding:10px 15px;border:1.5px solid var(--line-2);border-radius:9px;background:#fff;font-size:14px;font-weight:650;cursor:pointer}
+    .opt:hover{border-color:#98a1af}
+    .opt[aria-pressed="true"]{border-color:var(--blue-deep);background:#f4fbfe;box-shadow:0 0 0 2px rgba(0,174,235,.14)}
+    .opt i{font-style:normal;font-size:12.5px;font-weight:700;color:var(--muted)}
+    .opt[aria-pressed="true"] i{color:var(--blue-deep)}
+    .named{margin-top:16px}
+    .named-hint{margin:0 0 10px;font-size:13px;color:var(--muted)}
+    .named-rows{display:grid;gap:8px;max-width:520px}
+    .named-row{display:grid;grid-template-columns:52px minmax(0,1fr) 88px;gap:9px;align-items:center}
+    .named-row span{font-size:12.5px;font-weight:800;color:var(--muted)}
+    .named-row input{min-height:42px;padding:9px 11px;font-size:15px}
+    .print-size{margin:0 0 20px 32px}
 
     .add-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:22px 0 0 32px}
     .add-sub{font-size:13.5px;color:var(--muted)}
@@ -284,6 +320,7 @@
     .tax-lines{border-collapse:collapse;margin-top:8px;font-size:12.5px;color:var(--muted)}
     .tax-lines td{padding:2px 0}
     .tax-lines td:last-child{padding-left:18px;text-align:right;font-variant-numeric:tabular-nums}
+    .tax-lines .saving td{color:var(--blue-deep);font-weight:750}
     .kit-foot .btn{min-width:230px}
     .kit-note{margin-top:16px;font-size:13px;color:var(--muted)}
     .ask-status{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px;margin-top:22px;padding:30px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:var(--radius)}
@@ -302,6 +339,7 @@
 
     @media(max-width:900px){
       .kit-head{grid-template-columns:1fr;gap:20px;align-items:start}
+      .deals{grid-template-columns:1fr}
     }
     @media(max-width:800px){
       .styles{grid-template-columns:1fr;margin-left:0;gap:10px}
@@ -311,7 +349,8 @@
       .style-opt .ph{font-size:11px}
       .style-opt .meta{padding:12px 14px}
       .style-opt .pr{font-size:20px}
-      .add-row,.basket{margin-left:0}
+      .add-row,.basket,.backing,.print-size,.nudge{margin-left:0}
+      .named-row{grid-template-columns:44px minmax(0,1fr) 74px}
       .line{grid-template-columns:44px minmax(0,1fr) auto;gap:12px}
       .line canvas{width:44px}
       .line-drop{grid-column:2/-1;justify-self:start;padding-left:0}
@@ -676,11 +715,27 @@
           </div>
           <p>Pick a style and a colour, tell us your sizes, drop in your team logo and we will press it for you. Collect at the CYA Fieldhouse, and we will email you the moment your gear is ready.</p>
           <ul class="kit-facts">
-            <li><b>Order by Saturday, November 21</b>a week before the tournament, so there is time to press it</li>
+            <li><b>Order by Saturday, November 14</b>two weeks before the tournament, so there is time to press everything</li>
             <li><b>Ready in about a week</b>we press in batches and email you when yours is done</li>
             <li><b>Collect at the CYA Fieldhouse</b>bring your order number</li>
             <li><b>Prices exclude sales tax</b>Virginia sales tax is added at checkout and passed on to the Commonwealth</li>
           </ul>
+        </div>
+
+        <div class="deals" id="kit-deals">
+          <div class="deal">
+            <span class="deal-tag">Save $11</span>
+            <h3>Full kit</h3>
+            <p>Short sleeve, long sleeve and hoodie</p>
+            <p class="deal-price"><b>$79</b><s>$90</s></p>
+          </div>
+          <div class="deal">
+            <span class="deal-tag">Save $5</span>
+            <h3>Shirt pair</h3>
+            <p>Short sleeve and long sleeve</p>
+            <p class="deal-price"><b>$40</b><s>$45</s></p>
+          </div>
+          <p class="deal-note">Taken off automatically, once per matched set, however many sets you order. Colours can differ across a set, and in fact we would rather they did.</p>
         </div>
 
         <div class="kit-shell" id="kit-shell">
@@ -689,26 +744,38 @@
           <form id="kit-form" novalidate>
             <div class="kit-step">
               <h3><i>1</i>Choose a style</h3>
-              <p class="hint">A4 performance shirts and hoodies. One price per item, printing included.</p>
+              <p class="hint">A4 performance shirts and a Next Level hoodie. One price per item, printing included.</p>
               <div class="styles" id="kit-styles" role="group" aria-label="Garment style"></div>
             </div>
 
             <div class="kit-step">
               <h3><i>2</i>Choose a colour</h3>
-              <p class="hint">Your logo is pressed on the front. Darker colours work best with light artwork. Colours on screen are representative and will not be an exact match to the garment.</p>
+              <p class="hint">Your logo is pressed on the front. Tournament rules ask every team to bring two contrasting colours in case of a clash, so ordering two shades is a good idea. Colours on screen are representative and will not be an exact match to the garment.</p>
               <div class="colour-row">
                 <div class="preview" id="kit-preview">
                   <canvas id="kit-canvas" width="700" height="683" role="img" aria-label="Preview of the selected garment and colour"></canvas>
                   <p class="preview-cap" id="kit-preview-cap">Graphite</p>
                 </div>
-                <div class="swatches" id="kit-colours" role="group" aria-label="Garment colour"></div>
+                <div>
+                  <div class="swatches" id="kit-colours" role="group" aria-label="Garment colour"></div>
+                  <p class="clash" id="kit-clash" hidden></p>
+                </div>
               </div>
             </div>
 
             <div class="kit-step">
               <h3><i>3</i>Sizes and quantities</h3>
-              <p class="hint">Mix youth and adult freely in one order. We buy from A4 once your payment clears, so stock is theirs rather than ours.</p>
+              <p class="hint">Mix youth and adult freely in one order. Shirts come from A4 and the hoodie from Next Level, ordered once your payment clears, so stock is theirs rather than ours.</p>
               <div class="sizes" id="kit-sizes"></div>
+              <div class="backing" id="kit-backing-wrap">
+                <p class="sub-label">On the back of these</p>
+                <div class="backing-opts" id="kit-backing" role="group" aria-label="Names and numbers"></div>
+                <div class="named" id="kit-named" hidden>
+                  <p class="named-hint">One row per shirt. Numbers up to three digits.</p>
+                  <div class="named-rows" id="kit-named-rows"></div>
+                </div>
+              </div>
+
               <div class="add-row">
                 <button class="btn ghost" type="button" id="kit-add">Add to order</button>
                 <span class="add-sub" id="kit-add-sub">Nothing selected yet</span>
@@ -719,11 +786,16 @@
               <h3><i>&#10003;</i>Your order</h3>
               <p class="hint">Add as many styles and colours as you like. One logo goes on everything in the order.</p>
               <div class="basket" id="kit-basket"></div>
+              <p class="nudge" id="kit-nudge" hidden></p>
             </div>
 
             <div class="kit-step">
               <h3><i>4</i>Upload your logo</h3>
               <p class="hint">PNG, JPG or SVG. A transparent PNG at least 1500px wide prints best. Up to 8MB. You will see it on the shirt as soon as it uploads.</p>
+              <div class="print-size">
+                <p class="sub-label">How big should it print?</p>
+                <div class="size-opts" id="kit-print-size" role="group" aria-label="Print size"></div>
+              </div>
               <div class="drop" id="kit-drop">
                 <div class="drop-prompt" id="kit-prompt">
                   <strong>Drop your logo here</strong>
@@ -757,7 +829,7 @@
               </div>
               <div class="ack-box" style="margin-left:32px">
                 <div class="ack-row"><input id="kit-ack-art" name="artworkAcknowledged" type="checkbox" required><label for="kit-ack-art"><strong>The artwork is ours to use. <span class="req">*</span></strong>We own this logo or have permission to print it. Virginia Valor FC reserves the right to decline any design, and will refund the order in full if we are not comfortable printing it.</label></div>
-                <div class="ack-row"><input id="kit-ack-stock" name="stockAcknowledged" type="checkbox" required><label for="kit-ack-stock"><strong>Stock is not guaranteed. <span class="req">*</span></strong>We do not hold inventory. Orders go to A4 after payment clears, and now and then a colour or size is unavailable. If that happens to your order we will contact you as soon as we know and sort out a swap, a partial refund, or a full refund, whichever you prefer.</label></div>
+                <div class="ack-row"><input id="kit-ack-stock" name="stockAcknowledged" type="checkbox" required><label for="kit-ack-stock"><strong>Stock is not guaranteed. <span class="req">*</span></strong>We do not hold inventory. Shirts are ordered from A4 and hoodies from Next Level once payment clears, and now and then a colour or size is unavailable. If that happens to your order we will contact you as soon as we know and sort out a swap, a partial refund, or a full refund, whichever you prefer.</label></div>
                 <div class="ack-row"><input id="kit-ack-pick" name="pickupAcknowledged" type="checkbox" required><label for="kit-ack-pick"><strong>Collecting at the CYA Fieldhouse. <span class="req">*</span></strong>Orders are usually ready about a week after ordering, and we email you when yours is. Custom printed items cannot be returned or exchanged. Anything still uncollected a month after the tournament is donated to DC Candlelighters along with the gift drive.</label></div>
               </div>
             </div>
@@ -769,7 +841,8 @@
                 <b id="kit-amount">$0.00</b>
                 <em id="kit-breakdown">Nothing added yet</em>
                 <table class="tax-lines" id="kit-tax" hidden>
-                  <tr><td>Subtotal</td><td id="kit-sub">$0.00</td></tr>
+                  <tr><td>Items</td><td id="kit-sub">$0.00</td></tr>
+                  <tr class="saving" id="kit-saving-row" hidden><td id="kit-saving-label">Bundle saving</td><td id="kit-saving">$0.00</td></tr>
                   <tr><td id="kit-tax-label">Virginia sales tax</td><td id="kit-tax-amt">$0.00</td></tr>
                 </table>
               </div>
@@ -806,7 +879,7 @@
           <p class="st-done" id="st-done" hidden>Message sent. We will reply to that address, usually the same day.</p>
         </section>
 
-        <p class="kit-note">Short sleeve $20, long sleeve $25, hoodie $45, plus Virginia sales tax. One logo per order, pressed on the front. Payment is taken by Square. Nothing is ordered, printed or confirmed until payment clears, and your confirmation email only arrives once it has. Ordering closes Saturday, November 21. Virginia Valor FC does not hold stock. Garments come from A4, so if anything you ordered is unavailable we will be in touch quickly to work out a swap or a refund.</p>
+        <p class="kit-note">Short sleeve $20, long sleeve $25, hoodie $45, plus Virginia sales tax. Bundle savings come off automatically. One logo per order, pressed on the front. Payment is taken by Square. Nothing is ordered, printed or confirmed until payment clears, and your confirmation email only arrives once it has. Ordering closes Saturday, November 14. Virginia Valor FC does not hold stock. Shirts come from A4 and hoodies from Next Level, so if anything you ordered is unavailable we will be in touch quickly to work out a swap or a refund.</p>
       </div>
     </section>
   </main>
@@ -825,7 +898,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 14-09-n</span></span>
+        <span>2026 Virginia Valor FC, 3v3 Community Cup <span style="opacity:.55">build 15-09-d</span></span>
         <a href="https://www.virginiavalorfc.org/">Visit Virginia Valor FC</a>
       </div>
     </div>
@@ -850,16 +923,17 @@
     ],
 
     /* The hoodie only comes in three colours. The two shirts share a palette.
-       Swap these for the A4 names and numbers you decide to stock. */
+       Swap these for the supplier names and numbers you decide to stock. */
     /* Sampled from A4's own swatch grid, so the colours are theirs rather
        than approximations. The NAMES below are descriptive, written here,
        not A4's catalogue names. Swap them for A4's names and numbers before
        you start ordering against them. The hoodie really does come in three. */
-    /* Sampled from A4's own swatch grids, one per garment. The short sleeve
-       and long sleeve ranges are both 37 but they are NOT the same 37, so
-       they are kept separate. The NAMES are descriptive, written here, not
-       A4's catalogue names. Swap them for A4's names and numbers before you
-       order against them. The hoodie really does come in three. */
+    /* Sampled from the suppliers' own swatch grids, one palette per garment.
+       Shirts are A4 and the hoodie is Next Level. The two shirt ranges are
+       both 37 but they are NOT the same 37, so they are kept separate. The
+       NAMES are descriptive, written here, not catalogue names. Swap them for
+       the real ones before you order against them. The Next Level hoodie
+       really does come in three colours. */
     palettes: {
       ss: [
         { id: 'orange', name: 'Orange', hex: '#e55628' },
@@ -945,8 +1019,8 @@
         { id: 'navy',         name: 'Navy',         hex: '#2b3243' }
       ]
     },
-    /* A4 sells youth garments under their own product codes, so a youth
-       order is a different SKU from the adult one even at the same price. */
+    /* Both suppliers sell youth garments under their own product codes, so a
+       youth order is a different SKU from the adult one even at the same price. */
     sizes: {
       Youth: ['YXS', 'YS', 'YM', 'YL'],
       Adult: ['XS', 'S', 'M', 'L', 'XL', '2XL']
@@ -954,6 +1028,25 @@
     /* Northern Virginia general sales tax: 4.3% state, 1% local, 0.7%
        regional transport. Chantilly is Fairfax County, so 6%. Collected for
        the Commonwealth, not kept by the club. */
+    /* Names and numbers go on the back, priced per garment. */
+    backing: [
+      { id: 'none',   label: 'Nothing on the back', short: '',                 price: 0 },
+      { id: 'number', label: 'Number only',          short: 'number',           price: 6 },
+      { id: 'name',   label: 'Name only',            short: 'name',             price: 8 },
+      { id: 'both',   label: 'Name and number',      short: 'name and number',  price: 12 }
+    ],
+
+    /* One logo per order, pressed on the front. 11 inches is the press limit. */
+    printSizes: [
+      { id: 'small',    label: 'Small',    note: 'about 6 inches wide' },
+      { id: 'standard', label: 'Standard', note: 'about 9 inches wide', preselect: true },
+      { id: 'large',    label: 'Large',    note: '11 inches, the biggest we can press' }
+    ],
+
+    /* Taken off automatically once the basket contains a matched set.
+       fullKit is one of each style, pair is a short sleeve plus a long sleeve. */
+    bundles: { fullKit: 11, pair: 5 },
+
     taxRate: 0.06,
     taxLabel: 'Virginia sales tax (6%)',
     maxUploadMB: 8,
@@ -968,7 +1061,8 @@
     const shell = $('kit-shell'), done = $('kit-done'), errorBox = $('kit-error');
     const submit = $('kit-submit'), amountEl = $('kit-amount'), breakdownEl = $('kit-breakdown');
 
-    const state = { style: null, colour: null, qty: {}, items: [], logo: null, submitting: false, key: '' };
+    const state = { style: null, colour: null, qty: {}, items: [], backing: 'none', named: [],
+                    printSize: 'standard', logo: null, submitting: false, key: '' };
     const money = n => '$' + n.toLocaleString('en-US');
     const cents = n => Math.round(n * 100);
     const fromCents = c => '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1009,9 +1103,12 @@
     function drawLogo(g, target, st) {
       if (!state.logo || !state.logo.img || !st || !st.chest) return;
       const im = state.logo.img;
+      const grow = { small: .72, standard: 1, large: 1.22 }[state.printSize] || 1;
+      const bw = st.chest.w * target.width * grow, bh = st.chest.h * target.height * grow;
       const box = {
-        x: st.chest.x * target.width, y: st.chest.y * target.height,
-        w: st.chest.w * target.width, h: st.chest.h * target.height
+        x: st.chest.x * target.width + (st.chest.w * target.width - bw) / 2,
+        y: st.chest.y * target.height + (st.chest.h * target.height - bh) / 2,
+        w: bw, h: bh
       };
       const k = Math.min(box.w / im.naturalWidth, box.h / im.naturalHeight);
       const w = im.naturalWidth * k, h = im.naturalHeight * k;
@@ -1113,12 +1210,36 @@
       return (st && APPAREL.palettes[st.colours]) || [];
     }
     function colourById(id) { return paletteFor(state.style).find(c => c.id === id); }
+
+    /* Colours other teams have already paid for. Shown as a count on the
+       swatch, never blocked: two teams in the same colour is a problem for
+       the referee, not for us, and the rules already say bring a second
+       colour. Better to tell people than to stop them. */
+    let claimed = {};
+    function colourNote() {
+      const el = $('kit-clash');
+      const col = colourById(state.colour);
+      const n = col ? (claimed[col.id] || 0) : 0;
+      if (!n) { el.hidden = true; return; }
+      el.hidden = false;
+      el.innerHTML = '<b>' + n + (n === 1 ? ' other team has' : ' other teams have') +
+        ' already ordered ' + col.name.toLowerCase() + '.</b> Not a problem, but tournament rules ask every ' +
+        'team to bring two contrasting colours in case of a clash, so it is worth picking a second shade too.';
+    }
+    (async () => {
+      if (!live) return;
+      try {
+        const res = await fetch(APPAREL.endpoint + '?claimed=1', { credentials: 'omit' });
+        const out = await res.json();
+        if (out && out.claimed) { claimed = out.claimed; buildColours(); colourNote(); }
+      } catch (err) { /* a missing count is not worth bothering anyone about */ }
+    })();
     coloursHost.addEventListener('click', ev => {
       const btn = ev.target.closest('.sw');
       if (!btn || !btn.dataset.id) return;
       state.colour = btn.dataset.id; pendingColour = btn.dataset.id;
       [...coloursHost.children].forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
-      recalc(); paint();
+      colourNote(); recalc(); paint();
     });
     function buildColours() {
       const list = paletteFor(state.style);
@@ -1137,11 +1258,90 @@
         b.setAttribute('aria-pressed', String(state.colour === c.id));
         b.dataset.id = c.id;
         b.style.background = c.hex;
-        b.title = c.name;
-        b.setAttribute('aria-label', c.name);
+        const n = claimed[c.id] || 0;
+        if (n) {
+          b.classList.add('taken');
+          b.dataset.taken = n;
+          b.title = c.name + ', already chosen by ' + n + (n === 1 ? ' other team' : ' other teams');
+        } else {
+          b.title = c.name;
+        }
+        b.setAttribute('aria-label', b.title);
         coloursHost.appendChild(b);
       });
     }
+
+    /* ---------- names and numbers on the back ---------- */
+    const backingHost = $('kit-backing'), namedWrap = $('kit-named'), namedRows = $('kit-named-rows');
+    function backingById(id) { return APPAREL.backing.find(b => b.id === id) || APPAREL.backing[0]; }
+
+    APPAREL.backing.forEach(bk => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.dataset.id = bk.id;
+      b.setAttribute('aria-pressed', String(bk.id === 'none'));
+      b.innerHTML = bk.label + (bk.price ? '<i>+' + money(bk.price) + ' each</i>' : '');
+      backingHost.appendChild(b);
+    });
+    backingHost.addEventListener('click', ev => {
+      const btn = ev.target.closest('.opt');
+      if (!btn) return;
+      state.backing = btn.dataset.id;
+      [...backingHost.children].forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
+      buildNamedRows(); recalc();
+    });
+
+    /* One row per shirt, so we know whose is whose before anything is pressed. */
+    function buildNamedRows() {
+      const bk = backingById(state.backing);
+      if (bk.id === 'none') { namedWrap.hidden = true; namedRows.replaceChildren(); state.named = []; return; }
+      const slots = [];
+      Object.keys(state.qty).forEach(size => {
+        for (let i = 0; i < (state.qty[size] || 0); i++) slots.push(size);
+      });
+      if (!slots.length) { namedWrap.hidden = true; namedRows.replaceChildren(); state.named = []; return; }
+      namedWrap.hidden = false;
+      const keep = state.named.slice();
+      state.named = slots.map((size, i) => ({
+        size: size,
+        name: (keep[i] && keep[i].name) || '',
+        number: (keep[i] && keep[i].number) || ''
+      }));
+      namedRows.replaceChildren();
+      state.named.forEach((row, i) => {
+        const el = document.createElement('div');
+        el.className = 'named-row';
+        el.innerHTML = '<span>' + row.size + '</span>' +
+          (bk.id === 'number' ? '<input disabled placeholder="No name on these" aria-label="Name not used">'
+                              : '<input data-i="' + i + '" data-k="name" maxlength="14" placeholder="Name" aria-label="Name for shirt ' + (i + 1) + '">') +
+          (bk.id === 'name' ? '<input disabled placeholder="No number" aria-label="Number not used">'
+                            : '<input data-i="' + i + '" data-k="number" inputmode="numeric" maxlength="3" placeholder="No." aria-label="Number for shirt ' + (i + 1) + '">');
+        namedRows.appendChild(el);
+      });
+    }
+    namedRows.addEventListener('input', ev => {
+      const el = ev.target;
+      if (!el.dataset || el.dataset.i === undefined) return;
+      let v = el.value;
+      if (el.dataset.k === 'number') { v = v.replace(/\D/g, '').slice(0, 3); el.value = v; }
+      state.named[Number(el.dataset.i)][el.dataset.k] = v.trim();
+    });
+
+    /* ---------- print size ---------- */
+    const sizeHost = $('kit-print-size');
+    APPAREL.printSizes.forEach(ps => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.dataset.id = ps.id;
+      b.setAttribute('aria-pressed', String(!!ps.preselect));
+      b.innerHTML = ps.label + '<i>' + ps.note + '</i>';
+      sizeHost.appendChild(b);
+    });
+    sizeHost.addEventListener('click', ev => {
+      const btn = ev.target.closest('.opt');
+      if (!btn) return;
+      state.printSize = btn.dataset.id;
+      [...sizeHost.children].forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
+      paint();
+    });
 
     /* ---------- sizes ---------- */
     const sizesHost = $('kit-sizes');
@@ -1168,11 +1368,13 @@
           state.qty[sz] = v;
           cell.classList.toggle('on', v > 0);
           cell.querySelector('[data-step="-1"]').disabled = v === 0;
+          if (state.backing !== 'none') buildNamedRows();
           recalc();
         };
         cell.querySelectorAll('button').forEach(btn =>
           btn.addEventListener('click', () => setQty(Number(input.value) + Number(btn.dataset.step))));
         input.addEventListener('input', () => setQty(Number(input.value)));
+        cell.addEventListener('click', () => { if (state.backing !== 'none') buildNamedRows(); });
         row.appendChild(cell);
       });
       sizesHost.appendChild(wrap);
@@ -1184,30 +1386,84 @@
     function sizeList(q) { return Object.keys(q).map(k => k + ' x' + q[k]).join(', '); }
     function orderUnits() { return state.items.reduce((a, it) => a + it.units, 0); }
     function orderSubtotalCents() { return state.items.reduce((a, it) => a + cents(it.subtotal), 0); }
-    function orderTotal() { const sub = orderSubtotalCents(); return (sub + taxOn(sub)) / 100; }
+
+    /* A matched set of all three styles takes $11 off. A short sleeve plus a
+       long sleeve takes $5 off. Worked out from the whole basket, so colours
+       can differ across the set, which is what we want people doing anyway. */
+    function bundle() {
+      const n = { ss: 0, ls: 0, hoodie: 0 };
+      state.items.forEach(it => { n[it.style] = (n[it.style] || 0) + it.units; });
+      const full = Math.min(n.ss, n.ls, n.hoodie);
+      const pairs = Math.min(n.ss - full, n.ls - full);
+      const cut = full * cents(APPAREL.bundles.fullKit) + pairs * cents(APPAREL.bundles.pair);
+      const bits = [];
+      if (full) bits.push(full + (full === 1 ? ' full kit' : ' full kits'));
+      if (pairs) bits.push(pairs + (pairs === 1 ? ' shirt pair' : ' shirt pairs'));
+      return { full: full, pairs: pairs, cut: cut, label: bits.join(' and ') };
+    }
+
+    function orderTotal() {
+      const sub = orderSubtotalCents();
+      const net = Math.max(0, sub - bundle().cut);
+      return (net + taxOn(net)) / 100;
+    }
 
     function recalc() {
       const n = unitCount(), unit = priceOf(state.style);
       const st = APPAREL.styles.find(x => x.id === state.style);
       const col = colourById(state.colour);
+      const bk = backingById(state.backing);
       $('kit-add-sub').innerHTML = !n || !st
         ? 'Nothing selected yet'
-        : '<b>' + money(n * unit) + '</b> for ' + n + (n === 1 ? ' item' : ' items') + ', ' +
-          st.name.toLowerCase() + (col ? ' in ' + col.name.toLowerCase() : '');
+        : '<b>' + fromCents(n * cents(unit + bk.price)) + '</b> for ' + n + (n === 1 ? ' item' : ' items') + ', ' +
+          st.name.toLowerCase() + (col ? ' in ' + col.name.toLowerCase() : '') +
+          (bk.price ? ', with ' + bk.short : '');
       $('kit-add').disabled = !n || !st || !col;
 
-      const sub = orderSubtotalCents(), tax = taxOn(sub), units = orderUnits();
-      amountEl.textContent = fromCents(sub + tax);
+      const sub = orderSubtotalCents(), bd = bundle();
+      const net = Math.max(0, sub - bd.cut), tax = taxOn(net), units = orderUnits();
+      amountEl.textContent = fromCents(net + tax);
       breakdownEl.textContent = !units
         ? 'Nothing added yet'
         : units + (units === 1 ? ' item' : ' items') + ' across ' +
           state.items.length + (state.items.length === 1 ? ' line' : ' lines');
       $('kit-tax').hidden = !units;
       $('kit-sub').textContent = fromCents(sub);
+      $('kit-saving-row').hidden = !bd.cut;
+      $('kit-saving-label').textContent = 'Bundle saving, ' + bd.label;
+      $('kit-saving').textContent = '\u2212' + fromCents(bd.cut);
       $('kit-tax-label').textContent = APPAREL.taxLabel;
       $('kit-tax-amt').textContent = fromCents(tax);
+      nudge();
       errorBox.hidden = true;
-      return (sub + tax) / 100;
+      return (net + tax) / 100;
+    }
+
+    /* What one more garment would be worth, so the saving is visible before
+       they have qualified for it rather than only afterwards. */
+    function nudge() {
+      const el = $('kit-nudge');
+      const n = { ss: 0, ls: 0, hoodie: 0 };
+      state.items.forEach(it => { n[it.style] = (n[it.style] || 0) + it.units; });
+      let msg = '';
+      if (state.items.length) {
+        const pairsNow = Math.min(n.ss, n.ls);
+        const step = APPAREL.bundles.fullKit - APPAREL.bundles.pair;
+        if (pairsNow && n.hoodie < pairsNow) {
+          const more = pairsNow - n.hoodie;
+          msg = 'Add ' + (more === 1 ? 'a hoodie' : more + ' hoodies') +
+                ' and your saving goes up by ' + money(step * more) + '.';
+        } else if (n.ss && !n.ls) {
+          msg = 'Add a long sleeve to take ' + money(APPAREL.bundles.pair) +
+                ' off, or a long sleeve and a hoodie for ' + money(APPAREL.bundles.fullKit) + ' off.';
+        } else if (n.ls && !n.ss) {
+          msg = 'Add a short sleeve to take ' + money(APPAREL.bundles.pair) + ' off.';
+        } else if (n.hoodie && !n.ss && !n.ls) {
+          msg = 'Add a short sleeve and a long sleeve to take ' + money(APPAREL.bundles.fullKit) + ' off.';
+        }
+      }
+      el.hidden = !msg;
+      el.textContent = msg;
     }
 
     /* ---------- the basket ---------- */
@@ -1228,7 +1484,9 @@
           '<canvas width="700" height="740" aria-hidden="true"></canvas>' +
           '<span class="line-main"><b>' + it.styleName + ' in ' + it.colourName + '</b>' +
           '<span>' + sizeList(it.quantities) + '  &middot;  ' + it.units +
-          (it.units === 1 ? ' item' : ' items') + ' at ' + money(it.unitPrice) + '</span></span>' +
+          (it.units === 1 ? ' item' : ' items') + ' at ' + money(it.unitPrice) +
+          (it.backingPrice ? '  &middot;  ' + it.backingLabel.toLowerCase() + ' +' + money(it.backingPrice) : '') +
+          '</span></span>' +
           '<span class="line-cost">' + money(it.subtotal) + '</span>' +
           '<button class="line-drop" type="button" data-i="' + i + '">Remove</button>';
         basket.appendChild(row);
@@ -1249,19 +1507,28 @@
       const n = unitCount(), st = APPAREL.styles.find(x => x.id === state.style), col = colourById(state.colour);
       if (!n || !st || !col) return false;
       const quantities = Object.fromEntries(Object.entries(state.qty).filter(([, v]) => v > 0));
-      const match = state.items.find(it => it.style === st.id && it.colour === col.id);
+      const bk = backingById(state.backing);
+      const named = bk.id === 'none' ? [] : state.named.map(r => ({
+        size: r.size,
+        name: bk.id === 'number' ? '' : (r.name || '').slice(0, 14),
+        number: bk.id === 'name' ? '' : (r.number || '').slice(0, 3)
+      }));
+      const match = state.items.find(it => it.style === st.id && it.colour === col.id && it.backing === bk.id);
       if (match) {
         Object.keys(quantities).forEach(k => { match.quantities[k] = (match.quantities[k] || 0) + quantities[k]; });
         match.units = Object.values(match.quantities).reduce((a, b) => a + b, 0);
-        match.subtotal = match.units * st.price;
+        match.named = match.named.concat(named);
+        match.subtotal = match.units * (st.price + bk.price);
       } else {
         state.items.push({
           style: st.id, styleName: st.name, unitPrice: st.price,
           colour: col.id, colourName: col.name, colourHex: col.hex,
-          quantities: quantities, units: n, subtotal: n * st.price
+          backing: bk.id, backingLabel: bk.label, backingPrice: bk.price, named: named,
+          quantities: quantities, units: n, subtotal: n * (st.price + bk.price)
         });
       }
       Object.keys(state.qty).forEach(k => state.qty[k] = 0);
+      state.named = []; buildNamedRows();
       [...sizesHost.querySelectorAll('.qty')].forEach(cell => {
         cell.classList.remove('on');
         cell.querySelector('input').value = 0;
@@ -1516,8 +1783,11 @@
         items: state.items.map(it => ({
           style: it.style, styleName: it.styleName, unitPrice: it.unitPrice,
           colour: it.colour, colourName: it.colourName, colourHex: it.colourHex,
-          quantities: it.quantities, units: it.units, subtotal: it.subtotal
+          quantities: it.quantities, units: it.units, subtotal: it.subtotal,
+          backing: it.backing, backingPrice: it.backingPrice, named: it.named
         })),
+        printSize: state.printSize,
+        bundleSaving: bundle().cut / 100,
         units: orderUnits(),
         subtotal: orderSubtotalCents() / 100,
         tax: taxOn(orderSubtotalCents()) / 100,
