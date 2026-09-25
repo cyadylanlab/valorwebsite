@@ -7,9 +7,10 @@
 <!--
   VIDEO FILES
   The hero loads its video from these three addresses (search this file for them to change them):
-    https://cyadylanlab.github.io/valorwebsite/media/hero-desktop.mp4   (required)
-    https://cyadylanlab.github.io/valorwebsite/media/hero-mobile.mp4    (optional; phones fall back to the desktop file if it is missing)
-    https://cyadylanlab.github.io/valorwebsite/media/hero-poster.jpg    (shown while the video loads)
+    https://cyadylanlab.github.io/valorwebsite/hero-desktop.mp4   (required)
+    https://cyadylanlab.github.io/valorwebsite/hero-mobile.mp4    (optional; phones fall back to the desktop file if it is missing)
+    https://cyadylanlab.github.io/valorwebsite/hero-poster.jpg    (shown while the video loads)
+  All three files live in the top level of the valorwebsite repo, next to this HTML file.
   Full addresses are used so the hero also works when this file is opened from your computer.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +64,7 @@
     justify-content: center;
     padding: clamp(76px, 9vh, 104px) var(--pad-x) calc(var(--v) + clamp(40px, 6vh, 72px));
     background:
-      url("https://cyadylanlab.github.io/valorwebsite/media/hero-poster.jpg") center / cover no-repeat,
+      url("https://cyadylanlab.github.io/valorwebsite/hero-poster.jpg") center / cover no-repeat,
       radial-gradient(120% 90% at 20% 60%, #1c1a14 0%, var(--black) 70%);
     color: var(--white);
     overflow: hidden;
@@ -84,8 +85,9 @@
     inset: 0;
     z-index: 1;
     background:
-      linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.3) 48%, rgba(0,0,0,0.4) 100%),
-      linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 62%);
+      linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.62) 50%, rgba(0,0,0,0.22) 85%),
+      linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%),
+      rgba(0,0,0,0.12);
     pointer-events: none;
   }
 
@@ -217,6 +219,7 @@
     font-size: 15px;
     line-height: 1.55;
     color: var(--mist);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.85);
   }
 
   /* ---------- Chevron edge: the crest's V carried into the page ---------- */
@@ -324,11 +327,11 @@
   <div class="stage-wrap">
     <div class="stage">
       <video class="stage-video"
-             src="https://cyadylanlab.github.io/valorwebsite/media/hero-desktop.mp4"
+             src="https://cyadylanlab.github.io/valorwebsite/hero-desktop.mp4"
              autoplay muted loop playsinline preload="auto"
-             poster="https://cyadylanlab.github.io/valorwebsite/media/hero-poster.jpg"
-             data-desktop="https://cyadylanlab.github.io/valorwebsite/media/hero-desktop.mp4"
-             data-mobile="https://cyadylanlab.github.io/valorwebsite/media/hero-mobile.mp4"
+             poster="https://cyadylanlab.github.io/valorwebsite/hero-poster.jpg"
+             data-desktop="https://cyadylanlab.github.io/valorwebsite/hero-desktop.mp4"
+             data-mobile="https://cyadylanlab.github.io/valorwebsite/hero-mobile.mp4"
              aria-hidden="true" tabindex="-1"></video>
       <div class="stage-shade"></div>
 
