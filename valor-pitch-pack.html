@@ -155,11 +155,16 @@
   @media(max-width:900px){
     .hero{grid-template-columns:1fr;min-height:0}
     .hero-copy{padding:40px 24px 0}
-    .tag{animation-name:swing}
     .cobrand{margin-bottom:28px}
     .hero-photo{height:min(560px,120vw);margin-top:36px}
-    .tag{left:auto;margin-left:0;right:16px;bottom:-28px;top:auto;width:208px;padding:40px 20px 20px}
-    .tag .t-code{margin:10px -20px -20px}
+    .tag{position:static;width:auto;margin:0;padding:0;clip-path:none;box-shadow:none;animation:none;transform:none;display:grid;grid-template-columns:1fr 1fr;background:var(--off);border-bottom:1px solid var(--line)}
+    .tag::before{display:none}
+    .tag .t-k{grid-column:1/-1;text-align:left;padding:18px 24px 0}
+    .tag .t-row{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 24px 18px;border-bottom:0}
+    .tag .t-row+.t-row{border-left:1px solid var(--line)}
+    .tag .t-row>span:last-child{display:flex;align-items:baseline;gap:10px}
+    .tag .t-name br{display:none}
+    .tag .t-code{grid-column:1/-1;margin:0;padding:14px 0}
     .hero{padding-bottom:0}
     .hero-cta{margin-top:28px}
     .fits-grid,.custom-grid,.deal-grid,.fine-grid{grid-template-columns:1fr;gap:40px}
@@ -171,18 +176,16 @@
   }
   @media(max-width:900px){
     .hero-photo{margin-bottom:0}
-    .fits{padding-top:110px}
   }
   @media(max-width:560px){
     body{font-size:16px}
     .fits,.custom{padding:64px 0}
-    .fits{padding-top:96px}
     .deal{padding:72px 0 80px}
     .hero-cta{flex-direction:column;align-items:stretch;gap:8px}
     .hero-cta .btn{width:100%}
     .hero-cta .textlink{justify-content:center}
-    .tag{width:186px;right:12px;padding:36px 16px 18px}
-    .tag .t-code{margin:8px -16px -18px}
+    .tag .t-k{padding:16px 16px 0}
+    .tag .t-row{padding:8px 16px 16px}
     .tag .t-now{font-size:34px}
     .callout::before{width:22px}
     .btn{padding:0 18px;letter-spacing:.1em}
@@ -226,7 +229,7 @@
     <div class="tag" aria-label="Valor price tag">
       <p class="t-k">Valor Price</p>
       <div class="t-row"><span class="t-name">Crest bag</span><span><span class="t-was">$44.99</span><span class="t-now">$36</span></span></div>
-      <div class="t-row"><span class="t-name">Crest bag<br>+ number</span><span><span class="t-was">$59.99</span><span class="t-now">$48</span></span></div>
+      <div class="t-row"><span class="t-name">Crest bag <br>+ number</span><span><span class="t-was">$59.99</span><span class="t-now">$48</span></span></div>
       <p class="t-code">Code <b>VALOR</b></p>
     </div>
   </header>
