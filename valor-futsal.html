@@ -125,6 +125,12 @@ section[id]{scroll-margin-top:52px}
 .half li::before{content:"";position:absolute;left:0;top:19px;width:10px;height:2px;background:var(--gold)}
 .center-ring{position:absolute;width:96px;height:96px;border:3px solid var(--ink);border-radius:50%;background:var(--paper);display:grid;place-items:center;font-stretch:62%;font-weight:800;letter-spacing:.14em;font-size:15px;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%)}
 @media(max-width:819px){.center-ring{width:70px;height:70px;font-size:13px;top:var(--ringY,50%)}}
+.center-ring.plus{background:var(--ink);border-color:var(--gold)}
+.center-ring.plus i{position:relative;display:block;width:40%;height:40%}
+.center-ring.plus i::before,.center-ring.plus i::after{content:"";position:absolute;background:var(--gold);border-radius:2px}
+.center-ring.plus i::before{left:0;right:0;top:50%;height:6px;margin-top:-3px}
+.center-ring.plus i::after{top:0;bottom:0;left:50%;width:6px;margin-left:-3px}
+@media(max-width:819px){.center-ring.plus i::before{height:5px;margin-top:-2.5px}.center-ring.plus i::after{width:5px;margin-left:-2.5px}}
 
 /* ============ TICKER ============ */
 .ticker{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;border-top:6px solid var(--gold)}
@@ -446,7 +452,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 .bgv::-webkit-media-controls,.bgv::-webkit-media-controls-start-playback-button,.bgv::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
 @media(min-width:601px) and (max-width:1100px){.hero-stage{min-height:680px}}
 
-/* phone: room for the OR ring, smaller ticker */
+/* phone: room for the plus ring, smaller ticker */
 @media(max-width:819px){
   .halves .half:first-of-type{padding-bottom:58px}
   .halves .half.alt{padding-top:54px}
@@ -542,7 +548,7 @@ section[id]{scroll-margin-top:58px}
   <div class="jump-in">
     <span class="jump-lab">Jump to</span>
     <div class="jump-links">
-      <a href="#options">Winter options</a>
+      <a href="#options">Included and add-on</a>
       <a href="#gameday">Schedule</a>
       <a href="#training">Training</a>
       <a href="#details">Fee and details</a>
@@ -569,19 +575,19 @@ section[id]{scroll-margin-top:58px}
 
 <a href="#top" class="totop" id="totop" aria-label="Return to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg><span>Top</span></a>
 
-<!-- TWO HALVES -->
+<!-- INCLUDED + ADD-ON -->
 <section class="halves-sec" id="options">
   <div class="wrap">
     <div class="halves-head">
       <div>
         <div class="label">Winter at Valor</div>
-        <h2 style="margin-top:10px">Two winter options</h2>
+        <h2 style="margin-top:10px">Included play, plus Competitive</h2>
       </div>
-      <p>Every Valor player can play indoors on Saturdays as part of club dues. Competitive Futsal is a separate, optional program with its own fee and registration.</p>
+      <p>Every Valor player gets Saturday indoor play as part of club dues. Competitive Futsal is an optional add-on on top of that, with its own fee and registration. Players who sign up for Competitive keep their included Saturday play too.</p>
     </div>
     <div class="halves" id="halves">
       <div class="half">
-        <div class="label">Included in club dues</div>
+        <div class="label">Every player &middot; Included in club dues</div>
         <h3>Saturday Winter Play Series</h3>
         <div class="cost">No additional cost</div>
         <p>In-house scrimmages at the CYA Fieldhouse, open to all Valor players.</p>
@@ -591,12 +597,12 @@ section[id]{scroll-margin-top:58px}
           <li>Keeps players active and comfortable on the ball through the winter</li>
         </ul>
       </div>
-      <div class="center-ring" id="ring" aria-hidden="true">OR</div>
+      <div class="center-ring plus" id="ring" aria-hidden="true"><i></i></div>
       <div class="half alt">
-        <div class="label">Optional program</div>
+        <div class="label">Optional add-on &middot; If you want more</div>
         <h3>Competitive Futsal</h3>
         <div class="cost">$375 per player</div>
-        <p>Structured training and competitive games for players who want to improve over the winter and start the spring season ahead.</p>
+        <p>Added on top of the included Saturday play: structured training and competitive games for players who want to improve over the winter and start the spring season ahead.</p>
         <ul>
           <li>Training sessions led by Valor directors and coaches</li>
           <li>Practices and games on Saturdays for U8 to U10, Sundays for U11 to U14</li>
