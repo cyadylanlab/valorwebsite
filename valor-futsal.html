@@ -47,15 +47,23 @@ p{max-width:62ch}
 .plain:hover{color:var(--gold)}
 
 /* ============ HERO ============ */
-.hero{position:relative;overflow:hidden;background:var(--paper);padding:28px 0 0}
+.hero{position:relative;overflow:hidden;background:#0d0d0d;color:#fff}
+.hero-stage{position:relative;overflow:hidden;min-height:min(94vh,900px);display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 64px}
+@media(max-width:759px){.hero-stage{min-height:max(100svh,640px);padding-bottom:76px}.hero-stage .reel-btn{bottom:14px;right:16px}}
 @keyframes draw{to{stroke-dashoffset:0}}
 .hero .wrap{position:relative;z-index:1}
+.hero .plain{color:#fff}
+.hero .plain:hover{color:var(--brass)}
+.hero .wrap{width:100%;flex:1;display:flex;flex-direction:column}
+.hero-grid{margin-top:auto}
+@media(min-width:760px){.hero-stage .reel-btn{right:40px;bottom:28px}}
+
 .topline{display:flex;align-items:center;gap:12px}
-.topline img{width:52px;height:auto}
-.topline span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13px}
-.hero-grid{display:grid;grid-template-columns:1fr;margin-top:46px}
-.kicker{font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:clamp(20px,3vw,30px);color:var(--gold)}
-.big{font-size:clamp(64px,17vw,280px);line-height:1;margin:8px 0 0;white-space:nowrap}
+.topline img{width:52px;height:auto;filter:drop-shadow(0 0 1px rgba(255,255,255,.7)) drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.topline span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:#fff}
+.hero-grid{display:grid;grid-template-columns:1fr;margin-top:auto;padding-top:46px}
+.kicker{font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:clamp(20px,3vw,30px);color:var(--brass)}
+.big{font-size:clamp(64px,17vw,280px);line-height:1;margin:8px 0 0;white-space:nowrap;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.35)}
 @media(max-width:520px){.big{font-stretch:110%;font-size:22vw}}
 .big span{display:inline-block}
 .js .big span{transform:translateY(105%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards}
@@ -63,13 +71,13 @@ p{max-width:62ch}
 .js .big span:nth-child(2){animation-delay:.06s}.js .big span:nth-child(3){animation-delay:.12s}
 .js .big span:nth-child(4){animation-delay:.18s}.js .big span:nth-child(5){animation-delay:.24s}.js .big span:nth-child(6){animation-delay:.3s}
 @keyframes up{to{transform:none}}
-.vert{position:absolute;right:16px;top:120px;writing-mode:vertical-rl;font-stretch:62%;font-weight:700;letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--muted)}
+.vert{position:absolute;right:16px;top:120px;z-index:1;writing-mode:vertical-rl;font-stretch:62%;font-weight:700;letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:rgba(255,255,255,.6)}
 @media(max-width:759px){.vert{display:none}}
-.intro{display:grid;gap:26px;margin-top:26px;padding-bottom:44px}
+.intro{display:grid;gap:26px;margin-top:26px}
 @media(min-width:900px){.intro{grid-template-columns:5fr 4fr;align-items:end}}
-.intro p{font-size:19px;color:var(--ink-2);max-width:46ch}
+.intro p{font-size:19px;color:#e6e0d2;max-width:46ch}
 .intro .acts{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
-.facts{position:relative;z-index:1;background:var(--ink);color:#fff}
+.facts{position:relative;z-index:1;background:var(--ink);color:#fff;border-top:4px solid var(--gold)}
 .facts ul{list-style:none;display:grid;grid-template-columns:1fr 1fr}
 @media(min-width:900px){.facts ul{grid-template-columns:repeat(4,1fr)}}
 .facts li{padding:20px 16px;border-right:1px solid #333;border-bottom:1px solid #333}
@@ -307,7 +315,7 @@ p{max-width:62ch}
   background:linear-gradient(90deg,#0d0d0d 0%,#0d0d0d 38%,rgba(13,13,13,.55) 50%,rgba(13,13,13,.08) 72%,rgba(13,13,13,.25) 100%),
              linear-gradient(0deg,rgba(13,13,13,.95) 0%,rgba(13,13,13,0) 45%),
              linear-gradient(180deg,rgba(13,13,13,.7) 0%,rgba(13,13,13,0) 22%)}
-@media(max-width:759px){.shade{background:linear-gradient(0deg,rgba(13,13,13,.97) 0%,rgba(13,13,13,.86) 38%,rgba(13,13,13,.15) 72%,rgba(13,13,13,.55) 100%)}}
+@media(max-width:759px){.shade{background:linear-gradient(0deg,rgba(13,13,13,.97) 0%,rgba(13,13,13,.9) 40%,rgba(13,13,13,.45) 70%,rgba(13,13,13,.35) 85%,rgba(13,13,13,.7) 100%)}}
 .reel-lines{position:absolute;right:-6%;top:50%;width:min(620px,70vw);transform:translateY(-50%);opacity:.35;pointer-events:none}
 .reel-lines *{fill:none;stroke:var(--brass);stroke-width:1.5}
 @media(max-width:759px){.reel-lines{top:22%;right:-30%;width:110vw;opacity:.35}}
@@ -370,6 +378,12 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 <!-- HERO -->
 <header class="hero">
+ <div class="hero-stage">
+  <video class="bgv" id="reel" autoplay muted loop playsinline preload="auto" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
+    <source src="valor-futsal-bg.mp4" type="video/mp4">
+  </video>
+  <div class="shade" aria-hidden="true"></div>
+  <svg class="reel-lines" viewBox="0 0 200 200" aria-hidden="true"><line x1="100" y1="0" x2="100" y2="200"/><circle cx="100" cy="100" r="30"/><circle cx="100" cy="100" r="2" style="fill:var(--brass)"/></svg>
   <div class="vert" aria-hidden="true">Winter 2027 &nbsp;/&nbsp; Third season</div>
 
   <div class="wrap">
@@ -389,6 +403,8 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       </div>
     </div>
   </div>
+  <button type="button" class="reel-btn" id="reelBtn" aria-pressed="false">Pause video</button>
+ </div>
   <div class="facts">
     <div class="wrap">
       <ul>
@@ -494,26 +510,6 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <p>The program runs in two blocks. Each block is three practices with review, where coaches break down what players are working on and correct it on the court, followed by a match against another club. That makes six practices and two matches in all.</p>
     </div>
   </div>
-</section>
-
-<!-- VIDEO -->
-<section class="reel" id="video">
-  <video class="bgv" id="reel" autoplay muted loop playsinline preload="metadata" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
-    <source src="valor-futsal-bg.mp4" type="video/mp4">
-  </video>
-  <div class="shade" aria-hidden="true"></div>
-  <svg class="reel-lines" viewBox="0 0 200 200" aria-hidden="true"><line x1="100" y1="0" x2="100" y2="200"/><circle cx="100" cy="100" r="30"/><circle cx="100" cy="100" r="2" style="fill:var(--brass)"/></svg>
-  <div class="wrap reel-inner">
-    <div class="label">On the court</div>
-    <h2>Valor futsal in action</h2>
-    <p>Footage from a Valor futsal opening weekend.</p>
-    <ul>
-      <li>Small-sided training with Valor coaches on the court with players</li>
-      <li>Quick touches, tight spaces and constant decisions</li>
-      <li>Training put straight into games</li>
-    </ul>
-  </div>
-  <button type="button" class="reel-btn" id="reelBtn" aria-pressed="false">Pause video</button>
 </section>
 
 <!-- FOCUS -->
