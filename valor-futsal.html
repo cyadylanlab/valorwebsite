@@ -89,6 +89,22 @@ p{max-width:62ch}
 .facts b{display:block;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--brass)}
 .facts strong{display:block;font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:clamp(18px,2.3vw,26px);line-height:1.05;margin-top:4px}
 
+
+
+/* ============ JUMP NAV ============ */
+.jump{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.04)}
+@supports(backdrop-filter:blur(6px)){.jump{background:rgba(255,255,255,.88);backdrop-filter:blur(6px)}}
+.jump-in{display:flex;align-items:center;gap:18px}
+.jump-lab{flex:none;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:12px;color:var(--gold)}
+.jump-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:0}
+.jump-links.over{mask-image:linear-gradient(90deg,#000 85%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.jump-links::-webkit-scrollbar{display:none}
+.jump-links a{flex:none;display:inline-block;padding:16px 7px 13px;font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;text-decoration:none;color:var(--ink-2);border-bottom:3px solid transparent;transition:color .2s ease,border-color .2s ease}
+.jump-links a:hover{color:var(--gold-d)}
+.jump-links a.on{color:var(--ink);border-bottom-color:var(--gold)}
+@media(max-width:600px){.jump-lab{display:none}.jump-in{padding-right:0}.jump-links a{padding:15px 10px 12px;font-size:13px}}
+section[id]{scroll-margin-top:52px}
+
 /* ============ TWO HALVES ============ */
 .halves-sec{padding:84px 0 90px}
 .halves-head{display:grid;gap:14px;margin-bottom:38px}
@@ -187,9 +203,9 @@ p{max-width:62ch}
 .price .excl li{padding:10px 0 10px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--ink-2);font-size:16px}
 .price .excl li::before{content:"";position:absolute;left:0;top:20px;width:10px;height:2px;background:var(--ink)}
 .stack{display:grid}
-.stack div{padding:22px 0;border-bottom:1px solid var(--line)}
-@media(min-width:900px){.stack div{padding:26px 0 26px 40px}}
-.stack div:last-child{border-bottom:0}
+.stack > div{padding:22px 0;border-bottom:1px solid var(--line)}
+@media(min-width:900px){.stack > div{padding:26px 0 26px 40px}}
+.stack > div:last-child{border-bottom:0}
 .stack strong{display:block;font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.4vw,30px);line-height:1;margin:6px 0 6px}
 .stack p{color:var(--muted);font-size:16px}
 .stack a{display:inline-block;padding:10px 0;color:var(--ink-2)}
@@ -289,7 +305,9 @@ p{max-width:62ch}
 .court-cap i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:6px}
 .court-cap .k1{background:var(--gold);box-shadow:0 0 0 1px #fff}
 .court-cap .k2{border:1.5px solid rgba(255,255,255,.75)}
-@media(max-width:640px){.steps{grid-template-columns:1fr 1fr}.steps li:nth-child(3){border-left:0}.steps li:nth-child(n+3){border-top-color:transparent;box-shadow:inset 0 1px 0 #2c2c2c}.steps li.on{border-top-color:var(--gold)}.pt{display:none}}
+@media(max-width:640px){.steps{grid-template-columns:1fr 1fr}.steps li{padding:12px 12px 14px;font-size:12px}.steps li b{font-size:15px}.steps li:nth-child(3){border-left:0}.steps li:nth-child(n+3){border-top-color:transparent;box-shadow:inset 0 1px 0 #2c2c2c}.steps li.on{border-top-color:var(--gold)}}
+#play.rot .zlab{display:none}
+#play.rot .pt{font-size:7.5px}
 
 /* staff formation */
 .form-wrap{max-width:380px;width:100%;margin:0 auto}
@@ -301,7 +319,7 @@ p{max-width:62ch}
 .cm.bench i{background:#121212;box-shadow:0 0 0 2px var(--brass)}
 .cm.gk i{background:#fff;box-shadow:0 0 0 2px var(--gold)}
 .cm span{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:12px;line-height:1.05;text-shadow:0 1px 2px #000}
-.cm small{display:inline-block;margin-top:3px;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#121212;background:var(--brass);padding:1px 5px}
+.cm small{display:inline-block;margin-top:3px;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:#121212;background:var(--brass);padding:1px 5px}
 .cm.bench small{background:#3a3a3a;color:#fff}
 .zarrow{fill:none;stroke:var(--gold);stroke-width:2;opacity:0;transition:opacity .3s ease}
 .zarrow.on{opacity:1}
@@ -374,6 +392,35 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   .js .big span{transform:none}
   .sideline .fill{height:calc(100% - 8px)}
 }
+/* ============ PHONE TUNING ============ */
+@media(max-width:600px){
+  body{font-size:16px}
+  .halves-sec,.gameday,.focus-sec,.details,.tourn,.gear,.staff-sec,.setplay{padding-top:56px;padding-bottom:56px}
+  .timeline-sec{padding:56px 0 60px}
+  .media{padding:52px 0}
+  .reg{padding:64px 0 60px}
+  .halves-head,.gd-head,.tourn-head,.sp-head{margin-bottom:24px}
+  .timeline-sec .rings{display:none}
+  .sideline{margin-top:36px}
+  .format{margin-top:32px}
+  .half{padding:28px 20px 24px}
+  .day{padding:24px 20px 22px}
+  .kit-main,.kit-side > div{padding:24px 20px}
+  .price .num{font-size:96px}
+  .trow{padding:16px 0}
+  .intro{gap:20px}
+  .intro p{font-size:17px}
+  .intro .acts,.reg .acts{gap:12px}
+  .hero .plain{display:none}
+  .btn{font-size:15px;padding:14px 18px}
+  .reg-soon{font-size:12px;padding:9px 12px}
+  .hero-stage .reel-btn{top:22px;bottom:auto;right:16px;font-size:11px;padding:8px 10px;min-height:36px}
+  .hero-stage{padding-bottom:48px}
+  .vert{display:none}
+  .focus-sec .wm,.reg .wm{opacity:.6}
+  footer .wrap{justify-content:center;text-align:center}
+}
+
 </style>
 <script>document.documentElement.className+=' js';</script>
 </head>
@@ -420,6 +467,25 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     </div>
   </div>
 </header>
+
+<!-- JUMP NAV -->
+<nav class="jump" id="jump" aria-label="Sections on this page">
+  <div class="wrap jump-in">
+    <span class="jump-lab">Jump to</span>
+    <div class="jump-links">
+      <a href="#options">Winter options</a>
+      <a href="#gameday">Schedule</a>
+      <a href="#training">Training</a>
+      <a href="#details">Fee and details</a>
+      <a href="#dates">Key dates</a>
+      <a href="#tournaments">Tournaments</a>
+      <a href="#gear">Uniforms</a>
+      <a href="#coaches">Coaches</a>
+      <a href="#photos">Photos</a>
+      <a href="#register">Register</a>
+    </div>
+  </div>
+</nav>
 
 <!-- TWO HALVES -->
 <section class="halves-sec" id="options">
@@ -517,7 +583,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- FOCUS -->
-<section class="focus-sec">
+<section class="focus-sec" id="training">
   <div class="wm" aria-hidden="true">Touch</div>
   <div class="wrap focus-grid">
     <aside>
@@ -550,7 +616,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- SET PLAY -->
-<section class="setplay">
+<section class="setplay" id="combination">
   <div class="wrap">
     <div class="sp-head">
       <div>
@@ -564,6 +630,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         <defs>
           <pattern id="net" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0L3 3M3 0L0 3" stroke="rgba(255,255,255,.4)" stroke-width=".45"/></pattern>
         </defs>
+        <g id="courtg">
         <rect class="floor" x="0" y="0" width="200" height="200"/>
         <rect class="floor2" x="200" y="0" width="200" height="200"/>
         <!-- touchlines 40 m x 20 m -->
@@ -589,6 +656,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         <g id="trails"></g>
         <g id="players"></g>
         <circle id="ball" class="ballc" r="3.1" cx="147" cy="110"/>
+        </g>
       </svg>
       <ol class="steps" id="steps">
         <li><b>Defender</b>Switches it wide to the wing</li>
@@ -637,7 +705,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- TIMELINE -->
-<section class="timeline-sec">
+<section class="timeline-sec" id="dates">
   <div class="rings" aria-hidden="true"></div>
   <div class="wrap">
     <div class="label">Calendar</div>
@@ -670,7 +738,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- TOURNAMENTS -->
-<section class="tourn">
+<section class="tourn" id="tournaments">
   <div class="wrap">
     <div class="tourn-head">
       <div>
@@ -727,7 +795,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- STAFF -->
-<section class="staff-sec">
+<section class="staff-sec" id="coaches">
   <div class="wrap staff-grid">
     <div class="form-wrap">
       <div class="formation" id="formation" role="img" aria-label="Coaching staff in a futsal formation: Gabriel Portillo in goal, Susan Furlough on defense, Oscar Hernandez and Mallory Pasco on the wings, Israel Alabi at forward, with Chris Meyers and Sofiane Allaouat on the bench rotating in as flying substitutes">
@@ -746,8 +814,8 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
           <rect class="goal" x="85" y="400" width="30" height="9" style="fill:url(#net2)"/>
           <g class="cl"><line x1="196" y1="250" x2="204" y2="250"/><line x1="196" y1="300" x2="204" y2="300"/></g>
           <g class="cl dim"><line x1="196" y1="100" x2="204" y2="100"/><line x1="196" y1="150" x2="204" y2="150"/></g>
-          <rect x="216" y="236" width="54" height="124" fill="rgba(139,122,76,.10)" stroke="rgba(200,185,143,.6)" stroke-dasharray="3 3"/>
-          <text class="zlab" x="243" y="230">BENCH</text>
+          <rect x="216" y="226" width="54" height="148" fill="rgba(139,122,76,.10)" stroke="rgba(200,185,143,.6)" stroke-dasharray="3 3"/>
+          <text class="zlab" x="243" y="220">BENCH</text>
           <path class="zarrow" id="zIn" d="M209 288 L203 292 L209 296"/>
           <path class="zarrow" id="zOut" d="M203 254 L209 258 L203 262"/>
           <g id="trails2"></g>
@@ -773,7 +841,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 </section>
 
 <!-- MEDIA -->
-<section class="media">
+<section class="media" id="photos">
   <div class="frame" aria-hidden="true"></div>
   <div class="wrap media-grid">
     <div>
@@ -893,7 +961,15 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     // the far-post run, shown as a faint line
     var run=mk('path',{'class':'runl',d:'M235 165 L290 150 L345 130 L365 124'},gT);
     var trails=passes.map(function(){return mk('line',{'class':'trail'},gT);});
-    function dot(cls,label){var g=mk('g',{},gP);mk('circle',{'class':cls,r:6.5},g);if(label){var t=mk('text',{'class':'pt'},g);t.textContent=label;}return g;}
+    var labels=[], cg=document.getElementById('courtg'), rot=false;
+    function dot(cls,label){var g=mk('g',{},gP);mk('circle',{'class':cls,r:6.5},g);if(label){var t=mk('text',{'class':'pt'},g);t.textContent=label;labels.push(t);}return g;}
+    function orient(){
+      var m=window.innerWidth<640; if(m===rot&&cg.hasAttribute('data-set')) return; rot=m; cg.setAttribute('data-set','1');
+      svg.setAttribute('viewBox',m?'-18 -26 240 452':'-24 -16 448 238');
+      if(m) cg.setAttribute('transform','translate(0 400) rotate(-90)'); else cg.removeAttribute('transform');
+      svg.classList.toggle('rot',m);
+      labels.forEach(function(t){ if(m) t.setAttribute('transform','rotate(90)'); else t.removeAttribute('transform'); });
+    }
     var oG=opp.map(function(){return dot('po');}), vG=valor.map(function(p){return dot('pv',p.l);});
     function render(t){
       valor.forEach(function(p,i){var q=at(p.k,t);vG[i].setAttribute('transform','translate('+q[0].toFixed(1)+' '+q[1].toFixed(1)+')');});
@@ -914,6 +990,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       var s=t<1.5?0:t<2.95?1:t<3.95?2:t<6?3:-1;
       for(var i=0;i<steps.length;i++)steps[i].classList.toggle('on',i===s);
     }
+    orient(); window.addEventListener('resize',orient);
     loopWhenVisible(svg,function(t){render(t);},T);
     if(reduce) render(4.4);
   })();
@@ -926,7 +1003,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         zIn=document.getElementById('zIn'), zOut=document.getElementById('zOut'), goal=document.getElementById('goalT');
     var SLOT={GK:[100,384],FX:[100,296],AL:[42,206],AR:[158,206],PV:[100,98]};
     var TAG={GK:'Goalkeeper',FX:'Defender',AL:'Wing',AR:'Wing',PV:'Forward'};
-    var SEAT=[[243,262],[243,322]], ZOUT=[204,244], ZIN=[212,302];
+    var SEAT=[[243,250],[243,334]], ZOUT=[204,236], ZIN=[212,306];
     var MOVE={
       FX:[[0,100,296],[0.8,100,292],[1.3,96,286],[2.0,100,296]],
       AL:[[0,42,206],[1.4,42,206],[1.85,48,214],[2.6,42,206]],
@@ -1005,6 +1082,38 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       });},{threshold:.2}).observe(v);
     }
     setBtn();
+  })();
+
+
+  // jump nav: smooth scroll and highlight the section in view
+  (function(){
+    var nav=document.getElementById('jump'); if(!nav) return;
+    var links=[].slice.call(nav.querySelectorAll('a')), box0=nav.querySelector('.jump-links');
+    function over(){box0.classList.toggle('over',box0.scrollWidth>box0.clientWidth+2&&box0.scrollLeft+box0.clientWidth<box0.scrollWidth-4);}
+    over(); window.addEventListener('resize',over); box0.addEventListener('scroll',over);
+    links.forEach(function(a){
+      a.addEventListener('click',function(e){
+        var t=document.querySelector(a.getAttribute('href')); if(!t) return;
+        e.preventDefault();
+        var y=t.getBoundingClientRect().top+window.pageYOffset-nav.offsetHeight+1;
+        window.scrollTo({top:y,behavior:reduce?'auto':'smooth'});
+        if(history.replaceState) history.replaceState(null,'',a.getAttribute('href'));
+      });
+    });
+    if(!('IntersectionObserver' in window)) return;
+    var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+    var cur=null;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          var a=map[e.target.id]; if(!a||a===cur) return;
+          if(cur) cur.classList.remove('on'); a.classList.add('on'); cur=a;
+          var box=a.parentNode;
+          if(box.scrollWidth>box.clientWidth+2&&box.scrollTo){var l=a.offsetLeft-box.offsetLeft-24;box.scrollTo({left:l,behavior:reduce?'auto':'smooth'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    Object.keys(map).forEach(function(id){var el=document.getElementById(id); if(el) io.observe(el);});
   })();
 
   // walk the game-day format strip: match, review, match, review
