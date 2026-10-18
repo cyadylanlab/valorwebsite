@@ -247,8 +247,12 @@ p{max-width:62ch}
 .soon.big-soon{font-size:15px;padding:14px 18px;margin-top:4px}
 
 
+.setplay{padding:88px 0 70px}
+.sp-head{display:grid;gap:14px;margin-bottom:30px}
+@media(min-width:900px){.sp-head{grid-template-columns:5fr 4fr;align-items:end}}
+.sp-head p{color:var(--ink-2)}
 /* ============ COURT GRAPHICS (true futsal scale, 1 unit = 10 cm) ============ */
-.court-show{position:relative;margin:4px 0 44px;background:#121212;border:3px solid var(--ink)}
+.court-show{position:relative;margin:0;background:#121212;border:3px solid var(--ink)}
 .court-show svg{display:block;width:100%;height:auto}
 .cl{fill:none;stroke:rgba(255,255,255,.8);stroke-width:1.1}
 .cl.dim{stroke:rgba(255,255,255,.35)}
@@ -384,45 +388,6 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         <a class="plain" href="#gameday">See the game days</a>
       </div>
     </div>
-    <figure class="court-show" aria-label="Animated futsal set play on a full-scale court">
-      <svg id="play" viewBox="-24 -16 448 238" role="img" aria-label="Valor's defender passes to the left wing, who plays into the forward. The forward lays it off to the right wing arriving at the far post, who finishes.">
-        <defs>
-          <pattern id="net" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0L3 3M3 0L0 3" stroke="rgba(255,255,255,.4)" stroke-width=".45"/></pattern>
-        </defs>
-        <rect class="floor" x="0" y="0" width="200" height="200"/>
-        <rect class="floor2" x="200" y="0" width="200" height="200"/>
-        <!-- touchlines 40 m x 20 m -->
-        <rect class="cl" x="0" y="0" width="400" height="200"/>
-        <line class="cl" x1="200" y1="0" x2="200" y2="200"/>
-        <circle class="cl" cx="200" cy="100" r="30"/>
-        <circle class="cs" cx="200" cy="100" r="1.6"/>
-        <!-- penalty areas: 6 m arcs from each post -->
-        <path class="cl" d="M0 25 A60 60 0 0 1 60 85 L60 115 A60 60 0 0 1 0 175"/>
-        <path class="cl" d="M400 25 A60 60 0 0 0 340 85 L340 115 A60 60 0 0 0 400 175"/>
-        <!-- 6 m penalty marks and 10 m second penalty marks -->
-        <circle class="cs" cx="60" cy="100" r="1.4"/><circle class="cs" cx="100" cy="100" r="1.4"/>
-        <circle class="cs" cx="340" cy="100" r="1.4"/><circle class="cs" cx="300" cy="100" r="1.4"/>
-        <!-- corner arcs -->
-        <path class="cl" d="M0 3 A3 3 0 0 0 3 0"/><path class="cl" d="M397 0 A3 3 0 0 0 400 3"/>
-        <path class="cl" d="M0 197 A3 3 0 0 1 3 200"/><path class="cl" d="M397 200 A3 3 0 0 1 400 197"/>
-        <!-- substitution zones: 5 m long, 5 m from halfway -->
-        <g class="cl"><line x1="100" y1="196" x2="100" y2="204"/><line x1="150" y1="196" x2="150" y2="204"/><line x1="250" y1="196" x2="250" y2="204"/><line x1="300" y1="196" x2="300" y2="204"/></g>
-        <text class="zlab" x="125" y="212">SUB ZONE</text><text class="zlab" x="275" y="212">SUB ZONE</text>
-        <!-- goals 3 m x 2 m -->
-        <rect class="goal" x="-9" y="85" width="9" height="30"/>
-        <rect class="goal" id="goalR" x="400" y="85" width="9" height="30"/>
-        <g id="trails"></g>
-        <g id="players"></g>
-        <circle id="ball" class="ballc" r="3.1" cx="147" cy="110"/>
-      </svg>
-      <ol class="steps" id="steps">
-        <li><b>Defender</b>Switches it wide to the wing</li>
-        <li><b>Wing</b>Plays into the forward</li>
-        <li><b>Forward</b>Holds it up and lays it off</li>
-        <li><b>Far post</b>Opposite wing finishes</li>
-      </ol>
-      <figcaption class="court-cap"><span><i class="k1"></i>Valor</span><span><i class="k2"></i>Opponent</span><span>Drawn to scale: 40 m by 20 m</span></figcaption>
-    </figure>
   </div>
   <div class="facts">
     <div class="wrap">
@@ -533,7 +498,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 <!-- VIDEO -->
 <section class="reel" id="video">
-  <video class="bgv" id="reel" muted loop playsinline preload="metadata" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
+  <video class="bgv" id="reel" autoplay muted loop playsinline preload="metadata" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
     <source src="valor-futsal-bg.mp4" type="video/mp4">
   </video>
   <div class="shade" aria-hidden="true"></div>
@@ -581,6 +546,58 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <div><b>Ready for spring</b><span>The same skills carry straight onto the grass when the outdoor season starts.</span></div>
     </div>
     </div>
+  </div>
+</section>
+
+<!-- SET PLAY -->
+<section class="setplay">
+  <div class="wrap">
+    <div class="sp-head">
+      <div>
+        <div class="label">From the training floor</div>
+        <h2 style="margin-top:10px">A combination players learn</h2>
+      </div>
+      <p>An example of the patterns worked on in practice. Quick passing, movement off the ball and a finish at the far post, on a court drawn to real futsal dimensions.</p>
+    </div>
+    <figure class="court-show" aria-label="Animated futsal set play on a full-scale court">
+      <svg id="play" viewBox="-24 -16 448 238" role="img" aria-label="Valor's defender passes to the left wing, who plays into the forward. The forward lays it off to the right wing arriving at the far post, who finishes.">
+        <defs>
+          <pattern id="net" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0L3 3M3 0L0 3" stroke="rgba(255,255,255,.4)" stroke-width=".45"/></pattern>
+        </defs>
+        <rect class="floor" x="0" y="0" width="200" height="200"/>
+        <rect class="floor2" x="200" y="0" width="200" height="200"/>
+        <!-- touchlines 40 m x 20 m -->
+        <rect class="cl" x="0" y="0" width="400" height="200"/>
+        <line class="cl" x1="200" y1="0" x2="200" y2="200"/>
+        <circle class="cl" cx="200" cy="100" r="30"/>
+        <circle class="cs" cx="200" cy="100" r="1.6"/>
+        <!-- penalty areas: 6 m arcs from each post -->
+        <path class="cl" d="M0 25 A60 60 0 0 1 60 85 L60 115 A60 60 0 0 1 0 175"/>
+        <path class="cl" d="M400 25 A60 60 0 0 0 340 85 L340 115 A60 60 0 0 0 400 175"/>
+        <!-- 6 m penalty marks and 10 m second penalty marks -->
+        <circle class="cs" cx="60" cy="100" r="1.4"/><circle class="cs" cx="100" cy="100" r="1.4"/>
+        <circle class="cs" cx="340" cy="100" r="1.4"/><circle class="cs" cx="300" cy="100" r="1.4"/>
+        <!-- corner arcs -->
+        <path class="cl" d="M0 3 A3 3 0 0 0 3 0"/><path class="cl" d="M397 0 A3 3 0 0 0 400 3"/>
+        <path class="cl" d="M0 197 A3 3 0 0 1 3 200"/><path class="cl" d="M397 200 A3 3 0 0 1 400 197"/>
+        <!-- substitution zones: 5 m long, 5 m from halfway -->
+        <g class="cl"><line x1="100" y1="196" x2="100" y2="204"/><line x1="150" y1="196" x2="150" y2="204"/><line x1="250" y1="196" x2="250" y2="204"/><line x1="300" y1="196" x2="300" y2="204"/></g>
+        <text class="zlab" x="125" y="212">SUB ZONE</text><text class="zlab" x="275" y="212">SUB ZONE</text>
+        <!-- goals 3 m x 2 m -->
+        <rect class="goal" x="-9" y="85" width="9" height="30"/>
+        <rect class="goal" id="goalR" x="400" y="85" width="9" height="30"/>
+        <g id="trails"></g>
+        <g id="players"></g>
+        <circle id="ball" class="ballc" r="3.1" cx="147" cy="110"/>
+      </svg>
+      <ol class="steps" id="steps">
+        <li><b>Defender</b>Switches it wide to the wing</li>
+        <li><b>Wing</b>Plays into the forward</li>
+        <li><b>Forward</b>Holds it up and lays it off</li>
+        <li><b>Far post</b>Opposite wing finishes</li>
+      </ol>
+      <figcaption class="court-cap"><span><i class="k1"></i>Valor</span><span><i class="k2"></i>Opponent</span><span>Drawn to scale: 40 m by 20 m</span></figcaption>
+    </figure>
   </div>
 </section>
 
