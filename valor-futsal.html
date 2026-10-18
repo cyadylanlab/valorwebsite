@@ -482,6 +482,14 @@ section[id]{scroll-margin-top:58px}
 .totop svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .totop span{font-stretch:85%;font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;line-height:1}
 @media(max-width:600px){.totop{right:14px;width:54px;height:54px}}
+
+/* facts bar position: under the hero on desktop, under the jump bar on phones */
+.facts-mob{display:none}
+@media(max-width:600px){
+  .facts-desk{display:none}
+  .facts-mob{display:block;border-top:0}
+  .hero-stage{border-bottom:4px solid var(--gold)}
+}
 </style>
 <script>document.documentElement.className+=' js';</script>
 </head>
@@ -517,10 +525,10 @@ section[id]{scroll-margin-top:58px}
   </div>
   <button type="button" class="reel-btn" id="reelBtn" aria-pressed="false">Pause video</button>
  </div>
-  <div class="facts">
+  <div class="facts facts-desk">
     <div class="wrap">
       <ul>
-        <li><b>Matches</b><strong>Jan 23 to 24 &middot; Feb 27 to 28</strong></li>
+        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 27 to 28</strong></li>
         <li><b>Program fee</b><strong>$375</strong></li>
         <li><b>Where</b><strong>CYA Fieldhouse</strong></li>
         <li><b>Age groups</b><strong>U8 to U14</strong></li>
@@ -547,6 +555,17 @@ section[id]{scroll-margin-top:58px}
     </div>
   </div>
 </nav>
+
+  <div class="facts facts-mob" aria-hidden="false">
+    <div class="wrap">
+      <ul>
+        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 27 to 28</strong></li>
+        <li><b>Program fee</b><strong>$375</strong></li>
+        <li><b>Where</b><strong>CYA Fieldhouse</strong></li>
+        <li><b>Age groups</b><strong>U8 to U14</strong></li>
+      </ul>
+    </div>
+  </div>
 
 <a href="#top" class="totop" id="totop" aria-label="Return to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg><span>Top</span></a>
 
