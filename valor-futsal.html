@@ -51,8 +51,8 @@ p{max-width:62ch}
 
 /* ============ HERO ============ */
 .hero{position:relative;overflow:hidden;background:#0d0d0d;color:#fff}
-.hero-stage{position:relative;overflow:hidden;min-height:min(94vh,900px);display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 64px}
-@media(max-width:759px){.hero-stage{min-height:max(100svh,640px);padding-bottom:76px}.hero-stage .reel-btn{bottom:14px;right:16px}}
+.hero-stage{position:relative;overflow:hidden;min-height:760px;display:flex;flex-direction:column;justify-content:space-between;padding:28px 0 64px}
+@media(max-width:759px){.hero-stage{min-height:600px;padding-bottom:76px}.hero-stage .reel-btn{bottom:14px;right:16px}}
 @keyframes draw{to{stroke-dashoffset:0}}
 .hero .wrap{position:relative;z-index:1}
 .hero .plain{color:#fff}
@@ -328,7 +328,7 @@ section[id]{scroll-margin-top:52px}
 
 
 /* ============ VIDEO (full-bleed background) ============ */
-.reel{position:relative;overflow:hidden;background:#0d0d0d;color:#fff;min-height:min(92vh,860px);display:flex;align-items:flex-end;padding:140px 0 72px}
+.reel{position:relative;overflow:hidden;background:#0d0d0d;color:#fff;min-height:640px;display:flex;align-items:flex-end;padding:140px 0 72px}
 @media(max-width:759px){.reel{min-height:118vw;max-height:none;padding:220px 0 56px}}
 .bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%;filter:saturate(.9) contrast(1.06)}
 @media(min-width:760px){.bgv{left:auto;right:0;width:62%;object-position:50% 50%}}
@@ -442,6 +442,9 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   .blurb p:first-child{font-stretch:100%;font-size:18px}
   .price .num{font-stretch:110%}
 }
+
+.bgv::-webkit-media-controls,.bgv::-webkit-media-controls-start-playback-button,.bgv::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
+@media(min-width:601px) and (max-width:1100px){.hero-stage{min-height:680px}}
 </style>
 <script>document.documentElement.className+=' js';</script>
 </head>
@@ -450,7 +453,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 <!-- HERO -->
 <header class="hero">
  <div class="hero-stage">
-  <video class="bgv" id="reel" autoplay muted loop playsinline preload="auto" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
+  <video class="bgv" id="reel" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
     <source src="valor-futsal-bg.mp4" type="video/mp4">
   </video>
   <div class="shade" aria-hidden="true"></div>
@@ -1102,6 +1105,9 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         else if(!e.isIntersecting){v.pause();}
       });},{threshold:.2}).observe(v);
     }
+    v.muted=true;
+    function kick(){ if(!userPaused&&v.paused){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});} }
+    document.addEventListener('touchstart',kick,{passive:true,once:true});
     setBtn();
   })();
 
