@@ -456,13 +456,39 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   .track span{font-size:16px;padding:0 12px;letter-spacing:.02em}
   .track span::after{width:8px;height:8px;margin-left:24px}
 }
+
+/* ============ JUMP NAV v2: full width, high contrast ============ */
+.jump{background:var(--ink);border-bottom:3px solid var(--gold);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+@supports(backdrop-filter:blur(6px)){.jump{background:rgba(18,18,18,.94)}}
+.jump-in{display:flex;align-items:stretch;gap:0;width:100%;padding:0 24px}
+.jump-lab{display:flex;align-items:center;padding-right:18px;margin-right:6px;border-right:1px solid #333;color:var(--brass);font-size:12px;font-stretch:85%;letter-spacing:.14em}
+.jump-links{flex:1;display:flex;gap:0}
+.jump-links a{flex:1 0 auto;text-align:center;color:#e9e4d8;font-stretch:90%;font-size:15px;letter-spacing:.05em;padding:18px 12px 15px;border-bottom:3px solid transparent;margin-bottom:-3px}
+.jump-links a:hover{color:#fff;background:rgba(255,255,255,.05)}
+.jump-links a.on{color:#fff;border-bottom-color:var(--brass);background:rgba(139,122,76,.22)}
+.jump-links.over{mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent)}
+@media(max-width:1100px){.jump-links a{font-size:14px;padding:17px 10px 14px}}
+@media(max-width:600px){
+  .jump-in{padding:0}
+  .jump-lab{display:none}
+  .jump-links a{flex:none;font-size:14px;font-stretch:90%;letter-spacing:.04em;padding:16px 14px 13px}
+}
+section[id]{scroll-margin-top:58px}
+
+/* ============ RETURN TO TOP ============ */
+.totop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:58px;height:58px;border-radius:50%;background:var(--gold);color:#fff;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.28),0 0 0 3px rgba(255,255,255,.9);opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .25s ease,transform .25s ease,background .2s ease}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{background:var(--gold-d)}
+.totop svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.totop span{font-stretch:85%;font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;line-height:1}
+@media(max-width:600px){.totop{right:14px;width:54px;height:54px}}
 </style>
 <script>document.documentElement.className+=' js';</script>
 </head>
 <body>
 
 <!-- HERO -->
-<header class="hero">
+<header class="hero" id="top">
  <div class="hero-stage">
   <video class="bgv" id="reel" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
     <source src="valor-futsal-bg.mp4" type="video/mp4">
@@ -505,7 +531,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 <!-- JUMP NAV -->
 <nav class="jump" id="jump" aria-label="Sections on this page">
-  <div class="wrap jump-in">
+  <div class="jump-in">
     <span class="jump-lab">Jump to</span>
     <div class="jump-links">
       <a href="#options">Winter options</a>
@@ -521,6 +547,8 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     </div>
   </div>
 </nav>
+
+<a href="#top" class="totop" id="totop" aria-label="Return to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg><span>Top</span></a>
 
 <!-- TWO HALVES -->
 <section class="halves-sec" id="options">
@@ -1154,6 +1182,15 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       });
     },{rootMargin:'-45% 0px -50% 0px'});
     Object.keys(map).forEach(function(id){var el=document.getElementById(id); if(el) io.observe(el);});
+  })();
+
+
+  // return-to-top button
+  (function(){
+    var b=document.getElementById('totop'), hero=document.querySelector('.hero'); if(!b) return;
+    function tick(){ var lim=(hero?hero.offsetHeight:600)+200; b.classList.toggle('show',window.pageYOffset>lim); }
+    window.addEventListener('scroll',tick,{passive:true}); tick();
+    b.addEventListener('click',function(e){ e.preventDefault(); window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); if(history.replaceState) history.replaceState(null,'',location.pathname+location.search); });
   })();
 
   // walk the game-day format strip: match, review, match, review
