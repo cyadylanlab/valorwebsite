@@ -8,6 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wdth,wght@0,50..150,300..900;1,50..150,700..900&display=swap" rel="stylesheet">
 <style>
+/* ====== LINKS TO FILL IN: search for these in the file ======
+   REGISTRATION_LINK      (2 buttons)
+   MEDIA_SUBMISSION_LINK  (1 button)
+================================================================ */
 :root{
   --ink:#121212;
   --ink-2:#333;
@@ -28,36 +32,22 @@ a{color:inherit}
 .wrap{max-width:1160px;margin:0 auto;padding:0 16px}
 @media(min-width:760px){.wrap{padding:0 40px}}
 
-/* type helpers: one family, width and weight do the work */
 .x{font-stretch:150%;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.86}
-.c{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .label{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--gold)}
 h2{font-stretch:130%;font-weight:900;text-transform:uppercase;font-size:clamp(30px,5.4vw,58px);line-height:.92;letter-spacing:-.01em}
 p{max-width:62ch}
 
-/* buttons: square, like a court line */
 .btn{display:inline-block;font-stretch:115%;font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:17px;text-decoration:none;padding:16px 26px;background:var(--gold);color:#fff;border:0;position:relative;transition:background .2s ease}
 .btn::after{content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.45);pointer-events:none;transition:inset .25s ease}
 .btn:hover{background:var(--gold-d)}
 .btn:hover::after{inset:3px}
-.plain{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;text-decoration-color:var(--gold)}
-.plain{display:inline-block;padding:12px 0}
+.btn.dark{background:var(--ink)}
+.btn.dark:hover{background:#000}
+.plain{display:inline-block;padding:12px 0;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;text-decoration-color:var(--gold)}
 .plain:hover{color:var(--gold)}
-.stack a{display:inline-block;padding:10px 0}
 
 /* ============ HERO ============ */
 .hero{position:relative;overflow:hidden;background:var(--paper);padding:28px 0 0}
-.court-bg{position:absolute;top:40px;right:-24%;width:min(1100px,118%);opacity:.7;pointer-events:none;z-index:0}
-@media(max-width:759px){.court-bg{top:auto;bottom:150px;right:-40%;width:170%;opacity:.55}}
-.court-bg .ln{fill:none;stroke:var(--brass);stroke-width:1.6;stroke-linecap:round}
-.court-bg .spot{fill:var(--brass)}
-.court-bg .pass{fill:none;stroke:var(--gold);stroke-width:1.4;stroke-dasharray:3 6;opacity:.8}
-.court-bg .ball{fill:var(--gold)}
-.js .court-bg .ln{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.8s cubic-bezier(.6,.1,.2,1) forwards}
-.js .court-bg .ln:nth-of-type(2){animation-delay:.2s}
-.js .court-bg .ln:nth-of-type(3){animation-delay:.35s}
-.js .court-bg .ln:nth-of-type(4){animation-delay:.5s}
-.js .court-bg .ln:nth-of-type(5){animation-delay:.65s}
 @keyframes draw{to{stroke-dashoffset:0}}
 .hero .wrap{position:relative;z-index:1}
 .topline{display:flex;align-items:center;gap:12px}
@@ -97,9 +87,8 @@ p{max-width:62ch}
 @media(min-width:820px){.halves{grid-template-columns:1fr 1fr}}
 .half{padding:34px 22px 30px;position:relative}
 @media(min-width:820px){.half{padding:44px 48px 40px}}
-.half.alt{border-top:3px solid var(--ink)}
+.half.alt{background:var(--floor);border-top:3px solid var(--ink)}
 @media(min-width:820px){.half.alt{border-top:0;border-left:3px solid var(--ink)}}
-.half.alt{background:var(--floor)}
 .half .label{color:var(--muted)}
 .half.alt .label{color:var(--gold)}
 .half h3{font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(26px,3.2vw,36px);line-height:.95;margin:12px 0 10px}
@@ -108,7 +97,6 @@ p{max-width:62ch}
 .half li{padding:11px 0 11px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--ink-2)}
 .half li::before{content:"";position:absolute;left:0;top:19px;width:10px;height:2px;background:var(--gold)}
 .center-ring{position:absolute;width:96px;height:96px;border:3px solid var(--ink);border-radius:50%;background:var(--paper);display:grid;place-items:center;font-stretch:62%;font-weight:800;letter-spacing:.14em;font-size:15px;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%)}
-.center-ring::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--ink);bottom:-24px;left:50%;transform:translateX(-50%);display:none}
 @media(max-width:819px){.center-ring{width:70px;height:70px;font-size:13px;top:var(--ringY,50%)}}
 
 /* ============ TICKER ============ */
@@ -119,13 +107,57 @@ p{max-width:62ch}
 .track span:nth-child(even){color:transparent;-webkit-text-stroke:1.2px #fff}
 @keyframes slide{to{transform:translateX(-50%)}}
 
+/* ============ GAME DAY ============ */
+.gameday{padding:86px 0 90px}
+.gd-head{display:grid;gap:14px;margin-bottom:36px}
+@media(min-width:900px){.gd-head{grid-template-columns:5fr 4fr;align-items:end}}
+.gd-head p{color:var(--ink-2)}
+.days{display:grid;grid-template-columns:1fr;border:3px solid var(--ink)}
+@media(min-width:760px){.days{grid-template-columns:1fr 1fr}}
+.day{padding:30px 22px 28px;position:relative;overflow:hidden}
+@media(min-width:760px){.day{padding:36px 40px 34px}}
+.day + .day{border-top:3px solid var(--ink)}
+@media(min-width:760px){.day + .day{border-top:0;border-left:3px solid var(--ink)}}
+.day.sun{background:var(--ink);color:#fff}
+.day .dname{font-stretch:150%;font-weight:900;text-transform:uppercase;font-size:clamp(40px,6vw,76px);line-height:.95;white-space:nowrap;overflow:hidden}
+.day.sun .dname{color:transparent;-webkit-text-stroke:1.5px #fff}
+.day .ages{font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.6vw,30px);color:var(--gold);margin:12px 0 18px}
+.day.sun .ages{color:var(--brass)}
+.day .dates{display:flex;flex-wrap:wrap;gap:10px}
+.day .dates span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;border:2px solid currentColor;padding:8px 12px}
+.day .note{margin-top:16px;font-size:16px;color:var(--muted)}
+.day.sun .note{color:#cfc8b6}
+.format{margin-top:46px}
+.format .label{margin-bottom:14px;display:block}
+.strip{display:grid;border:3px solid var(--ink)}
+.blk{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr))}
+.blk + .blk{border-top:3px solid var(--ink)}
+.bl{display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--brass);font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;padding:10px}
+.cell{padding:22px 6px;text-align:center;border-left:3px solid var(--ink);background:var(--floor);font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:clamp(15px,2.1vw,26px);line-height:1;transition:background .35s ease,color .35s ease}
+.cell small{display:block;font-stretch:62%;font-weight:700;letter-spacing:.1em;font-size:11px;color:var(--muted);margin-top:8px}
+.cell.mt{background:var(--ink);color:#fff}
+.cell.mt small{color:var(--brass)}
+.cell.on{background:var(--gold);color:#fff}
+.cell.on small{color:#f3eedf}
+@media(max-width:600px){.blk{grid-template-columns:repeat(2,minmax(0,1fr))}.bl{grid-column:1/-1;padding:8px}.cell{border-left:0;border-top:3px solid var(--ink);font-size:17px;padding:18px 6px}.blk .cell:nth-child(odd){border-left:3px solid var(--ink)}}
+.format p{margin-top:14px;color:var(--ink-2)}
+
 /* ============ FOCUS ============ */
 .focus-sec{padding:84px 0;background:var(--floor);position:relative;overflow:hidden}
 .focus-sec .wm{position:absolute;left:-2vw;bottom:-.14em;font-stretch:150%;font-weight:900;text-transform:uppercase;font-size:clamp(110px,20vw,280px);line-height:1;color:transparent;-webkit-text-stroke:1.5px #e3dccb;pointer-events:none;user-select:none;white-space:nowrap}
 .focus-grid{display:grid;gap:34px;position:relative;z-index:1}
 @media(min-width:900px){.focus-grid{grid-template-columns:4fr 7fr;gap:60px}}
 .focus-grid aside p{margin-top:16px;color:var(--ink-2)}
-@media(min-width:900px){.focus-grid aside{position:sticky;top:30px;align-self:start}}
+
+.blurb{margin-top:18px;border-left:4px solid var(--gold);padding-left:18px}
+.blurb p{color:var(--ink-2);margin-bottom:12px}
+.blurb p:first-child{font-stretch:110%;font-weight:700;font-size:clamp(18px,1.9vw,21px);line-height:1.35;color:var(--ink)}
+.blurb .sig{font-size:14px;color:var(--muted);margin-top:4px}
+.blurb .sig b{display:block;font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:15px;color:var(--ink);letter-spacing:.02em}
+.aims{display:grid;gap:0;margin-top:34px;border-top:3px solid var(--ink)}
+.aims div{padding:14px 0;border-bottom:1px solid var(--line)}
+.aims b{display:block;font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:20px;line-height:1.05}
+.aims span{display:block;color:var(--ink-2);font-size:16px;margin-top:4px}
 .skills{list-style:none;border-top:3px solid var(--ink)}
 .skills li{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);font-stretch:112%;font-weight:700;font-size:clamp(18px,2vw,23px);line-height:1.2;transition:padding .25s ease,color .25s ease}
 .skills li em{font-style:normal;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--gold);white-space:nowrap}
@@ -140,15 +172,18 @@ p{max-width:62ch}
 .price .num{font-size:clamp(110px,17vw,230px);color:var(--ink);margin:6px 0 4px -0.03em}
 .price .num sup{font-size:.36em;vertical-align:.95em;color:var(--gold);margin-right:.04em}
 .price p{color:var(--ink-2)}
+.price .excl{list-style:none;margin-top:18px;border-top:1px solid var(--line)}
+.price .excl li{padding:10px 0 10px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--ink-2);font-size:16px}
+.price .excl li::before{content:"";position:absolute;left:0;top:20px;width:10px;height:2px;background:var(--ink)}
 .stack{display:grid}
 .stack div{padding:22px 0;border-bottom:1px solid var(--line)}
 @media(min-width:900px){.stack div{padding:26px 0 26px 40px}}
 .stack div:last-child{border-bottom:0}
 .stack strong{display:block;font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.4vw,30px);line-height:1;margin:6px 0 6px}
 .stack p{color:var(--muted);font-size:16px}
-.stack a{color:var(--ink-2)}
+.stack a{display:inline-block;padding:10px 0;color:var(--ink-2)}
 
-/* ============ TIMELINE (sideline) ============ */
+/* ============ TIMELINE ============ */
 .timeline-sec{padding:86px 0 96px;background:var(--ink);color:#fff;position:relative;overflow:hidden}
 .timeline-sec h2{color:#fff}
 .timeline-sec .label{color:var(--brass)}
@@ -175,9 +210,12 @@ p{max-width:62ch}
 
 /* ============ TOURNAMENTS ============ */
 .tourn{padding:90px 0}
-.tourn-head{display:grid;gap:14px;margin-bottom:34px}
+.tourn-head{display:grid;gap:14px;margin-bottom:26px}
 @media(min-width:900px){.tourn-head{grid-template-columns:5fr 4fr;align-items:end}}
 .tourn-head p{color:var(--ink-2)}
+.billing{display:grid;gap:6px;border-left:6px solid var(--gold);padding:16px 0 16px 20px;margin-bottom:34px;max-width:780px}
+.billing strong{font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:clamp(18px,2.2vw,24px);line-height:1.1}
+.billing p{color:var(--ink-2)}
 .trow{display:grid;grid-template-columns:1fr;gap:4px;padding:20px 0;border-bottom:1px solid var(--line);position:relative}
 .trow:first-of-type{border-top:3px solid var(--ink)}
 @media(min-width:760px){.trow{grid-template-columns:150px 1fr auto;gap:24px;align-items:baseline}}
@@ -187,26 +225,117 @@ p{max-width:62ch}
 .trow .ev{font-stretch:100%;font-weight:600;color:var(--ink-2);font-size:16px}
 @media(min-width:760px){.trow .ev{text-align:right;max-width:260px}}
 
-/* ============ STAFF ON COURT + KIT ============ */
-.staff-sec{padding:90px 0;background:var(--floor);border-top:1px solid var(--line)}
-.staff-grid{display:grid;gap:50px}
-@media(min-width:900px){.staff-grid{grid-template-columns:5fr 6fr;gap:70px;align-items:center}}
-.mini{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:3/4}
-.mini svg{position:absolute;inset:0;width:100%;height:100%}
-.mini .ln{fill:none;stroke:var(--ink);stroke-width:2}
-.mini .ln.g{stroke:var(--brass)}
-.coach{position:absolute;transform:translate(-50%,-50%);text-align:center;width:46%}
-.coach i{display:block;width:16px;height:16px;border-radius:50%;background:var(--gold);margin:0 auto 6px;box-shadow:0 0 0 4px var(--floor),0 0 0 6px var(--gold)}
-.js .coach i{animation:pop 2.8s ease-in-out infinite}
-.coach:nth-of-type(2) i{animation-delay:.5s}.coach:nth-of-type(3) i{animation-delay:1s}.coach:nth-of-type(4) i{animation-delay:1.5s}.coach:nth-of-type(5) i{animation-delay:2s}
-@keyframes pop{0%,70%,100%{transform:scale(1)}80%{transform:scale(1.25)}}
-.coach span{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(13px,1.6vw,16px);line-height:1.05}
-.kit h2{margin:10px 0 18px}
-.kit ul{list-style:none;border-top:3px solid var(--ink)}
-.kit li{padding:14px 0 14px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--ink-2)}
-.kit li::before{content:"";position:absolute;left:0;top:23px;width:10px;height:2px;background:var(--gold)}
-.kit .staff-note{margin-top:30px}
-.kit .staff-note p{color:var(--ink-2);margin-top:8px}
+/* ============ GEAR ============ */
+.gear{padding:90px 0;background:var(--floor);border-top:1px solid var(--line)}
+.gear-grid{display:grid;gap:0;border:3px solid var(--ink);background:var(--paper)}
+@media(min-width:900px){.gear-grid{grid-template-columns:6fr 5fr}}
+.kit-main{padding:32px 22px}
+@media(min-width:900px){.kit-main{padding:42px 44px}}
+.kit-main h3,.kit-side h3{font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(26px,3vw,34px);line-height:.95;margin:10px 0 14px}
+.kit-main p{color:var(--ink-2)}
+.kit-main ul{list-style:none;margin:18px 0 26px;border-top:1px solid var(--line)}
+.kit-main li{padding:11px 0 11px 22px;border-bottom:1px solid var(--line);position:relative;color:var(--ink-2)}
+.kit-main li::before{content:"";position:absolute;left:0;top:21px;width:10px;height:2px;background:var(--gold)}
+.jersey{font-stretch:150%;font-weight:900;font-size:clamp(70px,10vw,120px);line-height:.8;color:transparent;-webkit-text-stroke:2px var(--gold);float:right;margin:0 0 6px 16px}
+.kit-side{display:grid;border-top:3px solid var(--ink)}
+@media(min-width:900px){.kit-side{border-top:0;border-left:3px solid var(--ink)}}
+.kit-side > div{padding:28px 22px}
+@media(min-width:900px){.kit-side > div{padding:34px 40px}}
+.kit-side > div + div{border-top:1px solid var(--line)}
+.kit-side p{color:var(--ink-2);font-size:16px}
+.soon{display:inline-block;font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:13px;background:var(--ink);color:#fff;padding:8px 12px;margin-top:12px}
+.soon.big-soon{font-size:15px;padding:14px 18px;margin-top:4px}
+
+
+/* ============ COURT GRAPHICS (true futsal scale, 1 unit = 10 cm) ============ */
+.court-show{position:relative;margin:4px 0 44px;background:#121212;border:3px solid var(--ink)}
+.court-show svg{display:block;width:100%;height:auto}
+.cl{fill:none;stroke:rgba(255,255,255,.8);stroke-width:1.1}
+.cl.dim{stroke:rgba(255,255,255,.35)}
+.cs{fill:rgba(255,255,255,.85)}
+.floor{fill:#1d1b17}
+.floor2{fill:#211f1a}
+.goal{fill:url(#net);stroke:#fff;stroke-width:1;transition:fill .25s ease}
+.goal.hit{fill:rgba(139,122,76,.9)}
+.pv{fill:var(--gold);stroke:#fff;stroke-width:1}
+.po{fill:#121212;stroke:rgba(255,255,255,.75);stroke-width:1.2}
+.pt{fill:#fff;font-family:var(--f);font-stretch:62%;font-weight:800;font-size:6.2px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.trail{fill:none;stroke:var(--brass);stroke-width:1.3;stroke-dasharray:3 3;stroke-linecap:round}
+.runl{fill:none;stroke:rgba(255,255,255,.35);stroke-width:1;stroke-dasharray:1.5 3}
+.ballc{fill:#fff;stroke:#000;stroke-width:.7}
+.zlab{fill:rgba(255,255,255,.45);font-family:var(--f);font-stretch:62%;font-weight:700;font-size:5.5px;letter-spacing:.12em;text-anchor:middle}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--ink)}
+.steps li{padding:14px 14px 16px;color:#7d776a;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;line-height:1.3;border-top:4px solid transparent;transition:color .3s ease,border-color .3s ease}
+.steps li + li{border-left:1px solid #2c2c2c}
+.steps li b{display:block;font-stretch:120%;font-weight:900;letter-spacing:.02em;font-size:16px;margin-bottom:3px}
+.steps li.on{color:#fff;border-top-color:var(--gold)}
+.steps li.on b{color:var(--brass)}
+.court-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding:12px 14px;border-top:1px solid #2c2c2c;color:#9d968a;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}
+.court-cap i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+.court-cap .k1{background:var(--gold);box-shadow:0 0 0 1px #fff}
+.court-cap .k2{border:1.5px solid rgba(255,255,255,.75)}
+@media(max-width:640px){.steps{grid-template-columns:1fr 1fr}.steps li:nth-child(3){border-left:0}.steps li:nth-child(n+3){border-top-color:transparent;box-shadow:inset 0 1px 0 #2c2c2c}.steps li.on{border-top-color:var(--gold)}.pt{display:none}}
+
+/* staff formation */
+.form-wrap{max-width:380px;width:100%;margin:0 auto}
+.formation{margin-bottom:46px}
+.formation{position:relative;width:100%;aspect-ratio:280/420;background:#121212;border:3px solid var(--ink)}
+.formation svg{position:absolute;inset:0;width:100%;height:100%}
+.cm{position:absolute;width:88px;margin-left:-44px;margin-top:-8px;text-align:center;color:#fff;pointer-events:none;z-index:2}
+.cm i{display:block;width:16px;height:16px;border-radius:50%;margin:0 auto 4px;background:var(--gold);box-shadow:0 0 0 2px #fff}
+.cm.bench i{background:#121212;box-shadow:0 0 0 2px var(--brass)}
+.cm.gk i{background:#fff;box-shadow:0 0 0 2px var(--gold)}
+.cm span{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:12px;line-height:1.05;text-shadow:0 1px 2px #000}
+.cm small{display:inline-block;margin-top:3px;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:10px;color:#121212;background:var(--brass);padding:1px 5px}
+.cm.bench small{background:#3a3a3a;color:#fff}
+.zarrow{fill:none;stroke:var(--gold);stroke-width:2;opacity:0;transition:opacity .3s ease}
+.zarrow.on{opacity:1}
+.form-cap{margin-top:12px;font-size:15px;color:var(--ink-2)}
+.form-cap b{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--gold);display:block;margin-bottom:2px}
+
+
+/* ============ VIDEO (full-bleed background) ============ */
+.reel{position:relative;overflow:hidden;background:#0d0d0d;color:#fff;min-height:min(92vh,860px);display:flex;align-items:flex-end;padding:140px 0 72px}
+@media(max-width:759px){.reel{min-height:118vw;max-height:none;padding:220px 0 56px}}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%;filter:saturate(.9) contrast(1.06)}
+@media(min-width:760px){.bgv{left:auto;right:0;width:62%;object-position:50% 50%}}
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#0d0d0d 0%,#0d0d0d 38%,rgba(13,13,13,.55) 50%,rgba(13,13,13,.08) 72%,rgba(13,13,13,.25) 100%),
+             linear-gradient(0deg,rgba(13,13,13,.95) 0%,rgba(13,13,13,0) 45%),
+             linear-gradient(180deg,rgba(13,13,13,.7) 0%,rgba(13,13,13,0) 22%)}
+@media(max-width:759px){.shade{background:linear-gradient(0deg,rgba(13,13,13,.97) 0%,rgba(13,13,13,.86) 38%,rgba(13,13,13,.15) 72%,rgba(13,13,13,.55) 100%)}}
+.reel-lines{position:absolute;right:-6%;top:50%;width:min(620px,70vw);transform:translateY(-50%);opacity:.35;pointer-events:none}
+.reel-lines *{fill:none;stroke:var(--brass);stroke-width:1.5}
+@media(max-width:759px){.reel-lines{top:22%;right:-30%;width:110vw;opacity:.35}}
+.reel-inner{position:relative;z-index:1;width:100%}
+.reel .label{color:var(--brass)}
+.reel h2{color:#fff;font-size:clamp(40px,7vw,96px);margin:10px 0 16px;max-width:12ch}
+.reel p{color:#ddd6c6;max-width:44ch;font-size:18px}
+.reel ul{list-style:none;margin-top:22px;max-width:520px;border-top:1px solid rgba(255,255,255,.22)}
+.reel li{padding:12px 0 12px 22px;border-bottom:1px solid rgba(255,255,255,.22);position:relative;color:#f1ece0}
+.reel li::before{content:"";position:absolute;left:0;top:22px;width:10px;height:2px;background:var(--gold)}
+.reel-btn{position:absolute;right:16px;bottom:16px;z-index:2;font-family:var(--f);font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:#fff;background:rgba(13,13,13,.6);border:1px solid rgba(255,255,255,.4);padding:10px 14px;min-height:40px;cursor:pointer}
+@media(min-width:760px){.reel-btn{right:40px;bottom:28px}}
+.reel-btn:hover{background:var(--gold)}
+
+/* ============ STAFF ============ */
+.staff-sec{padding:90px 0}
+.staff-grid{display:grid;gap:44px}
+@media(min-width:900px){.staff-grid{grid-template-columns:6fr 5fr;gap:64px;align-items:center}}
+.staff-copy h2{margin:10px 0 18px}
+.roster{list-style:none;border-top:3px solid var(--ink)}
+.roster li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line);font-stretch:112%;font-weight:700;font-size:clamp(17px,1.9vw,21px)}
+.roster li em{font-style:normal;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--gold);white-space:nowrap}
+
+/* ============ MEDIA ============ */
+.media{padding:72px 0;background:var(--floor);border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.media-grid{display:grid;gap:22px;position:relative;z-index:1}
+@media(min-width:900px){.media-grid{grid-template-columns:7fr 4fr;align-items:center}}
+.media h2{margin:10px 0 14px}
+.media p{color:var(--ink-2)}
+.frame{position:absolute;right:-40px;top:50%;transform:translateY(-50%) rotate(-6deg);width:280px;height:200px;border:3px solid var(--line);pointer-events:none}
+.frame::before{content:"";position:absolute;inset:16px;border:2px dashed var(--brass)}
+@media(max-width:899px){.frame{display:none}}
 
 /* ============ REGISTER ============ */
 .reg{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:96px 0 90px}
@@ -228,7 +357,6 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .js .big span{transform:none}
-  .js .court-bg .ln{stroke-dashoffset:0}
   .sideline .fill{height:calc(100% - 8px)}
 }
 </style>
@@ -238,26 +366,6 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 <!-- HERO -->
 <header class="hero">
-  <svg class="court-bg" viewBox="-12 -12 424 224" aria-hidden="true">
-    <rect class="ln" x="0" y="0" width="400" height="200" pathLength="1"/>
-    <line class="ln" x1="200" y1="0" x2="200" y2="200" pathLength="1"/>
-    <circle class="ln" cx="200" cy="100" r="30" pathLength="1"/>
-    <path class="ln" d="M0 25 A60 60 0 0 1 60 85 L60 115 A60 60 0 0 1 0 175" pathLength="1"/>
-    <path class="ln" d="M400 25 A60 60 0 0 0 340 85 L340 115 A60 60 0 0 0 400 175" pathLength="1"/>
-    <rect class="ln" x="-10" y="85" width="10" height="30" pathLength="1"/>
-    <rect class="ln" x="400" y="85" width="10" height="30" pathLength="1"/>
-    <circle class="spot" cx="200" cy="100" r="2.4"/>
-    <circle class="spot" cx="60" cy="100" r="2"/>
-    <circle class="spot" cx="100" cy="100" r="2"/>
-    <circle class="spot" cx="340" cy="100" r="2"/>
-    <circle class="spot" cx="300" cy="100" r="2"/>
-    <path id="passpath" class="pass" d="M120 150 L210 60 L250 140 L300 70 L355 108"/>
-    <circle class="ball" r="5">
-      <animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0.25;0.25;0.5;0.5;0.75;0.75;1;1" keyTimes="0;0.12;0.22;0.34;0.44;0.56;0.66;0.78;1" calcMode="linear">
-        <mpath href="#passpath"/>
-      </animateMotion>
-    </circle>
-  </svg>
   <div class="vert" aria-hidden="true">Winter 2027 &nbsp;/&nbsp; Third season</div>
 
   <div class="wrap">
@@ -270,20 +378,59 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <h1 class="big x big-clip" aria-label="Futsal"><span>F</span><span>u</span><span>t</span><span>s</span><span>a</span><span>l</span></h1>
     </div>
     <div class="intro">
-      <p>Our competitive futsal program for Valor players, now in its third year. Fast, small-sided training in January and games against other clubs in February, all at the CYA Fieldhouse.</p>
+      <p>Our competitive futsal program for Valor players, now in its third year. Weekend training that makes players better at futsal and sharper for the spring season, with six practices and two matches at the CYA Fieldhouse.</p>
       <div class="acts">
         <a class="btn" href="#REGISTRATION_LINK" target="_blank" rel="noopener">Register for Futsal</a>
-        <a class="plain" href="#options">What is included</a>
+        <a class="plain" href="#gameday">See the game days</a>
       </div>
     </div>
+    <figure class="court-show" aria-label="Animated futsal set play on a full-scale court">
+      <svg id="play" viewBox="-24 -16 448 238" role="img" aria-label="Valor's defender passes to the left wing, who plays into the forward. The forward lays it off to the right wing arriving at the far post, who finishes.">
+        <defs>
+          <pattern id="net" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0L3 3M3 0L0 3" stroke="rgba(255,255,255,.4)" stroke-width=".45"/></pattern>
+        </defs>
+        <rect class="floor" x="0" y="0" width="200" height="200"/>
+        <rect class="floor2" x="200" y="0" width="200" height="200"/>
+        <!-- touchlines 40 m x 20 m -->
+        <rect class="cl" x="0" y="0" width="400" height="200"/>
+        <line class="cl" x1="200" y1="0" x2="200" y2="200"/>
+        <circle class="cl" cx="200" cy="100" r="30"/>
+        <circle class="cs" cx="200" cy="100" r="1.6"/>
+        <!-- penalty areas: 6 m arcs from each post -->
+        <path class="cl" d="M0 25 A60 60 0 0 1 60 85 L60 115 A60 60 0 0 1 0 175"/>
+        <path class="cl" d="M400 25 A60 60 0 0 0 340 85 L340 115 A60 60 0 0 0 400 175"/>
+        <!-- 6 m penalty marks and 10 m second penalty marks -->
+        <circle class="cs" cx="60" cy="100" r="1.4"/><circle class="cs" cx="100" cy="100" r="1.4"/>
+        <circle class="cs" cx="340" cy="100" r="1.4"/><circle class="cs" cx="300" cy="100" r="1.4"/>
+        <!-- corner arcs -->
+        <path class="cl" d="M0 3 A3 3 0 0 0 3 0"/><path class="cl" d="M397 0 A3 3 0 0 0 400 3"/>
+        <path class="cl" d="M0 197 A3 3 0 0 1 3 200"/><path class="cl" d="M397 200 A3 3 0 0 1 400 197"/>
+        <!-- substitution zones: 5 m long, 5 m from halfway -->
+        <g class="cl"><line x1="100" y1="196" x2="100" y2="204"/><line x1="150" y1="196" x2="150" y2="204"/><line x1="250" y1="196" x2="250" y2="204"/><line x1="300" y1="196" x2="300" y2="204"/></g>
+        <text class="zlab" x="125" y="212">SUB ZONE</text><text class="zlab" x="275" y="212">SUB ZONE</text>
+        <!-- goals 3 m x 2 m -->
+        <rect class="goal" x="-9" y="85" width="9" height="30"/>
+        <rect class="goal" id="goalR" x="400" y="85" width="9" height="30"/>
+        <g id="trails"></g>
+        <g id="players"></g>
+        <circle id="ball" class="ballc" r="3.1" cx="147" cy="110"/>
+      </svg>
+      <ol class="steps" id="steps">
+        <li><b>Defender</b>Switches it wide to the wing</li>
+        <li><b>Wing</b>Plays into the forward</li>
+        <li><b>Forward</b>Holds it up and lays it off</li>
+        <li><b>Far post</b>Opposite wing finishes</li>
+      </ol>
+      <figcaption class="court-cap"><span><i class="k1"></i>Valor</span><span><i class="k2"></i>Opponent</span><span>Drawn to scale: 40 m by 20 m</span></figcaption>
+    </figure>
   </div>
   <div class="facts">
     <div class="wrap">
       <ul>
-        <li><b>Season</b><strong>Jan to Feb</strong></li>
+        <li><b>Matches</b><strong>Jan 23 to 24 &middot; Feb 27 to 28</strong></li>
         <li><b>Program fee</b><strong>$375</strong></li>
         <li><b>Where</b><strong>CYA Fieldhouse</strong></li>
-        <li><b>Birth years</b><strong>2014 to 2018</strong></li>
+        <li><b>Age groups</b><strong>U8 to U14</strong></li>
       </ul>
     </div>
   </div>
@@ -294,8 +441,8 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   <div class="wrap">
     <div class="halves-head">
       <div>
-        <div class="label">Two winter offerings</div>
-        <h2 style="margin-top:10px">Two halves of the same floor</h2>
+        <div class="label">Winter at Valor</div>
+        <h2 style="margin-top:10px">Two winter options</h2>
       </div>
       <p>Every Valor player can play indoors on Saturdays as part of club dues. Competitive Futsal is a separate, optional program with its own fee and registration.</p>
     </div>
@@ -316,11 +463,12 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         <div class="label">Optional program</div>
         <h3>Competitive Futsal</h3>
         <div class="cost">$375 per player</div>
-        <p>For players who want more training and real competition over the winter, beyond the Saturday scrimmages.</p>
+        <p>Structured training and competitive games for players who want to improve over the winter and start the spring season ahead.</p>
         <ul>
-          <li>Led by Valor directors and coaches</li>
-          <li>Training built on ball mastery, 1v1 play, quick decisions, combination play and finishing</li>
-          <li>Competitive games against other clubs in February</li>
+          <li>Training sessions led by Valor directors and coaches</li>
+          <li>Practices and games on Saturdays for U8 to U10, Sundays for U11 to U14</li>
+          <li>Two blocks of three practices with review, each ending in a match against another club</li>
+          <li>Matches January 23 to 24 and February 27 to 28</li>
           <li>One payment or two installments</li>
         </ul>
       </div>
@@ -336,15 +484,88 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   </div>
 </div>
 
+<!-- GAME DAY -->
+<section class="gameday" id="gameday">
+  <div class="wrap">
+    <div class="gd-head">
+      <div>
+        <div class="label">Schedule</div>
+        <h2 style="margin-top:10px">Practice and game days</h2>
+      </div>
+      <p>Practices and games stay on the same day of the week for each age group, so families can plan around one weekend day all winter.</p>
+    </div>
+    <div class="days">
+      <div class="day">
+        <div class="dname">Saturdays</div>
+        <div class="ages">U8 to U10</div>
+        <div class="dates"><span>Match Jan 23</span><span>Match Feb 27</span></div>
+        <p class="note">Practices and games for the younger age groups.</p>
+      </div>
+      <div class="day sun">
+        <div class="dname">Sundays</div>
+        <div class="ages">U11 to U14</div>
+        <div class="dates"><span>Match Jan 24</span><span>Match Feb 28</span></div>
+        <p class="note">Practices and games for the older age groups.</p>
+      </div>
+    </div>
+    <div class="format">
+      <span class="label">How the program runs</span>
+      <div class="strip" id="strip">
+        <div class="blk">
+          <div class="bl">Block 1</div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell mt">Match<small>Jan 23 and 24</small></div>
+        </div>
+        <div class="blk">
+          <div class="bl">Block 2</div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell">Practice<small>With review</small></div>
+          <div class="cell mt">Match<small>Feb 27 and 28</small></div>
+        </div>
+      </div>
+      <p>The program runs in two blocks. Each block is three practices with review, where coaches break down what players are working on and correct it on the court, followed by a match against another club. That makes six practices and two matches in all.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="reel" id="video">
+  <video class="bgv" id="reel" muted loop playsinline preload="metadata" poster="valor-futsal-bg-poster.jpg" aria-hidden="true">
+    <source src="valor-futsal-bg.mp4" type="video/mp4">
+  </video>
+  <div class="shade" aria-hidden="true"></div>
+  <svg class="reel-lines" viewBox="0 0 200 200" aria-hidden="true"><line x1="100" y1="0" x2="100" y2="200"/><circle cx="100" cy="100" r="30"/><circle cx="100" cy="100" r="2" style="fill:var(--brass)"/></svg>
+  <div class="wrap reel-inner">
+    <div class="label">On the court</div>
+    <h2>Valor futsal in action</h2>
+    <p>Footage from a Valor futsal opening weekend.</p>
+    <ul>
+      <li>Small-sided training with Valor coaches on the court with players</li>
+      <li>Quick touches, tight spaces and constant decisions</li>
+      <li>Training put straight into games</li>
+    </ul>
+  </div>
+  <button type="button" class="reel-btn" id="reelBtn" aria-pressed="false">Pause video</button>
+</section>
+
 <!-- FOCUS -->
 <section class="focus-sec">
   <div class="wm" aria-hidden="true">Touch</div>
   <div class="wrap focus-grid">
     <aside>
-      <div class="label">Program focus</div>
-      <h2 style="margin-top:10px">What players work on</h2>
-      <p>Winter is a good time to work on what coaches flagged in fall evaluations. The hard court and smaller, heavier ball make every touch and decision count.</p>
+      <div class="label">Winter development</div>
+      <h2 style="margin-top:10px">Training focus</h2>
+      <div class="blurb">
+        <p>Through our structured two-month futsal program, players can expect to see progress in technical development, decision-making, confidence and tactical understanding.</p>
+        <p>The greatest benefit goes beyond becoming a better futsal player. It's about learning to transfer these skills directly to the pitch, where players can apply what they've learned in competitive game situations.</p>
+        <p>Our goal is to develop players who see the game earlier, execute under pressure, support their teammates intelligently and consistently make better decisions on the ball. We are committed to developing these qualities and helping every player bring them to the outdoor game.</p>
+        <div class="sig"><b>Israel Alabi</b>U11/U12 Boys and Girls Director, Virginia Valor FC</div>
+      </div>
     </aside>
+    <div>
     <ul class="skills">
       <li>Ball mastery and comfort in tight spaces <em>Technical</em></li>
       <li>Speed of play and first touch <em>Technical</em></li>
@@ -355,6 +576,11 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <li>Shooting, finishing and scoring <em>Finishing</em></li>
       <li>Resilience, risk-taking and self-confidence <em>Mentality</em></li>
     </ul>
+    <div class="aims">
+      <div><b>Better at futsal</b><span>Sharper technique, quicker decisions and confidence in tight spaces.</span></div>
+      <div><b>Ready for spring</b><span>The same skills carry straight onto the grass when the outdoor season starts.</span></div>
+    </div>
+    </div>
   </div>
 </section>
 
@@ -366,13 +592,17 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <div class="price">
         <div class="label" style="color:var(--muted)">Per player</div>
         <div class="num x"><sup>$</sup>375</div>
-        <p>Pay in one payment or two installments. Outside tournaments are extra and not included.</p>
+        <p>Pay in one payment or two installments.</p>
+        <ul class="excl">
+          <li>Futsal uniform is a separate purchase</li>
+          <li>Optional tournaments are billed to each team separately</li>
+        </ul>
       </div>
       <div class="stack">
         <div>
           <div class="label">Season</div>
           <strong>January to February</strong>
-          <p>Training in January, games in February.</p>
+          <p>Six practices and two matches: January 23 to 24 and February 27 to 28.</p>
         </div>
         <div>
           <div class="label">Location</div>
@@ -381,8 +611,8 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         </div>
         <div>
           <div class="label">Age groups</div>
-          <strong>2014 to 2018</strong>
-          <p>Boys and girls, by birth year.</p>
+          <strong>U8 to U14</strong>
+          <p>Boys and girls, birth years 2013 to 2019.</p>
         </div>
       </div>
     </div>
@@ -393,9 +623,9 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 <section class="timeline-sec">
   <div class="rings" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="label">Key dates</div>
-    <h2 style="margin-top:10px">How the winter runs</h2>
-    <p class="sub">Practice times, expectations and opponents go out to families once rosters are set.</p>
+    <div class="label">Calendar</div>
+    <h2 style="margin-top:10px">Key dates</h2>
+    <p class="sub">The practice schedule, expectations and opponents go out to families once rosters are set.</p>
     <div class="sideline" id="sideline">
       <div class="fill"></div>
       <div class="mark now">
@@ -409,14 +639,14 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
         <p>Families receive the practice schedule, program expectations and the clubs we will play.</p>
       </div>
       <div class="mark">
-        <div class="when">January 2027</div>
-        <div class="what">Training</div>
-        <p>Small-sided futsal sessions at the CYA Fieldhouse.</p>
+        <div class="when">Jan 23 and 24, 2027</div>
+        <div class="what">First match</div>
+        <p>After the first three practices. Saturday for U8 to U10, Sunday for U11 to U14.</p>
       </div>
       <div class="mark">
-        <div class="when">February 2027</div>
-        <div class="what">Games</div>
-        <p>Competitive matches against other clubs.</p>
+        <div class="when">Feb 27 and 28, 2027</div>
+        <div class="what">Second match</div>
+        <p>After three more practices. Saturday for U8 to U10, Sunday for U11 to U14.</p>
       </div>
     </div>
   </div>
@@ -427,10 +657,14 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   <div class="wrap">
     <div class="tourn-head">
       <div>
-        <div class="label">Optional, extra cost</div>
-        <h2 style="margin-top:10px">Tournament opportunities</h2>
+        <div class="label">Extra cost</div>
+        <h2 style="margin-top:10px">Optional tournaments</h2>
       </div>
-      <p>Teams that want to play beyond the program can enter outside futsal tournaments. These are not included in the $375 fee.</p>
+      <p>Teams that want to play beyond the program can enter outside futsal tournaments.</p>
+    </div>
+    <div class="billing">
+      <strong>Not covered by the $375 program fee</strong>
+      <p>Each team decides which tournaments, if any, it enters, so plans will differ from team to team. Tournament costs are billed to each team on a separate invoice.</p>
     </div>
     <div class="trow"><div class="m">December</div><div class="city">Alexandria, VA</div><div class="ev">Futsal Cup</div></div>
     <div class="trow"><div class="m">Mid-January</div><div class="city">Richmond, VA</div><div class="ev">Mid-Atlantic Regional Championships</div></div>
@@ -441,36 +675,96 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
   </div>
 </section>
 
-<!-- STAFF + KIT -->
-<section class="staff-sec">
-  <div class="wrap staff-grid">
-    <div class="mini" role="img" aria-label="Coaching staff: Israel Alabi, Gabriel Portillo, Eric Lewis, Coach Carlos, Victor Velasco">
-      <svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true">
-        <rect class="ln" x="2" y="2" width="296" height="396"/>
-        <line class="ln" x1="2" y1="200" x2="298" y2="200"/>
-        <circle class="ln g" cx="150" cy="200" r="34"/>
-        <path class="ln g" d="M80 2 A64 64 0 0 0 135 62 L165 62 A64 64 0 0 0 220 2"/>
-        <path class="ln g" d="M80 398 A64 64 0 0 1 135 338 L165 338 A64 64 0 0 1 220 398"/>
-      </svg>
-      <div class="coach" style="left:50%;top:15%"><i></i><span>Israel<br>Alabi</span></div>
-      <div class="coach" style="left:24%;top:42%"><i></i><span>Gabriel<br>Portillo</span></div>
-      <div class="coach" style="left:76%;top:42%"><i></i><span>Eric<br>Lewis</span></div>
-      <div class="coach" style="left:50%;top:64%"><i></i><span>Coach<br>Carlos</span></div>
-      <div class="coach" style="left:50%;top:88%"><i></i><span>Victor<br>Velasco</span></div>
-    </div>
-    <div class="kit">
-      <div class="label">Coaching staff and equipment</div>
-      <h2>Who runs it and what to bring</h2>
-      <ul>
-        <li>Players train and play in their regular Valor game and training kits</li>
-        <li>Indoor flats (futsal or indoor shoes) are strongly recommended for comfort and safety on the hard court</li>
-        <li>Water bottle</li>
-      </ul>
-      <div class="staff-note">
-        <div class="label">The starting five</div>
-        <p>Israel Alabi, Gabriel Portillo, Eric Lewis, Coach Carlos and Victor Velasco lead the program.</p>
+<!-- GEAR -->
+<section class="gear" id="gear">
+  <div class="wrap">
+    <div class="label" style="margin-bottom:12px">Uniforms and gear</div>
+    <div class="gear-grid">
+      <div class="kit-main">
+        <div class="jersey" aria-hidden="true">10</div>
+        <div class="label">Players</div>
+        <h3>Futsal uniform</h3>
+        <p>The futsal uniform is a separate purchase and is not included in the program fee. Ordering is not open yet.</p>
+        <ul>
+          <li>You will pick your player's number when you order</li>
+          <li>Numbers are first come, first served, so order early to get the one you want</li>
+          <li>Indoor flats (futsal or indoor shoes) are strongly recommended for the hard court</li>
+        </ul>
+        <span class="soon big-soon">Uniform orders coming soon</span>
+      </div>
+      <div class="kit-side">
+        <div>
+          <div class="label">Coaches</div>
+          <h3>Coaches futsal gear</h3>
+          <p>Futsal coaching shirts for program staff.</p>
+          <span class="soon">Shirt order coming soon</span>
+        </div>
+        <div>
+          <div class="label">Every session</div>
+          <h3>What to bring</h3>
+          <p>Futsal uniform, indoor flats, shin guards and a filled water bottle.</p>
+        </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- STAFF -->
+<section class="staff-sec">
+  <div class="wrap staff-grid">
+    <div class="form-wrap">
+      <div class="formation" id="formation" role="img" aria-label="Coaching staff in a futsal formation: Gabriel Portillo in goal, Susan Furlough on defense, Oscar Hernandez and Mallory Pasco on the wings, Israel Alabi at forward, with Chris Meyers and Sofiane Allaouat on the bench rotating in as flying substitutes">
+        <svg viewBox="0 -10 280 420" preserveAspectRatio="none" aria-hidden="true">
+          <defs><pattern id="net2" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0L3 3M3 0L0 3" stroke="rgba(255,255,255,.4)" stroke-width=".45"/></pattern></defs>
+          <rect class="floor" x="0" y="0" width="200" height="200"/>
+          <rect class="floor2" x="0" y="200" width="200" height="200"/>
+          <rect class="cl" x="0" y="0" width="200" height="400"/>
+          <line class="cl" x1="0" y1="200" x2="200" y2="200"/>
+          <circle class="cl" cx="100" cy="200" r="30"/><circle class="cs" cx="100" cy="200" r="1.6"/>
+          <path class="cl" d="M25 0 A60 60 0 0 0 85 60 L115 60 A60 60 0 0 0 175 0"/>
+          <path class="cl" d="M25 400 A60 60 0 0 1 85 340 L115 340 A60 60 0 0 1 175 400"/>
+          <circle class="cs" cx="100" cy="60" r="1.4"/><circle class="cs" cx="100" cy="100" r="1.4"/>
+          <circle class="cs" cx="100" cy="340" r="1.4"/><circle class="cs" cx="100" cy="300" r="1.4"/>
+          <rect class="goal" id="goalT" x="85" y="-9" width="30" height="9" style="fill:url(#net2)"/>
+          <rect class="goal" x="85" y="400" width="30" height="9" style="fill:url(#net2)"/>
+          <g class="cl"><line x1="196" y1="250" x2="204" y2="250"/><line x1="196" y1="300" x2="204" y2="300"/></g>
+          <g class="cl dim"><line x1="196" y1="100" x2="204" y2="100"/><line x1="196" y1="150" x2="204" y2="150"/></g>
+          <rect x="216" y="236" width="54" height="124" fill="rgba(139,122,76,.10)" stroke="rgba(200,185,143,.6)" stroke-dasharray="3 3"/>
+          <text class="zlab" x="243" y="230">BENCH</text>
+          <path class="zarrow" id="zIn" d="M209 288 L203 292 L209 296"/>
+          <path class="zarrow" id="zOut" d="M203 254 L209 258 L203 262"/>
+          <g id="trails2"></g>
+          <circle id="ball2" class="ballc" r="3.4" cx="100" cy="374"/>
+        </svg>
+      </div>
+      <p class="form-cap"><b>Passing combination and rolling subs</b>Goalkeeper to defender, defender to wing, into the forward, lay-off to the opposite wing at the far post. Subs rotate on and off through the sub zone, the same way futsal teams sub on the fly during games.</p>
+    </div>
+    <div class="staff-copy">
+      <div class="label">Staff</div>
+      <h2>Coaching staff</h2>
+      <ul class="roster">
+        <li>Israel Alabi <em>Program lead</em></li>
+        <li>Oscar Hernandez <em>Coach</em></li>
+        <li>Mallory Pasco <em>Coach</em></li>
+        <li>Susan Furlough <em>Coach</em></li>
+        <li>Gabriel Portillo <em>Coach</em></li>
+        <li>Chris Meyers <em>Coach</em></li>
+        <li>Sofiane Allaouat <em>Coach</em></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIA -->
+<section class="media">
+  <div class="frame" aria-hidden="true"></div>
+  <div class="wrap media-grid">
+    <div>
+      <div class="label">For parents</div>
+      <h2>Submit photos and video</h2>
+      <p>Got a great shot from practice or a game day? Send your photos and clips to the club and we may feature them on Valor's social media.</p>
+    </div>
+    <div><a class="btn dark" href="#MEDIA_SUBMISSION_LINK" target="_blank" rel="noopener">Submit photos and video</a></div>
   </div>
 </section>
 
@@ -497,24 +791,27 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 <script>
 (function(){
-
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // size FUTSAL so it always fits the page width, whatever font metrics load
-  var big=document.querySelector('.big');
+  var fits=document.querySelectorAll('.big, .day .dname');
   function fit(){
-    if(!big) return;
-    big.style.fontSize='';
-    var w=big.clientWidth, sw=big.scrollWidth;
-    if(sw>w){ var fs=parseFloat(getComputedStyle(big).fontSize); big.style.fontSize=Math.floor(fs*(w/sw)*0.98)+'px'; }
+    fits.forEach(function(el){
+      el.style.fontSize='';
+      var w=el.clientWidth, sw=el.scrollWidth;
+      if(sw>w){ var fs=parseFloat(getComputedStyle(el).fontSize); el.style.fontSize=Math.floor(fs*(w/sw)*0.98)+'px'; }
+    });
   }
   fit();
   if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(fit); }
   window.addEventListener('load',fit);
   window.addEventListener('resize',fit);
+
   // sideline fill when the timeline scrolls into view
   var s=document.getElementById('sideline');
   if('IntersectionObserver' in window && s){
     new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting){s.classList.add('on');o.disconnect();}});},{threshold:.35}).observe(s);
   } else if(s){ s.classList.add('on'); }
+
   // keep the center ring on the halfway line when halves stack on phones
   var h=document.getElementById('halves'), r=document.getElementById('ring');
   function place(){
@@ -524,6 +821,182 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     else { r.style.removeProperty('--ringY'); }
   }
   place(); window.addEventListener('resize',place);
+
+
+  // ===== shared helpers for court animations =====
+  var NS='http://www.w3.org/2000/svg';
+  function ease(u){return u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;}
+  function at(keys,t,lin){
+    if(t<=keys[0][0]) return [keys[0][1],keys[0][2]];
+    for(var i=1;i<keys.length;i++){
+      if(t<=keys[i][0]){var a=keys[i-1],b=keys[i],u=(t-a[0])/((b[0]-a[0])||1);if(!lin)u=ease(u);return [a[1]+(b[1]-a[1])*u,a[2]+(b[2]-a[2])*u];}
+    }
+    var l=keys[keys.length-1];return [l[1],l[2]];
+  }
+  function mk(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+  function loopWhenVisible(target,render,T){
+    var start=null,vis=true,raf=null,last=-1;
+    function frame(now){
+      if(start===null)start=now;
+      var el=(now-start)/1000;render(el%T,Math.floor(el/T));
+      raf=requestAnimationFrame(frame);
+    }
+    if(reduce){render(T*0.5,0);return;}
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){
+        if(e.isIntersecting&&!raf){raf=requestAnimationFrame(frame);}
+        else if(!e.isIntersecting&&raf){cancelAnimationFrame(raf);raf=null;start=null;}
+      });},{threshold:.05}).observe(target);
+    } else { raf=requestAnimationFrame(frame); }
+  }
+
+  // ===== HERO: defender, wing, forward, lay-off, far-post finish (1 unit = 10 cm) =====
+  (function(){
+    var svg=document.getElementById('play'); if(!svg) return;
+    var T=8.5, gP=document.getElementById('players'), gT=document.getElementById('trails'),
+        ball=document.getElementById('ball'), goal=document.getElementById('goalR'),
+        steps=document.querySelectorAll('#steps li');
+    var valor=[
+      {l:'GK',k:[[0,14,100],[2,28,100],[5,38,100],[8.5,14,100]]},
+      {l:'D', k:[[0,140,112],[0.9,158,106],[2.5,190,100],[5,200,100],[8.5,140,112]]},
+      {l:'W', k:[[0,225,30],[0.8,222,38],[1.6,232,42],[2.4,250,46],[3.4,290,48],[5,300,52],[8.5,225,30]]},
+      {l:'F', k:[[0,318,108],[1.6,322,104],[2.4,318,96],[3,316,96],[3.5,320,98],[5,335,100],[8.5,318,108]]},
+      {l:'W', k:[[0,215,170],[1.6,235,165],[2.6,290,150],[3.5,345,130],[3.95,365,124],[4.3,372,120],[5,370,122],[8.5,215,170]]}
+    ];
+    var opp=[
+      {k:[[0,388,100],[2.4,386,96],[3.3,385,99],[3.9,387,110],[4.25,391,114],[5.2,388,104],[8.5,388,100]]},
+      {k:[[0,338,108],[2.4,332,99],[3,330,97],[3.6,334,101],[5,345,104],[8.5,338,108]]},
+      {k:[[0,255,40],[1.6,250,47],[2.4,262,52],[3.4,300,58],[5,305,58],[8.5,255,40]]},
+      {k:[[0,240,150],[1.6,250,148],[2.6,285,145],[3.5,325,138],[4.2,350,132],[5,352,130],[8.5,240,150]]},
+      {k:[[0,190,108],[1,176,106],[2.5,205,102],[5,215,100],[8.5,190,108]]}
+    ];
+    var ballK=[[0,147,110],[0.9,164,105],[1.5,229,41],[2.4,255,47],[2.95,312,98],[3.45,315,99],[3.95,361,124],[4.2,401,90],[5.6,404,90]];
+    var passes=[[0.9,1.5],[2.4,2.95],[3.45,3.95],[3.95,4.2]];
+    // the far-post run, shown as a faint line
+    var run=mk('path',{'class':'runl',d:'M235 165 L290 150 L345 130 L365 124'},gT);
+    var trails=passes.map(function(){return mk('line',{'class':'trail'},gT);});
+    function dot(cls,label){var g=mk('g',{},gP);mk('circle',{'class':cls,r:6.5},g);if(label){var t=mk('text',{'class':'pt'},g);t.textContent=label;}return g;}
+    var oG=opp.map(function(){return dot('po');}), vG=valor.map(function(p){return dot('pv',p.l);});
+    function render(t){
+      valor.forEach(function(p,i){var q=at(p.k,t);vG[i].setAttribute('transform','translate('+q[0].toFixed(1)+' '+q[1].toFixed(1)+')');});
+      opp.forEach(function(p,i){var q=at(p.k,t);oG[i].setAttribute('transform','translate('+q[0].toFixed(1)+' '+q[1].toFixed(1)+')');});
+      var b=t>=7.9?[ballK[0][1],ballK[0][2]]:at(ballK,t,true);
+      ball.setAttribute('cx',b[0].toFixed(1));ball.setAttribute('cy',b[1].toFixed(1));
+      ball.style.opacity=(t>5.7&&t<7.9)?0:(t>=7.9?Math.min(1,(t-7.9)/0.5):1);
+      var fade=t<5.6?1:Math.max(0,1-(t-5.6)/0.6);
+      passes.forEach(function(p,i){
+        var ln=trails[i];
+        if(t<p[0]||t>6.3){ln.style.opacity=0;return;}
+        var a=at(ballK,p[0],true),c=at(ballK,Math.min(t,p[1]),true);
+        ln.setAttribute('x1',a[0]);ln.setAttribute('y1',a[1]);ln.setAttribute('x2',c[0]);ln.setAttribute('y2',c[1]);
+        ln.style.opacity=fade;
+      });
+      run.style.opacity=(t>1.6&&t<6.2)?0.9*fade:0;
+      goal.classList.toggle('hit',t>4.2&&t<5.6);
+      var s=t<1.5?0:t<2.95?1:t<3.95?2:t<6?3:-1;
+      for(var i=0;i<steps.length;i++)steps[i].classList.toggle('on',i===s);
+    }
+    loopWhenVisible(svg,function(t){render(t);},T);
+    if(reduce) render(4.4);
+  })();
+
+  // ===== STAFF: combination play plus rolling flying substitutions =====
+  (function(){
+    var box=document.getElementById('formation'); if(!box) return;
+    var T=8, W=280, H=420, OFF=10;
+    var ball=document.getElementById('ball2'), gT=document.getElementById('trails2'),
+        zIn=document.getElementById('zIn'), zOut=document.getElementById('zOut'), goal=document.getElementById('goalT');
+    var SLOT={GK:[100,384],FX:[100,296],AL:[42,206],AR:[158,206],PV:[100,98]};
+    var TAG={GK:'Goalkeeper',FX:'Defender',AL:'Wing',AR:'Wing',PV:'Forward'};
+    var SEAT=[[243,262],[243,322]], ZOUT=[204,244], ZIN=[212,302];
+    var MOVE={
+      FX:[[0,100,296],[0.8,100,292],[1.3,96,286],[2.0,100,296]],
+      AL:[[0,42,206],[1.4,42,206],[1.85,48,214],[2.6,42,206]],
+      AR:[[0,158,206],[2.0,158,206],[3.3,140,62],[3.9,140,62],[5.0,158,206]],
+      PV:[[0,100,98],[2.0,100,98],[2.45,100,104],[3.0,100,98]],
+      GK:[[0,100,384]]
+    };
+    var assign={GK:'Gabriel Portillo',FX:'Susan Furlough',AL:'Oscar Hernandez',AR:'Mallory Pasco',PV:'Israel Alabi'};
+    var bench=['Chris Meyers','Sofiane Allaouat'];
+    var ORDER=[['AR',0],['AL',1],['PV',0],['FX',1]];
+    var names=['Gabriel Portillo','Susan Furlough','Oscar Hernandez','Mallory Pasco','Israel Alabi','Chris Meyers','Sofiane Allaouat'];
+    var els={};
+    names.forEach(function(n){
+      var d=document.createElement('div');d.className='cm';
+      var p=n.split(' ');d.innerHTML='<i></i><span>'+p[0]+'<br>'+p.slice(1).join(' ')+'</span><small></small>';
+      box.appendChild(d);els[n]=d;
+    });
+    function slotOf(n){for(var s in assign)if(assign[s]===n)return s;return null;}
+    function tags(){
+      names.forEach(function(n){
+        var s=slotOf(n),d=els[n];
+        d.querySelector('small').textContent=s?TAG[s]:'Sub';
+        d.classList.toggle('bench',!s);d.classList.toggle('gk',s==='GK');
+      });
+    }
+    tags();
+    var ballK=[[0,100,374],[0.3,100,374],[0.8,100,288],[1.3,96,280],[1.85,50,212],[2.45,100,110],[2.85,103,106],[3.3,136,68],[3.55,92,-5],[4.6,92,-6]];
+    var passes=[[0.3,0.8],[1.3,1.85],[1.85,2.45],[2.85,3.3],[3.3,3.55]];
+    var trails=passes.map(function(){return mk('line',{'class':'trail'},gT);});
+    var done=0;
+    function place(n,q){var d=els[n];d.style.left=(q[0]/W*100)+'%';d.style.top=((q[1]+OFF)/H*100)+'%';}
+    function render(t,li){
+      while(done<li){var e=ORDER[done%ORDER.length],o=assign[e[0]];assign[e[0]]=bench[e[1]];bench[e[1]]=o;done++;tags();}
+      var ev=ORDER[li%ORDER.length], outN=assign[ev[0]], inN=bench[ev[1]];
+      names.forEach(function(n){
+        var s=slotOf(n),q;
+        if(s){
+          q=at(MOVE[s],t);
+          if(n===outN&&t>5.0) q=at([[5.0,SLOT[s][0],SLOT[s][1]],[5.9,ZOUT[0],ZOUT[1]],[6.7,SEAT[ev[1]][0],SEAT[ev[1]][1]]],t);
+        } else {
+          var j=bench.indexOf(n), st=SEAT[j];
+          q=(n===inN)?at([[0,st[0],st[1]],[5.0,st[0],st[1]],[5.6,ZIN[0],ZIN[1]],[5.95,ZIN[0],ZIN[1]],[6.9,SLOT[ev[0]][0],SLOT[ev[0]][1]]],t):st;
+        }
+        place(n,q);
+      });
+      var subbing=t>4.9&&t<7.0; zIn.classList.toggle('on',subbing); zOut.classList.toggle('on',subbing);
+      var b=t>=7.6?[ballK[0][1],ballK[0][2]]:at(ballK,t,true);
+      ball.setAttribute('cx',b[0].toFixed(1));ball.setAttribute('cy',b[1].toFixed(1));
+      ball.style.opacity=(t>4.6&&t<7.6)?0:(t>=7.6?Math.min(1,(t-7.6)/0.4):1);
+      var fade=t<4.4?1:Math.max(0,1-(t-4.4)/0.6);
+      passes.forEach(function(p,i){
+        var ln=trails[i];
+        if(t<p[0]||t>5.1){ln.style.opacity=0;return;}
+        var a=at(ballK,p[0],true),c=at(ballK,Math.min(t,p[1]),true);
+        ln.setAttribute('x1',a[0]);ln.setAttribute('y1',a[1]);ln.setAttribute('x2',c[0]);ln.setAttribute('y2',c[1]);
+        ln.style.opacity=fade;
+      });
+      goal.classList.toggle('hit',t>3.55&&t<4.6);
+    }
+    render(0,0);
+    loopWhenVisible(box,render,T);
+  })();
+
+
+  // video: play muted when on screen, pause when off screen, manual toggle
+  (function(){
+    var v=document.getElementById('reel'),b=document.getElementById('reelBtn'); if(!v) return;
+    var userPaused=reduce;
+    function setBtn(){var p=v.paused;b.textContent=p?'Play video':'Pause video';b.setAttribute('aria-pressed',p?'true':'false');}
+    b.addEventListener('click',function(){ if(v.paused){userPaused=false;v.play();} else {userPaused=true;v.pause();} });
+    v.addEventListener('play',setBtn);v.addEventListener('pause',setBtn);
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){
+        if(e.isIntersecting&&!userPaused){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}
+        else if(!e.isIntersecting){v.pause();}
+      });},{threshold:.2}).observe(v);
+    }
+    setBtn();
+  })();
+
+  // walk the game-day format strip: match, review, match, review
+  var cells=document.querySelectorAll('#strip .cell'), i=0;
+  if(cells.length && !reduce){
+    setInterval(function(){
+      cells.forEach(function(c){c.classList.remove('on');});
+      cells[i%cells.length].classList.add('on'); i++;
+    },1100);
+  }
 })();
 </script>
 </body>
