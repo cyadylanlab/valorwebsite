@@ -41,6 +41,9 @@ p{max-width:62ch}
 .btn::after{content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.45);pointer-events:none;transition:inset .25s ease}
 .btn:hover{background:var(--gold-d)}
 .btn:hover::after{inset:3px}
+.reg-soon{display:inline-flex;align-items:center;gap:8px;font-stretch:62%;font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:#fff;background:rgba(13,13,13,.55);border:1px solid var(--brass);padding:10px 14px}
+.reg-soon::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brass);animation:blink 1.8s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .btn.dark{background:var(--ink)}
 .btn.dark:hover{background:#000}
 .plain{display:inline-block;padding:12px 0;font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:14px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;text-decoration-color:var(--gold)}
@@ -399,6 +402,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
       <p>Our competitive futsal program for Valor players, now in its third year. Weekend training that makes players better at futsal and sharper for the spring season, with six practices and two matches at the CYA Fieldhouse.</p>
       <div class="acts">
         <a class="btn" href="#REGISTRATION_LINK" target="_blank" rel="noopener">Register for Futsal</a>
+        <span class="reg-soon">Coming soon</span>
         <a class="plain" href="#gameday">See the game days</a>
       </div>
     </div>
@@ -790,6 +794,7 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     <p>Rosters are finalized on Sunday, November 30. New to Valor? Ask a returning family on your team about their experience with the program.</p>
     <div class="acts">
       <a class="btn" href="#REGISTRATION_LINK" target="_blank" rel="noopener">Register for Futsal</a>
+        <span class="reg-soon">Coming soon</span>
       <a class="plain" href="https://www.virginiavalorfc.org/contact-us" target="_top">Questions? Contact us</a>
     </div>
   </div>
