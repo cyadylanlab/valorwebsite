@@ -445,6 +445,17 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
 
 .bgv::-webkit-media-controls,.bgv::-webkit-media-controls-start-playback-button,.bgv::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none}
 @media(min-width:601px) and (max-width:1100px){.hero-stage{min-height:680px}}
+
+/* phone: room for the OR ring, smaller ticker */
+@media(max-width:819px){
+  .halves .half:first-of-type{padding-bottom:58px}
+  .halves .half.alt{padding-top:54px}
+}
+@media(max-width:600px){
+  .track{padding:12px 0}
+  .track span{font-size:16px;padding:0 12px;letter-spacing:.02em}
+  .track span::after{width:8px;height:8px;margin-left:24px}
+}
 </style>
 <script>document.documentElement.className+=' js';</script>
 </head>
@@ -930,7 +941,9 @@ footer span{font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spa
     if(window.innerWidth<820){ r.style.setProperty('--ringY', first.offsetHeight+'px'); }
     else { r.style.removeProperty('--ringY'); }
   }
-  place(); window.addEventListener('resize',place);
+  place(); window.addEventListener('resize',place); window.addEventListener('load',place);
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(place);}
+  if('ResizeObserver' in window&&h){new ResizeObserver(place).observe(h);}
 
 
   // ===== shared helpers for court animations =====
