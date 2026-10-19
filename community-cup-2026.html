@@ -806,92 +806,16 @@
         </aside>
 
         <div class="roster-col">
-        <div class="gate" id="roster-gate" hidden>
-          <p class="gate-step">Step 3 of 4</p>
-          <h3 id="gate-title">Register your team first.</h3>
-          <p id="gate-body">Your place in the bracket is held by PlayMetrics registration and payment. This form only collects player names and birth dates, and we match it back to your registration.</p>
-          <div class="gate-actions">
-            <a class="btn primary" id="gate-register" href="#register-step">Register in PlayMetrics</a>
-            <button class="btn ghost" type="button" id="gate-continue">We are registered, open the form</button>
+          <div class="gate" id="roster-gate">
+            <p class="gate-step">Step 3 of 4</p>
+            <h3>Send us your squad.</h3>
+            <p>Rosters are submitted on their own page. One adult does it once for the whole team: every player's full name and date of birth, your head coach, and an assistant if you have one. Up to six players.</p>
+            <p>You can go back and change it any time before the deadline, and nothing is needed from you until check-in.</p>
+            <div class="gate-actions">
+              <a class="btn primary" href="https://www.virginiavalorfc.org/communitycuproster" target="_top">Submit your roster</a>
+              <a class="btn ghost" href="https://www.virginiavalorfc.org/communitycuproster#find" target="_top">Already sent one?</a>
+            </div>
           </div>
-        </div>
-
-        <div class="form-shell" id="form-shell">
-          <div class="form-heading">
-            <div>
-              <h3>2026 team roster</h3>
-              <p>Fields marked <span class="req">*</span> are required.</p>
-            </div>
-            <span class="count-pill" id="player-count">3 of 6 players</span>
-          </div>
-
-          <noscript><p class="notice">Turn on JavaScript to submit your team roster, or email it to dsutherland@virginiavalorfc.org.</p></noscript>
-          <div id="offline-notice" class="notice" hidden>This is the downloadable copy of the page. <a id="online-form-link" href="#">Open the online form</a> to submit a roster.</div>
-
-          <form id="roster-form" autocomplete="on" novalidate>
-            <div class="form-body">
-              <div class="trap" aria-hidden="true"><label for="company-website">Leave this field blank</label><input id="company-website" name="website" tabindex="-1" autocomplete="off"></div>
-
-              <fieldset>
-                <legend>Team and contact</legend>
-                <p class="legend-hint">Who you are and which bracket you belong in.</p>
-                <div class="form-grid">
-                  <div class="field full" data-field><label for="team-name">Team name <span class="req">*</span></label><input id="team-name" name="teamName" required maxlength="100" autocomplete="off" placeholder="Your team's name"><p class="field-msg" data-msg>Enter a team name.</p></div>
-                  <div class="field" data-field><label for="age-group">Age group <span class="req">*</span></label><select id="age-group" name="ageGroup" required><option value="">Choose age group</option><option value="U8">U8</option><option value="U9">U9</option><option value="U10">U10</option><option value="U11">U11</option><option value="U12">U12</option><option value="U13">U13</option><option value="U14">U14</option></select><p class="field-msg" data-msg>Choose an age group.</p></div>
-                  <div class="field" data-field><label for="division">Division <span class="req">*</span></label><select id="division" name="division" required><option value="">Choose division</option><option value="Boys">Boys</option><option value="Girls">Girls</option></select><p class="field-msg" data-msg>Choose a division.</p></div>
-                  <div class="field full"><p class="field-hint">Your oldest player determines your age group, and 2026-27 age groups run August 1 to July 31 rather than by birth year. Use the same email address you registered with in PlayMetrics.</p></div>
-                  <div class="field full" data-field><label for="contact-name">Coach or team representative <span class="req">*</span></label><input id="contact-name" name="contactName" required maxlength="100" autocomplete="name" placeholder="Full name"><p class="field-msg" data-msg>Enter the adult representative's name.</p></div>
-                  <div class="field" data-field><label for="contact-email">Email address <span class="req">*</span></label><input id="contact-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"><p class="field-msg" data-msg>Enter a valid email address.</p></div>
-                  <div class="field" data-field><label for="contact-phone">Phone number <span class="req">*</span></label><input id="contact-phone" name="phone" type="tel" required maxlength="30" autocomplete="tel" placeholder="(555) 555-0123"><p class="field-msg" data-msg>Enter a phone number we can reach you on.</p></div>
-                  <div class="field full"><label for="pm-ref">PlayMetrics confirmation number <span class="optional">(if you have it handy)</span></label><input id="pm-ref" name="playmetricsRef" maxlength="60" autocomplete="off" placeholder="From your registration email"><p class="field-hint" style="margin-top:6px">Leave it blank if you cannot find it. We will match on team name and email instead.</p></div>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend>Players</legend>
-                <p class="legend-hint">Three players minimum. Add up to three more if you have them.</p>
-                <div id="player-rows"></div>
-                <div class="row-actions">
-                  <button class="add-player" type="button" id="add-player"><span class="glyph" aria-hidden="true">+</span> Add a player</button>
-                  <span class="roster-tip">You can add players later by sending a new roster.</span>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend>Age verification</legend>
-                <p class="legend-hint">An adult has to stand behind the roster before we can accept it.</p>
-                <div class="ack-box">
-                  <div class="ack-row"><input id="ack-registered" name="registeredAcknowledged" type="checkbox" required><label for="ack-registered"><strong>Our team is registered and paid in PlayMetrics. <span class="req">*</span></strong>A roster on its own does not enter your team. If you have not registered yet, do that first and come back.</label></div>
-                <div class="ack-row"><input id="ack-accuracy" name="accuracyAcknowledged" type="checkbox" required><label for="ack-accuracy"><strong>The roster is accurate. <span class="req">*</span></strong>I am an adult team representative authorized to submit this roster. Every player's name and date of birth is accurate, and the players meet the age requirements for our selected division.</label></div>
-                  <div class="ack-row"><input id="ack-proof" name="proofAcknowledged" type="checkbox" required><label for="ack-proof"><strong>I will provide proof of age on request. <span class="req">*</span></strong>Virginia Valor FC may require a birth certificate or other acceptable proof of age for any rostered player. I will have hard-copy or digital proof available at tournament check-in.</label></div>
-                </div>
-                <div class="field signature" data-field><label for="signature">Type your full name to sign <span class="req">*</span></label><input id="signature" name="signature" required maxlength="100" autocomplete="name" placeholder="Adult team representative's full name"><p class="field-msg" data-msg>Type your full name to sign.</p></div>
-              </fieldset>
-            </div>
-
-            <div class="form-error" id="form-error" role="alert" tabindex="-1" hidden></div>
-
-            <div class="form-foot">
-              <p class="fine">Player details go to the tournament registrar for roster review. Double-check the dates of birth before sending.</p>
-              <button class="btn submit-btn" type="submit" id="submit-roster">Submit roster</button>
-            </div>
-          </form>
-
-          <section id="success-panel" class="success-panel" aria-live="polite" tabindex="-1" hidden>
-            <div class="success-icon" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></div>
-            <h3 class="display">Roster received.</h3>
-            <p id="success-description"></p>
-            <p>Keep this confirmation number:</p>
-            <strong class="confirmation" id="confirmation-number"></strong>
-            <div class="success-warn">
-              <strong>You still need to be registered in PlayMetrics.</strong>
-              <span>A roster is the player list, not an entry. If your team is not registered and paid, your place is not held. Check your PlayMetrics confirmation email if you are unsure.</span>
-              <a class="btn ghost" id="success-register" href="#register-step">Check my registration</a>
-            </div>
-            <p>Bring your roster and check-in documents on tournament day.</p>
-            <button class="btn ghost" type="button" id="another-roster">Submit another team</button>
-          </section>
-        </div>
         </div>
       </div>
     </section>
@@ -966,17 +890,10 @@
   <script>
   /* ============================================================
      PAGE SETTINGS
-     rosterEndpoint : where rosters are POSTed.
-        - Relative path  ('/api/rosters')            same-host API
-        - Absolute URL   ('https://script.google.com/macros/s/.../exec')
-                                                     Google Apps Script
-     transport      : 'json'      sends Content-Type: application/json
-                      'text'      sends Content-Type: text/plain
-                                  (use this for Apps Script, it avoids
-                                   the CORS preflight that Apps Script
-                                   cannot answer)
-     registrationUrl: paste the registration link when it opens and a
-                      live "Register your team" button appears in the hero.
+     registrationUrl: the PlayMetrics signup link. Every Register
+                      button on the page points at it.
+     Rosters live on their own page now, 3v3roster.html, which has
+     its own settings block and its own Apps Script backend.
      ============================================================ */
   const CUP_CONFIG = {
     /* Paste the PlayMetrics link here the day registration opens. Every
@@ -985,57 +902,12 @@
        registration is not open yet and keeps the roster form closed. */
     registrationUrl: 'https://playmetrics.com/signup?clubToken=U2lnbnVwLkdCLlYyLTEwODItVmlyZ2luaWEgVmFsb3IgVG91cm5hbWVudHMtaHR0cHM6Ly9hcGkuZ2IucGxheW1ldHJpY3MuY29tL3B1YmxpYy9nYnMvMTA4Mi9sb2dvLTE3OTIxNjg5NjR8d0J2UW1oSjdWUjRVTncyQlpmbDE3dEd2U1VwRTMxNDF4M0xCbGhJZTZ2ST0=&program_id=2873',
 
-    /* false  roster form stays shut, visitors are pointed at registration
-       true   roster form is available behind the "we are registered" gate
-       Flip this to true once teams have had a chance to register. */
-    rosterOpen: false,
 
-    /* Paste the Apps Script web app /exec URL here. It must end in /exec,
-       not /dev. transport 'text' keeps this a simple CORS request, which is
-       the only kind Apps Script can answer. */
-    rosterEndpoint: 'PASTE_APPS_SCRIPT_EXEC_URL',
-    transport: 'text',
-    acknowledgmentVersion: 'community-cup-2026-v1'
   };
 
   (() => {
     'use strict';
     const $ = id => document.getElementById(id);
-    const form = $('roster-form');
-    const submitBtn = $('submit-roster');
-    const errorBox = $('form-error');
-    const success = $('success-panel');
-    const rowsHost = $('player-rows');
-    const addBtn = $('add-player');
-    const countPill = $('player-count');
-
-    const MIN_PLAYERS = 3, MAX_PLAYERS = 6;
-    const today = new Date();
-    const iso = d => d.toISOString().slice(0, 10);
-    const MAX_DOB = iso(today);
-    const MIN_DOB = (today.getFullYear() - 20) + '-01-01';
-
-    let visiblePlayers = MIN_PLAYERS;
-    let submitting = false, lastPayload = '', submissionKey = '';
-
-    /* ---------- offline / wrong-host guard ---------- */
-    const relativeEndpoint = !/^https?:/i.test(CUP_CONFIG.rosterEndpoint);
-    const endpointReady = /^https:\/\/script\.google\.com\/.*\/exec/.test(CUP_CONFIG.rosterEndpoint) || !relativeEndpoint;
-    const offline = (location.protocol === 'file:' && relativeEndpoint) || !endpointReady;
-    if (offline) {
-      const n = $('offline-notice');
-      const link = $('online-form-link');
-      link.href = 'https://www.virginiavalorfc.org/3v3communitycup#roster';
-      if (!endpointReady) {
-        n.textContent = 'The roster form is not connected yet. Email your roster to dsutherland@virginiavalorfc.org in the meantime.';
-      } else {
-        n.hidden = false;
-      }
-      n.hidden = false;
-      submitBtn.disabled = true;
-      submitBtn.textContent = endpointReady ? 'Open the online form to submit' : 'Roster form not connected yet';
-    }
-
     /* ---------- registration, and the gate in front of the roster ----------
        Registration in PlayMetrics is what enters a team. The roster form is
        downstream of it, so it stays behind a gate and can be switched off
@@ -1045,7 +917,7 @@
       const u = new URL(CUP_CONFIG.registrationUrl);
       registrationLive = u.protocol === 'https:';
       if (registrationLive) {
-        ['hero-register', 'nav-register', 'dock-register', 'gate-register', 'success-register'].forEach(id => {
+        ['hero-register', 'nav-register', 'dock-register'].forEach(id => {
           const el = $(id);
           if (el) { el.href = u.href; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
         });
@@ -1069,219 +941,6 @@
       const hb = $('hero-register');
       if (hb) hb.textContent = 'See registration details';
     }
-
-    const gate = $('roster-gate');
-    const formShell = $('form-shell');
-    const rosterOpen = CUP_CONFIG.rosterOpen === true;
-
-    if (!rosterOpen) {
-      gate.classList.add('closed');
-      $('gate-title').textContent = 'Roster submission is not open yet.';
-      $('gate-body').textContent = registrationLive
-        ? 'Register your team in PlayMetrics now. The roster form opens here once registration has been running for a couple of weeks, and we will email every registered team when it does.'
-        : 'PlayMetrics registration opens later this fall, and the roster form opens after that. Nothing you send before then would hold a place, so there is nothing to do on this page yet.';
-      $('gate-continue').hidden = true;
-      if (!registrationLive) {
-        const soonTag = document.createElement('span');
-        soonTag.className = 'soon';
-        soonTag.textContent = 'Registration opens later this fall';
-        $('gate-register').replaceWith(soonTag);
-      }
-      formShell.hidden = true;
-      gate.hidden = false;
-    } else {
-      formShell.hidden = true;
-      gate.hidden = false;
-      $('gate-continue').addEventListener('click', () => {
-        gate.hidden = true;
-        formShell.hidden = false;
-        $('team-name').focus({ preventScroll: true });
-        formShell.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      });
-    }
-
-    /* ---------- player rows ---------- */
-    function rowHTML(i) {
-      const extra = i > MIN_PLAYERS;
-      return `<div class="player-row${extra ? ' extra' : ''}" data-row="${i}">
-        <span class="pn" aria-hidden="true">${i}</span>
-        <div class="field" data-field>
-          <label for="player-${i}-name">Full name ${extra ? '<span class="optional">(optional)</span>' : '<span class="req">*</span>'}</label>
-          <input id="player-${i}-name" name="player${i}Name" aria-label="Player ${i} full name" maxlength="100" autocomplete="off"${extra ? '' : ' required'}>
-          <p class="field-msg" data-msg>Enter this player's full name.</p>
-        </div>
-        <div class="field" data-field>
-          <label for="player-${i}-dob">Date of birth ${extra ? '' : '<span class="req">*</span>'}</label>
-          <input id="player-${i}-dob" name="player${i}Dob" aria-label="Player ${i} date of birth" type="date" min="${MIN_DOB}" max="${MAX_DOB}" autocomplete="off"${extra ? '' : ' required'}>
-          <p class="field-msg" data-msg>Enter a valid date of birth.</p>
-        </div>
-      </div>`;
-    }
-    for (let i = 1; i <= MAX_PLAYERS; i++) rowsHost.insertAdjacentHTML('beforeend', rowHTML(i));
-
-    function renderRows() {
-      for (let i = 1; i <= MAX_PLAYERS; i++) {
-        const row = rowsHost.querySelector(`[data-row="${i}"]`);
-        row.hidden = i > visiblePlayers;
-      }
-      addBtn.disabled = visiblePlayers >= MAX_PLAYERS;
-      addBtn.textContent = visiblePlayers >= MAX_PLAYERS ? 'Roster full at 6 players' : '';
-      if (visiblePlayers < MAX_PLAYERS) addBtn.innerHTML = '<span class="glyph" aria-hidden="true">+</span> Add a player';
-      countPill.textContent = visiblePlayers + ' of ' + MAX_PLAYERS + ' players';
-      syncOptional();
-    }
-    addBtn.addEventListener('click', () => {
-      if (visiblePlayers >= MAX_PLAYERS) return;
-      visiblePlayers++;
-      renderRows();
-      const input = $('player-' + visiblePlayers + '-name');
-      input.focus();
-    });
-
-    /* an optional player row becomes required once either half is filled */
-    function syncOptional() {
-      for (let i = MIN_PLAYERS + 1; i <= MAX_PLAYERS; i++) {
-        const name = $('player-' + i + '-name'), dob = $('player-' + i + '-dob');
-        const shown = i <= visiblePlayers;
-        const used = shown && Boolean(name.value.trim() || dob.value);
-        name.required = used;
-        dob.required = used;
-      }
-    }
-
-    /* ---------- inline validation ---------- */
-    function wrapOf(el) { return el.closest('[data-field]'); }
-    function setInvalid(el, message) {
-      const w = wrapOf(el); if (!w) return;
-      w.classList.add('invalid');
-      if (message) { const m = w.querySelector('[data-msg]'); if (m) m.textContent = message; }
-      el.setAttribute('aria-invalid', 'true');
-    }
-    function clearInvalid(el) {
-      const w = wrapOf(el); if (!w) return;
-      w.classList.remove('invalid');
-      el.removeAttribute('aria-invalid');
-    }
-    function validateField(el) {
-      if (el.type === 'checkbox' || el.disabled || el.closest('[hidden]')) return true;
-      if (!el.checkValidity()) { setInvalid(el); return false; }
-      if (el.type === 'tel' && el.value.replace(/\D/g, '').length < 7) {
-        setInvalid(el, 'Enter a phone number with at least 7 digits.'); return false;
-      }
-      clearInvalid(el);
-      return true;
-    }
-    form.addEventListener('input', e => { if (e.target.matches('input,select')) { clearInvalid(e.target); errorBox.hidden = true; } syncOptional(); });
-    form.addEventListener('blur', e => { if (e.target.matches('input,select') && e.target.value) validateField(e.target); }, true);
-
-    function showError(msg, focusEl) {
-      errorBox.textContent = msg;
-      errorBox.hidden = false;
-      (focusEl || errorBox).focus({ preventScroll: false });
-      (focusEl || errorBox).scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }
-
-    /* ---------- payload ---------- */
-    function readPayload() {
-      const data = new FormData(form);
-      const get = n => String(data.get(n) || '').trim();
-      const players = [];
-      for (let i = 1; i <= visiblePlayers; i++) {
-        const name = get('player' + i + 'Name'), dob = get('player' + i + 'Dob');
-        if (name || dob) players.push({ name, dob });
-      }
-      return {
-        teamName: get('teamName'), ageGroup: get('ageGroup'), division: get('division'),
-        contactName: get('contactName'), email: get('email'), phone: get('phone'),
-        players, signature: get('signature'),
-        playmetricsRef: get('playmetricsRef'),
-        registeredAcknowledged: data.get('registeredAcknowledged') === 'on',
-        accuracyAcknowledged: data.get('accuracyAcknowledged') === 'on',
-        proofAcknowledged: data.get('proofAcknowledged') === 'on',
-        acknowledgmentVersion: CUP_CONFIG.acknowledgmentVersion,
-        website: get('website')
-      };
-    }
-
-    form.addEventListener('submit', async event => {
-      event.preventDefault();
-      if (submitting || offline || !rosterOpen) return;
-      syncOptional();
-
-      let firstBad = null;
-      form.querySelectorAll('input,select').forEach(el => {
-        if (!validateField(el) && !firstBad) firstBad = el;
-      });
-      const acks = [...form.querySelectorAll('input[type="checkbox"][required]')];
-      const missingAck = acks.find(c => !c.checked);
-      if (firstBad) return showError('Some fields still need attention. The first one is highlighted below.', firstBad);
-      if (missingAck) return showError(missingAck.id === 'ack-registered'
-        ? 'Confirm your team is registered in PlayMetrics. A roster on its own does not enter your team.'
-        : 'Check the age-verification boxes before submitting.', missingAck);
-
-      const payload = readPayload();
-      if (payload.players.length < MIN_PLAYERS) return showError('A roster needs at least three players.');
-      const seen = new Set();
-      for (const p of payload.players) {
-        if (!p.name || !p.dob) return showError('Every player needs both a full name and a date of birth. Clear any half-filled row.');
-        const key = p.name.toLocaleLowerCase().replace(/\s+/g, ' ') + '|' + p.dob;
-        if (seen.has(key)) return showError('The same player appears more than once. Review your roster.');
-        seen.add(key);
-      }
-
-      const serialized = JSON.stringify(payload);
-      if (serialized !== lastPayload) { submissionKey = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random()); lastPayload = serialized; }
-
-      submitting = true;
-      submitBtn.disabled = true;
-      const label = submitBtn.textContent;
-      submitBtn.textContent = 'Sending...';
-      form.setAttribute('aria-busy', 'true');
-      errorBox.hidden = true;
-
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 20000);
-      try {
-        const res = await fetch(CUP_CONFIG.rosterEndpoint, {
-          method: 'POST',
-          credentials: relativeEndpoint ? 'same-origin' : 'omit',
-          headers: { 'Content-Type': CUP_CONFIG.transport === 'text' ? 'text/plain;charset=utf-8' : 'application/json' },
-          body: JSON.stringify({ ...payload, submissionKey }),
-          signal: controller.signal
-        });
-        const result = await res.json().catch(() => null);
-        if (!res.ok || !result || !result.reference) throw new Error((result && result.error) || 'That roster could not be submitted. Your entries are still here, so try again.');
-        $('success-description').textContent = payload.teamName + ', ' + payload.ageGroup + ' ' + payload.division + ', ' + payload.players.length + ' players';
-        $('confirmation-number').textContent = result.reference;
-        form.hidden = true;
-        success.hidden = false;
-        success.focus();
-        if (window.valorGoalBurst) { try { window.valorGoalBurst(document.querySelector('.form-shell')); } catch {} }
-        success.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      } catch (err) {
-        showError(err.name === 'AbortError'
-          ? 'That took too long to send. Your entries are still here. Try again, a retry will not create a duplicate roster.'
-          : (err.message || 'Could not connect. Your entries are still here, so try again.'));
-      } finally {
-        clearTimeout(timer);
-        submitting = false;
-        submitBtn.disabled = false;
-        submitBtn.textContent = label;
-        form.removeAttribute('aria-busy');
-      }
-    });
-
-    $('another-roster').addEventListener('click', () => {
-      form.reset();
-      visiblePlayers = MIN_PLAYERS;
-      renderRows();
-      form.querySelectorAll('.invalid').forEach(w => w.classList.remove('invalid'));
-      lastPayload = ''; submissionKey = '';
-      success.hidden = true; form.hidden = false;
-      formShell.hidden = false;
-      $('team-name').focus();
-      $('roster').scrollIntoView({ block: 'start', behavior: 'smooth' });
-    });
 
     /* ---------- rules: expand all ---------- */
     const toggle = $('toggle-rules');
@@ -1332,61 +991,6 @@
       new IntersectionObserver(([e]) => { inRoster = e.isIntersecting; update(); }, { threshold: 0 }).observe(rosterSection);
     }
 
-    renderRows();
-
-    /* ---------- optional browser-agent support ----------
-       Stages the visible fields for an adult to review.
-       It never ticks an acknowledgment and never submits. */
-    const ctx = document.modelContext;
-    if (ctx && ctx.registerTool) {
-      const life = new AbortController();
-      const tool = {
-        name: 'stage_community_cup_roster',
-        title: 'Prepare Community Cup roster',
-        description: 'Fill the visible team roster for an adult representative to review. Does not acknowledge eligibility or submit.',
-        inputSchema: { type: 'object', properties: {
-          teamName: { type: 'string', maxLength: 100 },
-          ageGroup: { type: 'string', enum: ['U8', 'U9', 'U10', 'U11', 'U12', 'U13', 'U14'] },
-          division: { type: 'string', enum: ['Boys', 'Girls'] },
-          contactName: { type: 'string', maxLength: 100 },
-          email: { type: 'string', maxLength: 254 },
-          phone: { type: 'string', maxLength: 30 },
-          players: { type: 'array', minItems: 3, maxItems: 6, items: { type: 'object', properties: {
-            name: { type: 'string', minLength: 1, maxLength: 100 },
-            dob: { type: 'string', pattern: '^\\d{4}-\\d{2}-\\d{2}$' } }, required: ['name', 'dob'], additionalProperties: false } }
-        }, required: ['teamName', 'ageGroup', 'division', 'players'], additionalProperties: false },
-        annotations: { readOnlyHint: false, untrustedContentHint: false },
-        execute(input) {
-          if (submitting) throw new Error('A submission is already in progress.');
-          if (!input || typeof input !== 'object' || typeof input.teamName !== 'string' || !input.teamName.trim() || input.teamName.length > 100
-            || !['U8','U9','U10','U11','U12','U13','U14'].includes(input.ageGroup) || !['Boys','Girls'].includes(input.division)
-            || !Array.isArray(input.players) || input.players.length < 3 || input.players.length > 6)
-            throw new Error('Provide a team, valid division and 3 to 6 players.');
-          for (const p of input.players) {
-            if (!p || typeof p.name !== 'string' || !p.name.trim() || p.name.length > 100
-              || typeof p.dob !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(p.dob)
-              || !Number.isFinite(Date.parse(p.dob)) || new Date(p.dob).toISOString().slice(0,10) !== p.dob
-              || p.dob < MIN_DOB || p.dob > MAX_DOB)
-              throw new Error('Every player needs a full name and a valid date of birth.');
-          }
-          for (const [k, max] of [['contactName',100],['email',254],['phone',30]])
-            if (input[k] !== undefined && (typeof input[k] !== 'string' || input[k].length > max)) throw new Error('Invalid team contact field.');
-          form.reset(); success.hidden = true; form.hidden = false; errorBox.hidden = true;
-          lastPayload = ''; submissionKey = '';
-          visiblePlayers = Math.max(MIN_PLAYERS, input.players.length);
-          renderRows();
-          for (const k of ['teamName','ageGroup','division','contactName','email','phone'])
-            if (input[k] !== undefined) form.elements.namedItem(k).value = input[k];
-          input.players.forEach((p, i) => { $('player-'+(i+1)+'-name').value = p.name; $('player-'+(i+1)+'-dob').value = p.dob; });
-          syncOptional();
-          $('roster').scrollIntoView();
-          $('team-name').focus();
-          return { status: 'staged_for_review', playerCount: input.players.length, submitted: false };
-        }
-      };
-      try { Promise.resolve(ctx.registerTool(tool, { signal: life.signal })).catch(() => {}); } catch {}
-      window.addEventListener('pagehide', () => life.abort(), { once: true });
-    }
   })();
   </script>
 
