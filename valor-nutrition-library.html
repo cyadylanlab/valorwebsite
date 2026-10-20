@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valor Nutrition Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0E0E;
+    --paper:#FFFFFF;
+    --stone:#F5F2EA;
+    --gold:#8B7A4C;
+    --brass:#C8B98F;
+    --muted:#5C5A55;
+    --line:#DAD4C4;
+    --crest:url("https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png");
+    --ease:cubic-bezier(.2,.7,.1,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Bricolage Grotesque",system-ui,sans-serif;
+    font-optical-sizing:auto;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+  @media(min-width:760px){.wrap{padding:0 40px}}
+
+  /* ---------- Masthead ---------- */
+  .mast{position:relative;padding:44px 0 36px;overflow:hidden}
+  .mast::after{
+    content:"";position:absolute;right:-140px;top:-60px;width:520px;height:520px;
+    background:var(--crest) center/contain no-repeat;opacity:.06;
+    animation:drift 26s ease-in-out infinite alternate;pointer-events:none;
+  }
+  @keyframes drift{from{transform:rotate(-6deg) translateY(0)}to{transform:rotate(4deg) translateY(30px)}}
+  .badge{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+  .badge img{width:46px;height:46px;object-fit:contain}
+  .badge span{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .badge b{color:var(--ink);font-weight:700}
+  .mast h1{
+    font-stretch:75%;font-weight:800;text-transform:uppercase;
+    font-size:clamp(64px,16vw,220px);line-height:.82;letter-spacing:-.01em;
+    white-space:nowrap;margin-left:-.04em;
+  }
+  .mast h1 .ln{display:block;overflow:hidden}
+  .mast h1 .ln>span{display:inline-block;transform:translateY(105%);animation:rise .9s var(--ease) forwards}
+  .mast h1 .ln:nth-child(2)>span{animation-delay:.12s}
+  .mast h1 .ln:nth-child(2){padding-left:12vw}
+  @keyframes rise{to{transform:none}}
+  .rule{height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);animation:draw 1.1s .45s var(--ease) forwards;margin:26px 0 22px;max-width:560px}
+  @keyframes draw{to{transform:scaleX(1)}}
+  .mast .intro{display:grid;gap:18px;max-width:880px}
+  @media(min-width:860px){.mast .intro{grid-template-columns:1.3fr 1fr;gap:48px}}
+  .mast .intro p{font-size:18px}
+  .mast .intro p.small{font-size:15px;color:var(--muted);align-self:end}
+  .mast .intro a{color:var(--gold);font-weight:600;text-underline-offset:3px}
+
+  /* ---------- Now playing (the one dark section) ---------- */
+  .stage{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .ticker{border-bottom:1px solid #2A2A2A;overflow:hidden;white-space:nowrap;padding:12px 0}
+  .ticker div{display:inline-block;animation:tick 38s linear infinite}
+  .ticker span{font-stretch:75%;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--brass);margin-right:34px}
+  .ticker span i{font-style:normal;color:#555;margin-left:34px}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .stage .wrap{padding-top:40px;padding-bottom:48px}
+  .stage-grid{display:grid;gap:26px}
+  @media(min-width:900px){.stage-grid{grid-template-columns:1.75fr 1fr;gap:44px;align-items:end}}
+  .stage h2{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:15px;letter-spacing:.16em;color:var(--brass);margin-bottom:14px}
+  .player{position:relative;aspect-ratio:16/9;background:#1B1B1B;overflow:hidden;cursor:pointer;border:0;width:100%;display:block;padding:0;color:inherit;font:inherit}
+  .player img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease),opacity .4s}
+  .player:hover img{transform:scale(1.04)}
+  .player .play{
+    position:absolute;left:0;bottom:0;display:flex;align-items:center;gap:14px;
+    background:var(--gold);color:var(--paper);padding:16px 22px 16px 18px;
+    font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;
+    transition:padding .35s var(--ease);
+  }
+  .player:hover .play{padding-right:34px}
+  .player .play svg{width:20px;height:20px;fill:currentColor}
+  .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .player:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
+  .stage-meta .kind{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+  .stage-meta h3{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(44px,7vw,84px);line-height:.9;margin:10px 0 16px;color:var(--paper)}
+  .stage-meta p{color:#D8D6D0;font-size:17px;max-width:420px}
+  .stage-meta .date{margin-top:18px;font-size:14px;color:#9C9A94}
+  .stage-meta.swap{animation:swap .5s var(--ease)}
+  @keyframes swap{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+  .stage::after{
+    content:"VIDEO";position:absolute;right:-.06em;bottom:-.22em;font-stretch:75%;font-weight:800;
+    font-size:clamp(120px,22vw,300px);line-height:1;color:#161616;pointer-events:none;z-index:0;
+  }
+  .stage .wrap{position:relative;z-index:1}
+
+  /* ---------- Library ---------- */
+  .library{background:var(--stone);position:relative;padding:56px 0 64px;overflow:hidden}
+  .library .side-word{
+    display:none;position:absolute;left:6px;top:56px;writing-mode:vertical-rl;transform:rotate(180deg);
+    font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:120px;line-height:1;color:#E9E4D6;letter-spacing:.02em;pointer-events:none;
+  }
+  @media(min-width:1440px){.library .side-word{display:block}}
+  .lib-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 24px;margin-bottom:28px}
+  .lib-head h2{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,6vw,64px);line-height:.95}
+  .lib-head p{color:var(--muted);font-size:15px;max-width:360px}
+  .lib-grid{display:grid;gap:28px}
+  @media(min-width:900px){.lib-grid{grid-template-columns:230px 1fr;gap:48px}}
+  .topics{display:flex;gap:0;overflow-x:auto;border-bottom:2px solid var(--ink);scrollbar-width:none}
+  .topics::-webkit-scrollbar{display:none}
+  @media(min-width:900px){.topics{flex-direction:column;border-bottom:0;border-top:2px solid var(--ink);position:sticky;top:20px;align-self:start}}
+  .topic{
+    appearance:none;border:0;background:none;font:inherit;color:var(--ink);cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;gap:14px;flex:0 0 auto;
+    padding:12px 14px;font-size:16px;font-weight:600;text-align:left;position:relative;white-space:nowrap;
+  }
+  @media(min-width:900px){.topic{padding:14px 2px;border-bottom:1px solid var(--line)}}
+  .topic small{font-size:13px;color:var(--muted);font-weight:500}
+  .topic::before{content:"";position:absolute;left:0;bottom:-2px;height:4px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+  @media(min-width:900px){.topic::before{bottom:auto;top:0;height:100%;width:4px;left:-14px;transform:scaleY(0);transform-origin:top}}
+  .topic[aria-pressed="true"]::before{transform:none}
+  .topic:hover{color:var(--gold)}
+  .topic:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+
+  .entries{list-style:none;border-top:2px solid var(--ink)}
+  .entry{border-bottom:1px solid var(--line);opacity:0;transform:translateY(10px);animation:in .45s var(--ease) forwards}
+  @keyframes in{to{opacity:1;transform:none}}
+  .row{
+    appearance:none;border:0;background:none;font:inherit;color:inherit;cursor:pointer;width:100%;text-align:left;
+    display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;padding:18px 0;position:relative;
+  }
+  @media(min-width:640px){.row{grid-template-columns:168px 1fr auto;gap:24px}}
+  .row::before{content:"";position:absolute;left:-16px;top:18px;bottom:18px;width:4px;background:var(--gold);transform:scaleY(0);transition:transform .3s var(--ease)}
+  .row:hover::before,.entry.open .row::before{transform:none}
+  .row:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+  .thumb{aspect-ratio:16/10;background:var(--ink);overflow:hidden;position:relative}
+  .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+  .row:hover .thumb img{transform:scale(1.08)}
+  .thumb.word{display:flex;align-items:flex-end;padding:8px 10px;background:var(--ink)}
+  .thumb.word span{font-stretch:75%;font-weight:800;text-transform:uppercase;color:var(--brass);font-size:16px;line-height:.9}
+  @media(min-width:640px){.thumb.word span{font-size:30px}}
+  .thumb .tag{position:absolute;left:0;top:0;background:var(--gold);color:var(--paper);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 7px}
+  .row .t{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,3.4vw,32px);line-height:1}
+  .row .sub{font-size:15px;color:var(--muted);margin-top:6px;display:block}
+  .row .when{display:none;font-size:14px;color:var(--muted);white-space:nowrap;text-align:right}
+  @media(min-width:640px){.row .when{display:block}}
+  .detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .entry.open .detail{grid-template-rows:1fr}
+  .detail>div{overflow:hidden}
+  .detail .inner{padding:0 0 26px;display:grid;gap:18px}
+  @media(min-width:640px){.detail .inner{padding-left:192px;grid-template-columns:1.4fr 1fr;gap:32px}}
+  .detail p{font-size:16px;max-width:560px}
+  .detail p+p{margin-top:10px}
+  .detail h4{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .detail ul{list-style:none;border-top:1px solid var(--ink)}
+  .detail li{padding:9px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:15px}
+  .detail .go{display:inline-block;margin-top:14px;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;border-bottom:3px solid var(--gold);padding-bottom:3px;transition:color .2s}
+  .detail .go:hover{color:var(--gold)}
+  .empty{padding:28px 0;color:var(--muted)}
+
+  /* ---------- Coach ---------- */
+  .coach{padding:70px 0 64px;position:relative;overflow:hidden}
+  .coach-grid{display:grid;gap:30px}
+  @media(min-width:900px){.coach-grid{grid-template-columns:1fr 1.5fr;gap:60px}}
+  .coach .name{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(56px,10vw,128px);line-height:.85}
+  .coach .role{margin-top:14px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .coach blockquote{font-size:clamp(22px,2.8vw,32px);line-height:1.3;font-weight:500;font-stretch:90%;border-left:4px solid var(--gold);padding-left:22px;margin-bottom:30px}
+  .facts{display:grid;gap:0;border-top:2px solid var(--ink)}
+  @media(min-width:640px){.facts{grid-template-columns:1fr 1fr}}
+  .facts div{padding:14px 0;border-bottom:1px solid var(--line)}
+  @media(min-width:640px){.facts div:nth-child(odd){padding-right:20px}}
+  .facts dt{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .facts dd{font-size:17px;font-weight:600;margin-top:2px}
+  .coach::before{
+    content:"";position:absolute;left:-120px;bottom:-140px;width:420px;height:420px;
+    background:var(--crest) center/contain no-repeat;opacity:.05;pointer-events:none;
+  }
+
+  /* ---------- Suggest ---------- */
+  .suggest{border-top:3px solid var(--gold);background:var(--stone)}
+  .suggest .wrap{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between;padding-top:30px;padding-bottom:34px}
+  .suggest p{font-size:18px;font-weight:600;max-width:620px}
+  .suggest a{
+    display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);text-decoration:none;
+    padding:15px 22px;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;
+    transition:background .25s,gap .3s var(--ease);
+  }
+  .suggest a:hover{background:var(--gold);gap:20px}
+  .suggest a svg{width:16px;height:16px;fill:currentColor}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .ticker div{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="badge">
+      <img src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png" alt="Virginia Valor FC crest">
+      <span><b>Virginia Valor FC</b> / Players and Parents</span>
+    </div>
+    <h1 aria-label="Nutrition Library">
+      <span class="ln"><span>Nutrition</span></span>
+      <span class="ln"><span>Library</span></span>
+    </h1>
+    <div class="rule"></div>
+    <div class="intro">
+      <p>Videos, recipes and talks from Coach Daryl Jones, organized by topic. A new video and recipe are added each month during the season.</p>
+      <p class="small">Questions or a topic you want covered? Email Coach D at <a href="mailto:djones@virginiavalorfc.org" target="_top">djones@virginiavalorfc.org</a>.</p>
+    </div>
+  </div>
+</header>
+
+<section class="stage" aria-labelledby="now-label">
+  <div class="ticker" aria-hidden="true"><div id="ticker"></div></div>
+  <div class="wrap">
+    <h2 id="now-label">Latest video</h2>
+    <div class="stage-grid">
+      <button class="player" id="player" type="button" aria-label="Play video"></button>
+      <div class="stage-meta" id="stageMeta"></div>
+    </div>
+  </div>
+</section>
+
+<section class="library" aria-labelledby="lib-title">
+  <div class="side-word" aria-hidden="true">Library</div>
+  <div class="wrap">
+    <div class="lib-head">
+      <h2 id="lib-title">Browse by topic</h2>
+      <p>Pick a topic to filter. Select any entry to open it; videos play in the player above.</p>
+    </div>
+    <div class="lib-grid">
+      <nav class="topics" id="topics" aria-label="Topics"></nav>
+      <ul class="entries" id="entries"></ul>
+    </div>
+  </div>
+</section>
+
+<section class="coach" aria-labelledby="coach-name">
+  <div class="wrap coach-grid">
+    <div>
+      <h2 class="name" id="coach-name">Daryl<br>Jones</h2>
+      <p class="role">Coach and club nutrition lead</p>
+    </div>
+    <div>
+      <blockquote>I love nutrition and believe that it is a very important part of the development of athletes, students, and our community.</blockquote>
+      <dl class="facts">
+        <div><dt>At Valor since</dt><dd>2021</dd></div>
+        <div><dt>Coaching now</dt><dd>2011-12 Girls Gold, 2014-15 Boys Black</dd></div>
+        <div><dt>Day job</dt><dd>Teaches nutrition, cooking and gardening in DC Public Schools</dd></div>
+        <div><dt>Education</dt><dd>BS in food nutrition, magna cum laude</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="suggest">
+  <div class="wrap">
+    <p>Have a topic you or your Valor family would like covered? Coach D takes requests.</p>
+    <a href="mailto:djones@virginiavalorfc.org?subject=Nutrition%20topic%20request" target="_top">Suggest a topic
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 7h11.2L8 2.8 9.4 1.4 16 8l-6.6 6.6L8 13.2 12.2 9H1z"/></svg>
+    </a>
+  </div>
+</section>
+
+<script>
+/* ------------------------------------------------------------------
+   LIBRARY DATA
+   To add a new entry, copy one object below and edit it.
+   type:    "Video", "Recipes", "Slides" or "Handout"
+   topics:  one or more topic names; new names create new filters
+   youtube: the ID after youtu.be/ (videos only)
+   length:  running time, e.g. "5 min" (optional)
+   link:    a file or slide URL (non-video entries, optional)
+   Newest entries can go anywhere; the list sorts by date.
+------------------------------------------------------------------- */
+const LIBRARY = [
+  {
+    title: "Tournament Eating",
+    type: "Video",
+    date: "2026-10-06",
+    topics: ["Game Day"],
+    youtube: "raDc_w6nw4g",
+    length: "5 min",
+    summary: "A short video on eating through a tournament weekend."
+  },
+  {
+    title: "Electrolyte Drinks",
+    type: "Recipes",
+    date: "2026-10-11",
+    topics: ["Hydration", "Recipes"],
+    summary: "What Coach D drinks, and six drinks he makes at home.",
+    body: [
+      "Families asked Coach D which electrolyte drinks he uses. When he is on the go, he adds LMNT packets to his water bottle. When he has time, he makes his own so he controls the ingredients.",
+      "His homemade drinks start from cookbook base recipes that he adjusts to taste while still getting carbohydrates and electrolytes. He has no affiliation with any brand; these are simply what he uses."
+    ],
+    list: {
+      heading: "Recipes he shared",
+      items: ["Simple Sports Drink", "A Fancier Sports Drink", "Tart Switchel Sports Drink", "Lemon-Lime Electrolyte Drink", "Cranberry-Citrus Electrolyte Drink", "Cucumber-Lime Electrolyte Drink"]
+    }
+  },
+  {
+    title: "Hydration (2026)",
+    type: "Video",
+    date: "2026-08-25",
+    topics: ["Hydration"],
+    youtube: "G2q9BxpKhXc",
+    length: "7 min",
+    summary: "The first video of the 2026-27 season."
+  },
+  {
+    title: "7 Things",
+    type: "Video",
+    date: "2026-01-13",
+    topics: ["2025-26 Series"],
+    youtube: "rW0s5BuWzKM",
+    length: "4 min",
+    summary: "Video #5 in Coach D's 2025-26 monthly series."
+  },
+  {
+    title: "Hydration (2024)",
+    type: "Video",
+    date: "2024-08-08",
+    topics: ["Hydration"],
+    youtube: "ENEmKdPmkaQ",
+    length: "6 min",
+    summary: "Featured in the August 2024 Special Nutrition Edition of The Valor Standard."
+  },
+  {
+    title: "Pasta Salad",
+    type: "Video",
+    date: "2023-05-27",
+    topics: ["Recipes"],
+    youtube: "7xRsqrGAh5g",
+    length: "10 min",
+    summary: "Coach D makes a quick pasta salad."
+  },
+  {
+    title: "2025 Nutrition Meeting",
+    type: "Slides",
+    date: "2025-08-18",
+    topics: ["Talks"],
+    summary: "Slides from Coach D's talk at the Valor office.",
+    body: [
+      "Coach D's annual family meeting covered what we eat and how it affects daily performance and performance on the field. These are the slides he presented."
+    ],
+    link: "https://docs.google.com/presentation/d/1jMyQ3p4-7bF_ETirhe42vvpJ-FFC3AqKlmFVYi9Ssk0/edit?usp=sharing",
+    linkLabel: "Open the slides"
+  }
+];
+
+/* ---------------- rendering ---------------- */
+const sorted = LIBRARY.slice().sort((a, b) => b.date.localeCompare(a.date));
+const videos = sorted.filter(e => e.youtube);
+const fmt = d => new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ticker: real topic and entry names */
+(function () {
+  const words = [...new Set(sorted.flatMap(e => [e.title, ...e.topics]))];
+  const run = words.map(w => `<span>${esc(w)}<i>/</i></span>`).join("");
+  document.getElementById("ticker").innerHTML = run + run + run + run;
+})();
+
+/* player */
+const player = document.getElementById("player");
+const meta = document.getElementById("stageMeta");
+function loadStage(entry, autoplay) {
+  if (!entry) return;
+  const thumb = `https://i.ytimg.com/vi/${entry.youtube}/hqdefault.jpg`;
+  if (autoplay) {
+    player.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${entry.youtube}?autoplay=1&rel=0" title="${esc(entry.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  } else {
+    player.innerHTML = `<img src="${thumb}" alt=""><span class="play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3l12 7-12 7z"/></svg>Play</span>`;
+  }
+  player.dataset.id = entry.youtube;
+  player.setAttribute("aria-label", "Play video: " + entry.title);
+  meta.classList.remove("swap"); void meta.offsetWidth; meta.classList.add("swap");
+  meta.innerHTML = `
+    <div class="kind">${esc(entry.topics.join(" / "))}</div>
+    <h3>${esc(entry.title)}</h3>
+    <p>${esc(entry.summary)}</p>
+    <div class="date">Posted ${fmt(entry.date)}${entry.length ? " / " + esc(entry.length) : ""}</div>`;
+}
+player.addEventListener("click", () => {
+  if (player.querySelector("iframe")) return;
+  const e = videos.find(v => v.youtube === player.dataset.id);
+  loadStage(e, true);
+});
+loadStage(videos[0], false);
+
+/* topics */
+const topicsEl = document.getElementById("topics");
+const topicNames = ["All", ...[...new Set(sorted.flatMap(e => e.topics))].sort()];
+let current = "All";
+function renderTopics() {
+  topicsEl.innerHTML = topicNames.map(t => {
+    const n = t === "All" ? sorted.length : sorted.filter(e => e.topics.includes(t)).length;
+    return `<button class="topic" type="button" aria-pressed="${t === current}" data-t="${esc(t)}">${esc(t)}<small>${n}</small></button>`;
+  }).join("");
+}
+topicsEl.addEventListener("click", ev => {
+  const b = ev.target.closest(".topic");
+  if (!b) return;
+  current = b.dataset.t;
+  renderTopics();
+  renderEntries();
+});
+
+/* entries */
+const entriesEl = document.getElementById("entries");
+function renderEntries() {
+  const list = current === "All" ? sorted : sorted.filter(e => e.topics.includes(current));
+  if (!list.length) { entriesEl.innerHTML = `<li class="empty">Nothing here yet.</li>`; return; }
+  entriesEl.innerHTML = list.map((e, i) => {
+    const thumb = e.youtube
+      ? `<div class="thumb"><img src="https://i.ytimg.com/vi/${e.youtube}/mqdefault.jpg" alt="" loading="lazy"><span class="tag">${e.type}</span></div>`
+      : `<div class="thumb word"><span>${esc(e.type)}</span></div>`;
+    let detail = "";
+    if (!e.youtube) {
+      const body = (e.body || []).map(p => `<p>${esc(p)}</p>`).join("");
+      const link = e.link ? `<a class="go" href="${esc(e.link)}" target="_blank" rel="noopener">${esc(e.linkLabel || "Open")}</a>` : "";
+      const side = e.list ? `<div><h4>${esc(e.list.heading)}</h4><ul>${e.list.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "<div></div>";
+      detail = `<div class="detail" id="d-${i}"><div><div class="inner"><div>${body}${link}</div>${side}</div></div></div>`;
+    }
+    const ctl = e.youtube ? `data-video="${e.youtube}"` : `aria-expanded="false" aria-controls="d-${i}"`;
+    return `<li class="entry" style="animation-delay:${i * 70}ms">
+      <button class="row" type="button" ${ctl}>
+        ${thumb}
+        <span><span class="t">${esc(e.title)}</span><span class="sub">${esc(e.summary)}</span></span>
+        <span class="when">${fmt(e.date)}${e.length ? "<br>" + esc(e.length) : ""}</span>
+      </button>${detail}</li>`;
+  }).join("");
+}
+entriesEl.addEventListener("click", ev => {
+  const row = ev.target.closest(".row");
+  if (!row) return;
+  if (row.dataset.video) {
+    loadStage(videos.find(v => v.youtube === row.dataset.video), true);
+    document.querySelector(".stage").scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  const li = row.parentElement;
+  const open = li.classList.toggle("open");
+  row.setAttribute("aria-expanded", open);
+});
+
+renderTopics();
+renderEntries();
+</script>
+</body>
+</html>
