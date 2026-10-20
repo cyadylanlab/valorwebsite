@@ -35,11 +35,10 @@
   .badge img{width:46px;height:46px;object-fit:contain}
   .badge span{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .badge b{color:var(--ink);font-weight:700}
-  .mast h1{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(64px,16vw,220px);line-height:.82;letter-spacing:-.01em;white-space:nowrap;margin-left:-.04em}
+  .mast h1{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(52px,11vw,150px);line-height:1;letter-spacing:.01em}
   .mast h1 .ln{display:block;overflow:hidden}
   .mast h1 .ln>span{display:inline-block;transform:translateY(105%);animation:rise .9s var(--ease) forwards}
   .mast h1 .ln:nth-child(2)>span{animation-delay:.12s}
-  .mast h1 .ln:nth-child(2){padding-left:12vw}
   @keyframes rise{to{transform:none}}
   .rule{height:3px;background:var(--gold);transform-origin:left;transform:scaleX(0);animation:draw 1.1s .45s var(--ease) forwards;margin:26px 0 22px;max-width:560px}
   @keyframes draw{to{transform:scaleX(1)}}
@@ -49,16 +48,26 @@
   .mast .intro p.small{font-size:15px;color:var(--muted);align-self:end}
   .mast .intro a{color:var(--gold);font-weight:600;text-underline-offset:3px}
 
+
+  /* ---------- Topic jump bar ---------- */
+  .jump{margin-top:30px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+  .jump-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  #jump{display:flex;flex-wrap:wrap;gap:8px}
+  .jump-btn{appearance:none;font:inherit;cursor:pointer;background:var(--paper);color:var(--ink);border:2px solid var(--ink);padding:9px 14px;min-height:44px;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;transition:background .2s,color .2s,border-color .2s}
+  .jump-btn small{font-weight:600;color:var(--gold);margin-left:6px;transition:color .2s}
+  .jump-btn:hover,.jump-btn:focus-visible{background:var(--ink);color:var(--paper);outline:none}
+  .jump-btn:hover small,.jump-btn:focus-visible small{color:var(--brass)}
+
   /* ---------- Coach ---------- */
   .coach{padding:16px 0 64px;position:relative}
   .coach-grid{display:grid;gap:28px;border-top:2px solid var(--ink);padding-top:28px}
-  @media(min-width:900px){.coach-grid{grid-template-columns:minmax(300px,.9fr) 1.3fr;gap:56px;align-items:start}}
+  @media(min-width:900px){.coach-grid{grid-template-columns:1fr 1.15fr;gap:56px;align-items:center}}
   .portrait{position:relative;background:#fff;overflow:hidden}
   .portrait img{width:100%;height:auto;transform:scale(1.02);transform-origin:50% 100%;transition:transform 1.4s var(--ease)}
   .portrait:hover img{transform:scale(1)}
   .portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--gold)}
   .coach-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-  .coach .name{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(56px,9vw,120px);line-height:.85}
+  .coach .name{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(46px,6vw,84px);line-height:1;letter-spacing:.01em}
   .coach .role{margin-top:14px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
   .coach blockquote{font-size:clamp(21px,2.4vw,28px);line-height:1.3;font-weight:500;font-stretch:90%;border-left:4px solid var(--gold);padding-left:22px;margin:30px 0}
   .facts{display:grid;border-top:2px solid var(--ink)}
@@ -82,11 +91,6 @@
 
   /* ---------- Now playing ---------- */
   .stage{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
-  .ticker{border-bottom:1px solid #2A2A2A;overflow:hidden;white-space:nowrap;padding:12px 0}
-  .ticker div{display:inline-block;animation:tick 38s linear infinite}
-  .ticker span{font-stretch:75%;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--brass);margin-right:34px}
-  .ticker span i{font-style:normal;color:#555;margin-left:34px}
-  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .stage .wrap{padding-top:40px;padding-bottom:48px;position:relative;z-index:1}
   .stage-grid{display:grid;gap:26px}
   @media(min-width:900px){.stage-grid{grid-template-columns:1.75fr 1fr;gap:44px;align-items:end}}
@@ -100,17 +104,17 @@
   .player iframe,.player video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
   .player:focus-visible{outline:3px solid var(--brass);outline-offset:3px}
   .stage-meta .kind{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
-  .stage-meta h3{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(44px,6vw,80px);line-height:.9;margin:10px 0 16px;color:var(--paper)}
+  .stage-meta h3{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:.01em;margin:10px 0 16px;color:var(--paper)}
   .stage-meta p{color:#D8D6D0;font-size:17px;max-width:420px}
   .stage-meta .date{margin-top:18px;font-size:14px;color:#9C9A94}
   .stage-meta.swap{animation:swap .5s var(--ease)}
   @keyframes swap{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
-  .stage::after{content:"VIDEO";position:absolute;right:-.06em;bottom:-.22em;font-stretch:75%;font-weight:800;font-size:clamp(120px,22vw,300px);line-height:1;color:#161616;pointer-events:none;z-index:0}
+  .stage::after{content:"VIDEO";position:absolute;right:-.06em;bottom:-.22em;font-stretch:75%;font-weight:800;font-size:clamp(120px,20vw,260px);line-height:1;letter-spacing:.02em;color:#161616;pointer-events:none;z-index:0}
 
   /* ---------- Library ---------- */
   .library{background:var(--stone);position:relative;padding:56px 0 64px;overflow:hidden}
   .lib-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 24px;margin-bottom:28px}
-  .lib-head h2{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,6vw,64px);line-height:.95}
+  .lib-head h2{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(36px,5vw,56px);line-height:1.05;letter-spacing:.01em}
   .lib-head p{color:var(--muted);font-size:15px;max-width:360px}
   .lib-grid{display:grid;gap:28px}
   @media(min-width:1000px){.lib-grid{grid-template-columns:200px 1fr;gap:44px}}
@@ -141,7 +145,7 @@
   .thumb.word{display:flex;align-items:flex-end;padding:16px 18px}
   .thumb.word::after{content:"";position:absolute;right:-30px;top:-30px;width:60%;height:140%;background:var(--crest) center/contain no-repeat;opacity:.08}
   .thumb.word span{position:relative;font-stretch:75%;font-weight:800;text-transform:uppercase;color:var(--brass);font-size:clamp(34px,5vw,56px);line-height:.9}
-  .row .t{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,3vw,34px);line-height:1}
+  .row .t{display:block;font-stretch:80%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,3vw,32px);line-height:1.1;letter-spacing:.01em}
   .row .sub{font-size:15px;color:var(--muted);margin-top:8px;display:block;max-width:440px}
   .row .when{display:block;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:12px}
   .detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
@@ -169,12 +173,11 @@
   /* ---------- Phone ---------- */
   @media(max-width:699px){
     .mast{padding:32px 0 28px}
-    .mast h1{font-size:15.5vw}
-    .mast h1 .ln:nth-child(2){padding-left:8vw}
+    .mast h1{font-size:14vw}
     .mast .intro p{font-size:17px}
     .coach{padding:12px 0 44px}
     .coach-grid{padding-top:22px;gap:22px}
-    .coach .name{font-size:52px}
+    .coach .name{font-size:46px}
     .coach blockquote{font-size:20px;padding-left:16px;margin:24px 0}
     .stage .wrap{padding-top:28px;padding-bottom:36px}
     .player .play{padding:12px 18px 12px 14px;font-size:14px}
@@ -194,7 +197,6 @@
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-    .ticker div{animation:none}
   }
 </style>
 </head>
@@ -215,6 +217,7 @@
       <p>Videos, recipes and talks from Coach Daryl Jones, organized by topic. A new video and recipe are added each month during the season.</p>
       <p class="small">Questions or a topic you want covered? Email Coach D at <a href="mailto:djones@virginiavalorfc.org" target="_top">djones@virginiavalorfc.org</a>.</p>
     </div>
+    <nav class="jump" aria-label="Jump to a topic"><span class="jump-label">Jump to a topic</span><div id="jump"></div></nav>
   </div>
 </header>
 
@@ -239,7 +242,6 @@
 </section>
 
 <section class="stage" aria-labelledby="now-label">
-  <div class="ticker" aria-hidden="true"><div id="ticker"></div></div>
   <div class="wrap">
     <h2 id="now-label">Latest video</h2>
     <div class="stage-grid">
@@ -365,12 +367,6 @@ function poster(e) {
     <span class="m">${esc(c.month)}</span></div>`;
 }
 
-/* ticker */
-(function () {
-  const words = [...new Set(sorted.flatMap(e => [e.title, ...e.topics]))];
-  const run = words.map(w => `<span>${esc(w)}<i>/</i></span>`).join("");
-  document.getElementById("ticker").innerHTML = run + run + run + run;
-})();
 
 /* player */
 const player = document.getElementById("player");
@@ -452,6 +448,19 @@ entriesEl.addEventListener("click", ev => {
   const li = row.parentElement;
   const open = li.classList.toggle("open");
   row.setAttribute("aria-expanded", open);
+});
+
+/* topic jump bar */
+const jumpEl = document.getElementById("jump");
+jumpEl.innerHTML = topicNames.filter(t => t !== "All").map(t =>
+  `<button class="jump-btn" type="button" data-t="${esc(t)}">${esc(t)}<small>${sorted.filter(e => e.topics.includes(t)).length}</small></button>`).join("");
+jumpEl.addEventListener("click", ev => {
+  const b = ev.target.closest(".jump-btn");
+  if (!b) return;
+  current = b.dataset.t;
+  renderTopics();
+  renderEntries();
+  document.querySelector(".library").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 renderTopics();
