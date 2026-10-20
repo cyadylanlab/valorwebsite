@@ -177,8 +177,9 @@
   .empty{padding:28px 0;color:var(--muted)}
 
   /* ---------- Coach ---------- */
-  .coach{padding:70px 0 64px;position:relative;overflow:hidden}
-  .coach-grid{display:grid;gap:30px}
+  .coach{padding:16px 0 64px;position:relative;overflow:hidden}
+  .coach-grid{display:grid;gap:30px;border-top:2px solid var(--ink);padding-top:28px}
+  .coach-label{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
   @media(min-width:900px){.coach-grid{grid-template-columns:1fr 1.5fr;gap:60px}}
   .coach .name{font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:clamp(56px,10vw,128px);line-height:.85}
   .coach .role{margin-top:14px;font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
@@ -206,6 +207,46 @@
   .suggest a:hover{background:var(--gold);gap:20px}
   .suggest a svg{width:16px;height:16px;fill:currentColor}
 
+
+  /* ---------- Phone fixes ---------- */
+  .thumb .tag{white-space:nowrap}
+  @media(max-width:639px){
+    .mast{padding:32px 0 28px}
+    .mast h1{font-size:15.5vw}
+    .mast h1 .ln:nth-child(2){padding-left:8vw}
+    .mast .intro p{font-size:17px}
+    .stage .wrap{padding-top:28px;padding-bottom:36px}
+    .player .card{padding:18px 18px 64px}
+    .player .card::after{display:none}
+    .card-title{font-size:30px;margin-top:6px}
+    .player .play{padding:12px 18px 12px 14px;font-size:14px}
+    .stage-meta h3{font-size:40px;margin:8px 0 12px}
+    .stage-meta p{font-size:16px}
+    .stage::after{font-size:110px}
+    .library{padding:40px 0 48px}
+    .lib-head{margin-bottom:20px}
+    .lib-head h2{font-size:36px}
+    .topics{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);margin:0 -16px;padding:0 16px}
+    .topic{padding:14px 12px;min-height:48px}
+    .row{grid-template-columns:104px 1fr;gap:14px;padding:16px 0}
+    .row::before{left:-10px}
+    .row .t{font-size:21px}
+    .row .sub{font-size:14px;margin-top:4px}
+    .thumb.vid>span:not(.tag){display:none}
+    .thumb .tag{font-size:10px;padding:3px 6px}
+    .thumb .mini-play{width:22px;height:22px;right:auto;left:50%;top:50%;bottom:auto;transform:translate(-50%,-30%)}
+    .row:hover .thumb .mini-play{transform:translate(-50%,-30%) scale(1.2)}
+    .thumb.word>span:not(.tag){font-size:15px}
+    .detail .inner{padding-bottom:20px}
+    .detail p{font-size:15px}
+    .coach{padding:4px 0 40px}
+    .coach .name{font-size:52px}
+    .coach blockquote{font-size:21px;padding-left:16px;margin-bottom:24px}
+    .suggest .wrap{padding-top:24px;padding-bottom:28px}
+    .suggest p{font-size:16px}
+    .suggest a{width:100%;justify-content:center}
+  }
+
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
     .ticker div{animation:none}
@@ -232,6 +273,25 @@
   </div>
 </header>
 
+<section class="coach" aria-labelledby="coach-name">
+  <div class="wrap coach-grid">
+    <div>
+      <p class="coach-label">Meet Coach D</p>
+      <h2 class="name" id="coach-name">Daryl<br>Jones</h2>
+      <p class="role">Coach and club nutrition lead</p>
+    </div>
+    <div>
+      <blockquote>I love nutrition and believe that it is a very important part of the development of athletes, students, and our community.</blockquote>
+      <dl class="facts">
+        <div><dt>At Valor since</dt><dd>2021</dd></div>
+        <div><dt>Coaching now</dt><dd>2011-12 Girls Gold, 2014-15 Boys Black</dd></div>
+        <div><dt>Day job</dt><dd>Teaches nutrition, cooking and gardening in DC Public Schools</dd></div>
+        <div><dt>Education</dt><dd>BS in food nutrition, magna cum laude</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
 <section class="stage" aria-labelledby="now-label">
   <div class="ticker" aria-hidden="true"><div id="ticker"></div></div>
   <div class="wrap">
@@ -257,23 +317,7 @@
   </div>
 </section>
 
-<section class="coach" aria-labelledby="coach-name">
-  <div class="wrap coach-grid">
-    <div>
-      <h2 class="name" id="coach-name">Daryl<br>Jones</h2>
-      <p class="role">Coach and club nutrition lead</p>
-    </div>
-    <div>
-      <blockquote>I love nutrition and believe that it is a very important part of the development of athletes, students, and our community.</blockquote>
-      <dl class="facts">
-        <div><dt>At Valor since</dt><dd>2021</dd></div>
-        <div><dt>Coaching now</dt><dd>2011-12 Girls Gold, 2014-15 Boys Black</dd></div>
-        <div><dt>Day job</dt><dd>Teaches nutrition, cooking and gardening in DC Public Schools</dd></div>
-        <div><dt>Education</dt><dd>BS in food nutrition, magna cum laude</dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
+
 
 <section class="suggest">
   <div class="wrap">
