@@ -22,12 +22,12 @@
   a{color:inherit;text-decoration:none}
 
   .vh{position:relative;height:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:stretch}
-  /* gold rule along the bottom edge; the Join block sits over it */
+  /* gold rule along the bottom edge */
   .vh::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--gold)}
 
   /* brand lockup */
-  .brand{display:flex;align-items:center;gap:14px;padding:0 22px 0 clamp(10px,1.6vw,26px);border-right:1px solid var(--line)}
-  .brand img{height:calc(100% - 10px);max-height:78px;width:auto;display:block;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .brand{display:flex;align-items:center;gap:14px;padding:0 22px 3px clamp(10px,1.6vw,26px);border-right:1px solid var(--line)}
+  .brand img{height:calc(100vh - 18px);max-height:70px;width:auto;display:block;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
   .brand:hover img{transform:rotate(-4deg) scale(1.04)}
   .brand .txt{display:flex;flex-direction:column;line-height:1}
   .brand .name{font-weight:700;font-size:25px;letter-spacing:.035em;text-transform:uppercase;white-space:nowrap}
@@ -46,6 +46,7 @@
   .track .lbl span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:600;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);line-height:1}
 
   /* ribbon-board ticker; set data-ticker="auto" on <body> to run it only when the logos do not fit */
+  .rail.run{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%)}
   .rail.run .track{padding:0 var(--g) 0 0;animation:slide var(--dur,40s) linear infinite}
   .rail.run:hover .track{animation-play-state:paused}
   @keyframes slide{to{transform:translateX(-50%)}}
@@ -54,15 +55,15 @@
     .rail.run .track{animation:none}
   }
 
-  /* join block: black, flush right, covers the gold rule so it runs into the black menu bar */
-  .join{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(16px,2vw,30px);background:var(--ink);color:var(--nav);overflow:hidden}
-  .join::before{content:"";position:absolute;inset:auto 0 0 0;height:0;background:var(--gold);transition:height .35s cubic-bezier(.2,.8,.2,1);z-index:-1}
-  .join:hover::before,.join:focus-visible::before{height:100%}
-  .join:hover,.join:focus-visible{color:#fff}
-  .join:focus-visible{outline:2px solid var(--brass);outline-offset:-4px}
-  .join .big{font-weight:700;font-size:27px;letter-spacing:.05em;text-transform:uppercase;line-height:1;white-space:nowrap}
-  .join .sub{margin-top:5px;font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);white-space:nowrap;transition:color .3s}
-  .join:hover .sub,.join:focus-visible .sub{color:#fff}
+  /* join link: mirrors the brand lockup on the left (hairline divider, ink type, gold detail) */
+  .join{position:relative;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(18px,2.2vw,34px) 3px;border-left:1px solid var(--line);color:var(--ink)}
+  .join .big{position:relative;align-self:flex-start;font-weight:700;font-size:25px;letter-spacing:.06em;text-transform:uppercase;line-height:1;white-space:nowrap;padding-bottom:5px}
+  .join .big::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:34%;background:var(--gold);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+  .join:hover .big::after,.join:focus-visible .big::after{width:100%}
+  .join:hover .big,.join:focus-visible .big{color:var(--gold)}
+  .join .big{transition:color .3s}
+  .join .sub{margin-top:5px;font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+  .join:focus-visible{outline:2px solid var(--gold);outline-offset:-6px}
 
   /* narrower desktops and tablets */
   @media (max-width:1180px){ .brand .tag{display:none} .brand .name{font-size:22px} }
@@ -70,17 +71,17 @@
     .brand .txt{display:none}
     .brand{padding-right:14px}
     .join .sub{display:none}
-    .join .big{font-size:22px}
+    .join .big{font-size:21px}
   }
   /* phones */
   @media (max-width:480px){
     .brand{padding:0 10px}
-    .join{padding:0 14px}
-    .join .big{font-size:19px}
+    .join{padding:0 12px 3px}
+    .join .big{font-size:18px}
     .track{--g:16px;padding:0 12px}
   }
   /* short embeds (for example a 60 to 66px mobile header) */
-  @media (max-height:70px){ :root{--k:.86} .brand img{height:calc(100% - 8px)} }
+  @media (max-height:70px){ :root{--k:.86} }
 </style>
 </head>
 <body data-ticker="always">
