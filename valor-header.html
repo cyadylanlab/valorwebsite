@@ -82,19 +82,22 @@
     .track{--g:16px;padding:0 12px}
     .track .lbl{display:none}
   }
-  /* phones, taller embed (about 96px and up): crest and name with Join on top, logo strip underneath */
+  /* phones, taller embed (about 96px and up): fixed-size rows, centered; crest + stacked name and Join on top, logo strip underneath */
   @media (max-width:600px) and (min-height:96px){
-    .vh{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(0,1fr) 40px;
+    .vh{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:62px 40px;align-content:center;
         grid-template-areas:"brand join" "rail rail"}
-    .brand{grid-area:brand;border-right:0;padding:0 10px 0 12px;gap:10px}
-    .brand img{height:min(56px,calc(100vh - 56px))}
+    .vh::after{display:none}            /* the Wix header already has its own gold bar on mobile */
+    .brand{grid-area:brand;border-right:0;padding:0 0 0 14px;gap:10px}
+    .brand img{height:48px}
     .brand .txt{display:flex}
-    .brand .name{font-size:19px}
-    .join{grid-area:join;padding:0 14px 0 12px}
-    .rail{grid-area:rail;border-top:1px solid var(--line);margin-bottom:3px}
-    .track img{height:calc(var(--h) * .72)}
+    .brand .tag{display:none}
+    .brand .n1{display:block;font-weight:600;font-size:11px;letter-spacing:.22em;color:var(--gold);margin-bottom:3px}
+    .brand .n2{display:block;font-size:23px;letter-spacing:.04em}
+    .join{grid-area:join;border-left:0;padding:0 14px 0 8px}
+    .join .big{font-size:19px}
+    .rail{grid-area:rail;border-top:1px solid var(--line)}
+    .track img{height:calc(var(--h) * .68)}
   }
-  @media (max-width:340px) and (min-height:96px){ .brand .txt{display:none} }
   /* short embeds (for example a 60 to 66px mobile header) */
   @media (max-height:70px){ :root{--k:.86} }
 </style>
@@ -104,7 +107,7 @@
     <a class="brand" href="https://www.virginiavalorfc.org/" target="_top" aria-label="Virginia Valor FC home">
       <img src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png/v1/crop/x_87,y_79,w_2029,h_2029/fill/w_200,h_200,al_c,q_90,usm_0.66_1.00_0.01/crest.png" alt="Virginia Valor FC crest">
       <span class="txt">
-        <span class="name">Virginia Valor FC</span>
+        <span class="name"><span class="n1">Virginia</span> <span class="n2">Valor FC</span></span>
         <span class="tag">One Club<i>|</i>One Community<i>|</i>Stronger Together</span>
       </span>
     </a>
