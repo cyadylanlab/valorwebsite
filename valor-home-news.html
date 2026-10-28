@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Club News | Virginia Valor FC</title>
+<!--
+  HOMEPAGE CLUB NEWS SECTION (replaces the "Updates - Announcements - News" slider)
+  Embed with a Wix HTML iframe:
+    https://cyadylanlab.github.io/valorwebsite/valor-home-news.html
+  Wix iframe heights: desktop 820px, mobile 760px. Both stay the same at any width.
+  The page never scrolls inside its own frame, so a frame a little taller than needed is safe.
+
+  TO ADD, REMOVE OR REORDER NEWS: edit the NEWS list near the bottom of this file
+  (look for "EDIT NEWS HERE"). Nothing else needs to change. Four to seven items fit best.
+
+  Desktop: one item is open at a time and the row moves to the next one every 7 seconds
+  (the gold line over the open item fills as it counts down). Hovering the row pauses it
+  and opens whatever is under the cursor. Clicking an open item follows its link.
+  Phones: one full card per item; swipe left or right between them.
+  Videos play muted while open; the Sound button turns audio on and stops the auto-advance.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --ink: #141414;
+    --gold: #8B7A4C;
+    --gold-hi: #A2915F;
+    --brass: #C8B98F;
+    --paper: #FFFFFF;
+    --bg: var(--black);
+    --fg: #FFFFFF;
+    --muted: rgba(255, 255, 255, .66);
+    --line: rgba(255, 255, 255, .16);
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --pad-x: clamp(18px, 4.4vw, 72px);
+    --rise: cubic-bezier(.16, 1, .3, 1);
+    --swing: cubic-bezier(.65, 0, .2, 1);
+    --dur: 7000ms;
+    --tag-h: 42px;
+    --media-h: 380px;
+    --open-w: 320px; /* media height x 0.84, set by the script */
+    --cap-h: 176px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); overflow-y: hidden; }
+  body {
+    font-family: var(--serif);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 3px; }
+
+  /* =========================================================
+     SECTION SHELL
+     ========================================================= */
+  .nw {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 56px 0 48px;
+    background: var(--bg);
+  }
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--pad-x);
+  }
+
+  /* =========================================================
+     HEADER (same build as the Player Pathway header)
+     ========================================================= */
+  .head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 24px 48px;
+    margin-bottom: 26px;
+  }
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--gold-hi);
+  }
+  .kicker .vmark { height: 30px; width: auto; flex: none; margin: -6px 0 -4px; }
+  .title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 68px;
+    line-height: .9;
+    letter-spacing: -.005em;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+  .title .ln { display: inline-block; overflow: hidden; padding-bottom: .04em; vertical-align: bottom; }
+  .title .ln > span { display: block; }
+  .lede {
+    margin: 0;
+    max-width: 40ch;
+    justify-self: end;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+    border-left: 3px solid var(--gold);
+    padding-left: 18px;
+  }
+
+  /* =========================================================
+     ITEMS (desktop: expanding panels, one open at a time)
+     ========================================================= */
+  .items {
+    display: flex;
+    gap: 10px;
+    height: calc(var(--tag-h) + var(--media-h) + var(--cap-h));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .item {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+    contain: layout paint style;
+    transition: flex-grow 900ms var(--swing);
+  }
+  .item.is-on { flex-grow: var(--g, 3); }
+  .item.is-on.no-link { cursor: default; }
+
+  /* Media keeps the open width at all times, so a panel resizing only changes how
+     much of it shows. Nothing re-scales while the panels move. */
+  .media {
+    position: absolute;
+    top: var(--tag-h);
+    left: 50%;
+    width: var(--open-w);
+    height: var(--media-h);
+    transform: translateX(-50%);
+    background: #000;
+    overflow: hidden;
+  }
+  .media img, .media video {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fit-contain .media img { object-fit: contain; }
+  .full { opacity: 0; transition: opacity 500ms ease; }
+  .loaded .full { opacity: 1; }
+  /* Black-and-white copy for closed panels: drawn once, then only faded */
+  .mono {
+    filter: grayscale(1) contrast(1.05);
+    opacity: 0;
+    transition: opacity 700ms ease;
+  }
+  .loaded:not(.is-on) .mono { opacity: 1; }
+  .media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: .5;
+    pointer-events: none;
+    transition: opacity 600ms ease;
+  }
+  .item:not(.is-on):hover .media::after { opacity: .3; }
+  .item.is-on .media::after { opacity: 0; }
+  .media video { opacity: 0; transition: opacity 500ms ease; }
+  .item.is-on video.playing { opacity: 1; }
+
+  /* Gold edge across the top of the open item; it fills as the countdown runs */
+  .item::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: 0; top: var(--tag-h);
+    height: 5px;
+    width: var(--open-w);
+    background: var(--gold-hi);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .item.is-on::before { transform: scaleX(1); transition: transform 700ms var(--rise) 200ms; }
+  .auto .item.is-on::before {
+    transform: scaleX(0);
+    transition: none;
+    animation: count var(--dur) linear forwards;
+  }
+  .auto .item.is-on.alt::before { animation-name: count2; }
+  .auto.paused .item.is-on::before { animation-play-state: paused; }
+  @keyframes count { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes count2 { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* Closed panels: short name reading up the side */
+  .spine {
+    position: absolute;
+    z-index: 2;
+    top: var(--tag-h);
+    left: 0;
+    right: 0;
+    height: var(--media-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px 16px 24px;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 400ms ease 250ms;
+  }
+  .item.is-on .spine { opacity: 0; transition: opacity 200ms ease; }
+  .spine-name {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(24px, 2.1vw, 34px);
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  /* Label above each item; gold when open, quiet when closed */
+  .tagbar {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--tag-h);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .tag {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 10px 4px;
+    background: var(--gold);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #fff;
+    transition: background-color 400ms ease, color 400ms ease;
+  }
+  .item:not(.is-on) .tag { background: #2B2925; color: #BDB7A8; }
+
+  /* Caption under the open item, so nothing covers the flyer. It keeps the open
+     width, so its text never re-wraps while panels move. */
+  .plate {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: calc(var(--tag-h) + var(--media-h));
+    width: var(--open-w);
+    height: var(--cap-h);
+    padding: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .plate > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 300ms ease, transform 700ms var(--rise);
+  }
+  .item.is-on .plate > * { opacity: 1; transform: none; transition: opacity 500ms ease, transform 700ms var(--rise); }
+  .item.is-on .plate > :nth-child(1) { transition-delay: 260ms; }
+  .item.is-on .plate > :nth-child(2) { transition-delay: 320ms; }
+  .item.is-on .plate > :nth-child(3) { transition-delay: 380ms; }
+  .plate h3 {
+    margin: 0 0 6px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: .95;
+    text-transform: uppercase;
+    letter-spacing: .005em;
+  }
+  .plate p {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .go {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 16px 10px;
+    border: 1.5px solid var(--brass);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(var(--gold), var(--gold)) no-repeat left / 0% 100%;
+    transition: background-size 450ms var(--rise), border-color 300ms ease;
+  }
+  .go:hover, .go:focus-visible { background-size: 100% 100%; border-color: var(--gold); }
+  .go .arrow { display: inline-block; width: 22px; height: 1.5px; background: currentColor; position: relative; transition: width 400ms var(--rise); }
+  .go .arrow::after { content: ""; position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); }
+  .go:hover .arrow { width: 32px; }
+  .go .snd { width: 16px; height: 16px; flex: none; }
+  .go .snd .on { display: none; }
+  .go[aria-pressed="true"] .snd .on { display: inline; }
+  .go[aria-pressed="true"] .snd .off { display: none; }
+
+  /* Invisible button over each item, so every item can be opened from the keyboard */
+  .hit {
+    position: absolute;
+    z-index: 1;
+    left: 0; top: 0;
+    width: 100%;
+    height: calc(var(--tag-h) + var(--media-h));
+    margin: 0; padding: 0;
+    border: 0;
+    background: none;
+    cursor: inherit;
+  }
+  .hit:focus-visible { outline-offset: -3px; }
+
+  /* Counter and arrows in the open space under the closed items; they switch
+     sides when the open item is underneath them */
+  .body { position: relative; }
+  .pager {
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    top: calc(var(--tag-h) + var(--media-h) + 18px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 300ms ease;
+  }
+  .pager.left { right: auto; left: 0; }
+  .pager.hide { opacity: 0; pointer-events: none; }
+  .count {
+    margin-right: 8px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: .16em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .count b { color: var(--fg); font-weight: 800; }
+  .step {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1.5px solid var(--line);
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: border-color 300ms ease, background-color 300ms ease;
+  }
+  .step:hover { border-color: var(--brass); background: rgba(255, 255, 255, .05); }
+  .step span { display: block; width: 9px; height: 9px; border-top: 1.5px solid #fff; border-right: 1.5px solid #fff; transform: rotate(45deg); margin-left: -4px; }
+  .step.prev span { transform: rotate(-135deg); margin: 0 -4px 0 0; }
+
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* =========================================================
+     ENTRANCE (runs once when the section scrolls into view)
+     ========================================================= */
+  .js .title .ln > span { transform: translateY(105%); transition: transform 1000ms var(--rise); }
+  .js .title .ln + .ln > span { transition-delay: 120ms; }
+  .js .kicker, .js .lede { opacity: 0; transition: opacity 800ms ease 300ms; }
+  .js .item::after {
+    content: "";
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    background: var(--bg);
+    transform-origin: top;
+    transition: transform 1100ms var(--rise);
+    pointer-events: none;
+  }
+  .js .item:nth-child(2)::after { transition-delay: 70ms; }
+  .js .item:nth-child(3)::after { transition-delay: 140ms; }
+  .js .item:nth-child(4)::after { transition-delay: 210ms; }
+  .js .item:nth-child(5)::after { transition-delay: 280ms; }
+  .js .item:nth-child(6)::after { transition-delay: 350ms; }
+  .js .item:nth-child(n+7)::after { transition-delay: 420ms; }
+  .in .title .ln > span { transform: none; }
+  .in .kicker, .in .lede { opacity: 1; }
+  .in .item::after { transform: scaleY(0); }
+
+  /* =========================================================
+     PHONES: one full card per item, swipe left or right between them,
+     with position bars underneath. Fixed height, so the frame never changes.
+     ========================================================= */
+  .mbar { display: none; }
+  @media (max-width: 819px) {
+    :root { --m-area: 600px; --m-bar: 42px; --tag-h: 34px; }
+    .nw { padding: 34px 0 30px; }
+    .head { grid-template-columns: 1fr; gap: 0; margin-bottom: 18px; }
+    .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
+    .lede { display: none; }
+    .spine, .hit, .mono, .pager { display: none; }
+    .body { display: flex; flex-direction: column; }
+    .mbar {
+      order: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--m-bar);
+      padding-top: 10px;
+    }
+    .dots { display: flex; gap: 6px; }
+    .dot {
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .dot::after {
+      content: "";
+      position: absolute;
+      left: 2px; right: 2px; top: 50%;
+      height: 3px;
+      margin-top: -1.5px;
+      background: var(--line);
+      transition: background-color 300ms ease;
+    }
+    .dot.is-on::after { background: var(--gold-hi); }
+
+    .items {
+      display: flex;
+      gap: 12px;
+      height: calc(var(--m-area) - var(--m-bar));
+      margin: 0 calc(var(--pad-x) * -1);
+      padding: 0 var(--pad-x);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 0 var(--pad-x);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .items::-webkit-scrollbar { display: none; }
+    .item {
+      flex: 0 0 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      cursor: default;
+      background: #161616;
+    }
+    .item.is-on { flex-grow: 0; }
+    .tagbar { position: relative; flex: none; background: var(--bg); }
+    .item:not(.is-on) .tag { background: var(--gold); color: #fff; }
+    .media {
+      position: relative;
+      left: auto; top: auto;
+      flex: 1 1 auto;
+      min-height: 120px;
+      height: auto;
+      width: 100%;
+      transform: none;
+    }
+    .media::after { display: none; }
+    .item::before, .auto .item.is-on::before { width: 100%; transform: scaleX(1); animation: none; transition: none; }
+    .item .media video.playing { opacity: 1; }
+    .plate {
+      position: relative;
+      top: auto;
+      width: 100%;
+      height: auto;
+      flex: none;
+      padding: 18px 18px 20px;
+    }
+    .plate > *, .item.is-on .plate > * { opacity: 1; transform: none; transition: none; }
+    .plate h3 { font-size: 26px; }
+    .plate p { font-size: 14.5px; -webkit-line-clamp: 2; color: rgba(255, 255, 255, .8); }
+  }
+  @media (max-width: 380px) {
+    .plate { padding: 14px 14px 16px; }
+    .plate h3 { font-size: 23px; margin-bottom: 4px; }
+    .plate p { font-size: 13.5px; line-height: 1.4; margin-bottom: 12px; }
+    .go { padding: 9px 13px 8px; font-size: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; transition-delay: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<section class="nw" id="news" aria-labelledby="nw-title">
+  <div class="wrap">
+    <header class="head">
+      <div>
+        <p class="kicker">
+          <img class="vmark" src="data:image/webp;base64,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" width="126" height="78" alt="" aria-hidden="true">
+          Virginia Valor FC
+        </p>
+        <h2 class="title" id="nw-title"><span class="ln"><span>Club</span></span> <span class="ln"><span>News</span></span></h2>
+      </div>
+      <p class="lede">Registration, tryouts and club updates. Choose any item to see the details.</p>
+    </header>
+
+    <div class="body">
+      <div class="mbar"><div class="dots" id="dots" aria-label="News items"></div></div>
+      <ul class="items" id="items"></ul>
+      <div class="pager" id="pager">
+        <span class="count" aria-live="polite"><b id="pg-now">01</b> / <span id="pg-all">01</span></span>
+        <button class="step prev" type="button" aria-label="Previous item"><span></span></button>
+        <button class="step next" type="button" aria-label="Next item"><span></span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* =====================================================================
+   EDIT NEWS HERE
+   One entry per item, shown left to right in this order.
+
+   tag    short label above the item (one word or two)
+   short  name that reads up the side when the item is closed
+   title  headline under the open item
+   text   one or two sentences
+   image  a Wix media file name (the part of a static.wixstatic.com/media/ link
+          right after /media/, ending in .png or .jpg), or a file in this repo
+   width, height  the image's size in pixels (only the shape matters)
+   fit    "flyer" for graphics with words on them (always shown whole),
+          "photo" for pictures that can be cropped
+   focus  for photos and videos: which part to keep when cropped, e.g. "50% 30%"
+   link, cta  where the button goes and what it says (leave link out for no button)
+   newTab true for links outside virginiavalorfc.org
+   video  a Wix video id (the part after /video/ in a video.wixstatic.com link),
+          or an .mp4 in this repo. Use image for its still frame.
+   ===================================================================== */
+var NEWS = [
+  {
+    tag: "Registration",
+    short: "Valor Rising",
+    title: "Valor Rising, Fall 2026",
+    text: "For U7 and U8 players at Sully Highlands Park, starting September 14. Registration is open now.",
+    image: "1df62c_dffb53ebc3c94932a8ab75df6bf70ad7~mv2.png", width: 1080, height: 1250, fit: "flyer",
+    link: "https://www.virginiavalorfc.org/risingvalorlite", cta: "View program"
+  },
+  {
+    tag: "Tryouts",
+    short: "Tryouts",
+    title: "2026-27 Tryout Registration",
+    text: "Tryout registration is open. Coaching slate, tryout dates and times coming soon.",
+    image: "1df62c_83a1066436e641dba610b3b4d6652654~mv2.png", width: 2295, height: 2869, fit: "flyer",
+    link: "https://playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc3NDcxMTM4NHx0SEpLVVRBOU5tck4rUUhzNkdsM3FjV3BCbXpFQTRsYTZRVWUyT0ZGeUY4PQ==&program_id=87339",
+    cta: "Register", newTab: true
+  },
+  {
+    tag: "Club Update",
+    short: "Age Groups",
+    title: "2026-27 Age Group Changes",
+    text: "Starting Fall 2026, age groups follow the school year (August 1 to July 31) instead of birth year.",
+    image: "1df62c_ec173253107443aaa22bd56982ddb26e~mv2.png", width: 2160, height: 2500, fit: "flyer",
+    link: "https://www.virginiavalorfc.org/agegrouptransition", cta: "Learn more"
+  },
+  {
+    tag: "Team Store",
+    short: "Team Store",
+    title: "Valor Online Team Store",
+    text: "The fan shop is open now with our club partner, Soccer.com.",
+    image: "1df62c_7d7db390d326444f93e563d691550f58~mv2.png", width: 2160, height: 2700, fit: "flyer"
+  },
+  {
+    tag: "Video",
+    short: "Video",
+    title: "Video",
+    text: "Plays without sound. Turn the sound on to listen.",
+    video: "1df62c_861014984c384416b1ca5c7601c78aed",
+    image: "1df62c_861014984c384416b1ca5c7601c78aedf003.jpg", width: 1080, height: 1920, fit: "photo", focus: "50% 55%"
+  },
+  {
+    tag: "Video",
+    short: "Video",
+    title: "Video",
+    text: "Plays without sound. Turn the sound on to listen.",
+    video: "1df62c_d8726b7a23b04e7d8f917e7948c7f31e",
+    image: "1df62c_d8726b7a23b04e7d8f917e7948c7f31ef003.jpg", width: 1080, height: 1920, fit: "photo", focus: "30% 30%"
+  }
+];
+/* ===================================================================== */
+
+(function () {
+  var root = document.documentElement;
+  var section = document.getElementById('news');
+  var track = document.getElementById('items');
+  var dotsBox = document.getElementById('dots');
+  var phone = window.matchMedia('(max-width: 819px)');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var cur = 0;
+  var lastPointer = 'mouse';
+  var visible = false;
+  var held = false; /* set when someone turns on sound: no more auto-advance */
+
+  root.classList.add('js');
+
+  /* ---------- Build the items from the NEWS list ---------- */
+  function isPath(s) { return /[\/]/.test(s) || /^https?:/.test(s); }
+  function wixImg(id, w) { return 'https://static.wixstatic.com/media/' + id + '/v1/fit/w_' + w + ',h_' + (w * 2) + ',q_90,enc_avif,quality_auto/' + id; }
+  function imgSrc(s, w) { return isPath(s) ? s : wixImg(s, w); }
+  function imgSet(s) { return isPath(s) ? '' : [480, 720, 1000].map(function (w) { return wixImg(s, w) + ' ' + w + 'w'; }).join(', '); }
+  function vidSrc(s) { return isPath(s) ? s : 'https://video.wixstatic.com/video/' + s + '/480p/mp4/file.mp4'; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  var items = NEWS.map(function (n, i) {
+    var li = el('li', 'item' + (n.fit === 'flyer' ? ' fit-contain' : '') + (n.link ? '' : ' no-link'));
+    li.id = 'news-' + i;
+
+    var tb = el('div', 'tagbar'); tb.appendChild(el('span', 'tag', n.tag)); li.appendChild(tb);
+
+    var media = el('div', 'media');
+    var full = el('img', 'full'); full.alt = n.video ? '' : n.title; full.decoding = 'async';
+    full.setAttribute('data-src', imgSrc(n.image, 720));
+    if (imgSet(n.image)) { full.setAttribute('data-srcset', imgSet(n.image)); full.sizes = '(max-width: 819px) 90vw, 340px'; }
+    if (n.width && n.height) { full.width = n.width; full.height = n.height; }
+    var mono = el('img', 'mono'); mono.alt = ''; mono.setAttribute('aria-hidden', 'true'); mono.decoding = 'async';
+    if (n.focus) { full.style.objectPosition = mono.style.objectPosition = n.focus; }
+    media.appendChild(full); media.appendChild(mono);
+    var vid = null;
+    if (n.video) {
+      vid = el('video');
+      vid.muted = true; vid.loop = true; vid.preload = 'none';
+      vid.setAttribute('muted', ''); vid.setAttribute('playsinline', ''); vid.setAttribute('aria-hidden', 'true');
+      vid.setAttribute('data-src', vidSrc(n.video));
+      if (n.focus) vid.style.objectPosition = n.focus;
+      vid.addEventListener('playing', function () { vid.classList.add('playing'); });
+      media.appendChild(vid);
+    }
+    li.appendChild(media);
+
+    var sp = el('div', 'spine'); sp.setAttribute('aria-hidden', 'true'); sp.appendChild(el('span', 'spine-name', n.short || n.title)); li.appendChild(sp);
+
+    var hit = el('button', 'hit'); hit.type = 'button';
+    hit.appendChild(el('span', 'sr', n.tag + ': ' + n.title));
+    li.appendChild(hit);
+
+    var plate = el('div', 'plate');
+    plate.appendChild(el('h3', null, n.title));
+    if (n.text) plate.appendChild(el('p', null, n.text));
+    var btn = null;
+    if (n.link) {
+      btn = el('a', 'go'); btn.href = n.link;
+      if (n.newTab) { btn.target = '_blank'; btn.rel = 'noopener'; } else { btn.target = '_top'; }
+      btn.appendChild(document.createTextNode((n.cta || 'Learn more') + ' '));
+      var ar = el('span', 'arrow'); ar.setAttribute('aria-hidden', 'true'); btn.appendChild(ar);
+      plate.appendChild(btn);
+    } else if (vid) {
+      btn = el('button', 'go'); btn.type = 'button'; btn.setAttribute('aria-pressed', 'false');
+      btn.innerHTML = 'Sound <svg class="snd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><g class="off"><path d="M17 9l5 6M22 9l-5 6"/></g><g class="on"><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></g></svg>';
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var on = vid.muted;
+        vid.muted = !on;
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (on) { held = true; section.classList.remove('auto'); playVideo(i); }
+      });
+      plate.appendChild(btn);
+    }
+    li.appendChild(plate);
+    track.appendChild(li);
+
+    var d = el('button', 'dot'); d.type = 'button'; d.setAttribute('aria-label', n.tag + ': ' + n.title);
+    dotsBox.appendChild(d);
+
+    return { li: li, full: full, mono: mono, vid: vid, link: btn && btn.tagName === 'A' ? btn : null, dot: d };
+  });
+  var dots = items.map(function (x) { return x.dot; });
+
+  /* ---------- Panel sizes: the open item is exactly as wide as its media ---------- */
+  function sizePanels() {
+    var w = track.clientWidth;
+    if (phone.matches || !w) return;
+    var mh = parseFloat(getComputedStyle(track).getPropertyValue('--media-h')) || 380;
+    var openW = Math.round(mh * 0.84);
+    var gaps = 10 * (items.length - 1);
+    var rest = Math.max(w - gaps - openW, 40);
+    track.style.setProperty('--open-w', openW + 'px');
+    track.style.setProperty('--g', (openW * (items.length - 1) / rest).toFixed(3));
+    if (pager && items[cur]) placePager();
+  }
+  sizePanels();
+  if ('ResizeObserver' in window) new ResizeObserver(sizePanels).observe(track);
+  else window.addEventListener('resize', sizePanels);
+
+  /* ---------- Images load after the rest of the homepage, or once the section is on screen ---------- */
+  var started = false;
+  function loadImages() {
+    if (started) return;
+    started = true;
+    items.forEach(function (x) {
+      x.full.onload = function () {
+        x.li.classList.add('loaded');
+        x.mono.src = x.full.currentSrc || x.full.src;
+      };
+      if (x.full.getAttribute('data-srcset')) x.full.srcset = x.full.getAttribute('data-srcset');
+      x.full.src = x.full.getAttribute('data-src');
+    });
+  }
+  function whenIdle() {
+    if ('requestIdleCallback' in window) requestIdleCallback(loadImages, { timeout: 2500 });
+    else setTimeout(loadImages, 1200);
+  }
+  if (document.readyState === 'complete') whenIdle();
+  else window.addEventListener('load', whenIdle);
+
+  /* ---------- Videos: play only while open and on screen ---------- */
+  function playVideo(i) {
+    var v = items[i] && items[i].vid;
+    if (!v || !visible) return;
+    if (!v.getAttribute('src')) v.src = v.getAttribute('data-src');
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  }
+  function stopVideos(except) {
+    items.forEach(function (x, k) {
+      if (x.vid && k !== except && !x.vid.paused) x.vid.pause();
+    });
+  }
+
+  /* ---------- Desktop: one open item, auto-advance with a countdown ---------- */
+  function restartCount() {
+    /* re-trigger the gold countdown on the open item */
+    items[cur].li.classList.toggle('alt');
+  }
+  var pager = document.getElementById('pager');
+  var pgNow = document.getElementById('pg-now');
+  document.getElementById('pg-all').textContent = String(items.length).padStart(2, '0');
+  function placePager() {
+    pgNow.textContent = String(cur + 1).padStart(2, '0');
+    /* put the counter on whichever side the open item's caption is not */
+    var pr = pager.getBoundingClientRect(), tr = track.getBoundingClientRect();
+    var openW = parseFloat(track.style.getPropertyValue('--open-w')) || 320;
+    var closedW = (tr.width - 10 * (items.length - 1) - openW) / (items.length - 1);
+    var capL = cur * (closedW + 10), capR = capL + openW;
+    var pw = pr.width || 200;
+    var rightFree = capR < tr.width - pw - 24;
+    var leftFree = capL > pw + 24;
+    pager.classList.toggle('left', !rightFree && leftFree);
+    pager.classList.toggle('hide', !rightFree && !leftFree);
+  }
+  pager.querySelector('.prev').addEventListener('click', function () { open(cur - 1); restartCount(); });
+  pager.querySelector('.next').addEventListener('click', function () { open(cur + 1); restartCount(); });
+
+  function open(i, fromTimer) {
+    cur = (i + items.length) % items.length;
+    items.forEach(function (x, k) { x.li.classList.toggle('is-on', k === cur); });
+    placePager();
+    stopVideos(cur);
+    playVideo(cur);
+    if (fromTimer) restartCount();
+  }
+  function canAuto() { return !phone.matches && !still.matches && !held; }
+  function setAuto() { section.classList.toggle('auto', canAuto()); }
+  function pause(on) { section.classList.toggle('paused', !!on || !visible || document.hidden); }
+
+  /* The countdown is a CSS animation on the open item's gold edge; when it ends, move on */
+  track.addEventListener('animationend', function (e) {
+    if (!/^count2?$/.test(e.animationName) || !section.classList.contains('auto')) return;
+    open(cur + 1, true);
+  });
+
+  var enterTimer, hovering = false;
+  track.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; }, true);
+  track.addEventListener('mouseenter', function () { if (!phone.matches) { hovering = true; pause(true); } });
+  track.addEventListener('mouseleave', function () {
+    if (phone.matches) return;
+    hovering = false;
+    clearTimeout(enterTimer);
+    if (!track.contains(document.activeElement)) { restartCount(); pause(false); }
+  });
+  items.forEach(function (x, i) {
+    x.li.addEventListener('mouseenter', function () {
+      if (phone.matches || lastPointer === 'touch') return;
+      clearTimeout(enterTimer);
+      /* a short pause, so a cursor just passing across the row does not flip every panel */
+      enterTimer = setTimeout(function () { if (i !== cur) open(i); }, 90);
+    });
+    x.li.addEventListener('click', function (e) {
+      if (phone.matches) return;
+      if (i !== cur) { e.preventDefault(); open(i); restartCount(); return; }
+      if (!e.target.closest('a, button.go') && x.link) x.link.click();
+    });
+    x.li.addEventListener('focusin', function () { if (!phone.matches) { pause(true); if (i !== cur) open(i); } });
+  });
+  track.addEventListener('focusout', function (e) {
+    if (phone.matches) return;
+    if (!track.contains(e.relatedTarget) && !hovering) { restartCount(); pause(false); }
+  });
+  document.addEventListener('visibilitychange', function () { pause(hovering); if (document.hidden) stopVideos(-1); else playVideo(cur); });
+
+  /* ---------- Phones: swipe between full cards; bars show position ---------- */
+  function mark(i) {
+    cur = (i + items.length) % items.length;
+    dots.forEach(function (d, k) {
+      d.classList.toggle('is-on', k === cur);
+      if (k === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
+    items.forEach(function (x, k) { x.li.classList.toggle('is-on', k === cur); });
+    stopVideos(cur);
+    playVideo(cur);
+  }
+  function padLeft() { return parseFloat(getComputedStyle(track).paddingLeft || 0); }
+  function cardLeft(i) { return items[i].li.offsetLeft - track.offsetLeft - padLeft(); }
+  dots.forEach(function (d, i) {
+    d.addEventListener('click', function () {
+      mark(i);
+      track.scrollTo({ left: cardLeft(i), behavior: still.matches ? 'auto' : 'smooth' });
+    });
+  });
+  var ticking = false;
+  track.addEventListener('scroll', function () {
+    if (!phone.matches || ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      var x = track.scrollLeft, best = 0, dist = Infinity;
+      items.forEach(function (it, k) {
+        var d = Math.abs(cardLeft(k) - x);
+        if (d < dist) { dist = d; best = k; }
+      });
+      if (best !== cur) mark(best);
+    });
+  }, { passive: true });
+
+  /* ---------- Entrance, image loading and video play only when on screen ---------- */
+  function reveal() { section.classList.add('in'); loadImages(); }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        visible = en.isIntersecting || en.intersectionRatio > 0;
+        if (visible) { reveal(); playVideo(cur); } else stopVideos(-1);
+        pause(hovering);
+      });
+    }, { threshold: [0, 0.01] }).observe(section);
+  } else {
+    visible = true; reveal();
+  }
+  setTimeout(reveal, 2500);
+
+  function onMode() {
+    sizePanels();
+    setAuto();
+    if (phone.matches) { mark(cur); track.scrollLeft = cardLeft(cur); }
+    else open(cur);
+  }
+  if (phone.addEventListener) phone.addEventListener('change', onMode); else phone.addListener(onMode);
+  if (still.addEventListener) still.addEventListener('change', setAuto);
+
+  setAuto();
+  pause(false);
+  if (phone.matches) mark(0); else open(0);
+})();
+</script>
+</body>
+</html>
