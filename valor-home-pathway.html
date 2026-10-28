@@ -8,7 +8,7 @@
   HOMEPAGE PLAYER PATHWAY SECTION
   Embed with a Wix HTML iframe:
     https://cyadylanlab.github.io/valorwebsite/valor-home-pathway.html
-  Wix iframe heights: desktop 800px, mobile 810px. Both stay the same at any width.
+  Wix iframe heights: desktop 800px, mobile 705px. Both stay the same at any width.
   The page never scrolls inside its own frame, so a frame a little taller than needed is safe.
 
   PHOTOS live in the top level of the repo, next to this file, as pathway-<stage>-<width>.avif and .webp
@@ -20,7 +20,8 @@
   Desktop: the four stages rest at equal width in color. Hovering one (or tabbing to
   its link) opens it with the full description; leaving the row returns to the
   resting view. Clicking an open stage goes to its program page.
-  Phones: the stages become a swipe row of cards.
+  Phones: a 2 x 2 grid of tiles; tapping one opens a full card that can be swiped
+  left or right to the others; "All programs" returns to the grid.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -394,18 +395,109 @@
   /* =========================================================
      PHONES AND SMALL TABLETS: swipe row
      ========================================================= */
+  /* =========================================================
+     PHONES: 2 x 2 grid of tiles; tap one to open a full card,
+     swipe left or right between cards, "All programs" goes back.
+     Both views fill the same fixed area, so the frame height never changes.
+     ========================================================= */
+  .mbar { display: none; }
   @media (max-width: 819px) {
-    .pw { padding: 40px 0 36px; }
-    .head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 22px; }
+    :root { --m-area: 540px; --m-bar: 44px; --age-h: 34px; }
+    .pw { padding: 34px 0 30px; }
+    .head { grid-template-columns: 1fr; gap: 0; margin-bottom: 18px; }
     .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
-    .lede { justify-self: start; }
+    .lede { display: none; }
+    .spine { display: none; }
+    .stages { height: var(--m-area); }
 
-    .tag { display: none; }
-
-    .body { display: flex; flex-direction: column; }
-    .stages {
+    /* ---- grid of tiles ---- */
+    .pw:not(.m-open) .stages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px 10px;
+    }
+    .pw:not(.m-open) .stage {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pw:not(.m-open) .agebar { position: relative; flex: none; height: auto; margin-bottom: 7px; }
+    .pw:not(.m-open) .agebar .age { font-size: 12px; padding: 4px 8px 3px; letter-spacing: .14em; }
+    .pw:not(.m-open) .rest {
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: none;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
       height: auto;
+    }
+    .pw:not(.m-open) .stage:active .rest { opacity: .85; }
+    .pw:not(.m-open) .tag {
+      position: relative;
+      top: auto;
+      width: auto;
+      flex: none;
+      padding-top: 8px;
+    }
+    .pw:not(.m-open) .tag-title { font-size: 19px; line-height: 1; }
+    .pw:not(.m-open) .ph,
+    .pw:not(.m-open) .plate { display: none; }
+    .pw:not(.m-open) .stage::before { display: none; }
+
+    /* ---- open card, swipe between them ---- */
+    .m-open .mbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--m-bar);
+    }
+    .mback {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    .mback span { display: inline-block; width: 18px; height: 1.5px; background: currentColor; position: relative; }
+    .mback span::before { content: ""; position: absolute; left: 0; top: -4px; width: 8px; height: 8px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }
+    .dots { display: flex; gap: 6px; }
+    .dot {
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .dot::after {
+      content: "";
+      position: absolute;
+      left: 2px; right: 2px; top: 50%;
+      height: 3px;
+      margin-top: -1.5px;
+      background: var(--line);
+      transition: background-color 300ms ease;
+    }
+    .dot.is-on::after { background: var(--gold); }
+
+    .m-open .stages {
+      display: flex;
       gap: 12px;
+      height: calc(var(--m-area) - var(--m-bar));
       margin: 0 calc(var(--pad-x) * -1);
       padding: 0 var(--pad-x);
       overflow-x: auto;
@@ -414,60 +506,58 @@
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
-    .stages::-webkit-scrollbar { display: none; }
-    .stage, .stage.is-on {
-      flex: 0 0 86%;
-      height: 540px;
+    .m-open .stages::-webkit-scrollbar { display: none; }
+    .m-open .stage {
+      flex: 0 0 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       scroll-snap-align: start;
+      scroll-snap-stop: always;
       cursor: default;
     }
-    .ph, .stage.is-on .ph {
+    .m-open .agebar { position: relative; flex: none; }
+    .m-open .rest, .m-open .tag { display: none; }
+    .m-open .ph {
       position: relative;
       left: auto;
       top: auto;
-      bottom: auto;
       flex: 1 1 auto;
-      min-height: 120px;
+      min-height: 110px;
       height: auto;
       width: 100%;
       transform: none;
-      will-change: auto;
     }
-    .rest { display: none; }
-    .agebar { position: relative; flex: none; }
-    .stage::before { transform: scaleX(1); }
-    .spine { display: none; }
-    .plate, .stage.is-on .plate {
+    .m-open .stage::before { transform: scaleX(1); transition: none; }
+    .m-open .plate {
       position: relative;
       top: auto;
       height: auto;
-      background: var(--black);
-      color: #fff;
+      width: 100%;
       flex: none;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      width: 100%;
-      padding: 22px 20px 24px;
-      transform: none;
-      transition: none;
+      padding: 20px 20px 22px;
+      background: var(--black);
+      color: #fff;
     }
-    .plate .go { margin-top: 0; color: #fff; border-color: var(--brass); }
-    .plate p { color: rgba(255, 255, 255, .82); margin-bottom: 18px; }
-    .plate > *, .stage.is-on .plate > * { opacity: 1; transform: none; transition: none; }
-    .plate h3 { font-size: 32px; }
-    .plate p { font-size: 15.5px; margin-bottom: 18px; }
+    .m-open .plate > * { opacity: 1; transform: none; transition: none; }
+    .m-open .plate h3 { font-size: 30px; }
+    .m-open .plate p { font-size: 15px; color: rgba(255, 255, 255, .82); margin-bottom: 16px; }
+    .m-open .plate .go { margin-top: 0; color: #fff; border-color: var(--brass); }
 
+    /* quick fade when switching views */
+    .stages { animation: none; }
+    .swap .stages { animation: swapIn 260ms ease; }
+    @keyframes swapIn { from { opacity: 0; } to { opacity: 1; } }
   }
   @media (max-width: 380px) {
-    .stage, .stage.is-on { flex-basis: 90%; }
-    .lede { font-size: 14.5px; }
-    .plate, .stage.is-on .plate { padding: 18px 16px 20px; }
-    .plate h3 { font-size: 28px; }
-    .plate p { font-size: 14.5px; line-height: 1.5; margin-bottom: 14px; }
-    .go { padding: 11px 14px 10px; font-size: 15px; }
+    .m-open .plate { padding: 16px 16px 18px; }
+    .m-open .plate h3 { font-size: 26px; margin-bottom: 6px; }
+    .m-open .plate p { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
+    .go { padding: 10px 14px 9px; font-size: 14px; }
+    .pw:not(.m-open) .tag-title { font-size: 17px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -493,6 +583,16 @@
     </header>
 
     <div class="body">
+      <!-- PHONE BAR (only shows when a card is open on a phone) -->
+      <div class="mbar">
+        <button class="mback" type="button"><span aria-hidden="true"></span>All programs</button>
+        <div class="dots" aria-label="Programs">
+          <button class="dot" type="button" aria-label="Grassroots Soccer"></button>
+          <button class="dot" type="button" aria-label="Valor U7-U8 Programs"></button>
+          <button class="dot" type="button" aria-label="Travel Soccer"></button>
+          <button class="dot" type="button" aria-label="Pre-Pro Soccer"></button>
+        </div>
+      </div>
       <!-- STAGES -->
       <ul class="stages" id="stages">
         <li class="stage" id="stage-0" style="--ph: #595641">
@@ -555,7 +655,8 @@
   var section = document.getElementById('pathway');
   var track = document.getElementById('stages');
   var stages = Array.prototype.slice.call(track.querySelectorAll('.stage'));
-  var tabs = [];
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+  var back = section.querySelector('.mback');
   var phone = window.matchMedia('(max-width: 819px)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cur = 0;
@@ -590,7 +691,7 @@
       });
       img.onload = function () {
         s.classList.add('loaded');
-        if (!phone.matches) restImg.src = mono.src = img.currentSrc || img.src;
+        restImg.src = mono.src = img.currentSrc || img.src;
       };
       img.src = img.getAttribute('data-src');
     });
@@ -646,45 +747,91 @@
     if (!phone.matches && !track.contains(e.target)) rest();
   });
 
-  /* ---------- Phones: swipe row with age tabs ---------- */
+  /* ---------- Phones: 2 x 2 grid, tap to open a card, swipe between cards ---------- */
   function mark(i) {
     cur = (i + stages.length) % stages.length;
-    tabs.forEach(function (t, k) {
-      var on = k === cur;
-      t.classList.toggle('is-on', on);
-      t.setAttribute('aria-selected', on ? 'true' : 'false');
-      t.tabIndex = on ? 0 : -1;
+    dots.forEach(function (d, k) {
+      d.classList.toggle('is-on', k === cur);
+      if (k === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
     });
   }
   function padLeft() { return parseFloat(getComputedStyle(track).paddingLeft || 0); }
-  function scrollToCard(i) {
-    track.scrollTo({ left: stages[i].offsetLeft - track.offsetLeft - padLeft(), behavior: still.matches ? 'auto' : 'smooth' });
+  function cardLeft(i) { return stages[i].offsetLeft - track.offsetLeft - padLeft(); }
+  function swap() {
+    section.classList.remove('swap');
+    void section.offsetWidth;
+    section.classList.add('swap');
   }
-  tabs.forEach(function (t, i) {
-    t.addEventListener('click', function () { mark(i); scrollToCard(cur); });
-    t.addEventListener('keydown', function (e) {
-      var k = e.key, n = null;
-      if (k === 'ArrowRight' || k === 'ArrowDown') n = cur + 1;
-      if (k === 'ArrowLeft' || k === 'ArrowUp') n = cur - 1;
-      if (k === 'Home') n = 0;
-      if (k === 'End') n = stages.length - 1;
-      if (n !== null) { e.preventDefault(); mark(n); scrollToCard(cur); tabs[cur].focus(); }
+  /* On phones, grid tiles act as buttons; on desktop they are plain list items */
+  function tileRoles() {
+    var asTiles = phone.matches && !section.classList.contains('m-open');
+    stages.forEach(function (s) {
+      if (asTiles) {
+        s.setAttribute('tabindex', '0');
+        s.setAttribute('role', 'button');
+        s.setAttribute('aria-label', s.querySelector('.plate h3').textContent + ', ' + s.querySelector('.agebar .age').textContent);
+      } else {
+        s.removeAttribute('tabindex');
+        s.removeAttribute('role');
+        s.removeAttribute('aria-label');
+      }
+    });
+  }
+  function openCard(i) {
+    swap();
+    section.classList.add('m-open');
+    tileRoles();
+    mark(i);
+    track.scrollLeft = cardLeft(cur);
+    var a = stages[cur].querySelector('.go');
+    if (a) a.focus({ preventScroll: true });
+  }
+  function closeCards() {
+    if (!section.classList.contains('m-open')) return;
+    swap();
+    section.classList.remove('m-open');
+    track.scrollLeft = 0;
+    tileRoles();
+  }
+  stages.forEach(function (s, i) {
+    s.addEventListener('click', function (e) {
+      if (!phone.matches || section.classList.contains('m-open')) return;
+      e.preventDefault();
+      openCard(i);
+    });
+  });
+  back.addEventListener('click', function () {
+    var was = cur;
+    closeCards();
+    stages[was].focus({ preventScroll: true });
+  });
+  dots.forEach(function (d, i) {
+    d.addEventListener('click', function () {
+      mark(i);
+      track.scrollTo({ left: cardLeft(i), behavior: still.matches ? 'auto' : 'smooth' });
     });
   });
   var ticking = false;
   track.addEventListener('scroll', function () {
-    if (!phone.matches || ticking) return;
+    if (!phone.matches || !section.classList.contains('m-open') || ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
       var x = track.scrollLeft, best = 0, dist = Infinity;
       stages.forEach(function (s, k) {
-        var d = Math.abs(s.offsetLeft - track.offsetLeft - padLeft() - x);
+        var d = Math.abs(cardLeft(k) - x);
         if (d < dist) { dist = d; best = k; }
       });
       if (best !== cur) mark(best);
     });
   }, { passive: true });
+  /* Grid tiles are buttons for keyboards and screen readers */
+  stages.forEach(function (s, i) {
+    s.addEventListener('keydown', function (e) {
+      if (!phone.matches || section.classList.contains('m-open')) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(i); }
+    });
+  });
 
   /* ---------- Entrance and photo loading when the section is on screen ---------- */
   /* Reveal as soon as any part of the section is visible (it may sit in a short
@@ -703,6 +850,8 @@
 
   function onMode() {
     rest();
+    section.classList.remove('m-open');
+    tileRoles();
     sizePanels();
     if (!phone.matches) stages.forEach(function (s) {
       var img = s.querySelector('.photo'), mono = s.querySelector('.mono'), restImg = s.querySelector('.rest-img');
@@ -713,6 +862,7 @@
 
   rest();
   mark(0);
+  tileRoles();
 })();
 </script>
 </body>
