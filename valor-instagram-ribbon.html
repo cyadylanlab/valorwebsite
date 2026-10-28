@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virginia Valor FC on Instagram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500&family=Saira+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================
+     SETTINGS: paste your Apps Script Web app URL into
+     const FEED_URL in the script at the bottom of this file.
+     ========================================================== */
+  :root{
+    --ink:#111111;
+    --ink-2:#3a3a3a;
+    --ink-3:#6b6b6b;
+    --line:#e4e2dc;
+    --paper:#ffffff;
+    --gold:#8B7A4C;
+    --brass:#C8B98F;
+    --rail:64px;
+    --gap:14px;
+    --pad:28px;
+    --cap-h:74px;
+    --img-h:380px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--paper);color:var(--ink)}
+  body{
+    font-family:"Literata",Georgia,serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+
+  .wrap{
+    display:grid;
+    grid-template-columns:var(--rail) minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);
+    height:100vh;
+    min-height:420px;
+  }
+
+  /* ---------- Left rail with vertical handle ---------- */
+  .rail{
+    position:relative;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:var(--pad);
+    border-right:1px solid var(--line);
+  }
+  .rail a{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:800;
+    font-size:clamp(20px,3.2vh,30px);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--ink);
+    line-height:1;
+    white-space:nowrap;
+  }
+  .rail a span{color:var(--gold)}
+  .rail::before{
+    /* short brass tick at the top of the rail, like a halfway-line mark */
+    content:"";
+    position:absolute;
+    top:var(--pad);
+    left:50%;
+    width:2px;
+    height:28px;
+    background:var(--brass);
+    transform:translateX(-50%);
+  }
+
+  /* ---------- Main column ---------- */
+  .main{
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    min-width:0;
+    min-height:0;
+  }
+
+  .head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    padding:var(--pad) var(--pad) 18px 24px;
+  }
+  .head h2{
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:800;
+    font-size:clamp(34px,5.4vw,60px);
+    line-height:.88;
+    text-transform:uppercase;
+    letter-spacing:-.005em;
+  }
+  .head p{
+    margin-top:10px;
+    font-size:15px;
+    line-height:1.45;
+    color:var(--ink-3);
+    max-width:46ch;
+  }
+  .head-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-shrink:0;
+  }
+  .follow{
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding-bottom:3px;
+    border-bottom:2px solid var(--gold);
+    transition:border-color .2s, color .2s;
+  }
+  .follow:hover,.follow:focus-visible{color:var(--gold)}
+  .ctrl{display:flex;gap:6px}
+  .ctrl button{
+    width:44px;height:44px;
+    display:grid;place-items:center;
+    background:var(--paper);
+    color:var(--ink);
+    border:1.5px solid var(--ink);
+    border-radius:0;
+    cursor:pointer;
+    transition:background .18s,color .18s;
+  }
+  .ctrl button:hover,.ctrl button:focus-visible{background:var(--ink);color:var(--paper)}
+  .ctrl button:disabled{opacity:.3;cursor:default;background:var(--paper);color:var(--ink)}
+  .ctrl svg{width:18px;height:18px}
+
+  /* ---------- The ribbon ---------- */
+  .strip{
+    display:flex;
+    gap:var(--gap);
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    margin-left:24px;
+    padding-right:var(--pad);
+    scrollbar-width:none;
+    overscroll-behavior-x:contain;
+    min-height:0;
+    -webkit-overflow-scrolling:touch;
+  }
+  .strip::-webkit-scrollbar{display:none}
+
+  .tile{
+    flex:0 0 auto;
+    width:calc(var(--img-h) * .8);
+    scroll-snap-align:start;
+    text-decoration:none;
+    color:var(--ink);
+    display:block;
+    outline:none;
+  }
+  .tile.lead{width:calc(var(--img-h) * 1)}
+
+  .shot{
+    position:relative;
+    height:var(--img-h);
+    overflow:hidden;
+    background:#d9d6cf;
+    clip-path:inset(0 100% 0 0);
+  }
+  .ready .shot{
+    animation:wipe .9s cubic-bezier(.7,0,.2,1) forwards;
+    animation-delay:calc(var(--i) * 90ms);
+  }
+  @keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+
+  .shot img,.shot video{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:cover;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .shot video{opacity:0;transition:opacity .3s}
+  .shot.playing video{opacity:1}
+  .tile:hover .shot img,.tile:focus-visible .shot img{transform:scale(1.045)}
+  .tile:focus-visible .shot{outline:3px solid var(--gold);outline-offset:-3px}
+
+  .tag{
+    position:absolute;
+    top:0;left:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:6px 9px 5px;
+    z-index:2;
+  }
+  .tag.gold{background:var(--gold)}
+
+  .cap{
+    height:var(--cap-h);
+    padding-top:10px;
+    overflow:hidden;
+  }
+  .meta{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .meta .kind{color:var(--gold)}
+  .text{
+    margin-top:4px;
+    font-size:14px;
+    line-height:1.4;
+    color:var(--ink-2);
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+
+  /* ---------- Touchline: doubles as the scroll position indicator ---------- */
+  .touchline{
+    position:relative;
+    height:2px;
+    margin:12px var(--pad) var(--pad) 24px;
+    background:var(--line);
+  }
+  .touchline i{
+    position:absolute;
+    top:-1px;left:0;
+    height:4px;
+    width:20%;
+    background:var(--gold);
+    transition:width .2s;
+  }
+
+  /* ---------- Empty / error state ---------- */
+  .note{
+    align-self:center;
+    font-size:16px;
+    color:var(--ink-2);
+    max-width:40ch;
+  }
+  .note a{border-bottom:2px solid var(--gold);text-decoration:none;color:var(--ink)}
+
+  .placeholder{
+    position:absolute;inset:0;
+    display:grid;place-items:center;
+    font-family:"Saira Condensed",sans-serif;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-size:14px;
+    color:rgba(255,255,255,.75);
+  }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width:640px){
+    :root{--rail:40px;--pad:18px;--gap:10px;--cap-h:70px}
+    .head{flex-direction:column;align-items:flex-start;gap:12px;padding-left:16px}
+    .head p{font-size:14px;margin-top:8px}
+    .ctrl{display:none}
+    .strip{margin-left:16px}
+    .touchline{margin-left:16px}
+    .rail a{font-size:18px}
+    .tile.lead{width:calc(var(--img-h) * .8)}
+  }
+  @media (max-width:360px){
+    :root{--rail:32px}
+    .rail a{font-size:16px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .shot{clip-path:none}
+    .ready .shot{animation:none}
+    .shot img{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="rail">
+    <a href="https://www.instagram.com/virginiavalorfc/" target="_blank" rel="noopener">@virginia<span>valor</span>fc</a>
+  </aside>
+
+  <section class="main" aria-labelledby="ig-title">
+    <header class="head">
+      <div>
+        <h2 id="ig-title">Valor on Instagram</h2>
+        <p>Photos and video from games, training and club events.</p>
+      </div>
+      <div class="head-right">
+        <a class="follow" href="https://www.instagram.com/virginiavalorfc/" target="_blank" rel="noopener">Follow @virginiavalorfc</a>
+        <div class="ctrl">
+          <button type="button" id="prev" aria-label="Previous posts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" id="next" aria-label="Next posts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="strip" id="strip" role="list" aria-label="Latest Instagram posts" tabindex="0"></div>
+
+    <div class="touchline" aria-hidden="true"><i id="thumb"></i></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  /* ============================================================
+     FEED URL (Behold JSON feed, or an Apps Script /exec URL)
+     Leave empty to preview with placeholder tiles.
+     Leave empty to preview with placeholder tiles.
+     ============================================================ */
+  const FEED_URL = "https://feeds.behold.so/5qURrnjzqFC72Ab8YwxE";
+
+  const PROFILE_URL = "https://www.instagram.com/virginiavalorfc/";
+  const MAX_POSTS   = 12;
+  const AUTO_MS     = 5000;   // time between automatic advances
+  const IDLE_MS     = 9000;   // pause after someone touches the ribbon
+
+  const qs = new URLSearchParams(location.search);
+  const feedUrl = qs.get("feed") || FEED_URL;
+
+  const strip = document.getElementById("strip");
+  const thumb = document.getElementById("thumb");
+  const prev  = document.getElementById("prev");
+  const next  = document.getElementById("next");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canHover = window.matchMedia("(hover: hover)").matches;
+
+  const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  function fmtDate(iso){
+    const d = new Date(iso);
+    if (isNaN(d)) return "";
+    const now = new Date();
+    const base = MONTHS[d.getMonth()] + " " + d.getDate();
+    return d.getFullYear() === now.getFullYear() ? base : base + ", " + d.getFullYear();
+  }
+  function esc(s){
+    return String(s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  function kindOf(p){
+    if (p.mediaType === "VIDEO") return p.isReel ? "Reel" : "Video";
+    if (p.mediaType === "CAROUSEL_ALBUM"){
+      const n = (p.children || []).length;
+      return n > 1 ? n + " photos" : "Album";
+    }
+    return "";
+  }
+
+  /* ---------- Sizing: photos fill whatever height the Wix iframe has ---------- */
+  function size(){
+    const cs = getComputedStyle(document.documentElement);
+    const capH = parseFloat(cs.getPropertyValue("--cap-h")) || 74;
+    const h = Math.max(180, strip.clientHeight - capH);
+    // keep tiles from getting wider than the visible area on narrow screens
+    // leave a slice of the next tile showing so people know it swipes
+    const padL = parseFloat(getComputedStyle(strip).paddingLeft) || 0;
+    const maxW = (strip.clientWidth - padL - 56) / 0.8;
+    document.documentElement.style.setProperty("--img-h", Math.min(h, maxW) + "px");
+    updateThumb();
+  }
+
+  /* ---------- Rendering ---------- */
+  function render(posts){
+    strip.innerHTML = posts.map((p, i) => {
+      const s = p.sizes || {};
+      const src = (s.medium && s.medium.mediaUrl) || (s.large && s.large.mediaUrl) || p.thumbnailUrl || p.mediaUrl;
+      const srcset = ["small","medium","large"]
+        .filter(k => s[k] && s[k].mediaUrl)
+        .map(k => s[k].mediaUrl + " " + s[k].width + "w").join(", ");
+      const cap = p.prunedCaption || p.caption || "";
+      const alt = cap ? cap.slice(0, 140) : "Virginia Valor FC Instagram post";
+      const dom = p.colorPalette && p.colorPalette.dominant ? "rgb(" + p.colorPalette.dominant + ")" : "";
+      const kind = kindOf(p);
+      const isVideo = p.mediaType === "VIDEO" && p.mediaUrl;
+      return (
+        '<a class="tile' + (i === 0 ? ' lead' : '') + '" role="listitem" href="' + esc(p.permalink || PROFILE_URL) + '" target="_blank" rel="noopener" style="--i:' + i + '"' +
+        (isVideo ? ' data-video="' + esc(p.mediaUrl) + '"' : '') + '>' +
+          '<div class="shot"' + (dom ? ' style="background:' + dom + '"' : '') + '>' +
+            (i === 0 ? '<span class="tag gold">Latest</span>' : '') +
+            (src ? '<img src="' + esc(src) + '"' + (srcset ? ' srcset="' + esc(srcset) + '" sizes="(max-width:640px) 80vw, 480px"' : '') +
+              ' alt="' + esc(alt) + '" loading="' + (i < 4 ? 'eager' : 'lazy') + '" decoding="async">' : '') +
+          '</div>' +
+          '<div class="cap">' +
+            '<div class="meta"><span>' + fmtDate(p.timestamp) + '</span>' + (kind ? '<span class="kind">' + esc(kind) + '</span>' : '') + '</div>' +
+            (cap ? '<p class="text">' + esc(cap) + '</p>' : '') +
+          '</div>' +
+        '</a>'
+      );
+    }).join("");
+    afterRender();
+  }
+
+  function renderPlaceholders(){
+    const tones = ["#1b1b1b","#8B7A4C","#4a4a4a","#C8B98F","#2c2c2c","#6f6a5e","#111111","#9d9686"];
+    const posts = tones.map((t, i) => ({ tone:t, i }));
+    strip.innerHTML = posts.map(p => (
+      '<a class="tile' + (p.i === 0 ? ' lead' : '') + '" role="listitem" href="' + PROFILE_URL + '" target="_blank" rel="noopener" style="--i:' + p.i + '">' +
+        '<div class="shot" style="background:' + p.tone + '">' +
+          (p.i === 0 ? '<span class="tag gold">Latest</span>' : '') +
+          '<div class="placeholder">Post ' + (p.i + 1) + '</div>' +
+        '</div>' +
+        '<div class="cap"><div class="meta"><span>Date</span>' + (p.i % 3 === 1 ? '<span class="kind">Reel</span>' : '') + '</div>' +
+        '<p class="text">Preview tile. Add the feed URL to show real posts.</p></div>' +
+      '</a>'
+    )).join("");
+    afterRender();
+  }
+
+  function renderError(){
+    strip.innerHTML = '<p class="note">Posts could not load right now. See the latest on <a href="' + PROFILE_URL + '" target="_blank" rel="noopener">Instagram</a>.</p>';
+    document.querySelector(".ctrl").style.visibility = "hidden";
+    document.querySelector(".touchline").style.visibility = "hidden";
+  }
+
+  function afterRender(){
+    size();
+    requestAnimationFrame(() => document.body.classList.add("ready"));
+    wireVideo();
+    startAuto();
+  }
+
+  /* ---------- Hover to play video posts (desktop only) ---------- */
+  function wireVideo(){
+    if (!canHover || reduceMotion) return;
+    strip.querySelectorAll(".tile[data-video]").forEach(tile => {
+      let vid = null;
+      const shot = tile.querySelector(".shot");
+      tile.addEventListener("mouseenter", () => {
+        if (!vid){
+          vid = document.createElement("video");
+          vid.muted = true; vid.loop = true; vid.playsInline = true; vid.preload = "auto";
+          vid.src = tile.dataset.video;
+          vid.addEventListener("error", () => { shot.classList.remove("playing"); });
+          shot.appendChild(vid);
+        }
+        vid.play().then(() => shot.classList.add("playing")).catch(() => {});
+      });
+      tile.addEventListener("mouseleave", () => {
+        if (vid){ vid.pause(); shot.classList.remove("playing"); }
+      });
+    });
+  }
+
+  /* ---------- Touchline indicator + buttons ---------- */
+  function updateThumb(){
+    const max = strip.scrollWidth - strip.clientWidth;
+    const visible = strip.scrollWidth ? strip.clientWidth / strip.scrollWidth : 1;
+    const frac = max > 0 ? strip.scrollLeft / max : 0;
+    const w = Math.max(.08, Math.min(1, visible));
+    thumb.style.width = (w * 100) + "%";
+    thumb.style.left = (frac * (1 - w) * 100) + "%";
+    prev.disabled = strip.scrollLeft <= 2;
+    next.disabled = strip.scrollLeft >= max - 2;
+  }
+  function step(dir){
+    const tile = strip.querySelector(".tile:not(.lead)") || strip.querySelector(".tile");
+    if (!tile) return;
+    const gap = parseFloat(getComputedStyle(strip).columnGap) || 14;
+    strip.scrollBy({ left: dir * (tile.offsetWidth + gap), behavior: reduceMotion ? "auto" : "smooth" });
+  }
+  strip.addEventListener("scroll", updateThumb, { passive:true });
+  prev.addEventListener("click", () => { step(-1); hold(); });
+  next.addEventListener("click", () => { step(1); hold(); });
+  strip.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight"){ e.preventDefault(); step(1); hold(); }
+    if (e.key === "ArrowLeft"){ e.preventDefault(); step(-1); hold(); }
+  });
+
+  /* ---------- Slow automatic advance, pauses when someone interacts ---------- */
+  let timer = null, heldUntil = 0, hovering = false;
+  function hold(){ heldUntil = Date.now() + IDLE_MS; }
+  function startAuto(){
+    if (reduceMotion || timer) return;
+    timer = setInterval(() => {
+      if (hovering || document.hidden || Date.now() < heldUntil) return;
+      const max = strip.scrollWidth - strip.clientWidth;
+      if (max <= 0) return;
+      if (strip.scrollLeft >= max - 2) strip.scrollTo({ left:0, behavior:"smooth" });
+      else step(1);
+    }, AUTO_MS);
+  }
+  strip.addEventListener("mouseenter", () => hovering = true);
+  strip.addEventListener("mouseleave", () => hovering = false);
+  ["pointerdown","touchstart","wheel","focusin"].forEach(ev =>
+    strip.addEventListener(ev, hold, { passive:true }));
+
+  window.addEventListener("resize", size);
+
+  /* ---------- Load ---------- */
+  if (!feedUrl){
+    renderPlaceholders();
+  } else {
+    fetch(feedUrl)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(data => {
+        const posts = (Array.isArray(data) ? data : (data.posts || [])).slice(0, MAX_POSTS);
+        if (!posts.length) throw new Error("empty");
+        render(posts);
+      })
+      .catch(renderError);
+  }
+})();
+</script>
+</body>
+</html>
