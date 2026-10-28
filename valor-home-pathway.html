@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Player Pathway | Virginia Valor FC</title>
+<!--
+  HOMEPAGE PLAYER PATHWAY SECTION
+  Replaces the four Wix image tiles. Embed with a Wix HTML iframe:
+    https://cyadylanlab.github.io/valorwebsite/valor-home-pathway.html
+  Wix iframe heights: desktop 770px, mobile 860px. Both stay the same at any width.
+  The page never scrolls inside its own frame, so a frame a little taller than needed is safe.
+
+  The four stages live in the STAGES markup below (photo, ages, title, text, link).
+  Desktop: the stages auto-advance every 6 seconds while the section is on screen,
+  pause while the mouse is over them, and stop once a visitor picks one.
+  Phones: the stages become a swipe row; the tabs follow the swipe.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --ink: #141414;
+    --gold: #8B7A4C;
+    --gold-hi: #A2915F;
+    --brass: #C8B98F;
+    --paper: #FFFFFF;
+    --stone: #F3F1EB;
+    --line: #E2DED3;
+    --muted: #6E6A60;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --pad-x: clamp(18px, 4.4vw, 72px);
+    --rise: cubic-bezier(.16, 1, .3, 1);
+    --swing: cubic-bezier(.65, 0, .2, 1);
+    --dur: 6000ms;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); overflow-y: hidden; }
+  body {
+    font-family: var(--serif);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+  /* =========================================================
+     SECTION SHELL
+     ========================================================= */
+  .pw {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 56px 0 48px;
+    background: var(--paper);
+  }
+  .wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--pad-x);
+  }
+
+  /* =========================================================
+     HEADER
+     ========================================================= */
+  .head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 24px 48px;
+    margin-bottom: 26px;
+  }
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .kicker svg { width: 22px; height: 22px; flex: none; }
+  .title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 68px;
+    line-height: .9;
+    letter-spacing: -.005em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+  .title .ln { display: inline-block; overflow: hidden; padding-bottom: .04em; vertical-align: bottom; }
+  .title .ln > span { display: block; }
+  .lede {
+    margin: 0;
+    max-width: 40ch;
+    justify-self: end;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+    border-left: 3px solid var(--gold);
+    padding-left: 18px;
+  }
+
+  /* =========================================================
+     STAGES (desktop: expanding panels)
+     ========================================================= */
+  .stages {
+    display: flex;
+    gap: 10px;
+    height: 460px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stage {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--black);
+    cursor: pointer;
+    transition: flex-grow 900ms var(--swing);
+  }
+  .stage.is-on { flex-grow: 3.6; cursor: default; }
+
+  .stage img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) brightness(.5) contrast(1.05);
+    transform: scale(1.12);
+    transition: filter 900ms ease, transform 1400ms var(--rise);
+  }
+  .stage:hover img { filter: grayscale(1) brightness(.62) contrast(1.05); }
+  .stage.is-on img { filter: none; transform: scale(1.0); }
+
+  /* Gold edge that runs along the top of the open stage */
+  .stage::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: 0; top: 0;
+    height: 5px;
+    width: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 700ms var(--rise) 200ms;
+  }
+  .stage.is-on::before { transform: scaleX(1); }
+
+  /* Closed state: age at top, program name reading up the side */
+  .spine {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 22px 18px 24px;
+    transition: opacity 400ms ease;
+  }
+  .spine-age {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brass);
+    white-space: nowrap;
+  }
+  .spine-name {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(26px, 2.2vw, 36px);
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .stage.is-on .spine { opacity: 0; pointer-events: none; }
+
+  /* Open state: solid black plate in the lower left */
+  .plate {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+    width: min(480px, 80%);
+    padding: 20px 26px 24px;
+    background: var(--black);
+    color: #fff;
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 650ms var(--rise);
+  }
+  .stage.is-on .plate { clip-path: inset(0 0 0 0); transition-delay: 380ms; }
+  .plate > * {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 500ms ease, transform 700ms var(--rise);
+  }
+  .stage.is-on .plate > * { opacity: 1; transform: none; }
+  .stage.is-on .plate > :nth-child(1) { transition-delay: 520ms; }
+  .stage.is-on .plate > :nth-child(2) { transition-delay: 590ms; }
+  .stage.is-on .plate > :nth-child(3) { transition-delay: 660ms; }
+  .stage.is-on .plate > :nth-child(4) { transition-delay: 730ms; }
+
+  .age {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 5px 10px 4px;
+    background: var(--gold);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .plate h3 {
+    margin: 0 0 10px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(30px, 2.7vw, 42px);
+    line-height: .92;
+    text-transform: uppercase;
+    letter-spacing: .005em;
+  }
+  .plate p {
+    margin: 0 0 16px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, .82);
+  }
+  .go {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 18px 12px;
+    border: 1.5px solid var(--brass);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(var(--gold), var(--gold)) no-repeat left / 0% 100%;
+    transition: background-size 450ms var(--rise), border-color 300ms ease;
+  }
+  .go:hover, .go:focus-visible { background-size: 100% 100%; border-color: var(--gold); }
+  .go span { display: inline-block; width: 22px; height: 1.5px; background: currentColor; position: relative; transition: width 400ms var(--rise); }
+  .go span::after { content: ""; position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); }
+  .go:hover span { width: 32px; }
+
+  /* =========================================================
+     TABS (the age rail under the stages)
+     ========================================================= */
+  .rail {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .tab {
+    display: block;
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .bar {
+    display: block;
+    position: relative;
+    height: 3px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .bar i {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .tab.is-done .bar i { transform: scaleX(1); background: var(--brass); }
+  .tab.is-on .bar i { transform: scaleX(1); background: var(--gold); }
+  .auto .tab.is-on .bar i { animation: fill var(--dur) linear forwards; }
+  .auto.paused .tab.is-on .bar i { animation: none; transform: scaleX(1); }
+  @keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  .tab-age {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(20px, 1.8vw, 27px);
+    line-height: 1;
+    text-transform: uppercase;
+    color: #B9B4A7;
+    white-space: nowrap;
+    transition: color 300ms ease;
+  }
+  .tab-name {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #9A958A;
+    transition: color 300ms ease;
+  }
+  .tab:hover .tab-age, .tab.is-on .tab-age { color: var(--black); }
+  .tab:hover .tab-name, .tab.is-on .tab-name { color: var(--gold); }
+
+  /* =========================================================
+     ENTRANCE (runs once when the section scrolls into view)
+     ========================================================= */
+  .js .title .ln > span { transform: translateY(105%); transition: transform 1000ms var(--rise); }
+  .js .title .ln + .ln > span { transition-delay: 120ms; }
+  .js .kicker, .js .lede { opacity: 0; transition: opacity 800ms ease 300ms; }
+  .js .stage { clip-path: inset(100% 0 0 0); transition: flex-grow 900ms var(--swing), clip-path 1100ms var(--rise); }
+  .js .stage:nth-child(2) { transition-delay: 0ms, 90ms; }
+  .js .stage:nth-child(3) { transition-delay: 0ms, 180ms; }
+  .js .stage:nth-child(4) { transition-delay: 0ms, 270ms; }
+  .js .bar { transform: scaleX(0); transform-origin: left; transition: transform 900ms var(--rise) 500ms; }
+
+  .in .title .ln > span { transform: none; }
+  .in .kicker, .in .lede { opacity: 1; }
+  .in .stage { clip-path: inset(0 0 0 0); }
+  .in .bar { transform: none; }
+
+  /* =========================================================
+     PHONES AND SMALL TABLETS: swipe row
+     ========================================================= */
+  @media (max-width: 819px) {
+    .pw { padding: 40px 0 36px; }
+    .head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 22px; }
+    .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
+    .lede { justify-self: start; }
+
+    .rail { order: -1; margin: 0 0 16px; gap: 8px; }
+    .tab-age { font-size: 19px; margin-top: 10px; }
+    .tab-name { display: none; }
+
+    .body { display: flex; flex-direction: column; }
+    .stages {
+      height: auto;
+      gap: 12px;
+      margin: 0 calc(var(--pad-x) * -1);
+      padding: 0 var(--pad-x);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 0 var(--pad-x);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .stages::-webkit-scrollbar { display: none; }
+    .stage, .stage.is-on {
+      flex: 0 0 86%;
+      height: 540px;
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      cursor: default;
+    }
+    .stage img, .stage.is-on img {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 120px;
+      height: auto;
+      filter: none;
+      transform: none;
+    }
+    .stage::before { transform: scaleX(1); }
+    .spine { display: none; }
+    .plate, .stage.is-on .plate {
+      position: relative;
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      padding: 22px 20px 24px;
+      clip-path: none;
+      transition: none;
+    }
+    .plate .go { margin-top: auto; }
+    .plate > *, .stage.is-on .plate > * { opacity: 1; transform: none; transition: none; }
+    .plate h3 { font-size: 32px; }
+    .plate p { font-size: 15.5px; margin-bottom: 18px; }
+    .js .stage { transition: clip-path 1100ms var(--rise); }
+  }
+  @media (max-width: 380px) {
+    .stage, .stage.is-on { flex-basis: 90%; }
+    .tab-age { font-size: 16px; }
+    .lede { font-size: 14.5px; }
+    .plate, .stage.is-on .plate { padding: 18px 16px 20px; }
+    .plate h3 { font-size: 28px; }
+    .plate p { font-size: 14.5px; line-height: 1.5; margin-bottom: 14px; }
+    .go { padding: 11px 14px 10px; font-size: 15px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: 1ms !important; transition-delay: 0ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<section class="pw" id="pathway" aria-labelledby="pw-title">
+
+
+  <div class="wrap">
+    <header class="head">
+      <div>
+        <p class="kicker">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5h5l5 9 5-9h5l-10 16z" fill="#8B7A4C"/></svg>
+          Virginia Valor FC
+        </p>
+        <h2 class="title" id="pw-title"><span class="ln"><span>Player</span></span> <span class="ln"><span>Pathway</span></span></h2>
+      </div>
+      <p class="lede">Four programs, from a first season of rec soccer to pre-professional play. Choose one to see where your player fits.</p>
+    </header>
+
+    <div class="body">
+      <!-- STAGES -->
+      <ul class="stages" id="stages">
+        <li class="stage is-on" id="stage-0" role="tabpanel" aria-labelledby="tab-0">
+          <img src="https://static.wixstatic.com/media/1df62c_517ad2e17cf04d95aad5802e7aac5b7c~mv2.png/v1/crop/x_2400,y_0,w_2352,h_3560/fill/w_900,h_1362,al_c,q_85,enc_auto/grassroots.jpg" alt="A smiling young player in an SYA jersey holding a soccer ball" style="object-position: 50% 30%">
+          <div class="spine" aria-hidden="true"><span class="spine-age">U4 - U18</span><span class="spine-name">Grassroots</span></div>
+          <div class="plate">
+            <span class="age">U4 - U18</span>
+            <h3>Grassroots Soccer</h3>
+            <p>Both CYA and SYA Soccer offer U4-U8 recreational soccer programs. Virginia Valor FC is proud to be the travel destination club for both CYA and SYA players.</p>
+            <a class="go" href="https://www.virginiavalorfc.org/grassroots-soccer" target="_top">View program <span aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="stage" id="stage-1" role="tabpanel" aria-labelledby="tab-1">
+          <img src="https://static.wixstatic.com/media/1df62c_4268bd0c4e2a4ffdb4e4f6f5737cc2e7~mv2.png/v1/crop/x_0,y_0,w_3456,h_1360/fill/w_1600,h_630,al_c,q_85,enc_auto/u7u8.jpg" alt="A large group of U7 and U8 Valor players in light blue shirts on the field with their coaches" style="object-position: 50% 50%">
+          <div class="spine" aria-hidden="true"><span class="spine-age">U7 - U8</span><span class="spine-name">U7-U8 Programs</span></div>
+          <div class="plate">
+            <span class="age">U7 - U8</span>
+            <h3>Valor U7-U8 Programs</h3>
+            <p>Our Valor Rising programs are designed to provide players with the opportunity to train and prepare for the journey with Virginia Valor FC at U9 through U18.</p>
+            <a class="go" href="https://www.virginiavalorfc.org/u8futures" target="_top">View program <span aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="stage" id="stage-2" role="tabpanel" aria-labelledby="tab-2">
+          <img src="https://static.wixstatic.com/media/1df62c_f5ee3f6354064b0db8c7abc129bf9e4e~mv2.png/v1/crop/x_2070,y_0,w_2034,h_3110/fill/w_900,h_1376,al_c,q_85,enc_auto/travel.jpg" alt="A Valor goalkeeper in an orange kit carrying the ball upfield" style="object-position: 50% 25%">
+          <div class="spine" aria-hidden="true"><span class="spine-age">U9 - U18</span><span class="spine-name">Travel</span></div>
+          <div class="plate">
+            <span class="age">U9 - U18</span>
+            <h3>Travel Soccer</h3>
+            <p>The Virginia Valor FC program is one of the highest levels of development environments in the region for players U9 through U18 in the Northern Virginia and DMV area.</p>
+            <a class="go" href="https://www.virginiavalorfc.org/travel-soccer" target="_top">View program <span aria-hidden="true"></span></a>
+          </div>
+        </li>
+        <li class="stage" id="stage-3" role="tabpanel" aria-labelledby="tab-3">
+          <img src="https://static.wixstatic.com/media/1df62c_da16147f548f4c38bed64cdfb76015aa~mv2.png/v1/crop/x_0,y_0,w_4104,h_3110/fill/w_1400,h_1061,al_c,q_85,enc_auto/prepro.jpg" alt="A Valor player in a black kit striking the ball" style="object-position: 52% 40%">
+          <div class="spine" aria-hidden="true"><span class="spine-age">Pre-Pro</span><span class="spine-name">Pre-Pro</span></div>
+          <div class="plate">
+            <span class="age">Pre-Pro</span>
+            <h3>Pre-Pro Soccer</h3>
+            <p>Our semiprofessional developmental soccer program competes in the CCL Pro 23 and is for college and semi-pro level players.</p>
+            <a class="go" href="https://www.virginiavalorfc.org/copy-of-ccl-pro-23" target="_top">View program <span aria-hidden="true"></span></a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- TABS -->
+      <div class="rail" role="tablist" aria-label="Pathway stages">
+        <button class="tab is-on" id="tab-0" role="tab" aria-selected="true" aria-controls="stage-0"><span class="bar"><i></i></span><span class="tab-age">U4 - U18</span><span class="tab-name">Grassroots Soccer</span></button>
+        <button class="tab" id="tab-1" role="tab" aria-selected="false" aria-controls="stage-1" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">U7 - U8</span><span class="tab-name">Valor U7-U8 Programs</span></button>
+        <button class="tab" id="tab-2" role="tab" aria-selected="false" aria-controls="stage-2" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">U9 - U18</span><span class="tab-name">Travel Soccer</span></button>
+        <button class="tab" id="tab-3" role="tab" aria-selected="false" aria-controls="stage-3" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">Pre-Pro</span><span class="tab-name">Pre-Pro Soccer</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var section = document.getElementById('pathway');
+  var track = document.getElementById('stages');
+  var stages = Array.prototype.slice.call(track.querySelectorAll('.stage'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var phone = window.matchMedia('(max-width: 819px)');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var cur = 0;
+  var userPicked = false;
+  var visible = false;
+
+  root.classList.add('js');
+
+  function setLinks() {
+    stages.forEach(function (s, i) {
+      var a = s.querySelector('.go');
+      if (phone.matches || i === cur) { a.removeAttribute('tabindex'); s.removeAttribute('aria-hidden'); }
+      else { a.setAttribute('tabindex', '-1'); }
+    });
+  }
+
+  function restartBar() {
+    var bar = tabs[cur].querySelector('.bar i');
+    bar.style.animation = 'none';
+    void bar.offsetWidth;
+    bar.style.animation = '';
+  }
+
+  function show(i, opts) {
+    opts = opts || {};
+    cur = (i + stages.length) % stages.length;
+    stages.forEach(function (s, k) { s.classList.toggle('is-on', k === cur); });
+    tabs.forEach(function (t, k) {
+      var on = k === cur;
+      t.classList.toggle('is-on', on);
+      t.classList.toggle('is-done', k < cur);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    setLinks();
+    restartBar();
+    if (opts.scroll && phone.matches) {
+      track.scrollTo({ left: stages[cur].offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0), behavior: still.matches ? 'auto' : 'smooth' });
+    }
+  }
+
+  function autoOn() { return !userPicked && !phone.matches && !still.matches && visible; }
+  function syncAuto() {
+    section.classList.toggle('auto', autoOn());
+    if (autoOn()) restartBar();
+  }
+  function stopAuto() { userPicked = true; syncAuto(); }
+
+  /* Advance when the gold timer bar finishes */
+  tabs.forEach(function (t) {
+    t.querySelector('.bar i').addEventListener('animationend', function () {
+      if (autoOn() && !section.classList.contains('paused')) show(cur + 1);
+    });
+  });
+
+  /* Tabs: click and arrow keys */
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { stopAuto(); show(i, { scroll: true }); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = cur + 1;
+      if (k === 'ArrowLeft' || k === 'ArrowUp') n = cur - 1;
+      if (k === 'Home') n = 0;
+      if (k === 'End') n = stages.length - 1;
+      if (n !== null) { e.preventDefault(); stopAuto(); show(n, { scroll: true }); tabs[cur].focus(); }
+    });
+  });
+
+  /* Desktop: hovering a stage opens it; clicking it keeps it open */
+  stages.forEach(function (s, i) {
+    s.addEventListener('mouseenter', function () { if (!phone.matches && i !== cur) show(i); });
+    s.addEventListener('click', function (e) {
+      if (phone.matches) return;
+      if (i !== cur) { e.preventDefault(); show(i); }
+      stopAuto();
+    });
+  });
+  track.addEventListener('mouseenter', function () { section.classList.add('paused'); });
+  track.addEventListener('mouseleave', function () { section.classList.remove('paused'); if (autoOn()) restartBar(); });
+  section.addEventListener('focusin', function () { section.classList.add('paused'); });
+  section.addEventListener('focusout', function () { section.classList.remove('paused'); });
+
+  /* Phones: the tabs follow the swipe */
+  var ticking = false;
+  track.addEventListener('scroll', function () {
+    if (!phone.matches || ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      ticking = false;
+      var x = track.scrollLeft, best = 0, dist = Infinity;
+      stages.forEach(function (s, k) {
+        var d = Math.abs(s.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0) - x);
+        if (d < dist) { dist = d; best = k; }
+      });
+      if (best !== cur) show(best);
+    });
+  }, { passive: true });
+
+  /* Entrance and auto-advance only while the section is on screen */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        visible = en.isIntersecting;
+        if (visible) section.classList.add('in');
+        syncAuto();
+      });
+    }, { threshold: 0.25 }).observe(section);
+  } else {
+    section.classList.add('in');
+    visible = true;
+    syncAuto();
+  }
+
+  function onMode() { setLinks(); syncAuto(); }
+  if (phone.addEventListener) phone.addEventListener('change', onMode); else phone.addListener(onMode);
+
+  show(0);
+})();
+</script>
+</body>
+</html>
