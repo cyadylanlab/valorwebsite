@@ -687,16 +687,19 @@
   }, { passive: true });
 
   /* ---------- Entrance and photo loading when the section is on screen ---------- */
+  /* Reveal as soon as any part of the section is visible (it may sit in a short
+     frame), and never leave it hidden: a backup reveal runs shortly after load. */
+  function reveal() { section.classList.add('in'); loadPhotos(); }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        if (en.isIntersecting) { section.classList.add('in'); loadPhotos(); }
+        if (en.isIntersecting || en.intersectionRatio > 0) reveal();
       });
-    }, { threshold: 0.25 }).observe(section);
+    }, { threshold: [0, 0.01] }).observe(section);
   } else {
-    section.classList.add('in');
-    loadPhotos();
+    reveal();
   }
+  setTimeout(reveal, 2500);
 
   function onMode() {
     rest();
