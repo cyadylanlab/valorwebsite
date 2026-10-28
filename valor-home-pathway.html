@@ -8,7 +8,7 @@
   HOMEPAGE PLAYER PATHWAY SECTION
   Embed with a Wix HTML iframe:
     https://cyadylanlab.github.io/valorwebsite/valor-home-pathway.html
-  Wix iframe heights: desktop 850px, mobile 860px. Both stay the same at any width.
+  Wix iframe heights: desktop 800px, mobile 860px. Both stay the same at any width.
   The page never scrolls inside its own frame, so a frame a little taller than needed is safe.
 
   PHOTOS live in the top level of the repo, next to this file, as pathway-<stage>-<width>.avif and .webp
@@ -17,8 +17,9 @@
   the section is on screen, so they never slow down the top of the homepage.
   To swap a photo, replace its files with the same names and sizes.
 
-  Desktop: the stages auto-advance every 6 seconds while the section is on screen,
-  pause while the mouse is over them, and stop once a visitor picks one.
+  Desktop: the four stages rest at equal width in color. Hovering one (or tabbing to
+  its link) opens it with the full description; leaving the row returns to the
+  resting view. Clicking an open stage goes to its program page.
   Phones: the stages become a swipe row; the tabs follow the swipe.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +41,6 @@
     --pad-x: clamp(18px, 4.4vw, 72px);
     --rise: cubic-bezier(.16, 1, .3, 1);
     --swing: cubic-bezier(.65, 0, .2, 1);
-    --dur: 6000ms;
     --open-w: 640px; /* set from the real width by the script */
     --photo-h: 356px;
     --cap-h: 204px;
@@ -143,7 +143,7 @@
     contain: layout paint style;
     transition: flex-grow 900ms var(--swing);
   }
-  .stage.is-on { flex-grow: 3.6; cursor: default; }
+  .stage.is-on { flex-grow: 3.6; }
 
   /* The photo keeps the open-panel width at all times, so resizing a panel only
      changes how much of it shows. Nothing is re-scaled while the panels move. */
@@ -154,11 +154,8 @@
     left: 50%;
     background: var(--ph, var(--black));
     width: var(--open-w);
-    transform: translateX(-50%) scale(1.08);
-    transition: transform 1400ms var(--rise);
-    will-change: transform;
+    transform: translateX(-50%);
   }
-  .stage.is-on .ph { transform: translateX(-50%) scale(1); }
   .ph picture, .ph img {
     position: absolute;
     inset: 0;
@@ -176,8 +173,7 @@
     transition: opacity 800ms ease;
     will-change: opacity;
   }
-  .loaded:not(.is-on) .mono { opacity: 1; }
-  .loaded:not(.is-on):hover .mono { opacity: .78; }
+  .has-on .loaded:not(.is-on) .mono { opacity: 1; }
 
   /* Gold edge that runs along the top of the open stage */
   .stage::before {
@@ -206,8 +202,10 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 22px 18px 24px;
-    transition: opacity 400ms ease;
+    opacity: 0;
+    transition: opacity 250ms ease;
   }
+  .has-on .stage:not(.is-on) .spine { opacity: 1; transition: opacity 400ms ease 250ms; }
   .spine-age {
     font-family: var(--display);
     font-weight: 800;
@@ -229,7 +227,29 @@
     color: #fff;
     white-space: nowrap;
   }
-  .stage.is-on .spine { opacity: 0; pointer-events: none; }
+  .spine { pointer-events: none; }
+
+  /* Resting view: all four equal, in color, with age and program name below */
+  .tag {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: var(--photo-h);
+    width: var(--eq-w, 280px);
+    padding-top: 18px;
+    transition: opacity 400ms ease 250ms;
+  }
+  .has-on .tag { opacity: 0; transition: opacity 150ms ease; }
+  .tag .age { display: table; }
+  .tag-title {
+    display: block;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 30px;
+    line-height: .95;
+    text-transform: uppercase;
+    color: var(--black);
+  }
 
   /* Open state: the caption sits under the photo, so nothing covers the players.
      It keeps the open-panel width, so its text never re-wraps while panels move. */
@@ -315,7 +335,7 @@
      TABS (the age rail under the stages)
      ========================================================= */
   .rail {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
     margin-top: 14px;
@@ -343,11 +363,7 @@
     transform: scaleX(0);
     transform-origin: left;
   }
-  .tab.is-done .bar i { transform: scaleX(1); background: var(--brass); }
   .tab.is-on .bar i { transform: scaleX(1); background: var(--gold); }
-  .auto .tab.is-on .bar i { animation: fill var(--dur) linear forwards; }
-  .auto.paused .tab.is-on .bar i { animation: none; transform: scaleX(1); }
-  @keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
   .tab-age {
     display: block;
@@ -417,7 +433,8 @@
     .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
     .lede { justify-self: start; }
 
-    .rail { order: -1; margin: 0 0 16px; gap: 8px; }
+    .rail { display: grid; order: -1; margin: 0 0 16px; gap: 8px; }
+    .tag { display: none; }
     .tab-age { font-size: 19px; margin-top: 10px; }
     .tab-name { display: none; }
 
@@ -514,9 +531,10 @@
     <div class="body">
       <!-- STAGES -->
       <ul class="stages" id="stages">
-        <li class="stage is-on" id="stage-0" style="--ph: #595641" role="tabpanel" aria-labelledby="tab-0">
+        <li class="stage" id="stage-0" style="--ph: #595641">
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-grassroots-480.avif 480w, pathway-grassroots-720.avif 720w, pathway-grassroots-1000.avif 1000w, pathway-grassroots-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-grassroots-480.webp 480w, pathway-grassroots-720.webp 720w, pathway-grassroots-1000.webp 1000w, pathway-grassroots-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-grassroots-720.webp" width="1932" height="1990" alt="Two CYA coaches talking with a group of young players in red CYA jerseys" decoding="async" style="object-position: 50% 30%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 30%"></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U4 - U18</span><span class="spine-name">Grassroots</span></div>
+          <div class="tag" aria-hidden="true"><span class="age">U4 - U18</span><span class="tag-title">Grassroots Soccer</span></div>
           <div class="plate">
             <span class="age">U4 - U18</span>
             <h3>Grassroots Soccer</h3>
@@ -524,9 +542,10 @@
             <a class="go" href="https://www.virginiavalorfc.org/grassroots-soccer" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
-        <li class="stage" id="stage-1" style="--ph: #4b4a33" role="tabpanel" aria-labelledby="tab-1">
+        <li class="stage" id="stage-1" style="--ph: #4b4a33">
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-u7u8-480.avif 480w, pathway-u7u8-720.avif 720w, pathway-u7u8-1000.avif 1000w, pathway-u7u8-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-u7u8-480.webp 480w, pathway-u7u8-720.webp 720w, pathway-u7u8-1000.webp 1000w, pathway-u7u8-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-u7u8-720.webp" width="2080" height="1326" alt="A Valor U7-U8 group in gold Valor shirts with their coach on an indoor field" decoding="async" style="object-position: 50% 45%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 45%"></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U7 - U8</span><span class="spine-name">U7-U8 Programs</span></div>
+          <div class="tag" aria-hidden="true"><span class="age">U7 - U8</span><span class="tag-title">Valor U7-U8 Programs</span></div>
           <div class="plate">
             <span class="age">U7 - U8</span>
             <h3>Valor U7-U8 Programs</h3>
@@ -534,9 +553,10 @@
             <a class="go" href="https://www.virginiavalorfc.org/u8futures" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
-        <li class="stage" id="stage-2" style="--ph: #433e32" role="tabpanel" aria-labelledby="tab-2">
+        <li class="stage" id="stage-2" style="--ph: #433e32">
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-travel-480.avif 480w, pathway-travel-720.avif 720w, pathway-travel-1000.avif 1000w, pathway-travel-1153.avif 1153w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-travel-480.webp 480w, pathway-travel-720.webp 720w, pathway-travel-1000.webp 1000w, pathway-travel-1153.webp 1153w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-travel-720.webp" width="1153" height="857" alt="A Valor girls travel team in gold kits wearing tournament medals" decoding="async" style="object-position: 50% 92%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 92%"></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U9 - U18</span><span class="spine-name">Travel</span></div>
+          <div class="tag" aria-hidden="true"><span class="age">U9 - U18</span><span class="tag-title">Travel Soccer</span></div>
           <div class="plate">
             <span class="age">U9 - U18</span>
             <h3>Travel Soccer</h3>
@@ -544,9 +564,10 @@
             <a class="go" href="https://www.virginiavalorfc.org/travel-soccer" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
-        <li class="stage" id="stage-3" style="--ph: #444530" role="tabpanel" aria-labelledby="tab-3">
+        <li class="stage" id="stage-3" style="--ph: #444530">
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-prepro-480.avif 480w, pathway-prepro-720.avif 720w, pathway-prepro-777.avif 777w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-prepro-480.webp 480w, pathway-prepro-720.webp 720w, pathway-prepro-777.webp 777w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-prepro-720.webp" width="777" height="967" alt="A Valor goalkeeper in purple dropping to catch the ball" decoding="async" style="object-position: 50% 30%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 30%"></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">Pre-Pro</span><span class="spine-name">Pre-Pro</span></div>
+          <div class="tag" aria-hidden="true"><span class="age">Pre-Pro</span><span class="tag-title">Pre-Pro Soccer</span></div>
           <div class="plate">
             <span class="age">Pre-Pro</span>
             <h3>Pre-Pro Soccer</h3>
@@ -577,19 +598,20 @@
   var phone = window.matchMedia('(max-width: 819px)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cur = 0;
-  var userPicked = false;
-  var visible = false;
+  var lastPointer = 'mouse';
 
   root.classList.add('js');
 
-  /* Width of an open panel, so the photos never re-scale while panels move */
-  function sizeOpen() {
+  /* Panel widths, so the photos never re-scale while panels move */
+  function sizePanels() {
     var w = track.clientWidth;
-    if (!phone.matches && w) track.style.setProperty('--open-w', Math.round((w - 30) * 3.6 / 6.6) + 'px');
+    if (phone.matches || !w) return;
+    track.style.setProperty('--open-w', Math.round((w - 30) * 3.6 / 6.6) + 'px');
+    track.style.setProperty('--eq-w', Math.floor((w - 30) / 4) + 'px');
   }
-  sizeOpen();
-  if ('ResizeObserver' in window) new ResizeObserver(sizeOpen).observe(track);
-  else window.addEventListener('resize', sizeOpen);
+  sizePanels();
+  if ('ResizeObserver' in window) new ResizeObserver(sizePanels).observe(track);
+  else window.addEventListener('resize', sizePanels);
 
   /* Photos load after the rest of the homepage, or as soon as the section is
      on screen, whichever comes first. The browser picks the file size and
@@ -618,81 +640,75 @@
   if (document.readyState === 'complete') whenIdle();
   else window.addEventListener('load', whenIdle);
 
-  function setLinks() {
-    stages.forEach(function (s, i) {
-      var a = s.querySelector('.go');
-      if (phone.matches || i === cur) { a.removeAttribute('tabindex'); s.removeAttribute('aria-hidden'); }
-      else { a.setAttribute('tabindex', '-1'); }
+  /* ---------- Desktop: equal resting view, hover to open ---------- */
+  function open(i) {
+    stages.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
+    section.classList.add('has-on');
+  }
+  function rest() {
+    stages.forEach(function (s) { s.classList.remove('is-on'); });
+    section.classList.remove('has-on');
+  }
+
+  var enterTimer, leaveTimer;
+  track.addEventListener('pointerdown', function (e) { lastPointer = e.pointerType; }, true);
+
+  stages.forEach(function (s, i) {
+    s.addEventListener('mouseenter', function () {
+      if (phone.matches || lastPointer === 'touch') return;
+      clearTimeout(leaveTimer);
+      clearTimeout(enterTimer);
+      /* a short pause before the first open, so a cursor just passing through does not trigger it */
+      enterTimer = setTimeout(function () { open(i); }, section.classList.contains('has-on') ? 0 : 70);
     });
-  }
+    s.addEventListener('click', function (e) {
+      if (phone.matches) return;
+      if (!s.classList.contains('is-on')) { e.preventDefault(); open(i); return; }
+      if (!e.target.closest('a')) { var a = s.querySelector('.go'); if (a) a.click(); }
+    });
+    s.addEventListener('focusin', function () { if (!phone.matches) open(i); });
+  });
+  track.addEventListener('mouseleave', function () {
+    if (phone.matches) return;
+    clearTimeout(enterTimer);
+    leaveTimer = setTimeout(function () {
+      if (!track.contains(document.activeElement)) rest();
+    }, 160);
+  });
+  track.addEventListener('focusout', function (e) {
+    if (phone.matches) return;
+    if (!track.contains(e.relatedTarget) && !track.matches(':hover')) rest();
+  });
+  /* A tap outside the row on a touch screen also returns to the resting view */
+  document.addEventListener('pointerdown', function (e) {
+    if (!phone.matches && !track.contains(e.target)) rest();
+  });
 
-  function restartBar() {
-    var bar = tabs[cur].querySelector('.bar i');
-    bar.style.animation = 'none';
-    void bar.offsetWidth;
-    bar.style.animation = '';
-  }
-
-  function show(i, opts) {
-    opts = opts || {};
+  /* ---------- Phones: swipe row with age tabs ---------- */
+  function mark(i) {
     cur = (i + stages.length) % stages.length;
-    stages.forEach(function (s, k) { s.classList.toggle('is-on', k === cur); });
     tabs.forEach(function (t, k) {
       var on = k === cur;
       t.classList.toggle('is-on', on);
-      t.classList.toggle('is-done', k < cur);
       t.setAttribute('aria-selected', on ? 'true' : 'false');
       t.tabIndex = on ? 0 : -1;
     });
-    setLinks();
-    restartBar();
-    if (opts.scroll && phone.matches) {
-      track.scrollTo({ left: stages[cur].offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0), behavior: still.matches ? 'auto' : 'smooth' });
-    }
   }
-
-  function autoOn() { return !userPicked && !phone.matches && !still.matches && visible; }
-  function syncAuto() {
-    section.classList.toggle('auto', autoOn());
-    if (autoOn()) restartBar();
+  function padLeft() { return parseFloat(getComputedStyle(track).paddingLeft || 0); }
+  function scrollToCard(i) {
+    track.scrollTo({ left: stages[i].offsetLeft - track.offsetLeft - padLeft(), behavior: still.matches ? 'auto' : 'smooth' });
   }
-  function stopAuto() { userPicked = true; syncAuto(); }
-
-  /* Advance when the gold timer bar finishes */
-  tabs.forEach(function (t) {
-    t.querySelector('.bar i').addEventListener('animationend', function () {
-      if (autoOn() && !section.classList.contains('paused')) show(cur + 1);
-    });
-  });
-
-  /* Tabs: click and arrow keys */
   tabs.forEach(function (t, i) {
-    t.addEventListener('click', function () { stopAuto(); show(i, { scroll: true }); });
+    t.addEventListener('click', function () { mark(i); scrollToCard(cur); });
     t.addEventListener('keydown', function (e) {
       var k = e.key, n = null;
       if (k === 'ArrowRight' || k === 'ArrowDown') n = cur + 1;
       if (k === 'ArrowLeft' || k === 'ArrowUp') n = cur - 1;
       if (k === 'Home') n = 0;
       if (k === 'End') n = stages.length - 1;
-      if (n !== null) { e.preventDefault(); stopAuto(); show(n, { scroll: true }); tabs[cur].focus(); }
+      if (n !== null) { e.preventDefault(); mark(n); scrollToCard(cur); tabs[cur].focus(); }
     });
   });
-
-  /* Desktop: hovering a stage opens it; clicking it keeps it open */
-  stages.forEach(function (s, i) {
-    s.addEventListener('mouseenter', function () { if (!phone.matches && i !== cur) show(i); });
-    s.addEventListener('click', function (e) {
-      if (phone.matches) return;
-      if (i !== cur) { e.preventDefault(); show(i); }
-      stopAuto();
-    });
-  });
-  track.addEventListener('mouseenter', function () { section.classList.add('paused'); });
-  track.addEventListener('mouseleave', function () { section.classList.remove('paused'); if (autoOn()) restartBar(); });
-  section.addEventListener('focusin', function () { section.classList.add('paused'); });
-  section.addEventListener('focusout', function () { section.classList.remove('paused'); });
-
-  /* Phones: the tabs follow the swipe */
   var ticking = false;
   track.addEventListener('scroll', function () {
     if (!phone.matches || ticking) return;
@@ -701,37 +717,28 @@
       ticking = false;
       var x = track.scrollLeft, best = 0, dist = Infinity;
       stages.forEach(function (s, k) {
-        var d = Math.abs(s.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0) - x);
+        var d = Math.abs(s.offsetLeft - track.offsetLeft - padLeft() - x);
         if (d < dist) { dist = d; best = k; }
       });
-      if (best !== cur) show(best);
+      if (best !== cur) mark(best);
     });
   }, { passive: true });
 
-  /* Entrance and auto-advance only while the section is on screen */
+  /* ---------- Entrance and photo loading when the section is on screen ---------- */
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
-        visible = en.isIntersecting;
-        if (visible) { section.classList.add('in'); loadPhotos(); }
-        syncAuto();
+        if (en.isIntersecting) { section.classList.add('in'); loadPhotos(); }
       });
     }, { threshold: 0.25 }).observe(section);
   } else {
     section.classList.add('in');
     loadPhotos();
-    visible = true;
-    syncAuto();
   }
 
-  document.addEventListener('visibilitychange', function () {
-    section.classList.toggle('paused', document.hidden);
-  });
-
   function onMode() {
-    setLinks();
-    syncAuto();
-    sizeOpen();
+    rest();
+    sizePanels();
     if (!phone.matches) stages.forEach(function (s) {
       var img = s.querySelector('.photo'), mono = s.querySelector('.mono');
       if (s.classList.contains('loaded') && !mono.getAttribute('src')) mono.src = img.currentSrc || img.src;
@@ -739,7 +746,8 @@
   }
   if (phone.addEventListener) phone.addEventListener('change', onMode); else phone.addListener(onMode);
 
-  show(0);
+  rest();
+  mark(0);
 })();
 </script>
 </body>
