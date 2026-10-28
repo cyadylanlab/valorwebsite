@@ -147,15 +147,46 @@
 
   /* The photo keeps the open-panel width at all times, so resizing a panel only
      changes how much of it shows. Nothing is re-scaled while the panels move. */
-  .ph {
+  /* Two photo layers per panel, each with a fixed width so nothing re-scales while
+     panels move: the open view (.ph) underneath, and the resting thumbnail (.rest)
+     on top, framed for the narrow panel. Opening a panel fades the thumbnail out. */
+  .ph, .rest {
     position: absolute;
     top: 0;
     height: var(--photo-h);
     left: 50%;
-    background: var(--ph, var(--black));
-    width: var(--open-w);
     transform: translateX(-50%);
+    background: var(--ph, var(--black));
   }
+  .ph { width: var(--open-w); }
+  .rest {
+    z-index: 1;
+    width: var(--eq-w, 280px);
+    transition: opacity 500ms ease;
+  }
+  .stage.is-on .rest { opacity: 0; }
+  .rest img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .rest-img { opacity: 0; transition: opacity 500ms ease; }
+  .loaded .rest-img { opacity: 1; }
+  /* Resting view is softly faded; closed panels go black-and-white and darker */
+  .rest::before, .rest::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 700ms ease;
+  }
+  .rest::before { background: #fff; opacity: .16; }
+  .rest::after { background: #000; opacity: 0; }
+  .has-on .rest::before { opacity: 0; }
+  .has-on .stage:not(.is-on) .rest::after { opacity: .5; }
   .ph picture, .ph img {
     position: absolute;
     inset: 0;
@@ -166,13 +197,13 @@
   .ph img { object-fit: cover; }
   .photo { opacity: 0; transition: opacity 500ms ease; }
   .loaded .photo { opacity: 1; }
-  /* Black-and-white copy for closed panels: drawn once, then only faded */
+  /* Black-and-white copy: drawn once, then only faded */
   .mono {
-    filter: grayscale(1) brightness(.5) contrast(1.05);
+    filter: grayscale(1) contrast(1.05);
     opacity: 0;
-    transition: opacity 800ms ease;
-    will-change: opacity;
+    transition: opacity 700ms ease;
   }
+  .loaded .mono { opacity: .4; }
   .has-on .loaded:not(.is-on) .mono { opacity: 1; }
 
   /* Gold edge that runs along the top of the open stage */
@@ -471,7 +502,7 @@
       transform: none;
       will-change: auto;
     }
-    .mono { display: none; }
+    .rest { display: none; }
     .stage::before { transform: scaleX(1); }
     .spine { display: none; }
     .plate, .stage.is-on .plate {
@@ -532,7 +563,8 @@
       <!-- STAGES -->
       <ul class="stages" id="stages">
         <li class="stage" id="stage-0" style="--ph: #595641">
-          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-grassroots-480.avif 480w, pathway-grassroots-720.avif 720w, pathway-grassroots-1000.avif 1000w, pathway-grassroots-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-grassroots-480.webp 480w, pathway-grassroots-720.webp 720w, pathway-grassroots-1000.webp 1000w, pathway-grassroots-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-grassroots-720.webp" width="1932" height="1990" alt="Two CYA coaches talking with a group of young players in red CYA jerseys" decoding="async" style="object-position: 50% 30%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 30%"></div>
+          <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 48% 50%"><img class="mono" alt="" decoding="async" style="object-position: 48% 50%"></div>
+          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-grassroots-480.avif 480w, pathway-grassroots-720.avif 720w, pathway-grassroots-1000.avif 1000w, pathway-grassroots-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-grassroots-480.webp 480w, pathway-grassroots-720.webp 720w, pathway-grassroots-1000.webp 1000w, pathway-grassroots-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-grassroots-720.webp" width="1932" height="1990" alt="Two CYA coaches talking with a group of young players in red CYA jerseys" decoding="async" style="object-position: 50% 30%"></picture></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U4 - U18</span><span class="spine-name">Grassroots</span></div>
           <div class="tag" aria-hidden="true"><span class="age">U4 - U18</span><span class="tag-title">Grassroots Soccer</span></div>
           <div class="plate">
@@ -543,7 +575,8 @@
           </div>
         </li>
         <li class="stage" id="stage-1" style="--ph: #4b4a33">
-          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-u7u8-480.avif 480w, pathway-u7u8-720.avif 720w, pathway-u7u8-1000.avif 1000w, pathway-u7u8-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-u7u8-480.webp 480w, pathway-u7u8-720.webp 720w, pathway-u7u8-1000.webp 1000w, pathway-u7u8-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-u7u8-720.webp" width="2080" height="1326" alt="A Valor U7-U8 group in gold Valor shirts with their coach on an indoor field" decoding="async" style="object-position: 50% 45%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 45%"></div>
+          <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 42% 50%"><img class="mono" alt="" decoding="async" style="object-position: 42% 50%"></div>
+          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-u7u8-480.avif 480w, pathway-u7u8-720.avif 720w, pathway-u7u8-1000.avif 1000w, pathway-u7u8-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-u7u8-480.webp 480w, pathway-u7u8-720.webp 720w, pathway-u7u8-1000.webp 1000w, pathway-u7u8-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-u7u8-720.webp" width="2080" height="1326" alt="A Valor U7-U8 group in gold Valor shirts with their coach on an indoor field" decoding="async" style="object-position: 50% 45%"></picture></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U7 - U8</span><span class="spine-name">U7-U8 Programs</span></div>
           <div class="tag" aria-hidden="true"><span class="age">U7 - U8</span><span class="tag-title">Valor U7-U8 Programs</span></div>
           <div class="plate">
@@ -554,7 +587,8 @@
           </div>
         </li>
         <li class="stage" id="stage-2" style="--ph: #433e32">
-          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-travel-480.avif 480w, pathway-travel-720.avif 720w, pathway-travel-1000.avif 1000w, pathway-travel-1153.avif 1153w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-travel-480.webp 480w, pathway-travel-720.webp 720w, pathway-travel-1000.webp 1000w, pathway-travel-1153.webp 1153w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-travel-720.webp" width="1153" height="857" alt="A Valor girls travel team in gold kits wearing tournament medals" decoding="async" style="object-position: 50% 92%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 92%"></div>
+          <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 50% 50%"><img class="mono" alt="" decoding="async" style="object-position: 50% 50%"></div>
+          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-travel-480.avif 480w, pathway-travel-720.avif 720w, pathway-travel-1000.avif 1000w, pathway-travel-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-travel-480.webp 480w, pathway-travel-720.webp 720w, pathway-travel-1000.webp 1000w, pathway-travel-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-travel-720.webp" width="1153" height="857" alt="A Valor girls travel team in gold kits wearing tournament medals" decoding="async" style="object-position: 50% 92%"></picture></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">U9 - U18</span><span class="spine-name">Travel</span></div>
           <div class="tag" aria-hidden="true"><span class="age">U9 - U18</span><span class="tag-title">Travel Soccer</span></div>
           <div class="plate">
@@ -565,7 +599,8 @@
           </div>
         </li>
         <li class="stage" id="stage-3" style="--ph: #444530">
-          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-prepro-480.avif 480w, pathway-prepro-720.avif 720w, pathway-prepro-777.avif 777w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-prepro-480.webp 480w, pathway-prepro-720.webp 720w, pathway-prepro-777.webp 777w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-prepro-720.webp" width="777" height="967" alt="A Valor goalkeeper in purple dropping to catch the ball" decoding="async" style="object-position: 50% 30%"></picture><img class="mono" alt="" aria-hidden="true" decoding="async" style="object-position: 50% 30%"></div>
+          <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 50% 40%"><img class="mono" alt="" decoding="async" style="object-position: 50% 40%"></div>
+          <div class="ph"><picture><source type="image/avif" data-srcset="pathway-prepro-480.avif 480w, pathway-prepro-720.avif 720w, pathway-prepro-1000.avif 1000w, pathway-prepro-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-prepro-480.webp 480w, pathway-prepro-720.webp 720w, pathway-prepro-1000.webp 1000w, pathway-prepro-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-prepro-720.webp" width="777" height="967" alt="A Valor goalkeeper in purple dropping to catch the ball" decoding="async" style="object-position: 50% 30%"></picture></div>
           <div class="spine" aria-hidden="true"><span class="spine-age">Pre-Pro</span><span class="spine-name">Pre-Pro</span></div>
           <div class="tag" aria-hidden="true"><span class="age">Pre-Pro</span><span class="tag-title">Pre-Pro Soccer</span></div>
           <div class="plate">
@@ -623,12 +658,13 @@
     stages.forEach(function (s) {
       var img = s.querySelector('.photo');
       var mono = s.querySelector('.mono');
+      var restImg = s.querySelector('.rest-img');
       Array.prototype.forEach.call(s.querySelectorAll('source[data-srcset]'), function (src) {
         src.srcset = src.getAttribute('data-srcset');
       });
       img.onload = function () {
         s.classList.add('loaded');
-        if (mono && !phone.matches) mono.src = img.currentSrc || img.src;
+        if (!phone.matches) restImg.src = mono.src = img.currentSrc || img.src;
       };
       img.src = img.getAttribute('data-src');
     });
@@ -740,8 +776,8 @@
     rest();
     sizePanels();
     if (!phone.matches) stages.forEach(function (s) {
-      var img = s.querySelector('.photo'), mono = s.querySelector('.mono');
-      if (s.classList.contains('loaded') && !mono.getAttribute('src')) mono.src = img.currentSrc || img.src;
+      var img = s.querySelector('.photo'), mono = s.querySelector('.mono'), restImg = s.querySelector('.rest-img');
+      if (s.classList.contains('loaded') && !mono.getAttribute('src')) restImg.src = mono.src = img.currentSrc || img.src;
     });
   }
   if (phone.addEventListener) phone.addEventListener('change', onMode); else phone.addListener(onMode);
