@@ -20,8 +20,7 @@
   Desktop: the four stages rest at equal width in color. Hovering one (or tabbing to
   its link) opens it with the full description; leaving the row returns to the
   resting view. Clicking an open stage goes to its program page.
-  Phones: a 2 x 2 grid of tiles; tapping one opens a full card that can be swiped
-  left or right to the others; "All programs" returns to the grid.
+  Phones: one full card per program; swipe left or right between them.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -397,13 +396,12 @@
      PHONES AND SMALL TABLETS: swipe row
      ========================================================= */
   /* =========================================================
-     PHONES: 2 x 2 grid of tiles; tap one to open a full card,
-     swipe left or right between cards, "All programs" goes back.
-     Both views fill the same fixed area, so the frame height never changes.
+     PHONES: one full card per program, swipe left or right between them,
+     with position bars underneath. Fixed height, so the frame never changes.
      ========================================================= */
   .mbar { display: none; }
   @media (max-width: 819px) {
-    :root { --m-area: 540px; --m-bar: 44px; --age-h: 34px; }
+    :root { --m-area: 540px; --m-bar: 42px; --age-h: 34px; }
     .pw { padding: 34px 0 30px; }
     .head { grid-template-columns: 1fr; gap: 0; margin-bottom: 18px; }
     .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
@@ -411,69 +409,16 @@
     .spine { display: none; }
     .stages { height: var(--m-area); }
 
-    /* ---- grid of tiles ---- */
-    .pw:not(.m-open) .stages {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 16px 10px;
-    }
-    .pw:not(.m-open) .stage {
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .pw:not(.m-open) .agebar { position: relative; flex: none; height: auto; margin-bottom: 7px; }
-    .pw:not(.m-open) .agebar .age { font-size: 12px; padding: 4px 8px 3px; letter-spacing: .14em; }
-    .pw:not(.m-open) .rest {
-      position: relative;
-      top: auto;
-      left: auto;
-      transform: none;
-      flex: 1 1 auto;
-      min-height: 0;
-      width: 100%;
-      height: auto;
-    }
-    .pw:not(.m-open) .stage:active .rest { opacity: .85; }
-    .pw:not(.m-open) .tag {
-      position: relative;
-      top: auto;
-      width: auto;
-      flex: none;
-      padding-top: 8px;
-    }
-    .pw:not(.m-open) .tag-title { font-size: clamp(14px, 5vw, 19px); line-height: 1; }
-    .pw:not(.m-open) .ph,
-    .pw:not(.m-open) .plate { display: none; }
-    .pw:not(.m-open) .stage::before { display: none; }
-
     /* ---- open card, swipe between them ---- */
+    .body { display: flex; flex-direction: column; }
     .m-open .mbar {
+      order: 2;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       height: var(--m-bar);
+      padding-top: 10px;
     }
-    .mback {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-      background: none;
-      border: 0;
-      cursor: pointer;
-      font-family: var(--display);
-      font-weight: 800;
-      font-size: 15px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--black);
-    }
-    .mback span { display: inline-block; width: 18px; height: 1.5px; background: currentColor; position: relative; }
-    .mback span::before { content: ""; position: absolute; left: 0; top: -4px; width: 8px; height: 8px; border-left: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }
     .dots { display: flex; gap: 6px; }
     .dot {
       width: 22px;
@@ -548,10 +493,6 @@
     .m-open .plate p { font-size: 15px; color: rgba(255, 255, 255, .82); margin-bottom: 16px; }
     .m-open .plate .go { margin-top: 0; color: #fff; border-color: var(--brass); }
 
-    /* quick fade when switching views */
-    .stages { animation: none; }
-    .swap .stages { animation: swapIn 260ms ease; }
-    @keyframes swapIn { from { opacity: 0; } to { opacity: 1; } }
   }
   @media (max-width: 380px) {
     .m-open .plate { padding: 16px 16px 18px; }
@@ -583,9 +524,8 @@
     </header>
 
     <div class="body">
-      <!-- PHONE BAR (only shows when a card is open on a phone) -->
+      <!-- PHONE POSITION BARS (phones only) -->
       <div class="mbar">
-        <button class="mback" type="button"><span aria-hidden="true"></span>All programs</button>
         <div class="dots" aria-label="Programs">
           <button class="dot" type="button" aria-label="Grassroots Soccer"></button>
           <button class="dot" type="button" aria-label="U7-U8 Programs"></button>
@@ -656,7 +596,6 @@
   var track = document.getElementById('stages');
   var stages = Array.prototype.slice.call(track.querySelectorAll('.stage'));
   var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
-  var back = section.querySelector('.mback');
   var phone = window.matchMedia('(max-width: 819px)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cur = 0;
@@ -747,7 +686,7 @@
     if (!phone.matches && !track.contains(e.target)) rest();
   });
 
-  /* ---------- Phones: 2 x 2 grid, tap to open a card, swipe between cards ---------- */
+  /* ---------- Phones: swipe between full cards; bars show position ---------- */
   function mark(i) {
     cur = (i + stages.length) % stages.length;
     dots.forEach(function (d, k) {
@@ -757,54 +696,10 @@
   }
   function padLeft() { return parseFloat(getComputedStyle(track).paddingLeft || 0); }
   function cardLeft(i) { return stages[i].offsetLeft - track.offsetLeft - padLeft(); }
-  function swap() {
-    section.classList.remove('swap');
-    void section.offsetWidth;
-    section.classList.add('swap');
+  function phoneMode() {
+    section.classList.toggle('m-open', phone.matches);
+    if (phone.matches) { track.scrollLeft = cardLeft(cur); }
   }
-  /* On phones, grid tiles act as buttons; on desktop they are plain list items */
-  function tileRoles() {
-    var asTiles = phone.matches && !section.classList.contains('m-open');
-    stages.forEach(function (s) {
-      if (asTiles) {
-        s.setAttribute('tabindex', '0');
-        s.setAttribute('role', 'button');
-        s.setAttribute('aria-label', s.querySelector('.plate h3').textContent + ', ' + s.querySelector('.agebar .age').textContent);
-      } else {
-        s.removeAttribute('tabindex');
-        s.removeAttribute('role');
-        s.removeAttribute('aria-label');
-      }
-    });
-  }
-  function openCard(i) {
-    swap();
-    section.classList.add('m-open');
-    tileRoles();
-    mark(i);
-    track.scrollLeft = cardLeft(cur);
-    var a = stages[cur].querySelector('.go');
-    if (a) a.focus({ preventScroll: true });
-  }
-  function closeCards() {
-    if (!section.classList.contains('m-open')) return;
-    swap();
-    section.classList.remove('m-open');
-    track.scrollLeft = 0;
-    tileRoles();
-  }
-  stages.forEach(function (s, i) {
-    s.addEventListener('click', function (e) {
-      if (!phone.matches || section.classList.contains('m-open')) return;
-      e.preventDefault();
-      openCard(i);
-    });
-  });
-  back.addEventListener('click', function () {
-    var was = cur;
-    closeCards();
-    stages[was].focus({ preventScroll: true });
-  });
   dots.forEach(function (d, i) {
     d.addEventListener('click', function () {
       mark(i);
@@ -813,7 +708,7 @@
   });
   var ticking = false;
   track.addEventListener('scroll', function () {
-    if (!phone.matches || !section.classList.contains('m-open') || ticking) return;
+    if (!phone.matches || ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       ticking = false;
@@ -825,13 +720,6 @@
       if (best !== cur) mark(best);
     });
   }, { passive: true });
-  /* Grid tiles are buttons for keyboards and screen readers */
-  stages.forEach(function (s, i) {
-    s.addEventListener('keydown', function (e) {
-      if (!phone.matches || section.classList.contains('m-open')) return;
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(i); }
-    });
-  });
 
   /* ---------- Entrance and photo loading when the section is on screen ---------- */
   /* Reveal as soon as any part of the section is visible (it may sit in a short
@@ -850,8 +738,7 @@
 
   function onMode() {
     rest();
-    section.classList.remove('m-open');
-    tileRoles();
+    phoneMode();
     sizePanels();
     if (!phone.matches) stages.forEach(function (s) {
       var img = s.querySelector('.photo'), mono = s.querySelector('.mono'), restImg = s.querySelector('.rest-img');
@@ -862,7 +749,7 @@
 
   rest();
   mark(0);
-  tileRoles();
+  phoneMode();
 })();
 </script>
 </body>
