@@ -34,6 +34,11 @@
   .brand .tag{margin-top:6px;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
   .brand .tag i{font-style:normal;color:var(--brass);padding:0 .35em}
 
+  /* if an image fails to load, keep its box and hide the alt text so nothing shifts */
+  .brand img,.track img{font-size:0;color:transparent;overflow:hidden;object-fit:contain}
+  .brand{min-width:0;overflow:hidden}
+  .brand .txt{min-width:0}
+
   /* logo rail */
   .rail{position:relative;overflow:hidden;display:flex;align-items:center;min-width:0}
   .track{--g:clamp(16px,2vw,34px);display:flex;align-items:center;list-style:none;margin:0;padding:0 18px;gap:var(--g);flex:none}
@@ -105,7 +110,7 @@
 <body data-ticker="always">
   <header class="vh">
     <a class="brand" href="https://www.virginiavalorfc.org/" target="_top" aria-label="Virginia Valor FC home">
-      <img src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png/v1/crop/x_87,y_79,w_2029,h_2029/fill/w_200,h_200,al_c,q_90,usm_0.66_1.00_0.01/crest.png" alt="Virginia Valor FC crest">
+      <img style="aspect-ratio:200/200" width="200" height="200" src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png/v1/crop/x_87,y_79,w_2029,h_2029/fill/w_200,h_200,al_c,q_90,usm_0.66_1.00_0.01/crest.png" alt="Virginia Valor FC crest">
       <span class="txt">
         <span class="name"><span class="n1">Virginia</span> <span class="n2">Valor FC</span></span>
         <span class="tag">One Club<i>|</i>One Community<i>|</i>Stronger Together</span>
@@ -115,24 +120,24 @@
     <nav class="rail" aria-label="Leagues and partners">
       <ul class="track">
         <li class="lbl" aria-hidden="true"><span>Leagues</span></li>
-        <li><a href="https://www.virginiavalorfc.org/fvuecnl" target="_top" title="Fairfax Virginia Union ECNL"><img src="https://static.wixstatic.com/media/1df62c_9a8eed9075b34c48b8b0726aaea68986~mv2.png/v1/crop/x_0,y_536,w_4080,h_1253/fill/w_313,h_96,al_c,q_90,usm_0.66_1.00_0.01/fvu.png" alt="Fairfax Virginia Union ECNL" style="--h:21.1px" loading="eager" decoding="async"></a></li>
-        <li><a href="https://www.vapremierleague.com/" target="_blank" rel="noopener" title="Virginia Premier League"><img src="https://static.wixstatic.com/media/1df62c_b2566983c17641038240f9954956b4f1~mv2.png/v1/crop/x_142,y_378,w_1868,h_1381/fill/w_130,h_96,al_c,q_90,usm_0.66_1.00_0.01/vpl.png" alt="Virginia Premier League" style="--h:32.7px" loading="eager" decoding="async"></a></li>
-        <li><a href="http://www.ncsl-soccer.com/" target="_blank" rel="noopener" title="NCSL"><img src="https://static.wixstatic.com/media/1df62c_cef1d6926e2d494fb5000e1cee4b7f15~mv2.png/v1/crop/x_27,y_340,w_2098,h_1478/fill/w_136,h_96,al_c,q_90,usm_0.66_1.00_0.01/ncsl.png" alt="NCSL" style="--h:32.0px" loading="eager" decoding="async"></a></li>
-        <li><a href="https://www.sylsoccer.com/" target="_blank" rel="noopener" title="USL-Y"><img src="https://static.wixstatic.com/media/1df62c_e679a4abc67b4d0ea56c48a220ae7286~mv2.png/v1/crop/x_75,y_1163,w_3100,h_903/fill/w_330,h_96,al_c,q_90,usm_0.66_1.00_0.01/usly.png" alt="USL-Y" style="--h:20.6px" loading="eager" decoding="async"></a></li>
-        <li><a href="https://www.usysnationalleague.com/" target="_blank" rel="noopener" title="USYS National League"><img src="https://static.wixstatic.com/media/1df62c_0e98b7cc78cd4135aab608c6b624a5bb~mv2.png/v1/crop/x_340,y_50,w_1471,h_2052/fill/w_69,h_96,al_c,q_90,usm_0.66_1.00_0.01/usysnl.png" alt="USYS National League" style="--h:42px" loading="eager" decoding="async"></a></li>
-        <li><a href="http://www.usyouthsoccer.org/" target="_blank" rel="noopener" title="US Youth Soccer"><img src="https://static.wixstatic.com/media/1df62c_a2958c40e0ae427c9fbcf5e0ec06ffff~mv2.png/v1/crop/x_0,y_661,w_2160,h_830/fill/w_250,h_96,al_c,q_90,usm_0.66_1.00_0.01/usys.png" alt="US Youth Soccer" style="--h:23.6px" loading="eager" decoding="async"></a></li>
-        <li><a href="https://usclubsoccer.org/" target="_blank" rel="noopener" title="US Club Soccer"><img src="https://static.wixstatic.com/media/1df62c_d547ec761b2a40a6a635c31a512d0083~mv2.png/v1/crop/x_0,y_614,w_2160,h_923/fill/w_225,h_96,al_c,q_90,usm_0.66_1.00_0.01/usclub.png" alt="US Club Soccer" style="--h:24.9px" loading="eager" decoding="async"></a></li>
-        <li><a href="https://www.vysa.com/" target="_blank" rel="noopener" title="Virginia Youth Soccer Association"><img src="https://static.wixstatic.com/media/e52530_2589d32a5448485694bdf2a996f4c376~mv2.png/v1/crop/x_0,y_61,w_1493,h_1748/fill/w_82,h_96,al_c,q_90,usm_0.66_1.00_0.01/vysa.png" alt="Virginia Youth Soccer Association" style="--h:41.2px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.virginiavalorfc.org/fvuecnl" target="_top" title="Fairfax Virginia Union ECNL"><img width="313" height="96" src="https://static.wixstatic.com/media/1df62c_9a8eed9075b34c48b8b0726aaea68986~mv2.png/v1/crop/x_0,y_536,w_4080,h_1253/fill/w_313,h_96,al_c,q_90,usm_0.66_1.00_0.01/fvu.png" alt="Fairfax Virginia Union ECNL" style="aspect-ratio:313/96;--h:21.1px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.vapremierleague.com/" target="_blank" rel="noopener" title="Virginia Premier League"><img width="130" height="96" src="https://static.wixstatic.com/media/1df62c_b2566983c17641038240f9954956b4f1~mv2.png/v1/crop/x_142,y_378,w_1868,h_1381/fill/w_130,h_96,al_c,q_90,usm_0.66_1.00_0.01/vpl.png" alt="Virginia Premier League" style="aspect-ratio:130/96;--h:32.7px" loading="eager" decoding="async"></a></li>
+        <li><a href="http://www.ncsl-soccer.com/" target="_blank" rel="noopener" title="NCSL"><img width="136" height="96" src="https://static.wixstatic.com/media/1df62c_cef1d6926e2d494fb5000e1cee4b7f15~mv2.png/v1/crop/x_27,y_340,w_2098,h_1478/fill/w_136,h_96,al_c,q_90,usm_0.66_1.00_0.01/ncsl.png" alt="NCSL" style="aspect-ratio:136/96;--h:32.0px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.sylsoccer.com/" target="_blank" rel="noopener" title="USL-Y"><img width="330" height="96" src="https://static.wixstatic.com/media/1df62c_e679a4abc67b4d0ea56c48a220ae7286~mv2.png/v1/crop/x_75,y_1163,w_3100,h_903/fill/w_330,h_96,al_c,q_90,usm_0.66_1.00_0.01/usly.png" alt="USL-Y" style="aspect-ratio:330/96;--h:20.6px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.usysnationalleague.com/" target="_blank" rel="noopener" title="USYS National League"><img width="69" height="96" src="https://static.wixstatic.com/media/1df62c_0e98b7cc78cd4135aab608c6b624a5bb~mv2.png/v1/crop/x_340,y_50,w_1471,h_2052/fill/w_69,h_96,al_c,q_90,usm_0.66_1.00_0.01/usysnl.png" alt="USYS National League" style="aspect-ratio:69/96;--h:42px" loading="eager" decoding="async"></a></li>
+        <li><a href="http://www.usyouthsoccer.org/" target="_blank" rel="noopener" title="US Youth Soccer"><img width="250" height="96" src="https://static.wixstatic.com/media/1df62c_a2958c40e0ae427c9fbcf5e0ec06ffff~mv2.png/v1/crop/x_0,y_661,w_2160,h_830/fill/w_250,h_96,al_c,q_90,usm_0.66_1.00_0.01/usys.png" alt="US Youth Soccer" style="aspect-ratio:250/96;--h:23.6px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://usclubsoccer.org/" target="_blank" rel="noopener" title="US Club Soccer"><img width="225" height="96" src="https://static.wixstatic.com/media/1df62c_d547ec761b2a40a6a635c31a512d0083~mv2.png/v1/crop/x_0,y_614,w_2160,h_923/fill/w_225,h_96,al_c,q_90,usm_0.66_1.00_0.01/usclub.png" alt="US Club Soccer" style="aspect-ratio:225/96;--h:24.9px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.vysa.com/" target="_blank" rel="noopener" title="Virginia Youth Soccer Association"><img width="82" height="96" src="https://static.wixstatic.com/media/e52530_2589d32a5448485694bdf2a996f4c376~mv2.png/v1/crop/x_0,y_61,w_1493,h_1748/fill/w_82,h_96,al_c,q_90,usm_0.66_1.00_0.01/vysa.png" alt="Virginia Youth Soccer Association" style="aspect-ratio:82/96;--h:41.2px" loading="eager" decoding="async"></a></li>
         <li class="lbl" aria-hidden="true"><span>Partners</span></li>
-        <li><span title="adidas"><img src="https://static.wixstatic.com/media/1df62c_a8ab6a4cad0b423bb45595abbd53a00c~mv2.png/v1/crop/x_20,y_341,w_2112,h_1419/fill/w_143,h_96,al_c,q_90,usm_0.66_1.00_0.01/adidas.png" alt="adidas" style="--h:31.2px" loading="eager" decoding="async"></span></li>
-        <li><a href="https://www.soccer.com/club/#/2000470201/fanwear?category=Shirts" target="_blank" rel="noopener" title="soccer.com Valor fan wear"><img src="https://static.wixstatic.com/media/1df62c_e6e926c0fec64339a6e97bc267312103~mv2.png/v1/crop/x_19,y_1505,w_3148,h_251/fill/w_1204,h_96,al_c,q_90,usm_0.66_1.00_0.01/soccercom.png" alt="soccer.com Valor fan wear" style="--h:13px" loading="eager" decoding="async"></a></li>
+        <li><span title="adidas"><img width="143" height="96" src="https://static.wixstatic.com/media/1df62c_a8ab6a4cad0b423bb45595abbd53a00c~mv2.png/v1/crop/x_20,y_341,w_2112,h_1419/fill/w_143,h_96,al_c,q_90,usm_0.66_1.00_0.01/adidas.png" alt="adidas" style="aspect-ratio:143/96;--h:31.2px" loading="eager" decoding="async"></span></li>
+        <li><a href="https://www.soccer.com/club/#/2000470201/fanwear?category=Shirts" target="_blank" rel="noopener" title="soccer.com Valor fan wear"><img width="1204" height="96" src="https://static.wixstatic.com/media/1df62c_e6e926c0fec64339a6e97bc267312103~mv2.png/v1/crop/x_19,y_1505,w_3148,h_251/fill/w_1204,h_96,al_c,q_90,usm_0.66_1.00_0.01/soccercom.png" alt="soccer.com Valor fan wear" style="aspect-ratio:1204/96;--h:13px" loading="eager" decoding="async"></a></li>
         <li class="lbl" aria-hidden="true"><span>Programs</span></li>
-        <li><a href="https://www.virginiavalorfc.org/u8futures" target="_top" title="U8 Valor Futures"><img src="https://static.wixstatic.com/media/1df62c_8f8eab5bba694c2bbc99b12817c42356~mv2.png/v1/crop/x_41,y_9,w_1252,h_976/fill/w_123,h_96,al_c,q_90,usm_0.66_1.00_0.01/futures.png" alt="U8 Valor Futures" style="--h:33.6px" loading="eager" decoding="async"></a></li>
+        <li><a href="https://www.virginiavalorfc.org/u8futures" target="_top" title="U8 Valor Futures"><img width="123" height="96" src="https://static.wixstatic.com/media/1df62c_8f8eab5bba694c2bbc99b12817c42356~mv2.png/v1/crop/x_41,y_9,w_1252,h_976/fill/w_123,h_96,al_c,q_90,usm_0.66_1.00_0.01/futures.png" alt="U8 Valor Futures" style="aspect-ratio:123/96;--h:33.6px" loading="eager" decoding="async"></a></li>
       </ul>
     </nav>
 
     <a class="join" href="https://playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc0NjIwNTc2MHxXYWJYeFVYQnVjTUtkdlZYek91TWJNNm1ad0pUeDVVWkw5YldoSHNFMm9NPQ==" target="_blank" rel="noopener">
-      <span class="big">Join Valor</span>
+      <span class="big">Join a Team</span>
       <span class="sub">Sign up on PlayMetrics</span>
     </a>
   </header>
