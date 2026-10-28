@@ -569,6 +569,9 @@
    fit    "flyer" for graphics with words on them (always shown whole),
           "photo" for pictures that can be cropped
    focus  for photos and videos: which part to keep when cropped, e.g. "50% 30%"
+   crop   optional, for tall graphics: { keepTop, ends } in the image's own pixels.
+          The page shows as much as fits, never starting below keepTop, and ends the
+          picture at the first of the "ends" (clean breaks between text blocks) that fits.
    link, cta  where the button goes and what it says (leave link out for no button)
    newTab true for links outside virginiavalorfc.org
    video  a Wix video id (the part after /video/ in a video.wixstatic.com link),
@@ -597,7 +600,7 @@ var NEWS = [
     short: "ISlide Store",
     title: "Valor x ISlide Store",
     text: "Open through November 15. Slides, slippers and socks with the Valor crest, in adult and youth sizes.",
-    image: "images/IMG_9034.WEBP", width: 1080, height: 1920, fit: "flyer",
+    image: "images/IMG_9034.WEBP", width: 1080, height: 1920, fit: "photo", focus: "50% 25%",
     link: "https://www.virginiavalorfc.org/valorislide", cta: "Shop the store"
   },
   {
@@ -605,7 +608,8 @@ var NEWS = [
     short: "Pitch Pack",
     title: "The Valor Bag",
     text: "Use code VALOR for 20% off the Pitch Pack uniform organizer with the Valor crest and your number.",
-    image: "images/IMG_9035.WEBP", width: 1080, height: 1920, fit: "flyer",
+    image: "images/IMG_9035.WEBP", width: 1080, height: 1920, fit: "photo", focus: "50% 23%",
+    crop: { keepTop: 230, ends: [1505, 1325, 1050] },
     link: "https://www.virginiavalorfc.org/valorpitchpack", cta: "Shop the bag"
   },
   {
@@ -734,7 +738,7 @@ var NEWS = [
     var d = el('button', 'dot'); d.type = 'button'; d.setAttribute('aria-label', n.tag + ': ' + n.title);
     dotsBox.appendChild(d);
 
-    return { li: li, full: full, mono: mono, vid: vid, link: btn && btn.tagName === 'A' ? btn : null, dot: d };
+    return { n: n, media: media, li: li, full: full, mono: mono, vid: vid, link: btn && btn.tagName === 'A' ? btn : null, dot: d };
   });
   var dots = items.map(function (x) { return x.dot; });
 
@@ -754,6 +758,24 @@ var NEWS = [
   if ('ResizeObserver' in window) new ResizeObserver(sizePanels).observe(track);
   else window.addEventListener('resize', sizePanels);
 
+  /* ---------- Tall graphics: pick the crop that fits this box size ---------- */
+  function applyCrops() {
+    items.forEach(function (x) {
+      var c = x.n.crop;
+      if (!c || !x.n.width || !x.n.height) return;
+      var r = x.media.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      var seen = x.n.width * r.height / r.width; /* how many image pixels tall the box shows */
+      if (seen >= x.n.height) return;
+      var start = c.keepTop;
+      for (var k = 0; k < c.ends.length; k++) {
+        if (c.ends[k] - seen <= c.keepTop) { start = Math.max(0, c.ends[k] - seen); break; }
+      }
+      var pos = '50% ' + (100 * start / (x.n.height - seen)).toFixed(2) + '%';
+      x.full.style.objectPosition = x.mono.style.objectPosition = pos;
+    });
+  }
+
   /* ---------- Phones: match every caption to the tallest one so all cards and images line up ---------- */
   var plateW = 0;
   function matchPlates() {
@@ -768,6 +790,9 @@ var NEWS = [
     if (tallest) track.style.setProperty('--m-plate', Math.ceil(tallest) + 'px');
   }
   matchPlates();
+  applyCrops();
+  if ('ResizeObserver' in window) new ResizeObserver(function () { requestAnimationFrame(applyCrops); }).observe(track);
+  else window.addEventListener('resize', applyCrops);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { plateW = 0; matchPlates(); });
   if ('ResizeObserver' in window) new ResizeObserver(matchPlates).observe(track);
   else window.addEventListener('resize', matchPlates);
