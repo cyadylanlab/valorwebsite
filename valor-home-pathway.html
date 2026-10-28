@@ -266,9 +266,10 @@
   .has-on .tag { opacity: 0; transition: opacity 150ms ease; }
   .tag-title {
     display: block;
+    white-space: nowrap;
     font-family: var(--display);
     font-weight: 900;
-    font-size: 30px;
+    font-size: clamp(22px, 2.2vw, 30px);
     line-height: .95;
     text-transform: uppercase;
     color: var(--black);
@@ -444,7 +445,7 @@
       flex: none;
       padding-top: 8px;
     }
-    .pw:not(.m-open) .tag-title { font-size: 19px; line-height: 1; }
+    .pw:not(.m-open) .tag-title { font-size: clamp(14px, 5vw, 19px); line-height: 1; }
     .pw:not(.m-open) .ph,
     .pw:not(.m-open) .plate { display: none; }
     .pw:not(.m-open) .stage::before { display: none; }
@@ -557,7 +558,6 @@
     .m-open .plate h3 { font-size: 26px; margin-bottom: 6px; }
     .m-open .plate p { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
     .go { padding: 10px 14px 9px; font-size: 14px; }
-    .pw:not(.m-open) .tag-title { font-size: 17px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -588,7 +588,7 @@
         <button class="mback" type="button"><span aria-hidden="true"></span>All programs</button>
         <div class="dots" aria-label="Programs">
           <button class="dot" type="button" aria-label="Grassroots Soccer"></button>
-          <button class="dot" type="button" aria-label="Valor U7-U8 Programs"></button>
+          <button class="dot" type="button" aria-label="U7-U8 Programs"></button>
           <button class="dot" type="button" aria-label="Travel Soccer"></button>
           <button class="dot" type="button" aria-label="Pre-Pro Soccer"></button>
         </div>
@@ -612,9 +612,9 @@
           <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 42% 50%"><img class="mono" alt="" decoding="async" style="object-position: 42% 50%"></div>
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-u7u8-480.avif 480w, pathway-u7u8-720.avif 720w, pathway-u7u8-1000.avif 1000w, pathway-u7u8-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-u7u8-480.webp 480w, pathway-u7u8-720.webp 720w, pathway-u7u8-1000.webp 1000w, pathway-u7u8-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-u7u8-720.webp" width="2080" height="1326" alt="A Valor U7-U8 group in gold Valor shirts with their coach on an indoor field" decoding="async" style="object-position: 50% 45%"></picture></div>
           <div class="spine" aria-hidden="true"><span class="spine-name">U7-U8 Programs</span></div>
-          <div class="tag" aria-hidden="true"><span class="tag-title">Valor U7-U8 Programs</span></div>
+          <div class="tag" aria-hidden="true"><span class="tag-title">U7-U8 Programs</span></div>
           <div class="plate">
-            <h3>Valor U7-U8 Programs</h3>
+            <h3>U7-U8 Programs</h3>
             <p>Our Valor Rising programs are designed to provide players with the opportunity to train and prepare for the journey with Virginia Valor FC at U9 through U18.</p>
             <a class="go" href="https://www.virginiavalorfc.org/u8futures" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
