@@ -8,7 +8,7 @@
   HOMEPAGE PLAYER PATHWAY SECTION
   Embed with a Wix HTML iframe:
     https://cyadylanlab.github.io/valorwebsite/valor-home-pathway.html
-  Wix iframe heights: desktop 800px, mobile 860px. Both stay the same at any width.
+  Wix iframe heights: desktop 800px, mobile 810px. Both stay the same at any width.
   The page never scrolls inside its own frame, so a frame a little taller than needed is safe.
 
   PHOTOS live in the top level of the repo, next to this file, as pathway-<stage>-<width>.avif and .webp
@@ -20,7 +20,7 @@
   Desktop: the four stages rest at equal width in color. Hovering one (or tabbing to
   its link) opens it with the full description; leaving the row returns to the
   resting view. Clicking an open stage goes to its program page.
-  Phones: the stages become a swipe row; the tabs follow the swipe.
+  Phones: the stages become a swipe row of cards.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,8 +42,9 @@
     --rise: cubic-bezier(.16, 1, .3, 1);
     --swing: cubic-bezier(.65, 0, .2, 1);
     --open-w: 640px; /* set from the real width by the script */
+    --age-h: 42px;
     --photo-h: 356px;
-    --cap-h: 204px;
+    --cap-h: 166px;
   }
 
   * { box-sizing: border-box; }
@@ -128,7 +129,7 @@
   .stages {
     display: flex;
     gap: 10px;
-    height: calc(var(--photo-h) + var(--cap-h));
+    height: calc(var(--age-h) + var(--photo-h) + var(--cap-h));
     margin: 0;
     padding: 0;
     list-style: none;
@@ -152,7 +153,7 @@
      on top, framed for the narrow panel. Opening a panel fades the thumbnail out. */
   .ph, .rest {
     position: absolute;
-    top: 0;
+    top: var(--age-h);
     height: var(--photo-h);
     left: 50%;
     transform: translateX(-50%);
@@ -211,7 +212,7 @@
     content: "";
     position: absolute;
     z-index: 3;
-    left: 0; top: 0;
+    left: 0; top: var(--age-h);
     height: 5px;
     width: 100%;
     background: var(--gold);
@@ -225,27 +226,18 @@
   .spine {
     position: absolute;
     z-index: 2;
-    top: 0;
+    top: var(--age-h);
     left: 0;
     right: 0;
     height: var(--photo-h);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 22px 18px 24px;
     opacity: 0;
     transition: opacity 250ms ease;
   }
   .has-on .stage:not(.is-on) .spine { opacity: 1; transition: opacity 400ms ease 250ms; }
-  .spine-age {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: 17px;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--brass);
-    white-space: nowrap;
-  }
   .spine-name {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -265,13 +257,12 @@
     position: absolute;
     z-index: 2;
     left: 0;
-    top: var(--photo-h);
+    top: calc(var(--age-h) + var(--photo-h));
     width: var(--eq-w, 280px);
     padding-top: 18px;
     transition: opacity 400ms ease 250ms;
   }
   .has-on .tag { opacity: 0; transition: opacity 150ms ease; }
-  .tag .age { display: table; }
   .tag-title {
     display: block;
     font-family: var(--display);
@@ -288,7 +279,7 @@
     position: absolute;
     z-index: 2;
     left: 0;
-    top: var(--photo-h);
+    top: calc(var(--age-h) + var(--photo-h));
     width: var(--open-w);
     height: var(--cap-h);
     padding: 18px 0 0;
@@ -298,8 +289,20 @@
     align-content: start;
     color: var(--ink);
   }
-  .plate .age, .plate h3, .plate p { grid-column: 1; }
-  .plate .go { grid-column: 2; grid-row: 1 / span 3; align-self: start; margin-top: 2px; }
+  .plate h3, .plate p { grid-column: 1; }
+  .plate .go { grid-column: 2; grid-row: 1 / span 2; align-self: start; margin-top: 2px; }
+
+  /* Age tag sits above each photo and stays put; gold when open or resting, muted when narrowed */
+  .agebar {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: var(--age-h);
+    white-space: nowrap;
+  }
+  .agebar .age { margin: 0; transition: background-color 400ms ease; }
+  .has-on .stage:not(.is-on) .agebar .age { background: #B9B4A7; }
   .plate > * {
     opacity: 0;
     transform: translateY(14px);
@@ -363,73 +366,6 @@
   .go:hover span { width: 32px; }
 
   /* =========================================================
-     TABS (the age rail under the stages)
-     ========================================================= */
-  .rail {
-    display: none;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 14px;
-  }
-  .tab {
-    display: block;
-    width: 100%;
-    padding: 0;
-    text-align: left;
-    background: none;
-    border: 0;
-    cursor: pointer;
-  }
-  .bar {
-    display: block;
-    position: relative;
-    height: 3px;
-    background: var(--line);
-    overflow: hidden;
-  }
-  .bar i {
-    position: absolute;
-    inset: 0;
-    background: var(--gold);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  .tab.is-on .bar i { transform: scaleX(1); background: var(--gold); }
-
-  .tab-age {
-    display: block;
-    margin-top: 10px;
-    font-family: var(--display);
-    font-weight: 900;
-    font-size: clamp(20px, 1.8vw, 27px);
-    line-height: 1;
-    text-transform: uppercase;
-    color: #B9B4A7;
-    white-space: nowrap;
-    transition: color 300ms ease;
-  }
-  .tab-name {
-    display: none;
-    margin-top: 4px;
-    font-size: 14px;
-    color: #9A958A;
-    transition: color 300ms ease;
-  }
-  .tab:hover .tab-age, .tab.is-on .tab-age { color: var(--black); }
-  .tab:hover .tab-name, .tab.is-on .tab-name { color: var(--gold); }
-
-  @media (min-width: 820px) and (max-width: 1180px) {
-    :root { --photo-h: 316px; --cap-h: 244px; }
-    .plate { grid-template-columns: minmax(0, 1fr); }
-    .plate .go { grid-column: 1; grid-row: auto; margin-top: 14px; justify-self: start; }
-    .plate h3 { font-size: 32px; }
-  }
-
-  @media (min-width: 820px) and (max-width: 939px) {
-    :root { --photo-h: 296px; --cap-h: 264px; }
-  }
-
-  /* =========================================================
      ENTRANCE (runs once when the section scrolls into view)
      ========================================================= */
   .js .title .ln > span { transform: translateY(105%); transition: transform 1000ms var(--rise); }
@@ -464,10 +400,7 @@
     .title { font-size: clamp(34px, 12.4vw, 60px); white-space: nowrap; }
     .lede { justify-self: start; }
 
-    .rail { display: grid; order: -1; margin: 0 0 16px; gap: 8px; }
     .tag { display: none; }
-    .tab-age { font-size: 19px; margin-top: 10px; }
-    .tab-name { display: none; }
 
     .body { display: flex; flex-direction: column; }
     .stages {
@@ -503,6 +436,7 @@
       will-change: auto;
     }
     .rest { display: none; }
+    .agebar { position: relative; flex: none; }
     .stage::before { transform: scaleX(1); }
     .spine { display: none; }
     .plate, .stage.is-on .plate {
@@ -529,7 +463,6 @@
   }
   @media (max-width: 380px) {
     .stage, .stage.is-on { flex-basis: 90%; }
-    .tab-age { font-size: 16px; }
     .lede { font-size: 14.5px; }
     .plate, .stage.is-on .plate { padding: 18px 16px 20px; }
     .plate h3 { font-size: 28px; }
@@ -563,48 +496,48 @@
       <!-- STAGES -->
       <ul class="stages" id="stages">
         <li class="stage" id="stage-0" style="--ph: #595641">
+          <div class="agebar"><span class="age">U4 - U18</span></div>
           <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 48% 50%"><img class="mono" alt="" decoding="async" style="object-position: 48% 50%"></div>
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-grassroots-480.avif 480w, pathway-grassroots-720.avif 720w, pathway-grassroots-1000.avif 1000w, pathway-grassroots-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-grassroots-480.webp 480w, pathway-grassroots-720.webp 720w, pathway-grassroots-1000.webp 1000w, pathway-grassroots-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-grassroots-720.webp" width="1932" height="1990" alt="Two CYA coaches talking with a group of young players in red CYA jerseys" decoding="async" style="object-position: 50% 30%"></picture></div>
-          <div class="spine" aria-hidden="true"><span class="spine-age">U4 - U18</span><span class="spine-name">Grassroots</span></div>
-          <div class="tag" aria-hidden="true"><span class="age">U4 - U18</span><span class="tag-title">Grassroots Soccer</span></div>
+          <div class="spine" aria-hidden="true"><span class="spine-name">Grassroots</span></div>
+          <div class="tag" aria-hidden="true"><span class="tag-title">Grassroots Soccer</span></div>
           <div class="plate">
-            <span class="age">U4 - U18</span>
             <h3>Grassroots Soccer</h3>
             <p>Both CYA and SYA Soccer offer U4-U8 recreational soccer programs. Virginia Valor FC is proud to be the travel destination club for both CYA and SYA players.</p>
             <a class="go" href="https://www.virginiavalorfc.org/grassroots-soccer" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
         <li class="stage" id="stage-1" style="--ph: #4b4a33">
+          <div class="agebar"><span class="age">U7 - U8</span></div>
           <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 42% 50%"><img class="mono" alt="" decoding="async" style="object-position: 42% 50%"></div>
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-u7u8-480.avif 480w, pathway-u7u8-720.avif 720w, pathway-u7u8-1000.avif 1000w, pathway-u7u8-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-u7u8-480.webp 480w, pathway-u7u8-720.webp 720w, pathway-u7u8-1000.webp 1000w, pathway-u7u8-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-u7u8-720.webp" width="2080" height="1326" alt="A Valor U7-U8 group in gold Valor shirts with their coach on an indoor field" decoding="async" style="object-position: 50% 45%"></picture></div>
-          <div class="spine" aria-hidden="true"><span class="spine-age">U7 - U8</span><span class="spine-name">U7-U8 Programs</span></div>
-          <div class="tag" aria-hidden="true"><span class="age">U7 - U8</span><span class="tag-title">Valor U7-U8 Programs</span></div>
+          <div class="spine" aria-hidden="true"><span class="spine-name">U7-U8 Programs</span></div>
+          <div class="tag" aria-hidden="true"><span class="tag-title">Valor U7-U8 Programs</span></div>
           <div class="plate">
-            <span class="age">U7 - U8</span>
             <h3>Valor U7-U8 Programs</h3>
             <p>Our Valor Rising programs are designed to provide players with the opportunity to train and prepare for the journey with Virginia Valor FC at U9 through U18.</p>
             <a class="go" href="https://www.virginiavalorfc.org/u8futures" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
         <li class="stage" id="stage-2" style="--ph: #433e32">
+          <div class="agebar"><span class="age">U9 - U18</span></div>
           <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 50% 50%"><img class="mono" alt="" decoding="async" style="object-position: 50% 50%"></div>
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-travel-480.avif 480w, pathway-travel-720.avif 720w, pathway-travel-1000.avif 1000w, pathway-travel-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-travel-480.webp 480w, pathway-travel-720.webp 720w, pathway-travel-1000.webp 1000w, pathway-travel-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-travel-720.webp" width="1153" height="857" alt="A Valor girls travel team in gold kits wearing tournament medals" decoding="async" style="object-position: 50% 92%"></picture></div>
-          <div class="spine" aria-hidden="true"><span class="spine-age">U9 - U18</span><span class="spine-name">Travel</span></div>
-          <div class="tag" aria-hidden="true"><span class="age">U9 - U18</span><span class="tag-title">Travel Soccer</span></div>
+          <div class="spine" aria-hidden="true"><span class="spine-name">Travel</span></div>
+          <div class="tag" aria-hidden="true"><span class="tag-title">Travel Soccer</span></div>
           <div class="plate">
-            <span class="age">U9 - U18</span>
             <h3>Travel Soccer</h3>
             <p>The Virginia Valor FC program is one of the highest levels of development environments in the region for players U9 through U18 in the Northern Virginia and DMV area.</p>
             <a class="go" href="https://www.virginiavalorfc.org/travel-soccer" target="_top">View program <span aria-hidden="true"></span></a>
           </div>
         </li>
         <li class="stage" id="stage-3" style="--ph: #444530">
+          <div class="agebar"><span class="age">Pre-Pro</span></div>
           <div class="rest" aria-hidden="true"><img class="rest-img" alt="" decoding="async" style="object-position: 50% 40%"><img class="mono" alt="" decoding="async" style="object-position: 50% 40%"></div>
           <div class="ph"><picture><source type="image/avif" data-srcset="pathway-prepro-480.avif 480w, pathway-prepro-720.avif 720w, pathway-prepro-1000.avif 1000w, pathway-prepro-1400.avif 1400w" sizes="(max-width: 819px) 80vw, 720px"><source type="image/webp" data-srcset="pathway-prepro-480.webp 480w, pathway-prepro-720.webp 720w, pathway-prepro-1000.webp 1000w, pathway-prepro-1400.webp 1400w" sizes="(max-width: 819px) 80vw, 720px"><img class="photo" data-src="pathway-prepro-720.webp" width="777" height="967" alt="A Valor goalkeeper in purple dropping to catch the ball" decoding="async" style="object-position: 50% 30%"></picture></div>
-          <div class="spine" aria-hidden="true"><span class="spine-age">Pre-Pro</span><span class="spine-name">Pre-Pro</span></div>
-          <div class="tag" aria-hidden="true"><span class="age">Pre-Pro</span><span class="tag-title">Pre-Pro Soccer</span></div>
+          <div class="spine" aria-hidden="true"><span class="spine-name">Pre-Pro</span></div>
+          <div class="tag" aria-hidden="true"><span class="tag-title">Pre-Pro Soccer</span></div>
           <div class="plate">
-            <span class="age">Pre-Pro</span>
             <h3>Pre-Pro Soccer</h3>
             <p>Our semiprofessional developmental soccer program competes in the CCL Pro 23 and is for college and semi-pro level players.</p>
             <a class="go" href="https://www.virginiavalorfc.org/copy-of-ccl-pro-23" target="_top">View program <span aria-hidden="true"></span></a>
@@ -612,13 +545,6 @@
         </li>
       </ul>
 
-      <!-- TABS -->
-      <div class="rail" role="tablist" aria-label="Pathway stages">
-        <button class="tab is-on" id="tab-0" role="tab" aria-selected="true" aria-controls="stage-0"><span class="bar"><i></i></span><span class="tab-age">U4 - U18</span><span class="tab-name">Grassroots Soccer</span></button>
-        <button class="tab" id="tab-1" role="tab" aria-selected="false" aria-controls="stage-1" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">U7 - U8</span><span class="tab-name">Valor U7-U8 Programs</span></button>
-        <button class="tab" id="tab-2" role="tab" aria-selected="false" aria-controls="stage-2" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">U9 - U18</span><span class="tab-name">Travel Soccer</span></button>
-        <button class="tab" id="tab-3" role="tab" aria-selected="false" aria-controls="stage-3" tabindex="-1"><span class="bar"><i></i></span><span class="tab-age">Pre-Pro</span><span class="tab-name">Pre-Pro Soccer</span></button>
-      </div>
     </div>
   </div>
 </section>
@@ -629,7 +555,7 @@
   var section = document.getElementById('pathway');
   var track = document.getElementById('stages');
   var stages = Array.prototype.slice.call(track.querySelectorAll('.stage'));
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var tabs = [];
   var phone = window.matchMedia('(max-width: 819px)');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var cur = 0;
