@@ -487,6 +487,7 @@
       background: #161616;
     }
     .item.is-on { flex-grow: 0; }
+    .item:not(.no-link) { cursor: pointer; }
     .tagbar { position: relative; flex: none; background: var(--bg); }
     .item:not(.is-on) .tag { background: var(--gold); color: #fff; }
     .media {
@@ -890,7 +891,8 @@ var NEWS = [
       enterTimer = setTimeout(function () { if (i !== cur) open(i); }, 90);
     });
     x.li.addEventListener('click', function (e) {
-      if (phone.matches) return;
+      /* phones: tapping anywhere on a card (photo, title or text) follows its link */
+      if (phone.matches) { if (x.link && !e.target.closest('a, button')) x.link.click(); return; }
       if (i !== cur) { e.preventDefault(); open(i); restartCount(); return; }
       if (!e.target.closest('a, button.go') && x.link) x.link.click();
     });
