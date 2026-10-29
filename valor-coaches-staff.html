@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coaches and Staff | Virginia Valor FC</title>
+<meta name="description" content="Virginia Valor FC 2026-27 club leadership, administration, and coaching staff for every girls and boys age group, U9 through U18/19.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Valor site template: white ground, ink rules, condensed caps (matches valor-way-coaching-language.html and valor-pitch-pack.html).
+     Built for a full-width Wix HTML embed with a FIXED height: nothing on this page expands, collapses or hides,
+     so the embed height never has to change. Photo and row sizes are fixed in px for the same reason. */
+  :root{
+    --white:#FFFFFF;
+    --off:#F6F4EF;
+    --line:#E3DFD5;
+    --ink:#121216;
+    --body:#3A3940;
+    --soft:#67645D;
+    --black:#0E0E10;
+    --tile:#1A1A1D;
+    --gold:#8B7A4C;
+    --brass:#C8B98F;
+    --onblack:#D9D6CE;
+    --head:'Saira Extra Condensed',Impact,'Arial Narrow',sans-serif;
+    --text:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --maxw:1180px;
+    --pad:24px;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--white);-webkit-text-size-adjust:100%}
+  body{background:var(--white);color:var(--body);font-family:var(--text);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  button,input{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+  .label{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  .h2{font-family:var(--head);font-weight:800;text-transform:uppercase;color:var(--ink);font-size:76px;line-height:.88;letter-spacing:.005em}
+  .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- MASTHEAD ---------- */
+  .mast{position:relative;overflow:hidden;border-bottom:2px solid var(--ink)}
+  .mast-in{position:relative;padding-top:52px;padding-bottom:40px}
+  .ghost{position:absolute;pointer-events:none;user-select:none;white-space:nowrap;font-family:var(--head);font-weight:800;text-transform:uppercase;line-height:.78;color:transparent}
+  .mast .ghost{right:-.06em;top:22px;font-size:340px;-webkit-text-stroke:2px rgba(139,122,76,.16)}
+  .mast-top{position:relative;display:flex;align-items:center;gap:14px}
+  .mast-top img{width:52px;height:52px;object-fit:contain}
+  .mast-top .label{line-height:1.4}
+  .mast-top .label span{display:block;color:var(--soft);letter-spacing:.16em}
+  .mast h1{position:relative;font-family:var(--head);font-weight:800;text-transform:uppercase;color:var(--ink);font-size:140px;line-height:.82;margin:26px 0 0;letter-spacing:-.005em}
+  .mast h1>span{display:block}
+  .mast .lead{position:relative;max-width:600px;margin:24px 0 0;font-size:19px;color:var(--body)}
+  .mast .lead b{color:var(--ink);font-weight:600}
+
+  /* jump bar + finder */
+  .tools{position:relative;margin:36px 0 0;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:end}
+  .jump{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--ink)}
+  .jump a{display:flex;flex-direction:column;justify-content:center;height:68px;min-width:0;overflow:hidden;white-space:nowrap;padding:10px 14px;text-decoration:none;border-left:1px solid var(--line);background:var(--white);transition:background .15s ease}
+  .jump a:first-child{border-left:0}
+  .jump a b{font-family:var(--head);font-weight:800;font-size:23px;line-height:1;text-transform:uppercase;color:var(--ink)}
+  .jump a span{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--soft);margin-top:4px}
+  .jump a:hover{background:var(--off)}
+  .jump a:active{background:var(--gold)}
+  .jump a:active b,.jump a:active span{color:var(--white)}
+  .find{position:relative}
+  .find label{display:block;margin:0 0 8px}
+  .find input{width:100%;height:52px;border:2px solid var(--ink);border-radius:0;background:var(--white);padding:0 14px;font-size:16px;font-weight:500;color:var(--ink);-webkit-appearance:none;appearance:none}
+  .find input::placeholder{color:var(--soft)}
+  .find input:focus{outline:none;box-shadow:inset 0 0 0 1px var(--ink)}
+  .results{position:absolute;z-index:30;left:0;right:0;top:100%;margin-top:-2px;background:var(--white);border:2px solid var(--ink);max-height:336px;overflow-y:auto;list-style:none;box-shadow:0 18px 32px -18px rgba(0,0,0,.45)}
+  .results[hidden]{display:none}
+  .results li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 14px;border-top:1px solid var(--line);cursor:pointer}
+  .results li:first-child{border-top:0}
+  .results li b{font-family:var(--head);font-weight:800;font-size:20px;line-height:1.1;text-transform:uppercase;color:var(--ink)}
+  .results li span{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--soft);text-align:right}
+  .results li[aria-selected="true"],.results li:hover{background:var(--off)}
+  .results li.none{cursor:default;color:var(--soft);font-size:15px}
+
+  /* ---------- LEADERSHIP (dark) ---------- */
+  .lead-sec{position:relative;overflow:hidden;background:var(--black);color:var(--onblack);padding:72px 0 80px}
+  .lead-sec .ghost{left:-.04em;bottom:-.14em;font-size:300px;-webkit-text-stroke:2px rgba(200,185,143,.12)}
+  .lead-sec .label{color:var(--brass)}
+  .lead-sec .h2{color:var(--white);margin:10px 0 0}
+  .sec-head{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:32px;align-items:end;margin:0 0 36px}
+  .sec-head p{font-size:16px;color:var(--onblack)}
+  .board{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;background:#2A2A2E;border:2px solid #2A2A2E}
+  .person{position:relative;background:var(--tile);display:flex;flex-direction:column}
+  .person .ph{height:300px;overflow:hidden;background:var(--tile)}
+  .person .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 0}
+  .person .cap{padding:16px 16px 14px;background:var(--black);border-top:3px solid var(--gold);height:164px}
+  .person .role{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);line-height:1.35;height:30px}
+  .person h3{font-family:var(--head);font-weight:800;font-size:30px;line-height:.95;text-transform:uppercase;color:var(--white);margin:8px 0 0}
+  .person a.mail{display:inline-flex;align-items:center;min-height:40px;margin:2px 0 0;font-size:13px;font-weight:500;color:var(--onblack);text-decoration:underline;text-decoration-color:rgba(200,185,143,.55);text-underline-offset:4px;line-height:1.3}
+  .person a.mail:hover{color:var(--white);text-decoration-color:var(--brass)}
+
+  /* ---------- DIRECTORY ---------- */
+  .dir{padding:76px 0 24px}
+  .dir + .dir{padding-top:52px}
+  .dir-head{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;margin:0 0 22px}
+  .dir-head .h2{margin:10px 0 0}
+  .ages{display:flex;flex-wrap:wrap;border:2px solid var(--ink)}
+  .ages a{flex:1 1 0;min-width:0;height:48px;display:flex;align-items:center;justify-content:center;padding:0 8px;font-family:var(--head);font-weight:800;font-size:19px;text-transform:uppercase;text-decoration:none;color:var(--ink);border-left:1px solid var(--line)}
+  .ages a:first-child{border-left:0}
+  .ages a:hover{background:var(--off)}
+  .ages a:active{background:var(--gold);color:var(--white)}
+  .rows{border-top:2px solid var(--ink)}
+  .agerow{display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--line);scroll-margin-top:16px}
+  .agecol .age{font-family:var(--head);font-weight:800;font-size:76px;line-height:.82;text-transform:uppercase;color:var(--ink);letter-spacing:-.01em}
+  .agecol .grp{display:block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin:8px 0 0}
+  .agecol .ag-lead{margin:18px 0 0;padding:8px 0 0;border-top:1px solid var(--line)}
+  .agecol .ag-lead small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+  .agecol .ag-lead b{display:block;font-family:var(--head);font-weight:800;font-size:21px;line-height:1.05;text-transform:uppercase;color:var(--ink);margin-top:3px}
+  .coaches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;align-content:start}
+  .coach{position:relative;scroll-margin-top:16px;min-width:0}
+  .coach .ph{position:relative;width:128px;height:128px;background:var(--tile);overflow:hidden}
+  .coach .ph img{width:100%;height:100%;object-fit:cover}
+  .coach .ph .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;font-size:46px;color:#4A4842;letter-spacing:.02em}
+  .coach .ph .mono img{position:absolute;width:44px;height:44px;right:8px;bottom:8px;opacity:.22;object-fit:contain}
+  .coach .lead-mark{position:absolute;left:0;top:0;background:var(--gold);color:var(--white);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 7px;line-height:1.2}
+  .coach h4{font-family:var(--head);font-weight:800;font-size:22px;line-height:1;text-transform:uppercase;color:var(--ink);margin:12px 0 0}
+  .coach h4 span{display:block}
+  .coach .teams{list-style:none;margin:8px 0 0;min-height:42px}
+  .coach .teams li{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);line-height:1.5}
+  .coach.hit .ph{outline:4px solid var(--gold);outline-offset:3px}
+  .coach.hit h4{color:var(--gold)}
+  .person.hit .cap{background:#2A261C}
+  .op.hit{background:var(--white);box-shadow:inset 4px 0 0 var(--gold)}
+
+  /* ---------- OPERATIONS ---------- */
+  .ops{background:var(--off);border-top:1px solid var(--line);padding:72px 0 84px;margin-top:52px}
+  .ops .h2{margin:10px 0 0}
+  .ops-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) 340px;gap:40px;margin:34px 0 0;align-items:start}
+  .ops h3{font-family:var(--head);font-weight:800;font-size:26px;line-height:1;text-transform:uppercase;color:var(--ink);padding:0 0 12px;border-bottom:2px solid var(--ink)}
+  .oplist{list-style:none}
+  .op{display:block;padding:11px 0 12px;border-bottom:1px solid var(--line);scroll-margin-top:16px}
+  .op b{display:block;font-family:var(--head);font-weight:800;font-size:22px;line-height:1.05;text-transform:uppercase;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .op span{display:block;margin-top:4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .contact{background:var(--ink);color:var(--onblack);padding:24px 24px 26px}
+  .contact h3{color:var(--white);border-bottom-color:var(--gold)}
+  .contact dl div{padding:12px 0;border-bottom:1px solid #2E2E33}
+  .contact dt{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .contact dd{font-size:15px;color:var(--white);margin-top:2px;line-height:1.45}
+  .contact dd a{display:inline-block;padding:9px 0;margin:-6px 0;text-decoration:underline;text-decoration-color:rgba(200,185,143,.6);text-underline-offset:4px;overflow-wrap:anywhere}
+  .btn{display:flex;align-items:center;justify-content:center;min-height:52px;margin:20px 0 0;padding:0 20px;font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;background:var(--gold);color:var(--white);border:2px solid var(--gold);transition:background .2s ease,border-color .2s ease}
+  .btn:hover{background:var(--white);border-color:var(--white);color:var(--ink)}
+  .textlink{display:flex;align-items:center;justify-content:center;min-height:44px;margin:8px 0 0;font-size:14px;font-weight:600;color:var(--white);text-decoration:underline;text-decoration-color:var(--brass);text-decoration-thickness:2px;text-underline-offset:6px}
+
+  /* ---------- TABLET ---------- */
+  @media (max-width:979px){
+    .h2{font-size:64px}
+    .mast h1{font-size:112px}
+    .mast .ghost{font-size:270px}
+    .tools{grid-template-columns:minmax(0,1fr)}
+    .sec-head{grid-template-columns:minmax(0,1fr)}
+    .sec-head p{max-width:560px}
+    .board{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .person .ph{height:260px}
+    .person h3{font-size:26px}
+    .ops-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .contact{grid-column:1 / -1}
+  }
+  @media (max-width:860px){
+    .agerow{grid-template-columns:minmax(0,1fr);gap:16px}
+    .agecol{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+    .agecol .age{font-size:64px}
+    .agecol .grp{margin:0 0 4px}
+    .agecol .ag-lead{margin:0 0 2px auto;padding:0;border-top:0;text-align:right}
+    .board{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .person .ph{height:300px}
+  }
+
+  /* ---------- PHONE ---------- */
+  @media (max-width:600px){
+    :root{--pad:16px}
+    body{font-size:16px}
+    .mast-in{padding-top:30px;padding-bottom:28px}
+    .mast .ghost{display:none}
+    .mast-top img{width:44px;height:44px}
+    .mast h1{font-size:68px;margin-top:18px}
+    .mast .lead{font-size:16px;margin-top:16px}
+    .tools{margin-top:24px;gap:16px}
+    .jump{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .jump a{height:60px;padding:8px 12px}
+    .jump a:nth-child(3){border-left:0}
+    .jump a:nth-child(n+3){border-top:1px solid var(--line)}
+    .jump a b{font-size:20px}
+    .h2{font-size:44px}
+    .lead-sec{padding:48px 0 56px}
+    .lead-sec .ghost{font-size:120px}
+    .sec-head{margin-bottom:24px;gap:14px}
+    .sec-head p{font-size:15px}
+    .person .ph{height:190px}
+    .person .cap{padding:12px 12px 10px;height:166px}
+    .person .role{font-size:10px;letter-spacing:.12em;height:40px}
+    .person h3{font-size:23px}
+    .person a.mail{font-size:11.5px}
+    .dir{padding:48px 0 12px}
+    .dir + .dir{padding-top:36px}
+    .ages a{min-width:0;flex:1 0 20%;height:40px;font-size:17px;border-top:1px solid var(--line);margin-top:-1px}
+    .ages a:nth-child(5n+1){border-left:0}
+    .agerow{padding:16px 0 18px}
+    .agecol .age{font-size:54px}
+    .agecol .ag-lead b{font-size:18px}
+    .coaches{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 10px}
+    .coach .ph{width:100%;height:auto;aspect-ratio:1/1}
+    .coach h4{font-size:18px;margin-top:8px}
+    .coach .teams{margin-top:6px;min-height:0}
+    .coach .teams li{font-size:10px;letter-spacing:.06em;line-height:1.35}
+    .coach .lead-mark{font-size:9px;padding:3px 5px;letter-spacing:.1em}
+    .coach .ph .mono{font-size:30px}
+    .coach .ph .mono img{width:26px;height:26px;right:5px;bottom:5px}
+    .op b,.op span{white-space:normal}
+    .ops{padding:48px 0 56px;margin-top:36px}
+    .ops-grid{grid-template-columns:minmax(0,1fr);gap:32px;margin-top:24px}
+    .op b{font-size:19px}
+    .op span{font-size:11px}
+    .contact{padding:20px 16px 22px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  /* ===== House style (Valor Rising / Futures / Mini Camps family) ===== */
+  :root{
+    --white:#FFFFFF;--off:#F8F6F1;--line:#E4E0D7;--ink:#15141A;--body:#3B3941;--soft:#6A675F;
+    --black:#15141A;--tile:#F1EEE6;--gold:#7C5E1D;--brass:#C6A15B;--brass-lt:#E4CE9E;--brass-dk:#9A7B3E;--onblack:#3B3941;
+    --head:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;
+    --text:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  }
+  body{font-size:18px}
+  .ghost{display:none}
+  .label{font-family:var(--mono);font-weight:600;letter-spacing:.24em;color:var(--gold)}
+  .h2{font-weight:700;font-size:52px;line-height:.98}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  /* hero */
+  .mast{text-align:center;border-bottom:1px solid var(--line)}
+  .mast::before{content:"";position:absolute;top:-60px;left:50%;width:760px;height:760px;transform:translateX(-50%);background:radial-gradient(circle at 50% 38%,rgba(198,161,91,.15),rgba(198,161,91,.06) 42%,transparent 68%);pointer-events:none}
+  .mast-in{padding-top:60px;padding-bottom:70px}
+  .mast-top{flex-direction:column;justify-content:center;gap:24px;animation:fadeUp .9s ease .05s both}
+  .mast-top img{width:150px;height:150px;filter:drop-shadow(0 14px 30px rgba(20,15,5,.18))}
+  .mast-top .label{letter-spacing:.28em}
+  .mast-top .label span{display:inline;color:var(--gold);letter-spacing:.28em}
+  .mast-top .label span::before{content:"\00B7";margin:0 .7em;color:var(--brass)}
+  .mast h1{font-weight:800;font-size:120px;line-height:.88;margin:16px 0 0;letter-spacing:.01em;animation:fadeUp .9s ease .2s both}
+  .mast h1>span+span{font-weight:500;color:var(--brass-dk);letter-spacing:.04em}
+  .mast .lead{margin:24px auto 0;font-size:21px;max-width:640px;animation:fadeUp .9s ease .32s both}
+  .tools{display:flex;flex-direction:column;align-items:center;gap:26px;margin:40px auto 0;max-width:932px;animation:fadeUp .9s ease .45s both}
+  .jump{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;border:0}
+  .jump a{flex-direction:row;align-items:center;gap:10px;height:42px;padding:0 18px;border:1px solid var(--line);border-radius:100px;background:var(--off);font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--soft)}
+  .jump a:first-child{border-left:1px solid var(--line)}
+  .jump a b{font-family:var(--mono);font-weight:600;font-size:12.5px;letter-spacing:.12em;color:var(--gold)}
+  .jump a span{font-size:12.5px;font-weight:400;margin:0;color:var(--soft)}
+  .jump a:hover{background:var(--white);border-color:var(--brass)}
+  .jump a:active{background:var(--brass-lt)}
+  .jump a:active b,.jump a:active span{color:var(--ink)}
+  .find{width:420px;text-align:left}
+  .find input{border:1px solid var(--line);border-radius:4px;background:var(--off);font-family:var(--text);font-size:17px}
+  .find input:focus{box-shadow:none;border-color:var(--brass-dk);background:var(--white)}
+  .results{border:1px solid var(--line);border-radius:4px;margin-top:6px}
+  .results li b{font-weight:700}
+  .results li span{font-family:var(--mono);font-size:11px;font-weight:400}
+  /* leadership: light panel instead of black */
+  .lead-sec{background:radial-gradient(circle at 50% 0%,rgba(198,161,91,.12),transparent 55%),var(--off);color:var(--body);border-bottom:1px solid var(--line);padding:80px 0}
+  .lead-sec .label{color:var(--gold)}
+  .lead-sec .h2{color:var(--ink);margin:14px 0 0}
+  .sec-head{grid-template-columns:minmax(0,720px);gap:18px;align-items:start;margin:0 0 40px}
+  .sec-head p{font-size:19px;color:var(--body)}
+  .board{gap:16px;background:transparent;border:0}
+  .person{background:var(--white);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 14px 34px -22px rgba(20,15,5,.4)}
+  .person .ph{background:var(--tile)}
+  .person .cap{background:var(--white);border-top:2px solid var(--brass)}
+  .person .role{font-family:var(--mono);font-weight:600;color:var(--gold)}
+  .person h3{font-weight:700;color:var(--ink)}
+  .person a.mail{color:var(--gold);text-decoration-color:rgba(124,94,29,.45)}
+  .person a.mail:hover{color:var(--ink);text-decoration-color:var(--gold)}
+  .person.hit .cap{background:#FBF5E8}
+  /* directory */
+  .dir{padding:80px 0 24px}
+  .dir-head .h2{margin:14px 0 0}
+  .ages{border:0;gap:8px}
+  .ages a{flex:0 0 auto;min-width:64px;height:42px;padding:0 16px;border:1px solid var(--line);border-radius:100px;background:var(--off);font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.1em;color:var(--gold)}
+  .ages a:first-child{border-left:1px solid var(--line)}
+  .ages a:hover{background:var(--white);border-color:var(--brass)}
+  .ages a:active{background:var(--brass-lt);color:var(--ink)}
+  .rows{border-top:1px solid var(--line)}
+  .agecol .age{font-weight:800;font-size:72px;letter-spacing:0}
+  .agecol .grp{font-family:var(--mono);font-weight:600;font-size:11px;color:var(--soft)}
+  .agecol .ag-lead small{font-family:var(--mono);font-weight:600;color:var(--gold)}
+  .agecol .ag-lead b{font-weight:700}
+  .coach .ph{background:var(--tile);border-radius:6px;border:1px solid var(--line)}
+  .coach .ph .mono{color:#C9C2B2}
+  .coach .lead-mark{background:linear-gradient(180deg,var(--brass-lt),var(--brass));color:#241A05;font-family:var(--mono);font-weight:600;border-bottom-right-radius:4px}
+  .coach h4{font-weight:700}
+  .coach .teams li{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;color:var(--gold)}
+  .coach.hit .ph{outline:3px solid var(--brass);outline-offset:3px}
+  .coach.hit h4{color:var(--gold)}
+  .op.hit{background:var(--white);box-shadow:inset 4px 0 0 var(--brass)}
+  /* operations */
+  .ops{background:var(--off);padding:80px 0 88px}
+  .ops .h2{margin:14px 0 0}
+  .ops h3{font-weight:700;border-bottom:2px solid var(--ink)}
+  .op b{font-weight:700}
+  .op span{font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.12em;color:var(--gold)}
+  .contact{background:var(--white);border:1px solid var(--line);border-radius:4px;color:var(--body);padding:26px 26px 28px}
+  .contact h3{color:var(--ink);border-bottom-color:var(--brass)}
+  .contact dl div{border-bottom:1px solid var(--line)}
+  .contact dt{font-family:var(--mono);font-weight:600;color:var(--gold)}
+  .contact dd{color:var(--ink);font-size:16px}
+  .contact dd a{text-decoration-color:rgba(124,94,29,.45)}
+  .btn{font-family:var(--mono);font-weight:600;font-size:14px;letter-spacing:.12em;border-radius:2px;background:linear-gradient(180deg,var(--brass-lt),var(--brass));color:#241A05;border:1px solid var(--brass-dk);box-shadow:0 10px 24px -10px rgba(154,123,62,.6);transition:transform .15s ease,box-shadow .2s ease}
+  .btn:hover{background:linear-gradient(180deg,var(--brass-lt),var(--brass));border-color:var(--brass-dk);color:#241A05;transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(154,123,62,.75)}
+  .textlink{color:var(--gold);text-decoration-color:rgba(124,94,29,.45);text-decoration-thickness:1.5px}
+  @media (max-width:979px){
+    .h2{font-size:46px}
+    .mast h1{font-size:96px}
+    .find{width:min(420px,100%)}
+  }
+  @media (max-width:600px){
+    :root{--pad:20px}
+    body{font-size:17px}
+    .h2{font-size:38px}
+    .mast::before{width:520px;height:520px;top:-40px}
+    .mast-in{padding-top:40px;padding-bottom:48px}
+    .mast-top{gap:18px}
+    .mast-top img{width:120px;height:120px}
+    .mast-top .label{font-size:11px;letter-spacing:.2em}
+    .mast-top .label span{display:block;margin-top:4px;letter-spacing:.2em}
+    .mast-top .label span::before{display:none}
+    .mast h1{font-size:15vw;margin-top:12px}
+    .mast .lead{font-size:18px;margin-top:18px}
+    .tools{margin-top:28px;gap:20px}
+    .jump{gap:8px}
+    .jump a{height:40px;padding:0 14px;font-size:11.5px}
+    .jump a b{font-size:11.5px}
+    .jump a span{display:none}
+    .jump a:nth-child(n+3){border-top:1px solid var(--line)}
+    .jump a:nth-child(3){border-left:1px solid var(--line)}
+    .find{width:100%}
+    .lead-sec{padding:56px 0}
+    .sec-head p{font-size:17px}
+    .board{gap:12px}
+    .person .role{font-size:9.5px;letter-spacing:.1em}
+    .dir{padding:56px 0 12px}
+    .ages a{flex:0 0 auto;min-width:0;height:38px;padding:0 12px;font-size:12px;border-top:1px solid var(--line);margin-top:0}
+    .ages a:nth-child(5n+1){border-left:1px solid var(--line)}
+    .agecol .age{font-size:54px}
+    .coach .teams li{font-size:10px;letter-spacing:.03em}
+    .coach .lead-mark{font-size:8.5px;letter-spacing:.06em}
+    .ops{padding:56px 0 60px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+  /* contact buttons on leadership cards */
+  .person .cap{height:214px;display:flex;flex-direction:column}
+  .person a.mail{min-height:30px;font-size:12.5px}
+  .person a.cbtn{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:2px;background:linear-gradient(180deg,var(--brass-lt),var(--brass));border:1px solid var(--brass-dk);color:#241A05;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
+  .person a.cbtn:hover{filter:brightness(1.05)}
+  @media (max-width:600px){.person .cap{height:236px}.person a.cbtn{min-height:42px;font-size:11px;letter-spacing:.08em}.person a.mail{font-size:11px}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <div class="mast-top">
+      <img fetchpriority="high" src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png/v1/fit/w_320,h_320,al_c,q_90,enc_auto/valor-crest.png" alt="Virginia Valor FC crest" width="52" height="52">
+      <p class="label">Virginia Valor FC<span>2026-27 Season</span></p>
+    </div>
+    <h1><span>Coaches</span><span>&amp; Staff</span></h1>
+    <p class="lead">Club leadership, administration and the coaching staff for every <b>girls and boys age group, U9 through U18/19.</b> Each age group lists its team coaches by team, with the age group lead marked.</p>
+
+    <div class="tools">
+      <nav class="jump" aria-label="Jump to a section">
+        <a href="#leadership" data-jump="leadership"><b>Club Leadership</b><span>Directors</span></a>
+        <a href="#girls" data-jump="girls"><b>Girls Teams</b><span>U9 to U18</span></a>
+        <a href="#boys" data-jump="boys"><b>Boys Teams</b><span>U9 to U18/19</span></a>
+        <a href="#operations" data-jump="operations"><b>Club Operations</b><span>Admin and contact</span></a>
+      </nav>
+      <div class="find">
+        <label class="label" for="find">Find a coach</label>
+        <input id="find" type="text" placeholder="Type a name" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+        <ul class="results" id="results" role="listbox" hidden></ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="lead-sec" id="leadership" aria-labelledby="leadership-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="label">Technical leadership</p>
+        <h2 class="h2" id="leadership-h">Club Leadership</h2>
+      </div>
+      <p>The directors responsible for coaching, player development and soccer operations across the club. Tap a director's button to send them an email.</p>
+    </div>
+    <div class="board" id="board"></div>
+  </div>
+</section>
+
+<section class="dir" id="girls" aria-labelledby="girls-h">
+  <div class="wrap">
+    <div class="dir-head">
+      <div>
+        <p class="label">2026-27 coaching staff</p>
+        <h2 class="h2" id="girls-h">Girls Teams</h2>
+      </div>
+      <nav class="ages" aria-label="Girls age groups" id="girls-ages"></nav>
+    </div>
+    <div class="rows" id="girls-rows"></div>
+  </div>
+</section>
+
+<section class="dir" id="boys" aria-labelledby="boys-h">
+  <div class="wrap">
+    <div class="dir-head">
+      <div>
+        <p class="label">2026-27 coaching staff</p>
+        <h2 class="h2" id="boys-h">Boys Teams</h2>
+      </div>
+      <nav class="ages" aria-label="Boys age groups" id="boys-ages"></nav>
+    </div>
+    <div class="rows" id="boys-rows"></div>
+  </div>
+</section>
+
+<section class="ops" id="operations" aria-labelledby="ops-h">
+  <div class="wrap">
+    <p class="label">Behind the teams</p>
+    <h2 class="h2" id="ops-h">Club Operations</h2>
+    <div class="ops-grid">
+      <div>
+        <h3>Administration</h3>
+        <ul class="oplist" id="ops-admin"></ul>
+      </div>
+      <div>
+        <h3>Programs and Events</h3>
+        <ul class="oplist" id="ops-programs"></ul>
+      </div>
+      <aside class="contact" aria-label="Contact the club">
+        <h3>Contact</h3>
+        <dl>
+          <div><dt>Registration</dt><dd><a href="mailto:bbogemann@virginiavalorfc.org">bbogemann@virginiavalorfc.org</a></dd></div>
+          <div><dt>General questions</dt><dd><a href="mailto:info@virginiavalorfc.org">info@virginiavalorfc.org</a></dd></div>
+          <div><dt>Phone</dt><dd><a href="tel:+17037892876">703.789.2876</a></dd></div>
+          <div><dt>Staff office and mailing address</dt><dd>4455 Brookfield Corporate Dr.<br>Suite 104<br>Chantilly, VA 20151</dd></div>
+        </dl>
+        <a class="btn" href="https://www.virginiavalorfc.org/contact-us" target="_top">Contact the club</a>
+        <a class="textlink" href="https://www.virginiavalorfc.org/contact-us#careers" target="_top">Become a Valor coach</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* =====================================================================
+     STAFF DATA  (edit here)
+     Photos are served from the club's existing Wix media library.
+     To swap a photo, upload the new headshot to Wix Media, copy its
+     static.wixstatic.com URL, and set  photo:"https://..."  on that person.
+     ===================================================================== */
+  var W = 'https://static.wixstatic.com/media/1df62c_';
+  function crop(id,x,y,w,h,ow,oh){ return W+id+'~mv2.png/v1/crop/x_'+x+',y_'+y+',w_'+w+',h_'+h+'/fill/w_'+ow+',h_'+oh+',al_c,q_85,enc_auto/staff.png'; }
+  // source images on the live site
+  var CUT = function(id,f,t){ f=f||[700,270,1840]; t=t||[420,120,2400]; return {face:crop(id,f[0],f[1],f[2],f[2],256,256), tall:crop(id,t[0],t[1],t[2],Math.round(t[2]*1.25),560,700)}; };       // Technical Staff cutouts (3240 x 3240)
+  var CARD = function(id,w,h){ var x=Math.round(.215*w), y=Math.round(.196*h), s=Math.round(.57*w); return {face:crop(id,x,y,s,s,256,256)}; }; // Age Group Lead cards
+  var SLATE = function(id,x,y,s){ return {face:crop(id,x,y,s,s,256,256)}; };                                                           // Coaching slate pages
+  var G1='e272d64905cc4a99a5671c8485aa68e9', G2='a2cc04376fd04ca099d8c0fe228a3535', G3='24fd00bc0c3d485d948ffc7cea516cf7',
+      B1='369a6fe8403b43feb8cb01cf5bf1fbc6', B2='ba971a629464427a9eaceff00fed5929', B3='1841a11bea9d4de5aa659555e73d74a7';
+
+  var P = {
+    paul:    {first:'Paul',    last:'Ellis',      img:CUT('fdbff41e9edd41ada1285f8f2990a09c',[739, 276, 1759],[471, 132, 2292])},
+    dylan:   {first:'Dylan',   last:'Sutherland', img:CUT('cbbf3b3164954c9a921df7c42e2e7e6d',[738, 282, 1851],[458, 130, 2411])},
+    cory:    {first:'Cory',    last:'Fick',       img:CUT('c1b78a68ab60457694d8c533e72defa3',[640, 296, 1992],[340, 0, 2592])},
+    craigh:  {first:'Craig',   last:'Harwell',    img:CUT('9aa227ba17cb4a1da426225ba135ee13',[922, 1044, 1400],[710, 930, 1823])},
+    gabriel: {first:'Gabriel', last:'Portillo',   img:CUT('1094ace6f8384be89ae3ca0ee84f78b7',[801, 103, 1749],[536, 0, 2278])},
+    abdul:   {first:'Abdul',   last:'Mohsini',    img:CUT('d23e752181a9456e8e8afc61738004fd',[654, 0, 1851],[374, 0, 2411])},
+    israel:  {first:'Israel',  last:'Alibi',      img:CUT('6f5f2f26ac1e47cdb885201bd444addf',[666, 242, 1902],[378, 87, 2477])},
+    drew:    {first:'Drew',    last:'Leonard',    img:CUT('a6ae0d2c70d147e98ca582330427a8e4',[726, 415, 1793],[455, 268, 2335])},
+    carlos:  {first:'Carlos',  last:'Guerra',     img:CARD('41fd54c4da8d43ff961cf3a6e361a6d3',1755,2194)},
+    eric:    {first:'Eric',    last:'Lewis',      img:CARD('941806c16f9e4bd889dd31a444b6adab',1755,2194)},
+    keith:   {first:'Keith',   last:'Osborne',    img:CARD('22a6963290ea40a3a3ac418436a27e0a',1755,2194)},
+    sean:    {first:'Sean',    last:'Burke',      img:CARD('a3b15a36064a434287ce957b55213469',1755,2194)},
+    bashir:  {first:'Bashir',  last:'Hooper',     img:CARD('78d18099721f4fd9a93084e1d4e6fe90',1755,2194)},
+    melissa: {first:'Melissa', last:'Bibbee',     img:CARD('9eb74f0d3e1c4abf93c5c8070744120e',1755,2194)},
+    suli:    {first:'Suli',    last:'Williams',   img:CARD('44663ea7560448298175bc09a4839396',1080,1350)},
+    dan:     {first:'Dan',     last:'Elliott',    img:CARD('932c203998af4368a7b80adcbb19ccda',1080,1350)},
+    rob:     {first:'Rob',     last:'Olson',      img:CARD('b5caf59eb9cc4752816e60a05601261b',1080,1350)},
+    sofiane: {first:'Sofiane', last:'Allaouat',   img:CARD('7a130008b2884dd0bf4ddef840e91914',1080,1350)},
+    juan:    {first:'Juan',    last:'Vasquez',    img:CARD('43b2089f28b44474b75c8b581b9052bd',1080,1350)},
+    susan:   {first:'Susan',   last:'Furlough',   img:SLATE(G1,1446,200,236)},
+    mallory: {first:'Mallory', last:'Pasco',      img:SLATE(G1,1302,712,236)},
+    chris:   {first:'Chris',   last:'Meyers',     img:SLATE(G1,1446,1232,236)},
+    stephen: {first:'Stephen', last:'Bryce',      img:SLATE(G3,1302,320,276)},
+    craigs:  {first:'Craig',   last:'Scott',      img:SLATE(G3,1322,930,276)},
+    oscar:   {first:'Oscar',   last:'Hernandez',  img:SLATE(G2,724,845,276)},
+    alvaro:  {first:'Alvaro',  last:'Cabal',      img:SLATE(B2,1039,900,306)},
+    daryl:   {first:'Daryl',   last:'Jones',      img:SLATE(G2,1183,1420,271)},
+    victor:  {first:'Victor',  last:'Velasco',    img:SLATE(B1,1127,725,226)},
+    alec:    {first:'Alec',    last:'Mitchell',   img:SLATE(B1,1447,725,226)},
+    jeffry:  {first:'Jeffry',  last:'Salinas',    img:SLATE(B2,1044,300,296)},
+    patrick: {first:'Patrick', last:'Ander',      img:SLATE(B2,917,1585,206)},
+    edgar:   {first:'Edgar',   last:'Recinos',    img:SLATE(B2,1249,1585,206)},
+    scott:   {first:'Scott',   last:'Bimba',      img:SLATE(B3,755,175,161)},
+    timmy:   {first:'Timmy',   last:'Lucas',      img:null},
+    emiliano:{first:'Emiliano',last:'Canizales',  img:null}
+  };
+
+  // Club Leadership, in the order of the Valor Leadership Structure chart
+  var LEADERSHIP = [
+    {p:'dylan',   role:'Director of Soccer Operations', email:'dsutherland@virginiavalorfc.org'},
+    {p:'paul',    role:'Technical Director',            email:'pellis@virginiavalorfc.org'},
+    {p:'cory',    role:'Girls Director of Coaching',    email:'cfick@virginiavalorfc.org'},
+    {p:'craigh',  role:'Boys Director of Coaching',     email:'charwell@virginiavalorfc.org'},
+    {p:'gabriel', role:'U8-U10 Girls Youth Director',   email:'gportillo@virginiavalorfc.org'},
+    {p:'abdul',   role:'U8-U10 Boys Youth Director',    email:'amohsini@virginiavalorfc.org'},
+    {p:'israel',  role:'U11-U12 Youth Director',        email:'ialabi@virginiavalorfc.org'},
+    {p:'drew',    role:'Director of Goalkeeping',       email:'dleonard@virginiavalorfc.org'}
+  ];
+
+  var ADMIN = [
+    {name:'Beth Morris',    role:'Valor Admin'},
+    {name:'Kathy Hull',     role:'Valor Admin'},
+    {name:'Beth Bogemann',  role:'Club Registrar'},
+    {name:'Heidi Howser',   role:'HR Coordinator'}
+  ];
+  var PROGRAMS = [
+    {name:'Dylan Sutherland', role:'Social Media Manager'},
+    {name:'Craig Scott',      role:'Director of Events'},
+    {name:'Paul Ellis',       role:'Director of Tournaments'},
+    {name:'Israel Alibi',     role:'Director of Futsal'},
+    {name:'Daryl Jones',      role:'Nutrition and Wellness'},
+    {name:'Sean Burke',       role:'SafeSport Representative'}
+  ];
+
+  // Team coaches. One entry per coach per age group; teams lists every team they coach in that group.
+  var GIRLS = [
+    {age:'U9',  lead:'eric',    c:[['eric',['Gold']],['gabriel',['White']],['susan',['Black']]]},
+    {age:'U10', lead:'gabriel', c:[['gabriel',['Gold']],['mallory',['White']]]},
+    {age:'U11', lead:'israel',  c:[['israel',['Pre-ECNL Brave']],['eric',['Pre-ECNL Courage']],['chris',['White']]]},
+    {age:'U12', lead:'keith',   c:[['keith',['Pre-ECNL Brave','Pre-ECNL Courage']],['stephen',['White']]]},
+    {age:'U13', lead:'cory',    c:[['cory',['ECNL RL']]]},
+    {age:'U14', lead:'bashir',  c:[['oscar',['ECNL RL']],['alvaro',['Gold']],['bashir',[]]]},
+    {age:'U15', lead:'cory',    c:[['cory',['ECNL RL']],['daryl',['Gold']]]},
+    {age:'U16', lead:'sean',    c:[['sean',['ECNL RL']],['stephen',['Gold']]]},
+    {age:'U17', lead:'paul',    c:[['paul',['ECNL RL']],['craigs',['Gold']]]},
+    {age:'U18', lead:'melissa', c:[['melissa',['ECNL RL']]]}
+  ];
+  var BOYS = [
+    {age:'U9',     lead:'abdul',   c:[['abdul',['Gold']],['carlos',['White']],['victor',['Black']],['alec',['Silver']]]},
+    {age:'U10',    lead:'carlos',  c:[['carlos',['Gold']],['victor',['White']],['alec',['Black']]]},
+    {age:'U11',    lead:'israel',  c:[['israel',['Pre-ECNL Brave']],['suli',['Pre-ECNL Courage']],['emiliano',['White']]]},
+    {age:'U12',    lead:'suli',    c:[['suli',['Pre-ECNL Brave']],['timmy',['Pre-ECNL Courage']],['emiliano',['White']],['daryl',['Black']]]},
+    {age:'U13',    lead:'dan',     c:[['dan',['ECNL RL']],['jeffry',['Gold']],['timmy',['White']]]},
+    {age:'U14',    lead:'sofiane', c:[['sofiane',['ECNL RL']],['alvaro',['Gold']],['jeffry',['White']]]},
+    {age:'U15',    lead:'craigh',  c:[['craigh',['ECNL RL']],['patrick',['Gold']],['edgar',['White']],['juan',['Black']]]},
+    {age:'U16',    lead:'rob',     c:[['rob',['ECNL RL']],['scott',['Gold']]]},
+    {age:'U17',    lead:'juan',    c:[['juan',['ECNL RL']]]},
+    {age:'U18/19', lead:'sofiane', c:[['sofiane',['ECNL RL']],['scott',['Gold']]]}
+  ];
+  /* ============================ END DATA ============================ */
+
+  var CREST = W+'bb0adec454f24c9da68bc984023a966d~mv2.png/v1/fit/w_96,h_96,al_c,q_85,enc_auto/crest.png';
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function full(k){ return P[k].first+' '+P[k].last; }
+  function slug(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-'); }
+  var INDEX = [];
+
+  // leadership board
+  document.getElementById('board').innerHTML = LEADERSHIP.map(function(L){
+    var p=P[L.p], id='lead-'+L.p;
+    INDEX.push({name:full(L.p), where:L.role, el:id});
+    var src = p.photo || (p.img && (p.img.tall || p.img.face));
+    return '<article class="person" id="'+id+'">'+
+      '<div class="ph">'+(src?'<img src="'+src+'" alt="'+esc(full(L.p))+'" loading="lazy" decoding="async" width="280" height="350">':'')+'</div>'+
+      '<div class="cap"><p class="role">'+esc(L.role)+'</p><h3>'+esc(p.first)+'<br>'+esc(p.last)+'</h3>'+
+      '<a class="mail" href="mailto:'+L.email+'">'+L.email.replace('@','@<wbr>')+'</a><a class="cbtn" href="mailto:'+L.email+'">Email '+esc(p.first)+'</a></div></article>';
+  }).join('');
+
+  // directory rows
+  function rows(list, grp, target, agesEl){
+    var g = grp==='girls' ? 'Girls' : 'Boys';
+    document.getElementById(agesEl).innerHTML = list.map(function(r){
+      return '<a href="#'+grp+'-'+slug(r.age)+'" data-jump="'+grp+'-'+slug(r.age)+'" aria-label="'+r.age+' '+g+'">'+r.age+'</a>';
+    }).join('');
+    document.getElementById(target).innerHTML = list.map(function(r){
+      var rid = grp+'-'+slug(r.age);
+      var coaches = r.c.map(function(e){
+        var k=e[0], p=P[k], teams=e[1], cid=rid+'-'+k, isLead=(k===r.lead);
+        var label = teams.length ? teams.join(', ') : 'Age group lead';
+        INDEX.push({name:full(k), where:r.age+' '+g+(teams.length?' '+teams.join(', '):' Lead'), el:cid});
+        var src = p.photo || (p.img && p.img.face);
+        var ph = src
+          ? '<img src="'+src+'" alt="'+esc(full(k))+'" loading="lazy" decoding="async" width="128" height="128">'
+          : '<span class="mono" aria-hidden="true">'+esc(p.first.charAt(0)+p.last.charAt(0))+'<img src="'+CREST+'" alt=""></span>';
+        return '<div class="coach" id="'+cid+'">'+
+          '<div class="ph">'+ph+(isLead?'<span class="lead-mark">Lead</span>':'')+'</div>'+
+          '<h4><span>'+esc(p.first)+'</span><span>'+esc(p.last)+'</span></h4>'+
+          '<ul class="teams">'+(teams.length?teams.map(function(t){return '<li>'+esc(t)+'</li>';}).join(''):'<li>Age group lead</li>')+'</ul>'+
+          '<span class="vh">'+esc(label)+'</span></div>';
+      }).join('');
+      return '<article class="agerow" id="'+rid+'" aria-label="'+r.age+' '+g+'">'+
+        '<div class="agecol"><p class="age">'+r.age+'</p><span class="grp">'+g+'</span>'+
+        '<p class="ag-lead"><small>Age group lead</small><b>'+esc(full(r.lead))+'</b></p></div>'+
+        '<div class="coaches">'+coaches+'</div></article>';
+    }).join('');
+  }
+  rows(GIRLS,'girls','girls-rows','girls-ages');
+  rows(BOYS,'boys','boys-rows','boys-ages');
+
+  // operations
+  function ops(list, target){
+    document.getElementById(target).innerHTML = list.map(function(o){
+      var id='op-'+slug(o.name)+'-'+slug(o.role);
+      INDEX.push({name:o.name, where:o.role, el:id});
+      return '<li class="op" id="'+id+'"><b>'+esc(o.name)+'</b><span>'+esc(o.role)+'</span></li>';
+    }).join('');
+  }
+  ops(ADMIN,'ops-admin'); ops(PROGRAMS,'ops-programs');
+
+  // ---------- jump navigation (scrollIntoView also scrolls the Wix page around the embed) ----------
+  function go(id){
+    var el=document.getElementById(id); if(!el) return;
+    try{ el.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ el.scrollIntoView(true); }
+    if(history.replaceState){ try{ history.replaceState(null,'','#'+id); }catch(e){} }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('[data-jump]');
+    if(!a) return; e.preventDefault(); go(a.getAttribute('data-jump'));
+  });
+
+  // ---------- coach finder (results overlay the page, so height never changes) ----------
+  var input=document.getElementById('find'), box=document.getElementById('results'), cur=-1, shown=[];
+  function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  function render(){
+    var q=norm(input.value.trim());
+    if(!q){ close(); return; }
+    shown = INDEX.filter(function(i){ return norm(i.name).indexOf(q)>-1 || norm(i.where).indexOf(q)>-1; }).slice(0,40);
+    cur = shown.length ? 0 : -1;
+    box.innerHTML = shown.length ? shown.map(function(i,n){
+      return '<li role="option" id="opt-'+n+'" data-n="'+n+'" aria-selected="'+(n===cur)+'"><b>'+esc(i.name)+'</b><span>'+esc(i.where)+'</span></li>';
+    }).join('') : '<li class="none" role="option" aria-disabled="true">No staff member matches that name.</li>';
+    box.hidden=false; input.setAttribute('aria-expanded','true');
+    input.setAttribute('aria-activedescendant', cur>-1?'opt-'+cur:'');
+  }
+  function close(){ box.hidden=true; input.setAttribute('aria-expanded','false'); input.removeAttribute('aria-activedescendant'); }
+  function pick(n){
+    var i=shown[n]; if(!i) return;
+    close(); input.value=i.name;
+    var el=document.getElementById(i.el); if(!el) return;
+    try{ el.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){ el.scrollIntoView(true); }
+    document.querySelectorAll('.hit').forEach(function(h){h.classList.remove('hit');});
+    el.classList.add('hit'); setTimeout(function(){ el.classList.remove('hit'); },2600);
+  }
+  function move(d){
+    if(!shown.length) return;
+    cur=(cur+d+shown.length)%shown.length;
+    box.querySelectorAll('li').forEach(function(li,n){ li.setAttribute('aria-selected', n===cur); });
+    input.setAttribute('aria-activedescendant','opt-'+cur);
+    var li=box.querySelector('[data-n="'+cur+'"]'); if(li) li.scrollIntoView({block:'nearest'});
+  }
+  input.addEventListener('input',render);
+  input.addEventListener('focus',function(){ if(input.value.trim()) render(); });
+  input.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); move(1); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); move(-1); }
+    else if(e.key==='Enter'){ e.preventDefault(); if(cur>-1) pick(cur); }
+    else if(e.key==='Escape'){ close(); }
+  });
+  box.addEventListener('mousedown',function(e){ var li=e.target.closest('li[data-n]'); if(li){ e.preventDefault(); pick(+li.getAttribute('data-n')); } });
+  document.addEventListener('click',function(e){ if(!e.target.closest('.find')) close(); });
+
+  // ---------- height reporting ----------
+  // A Wix HTML embed cannot be resized from page code, so this page is built to a fixed height.
+  // It still posts its height so a Wix Custom Element or Wix Studio wrapper can use it later.
+  var last=0;
+  function report(){
+    var h=Math.ceil(document.documentElement.scrollHeight);
+    if(h===last) return; last=h;
+    try{ window.parent.postMessage({type:'valor:height', page:'coaches-staff', height:h}, '*'); }catch(e){}
+  }
+  window.addEventListener('load',report);
+  window.addEventListener('resize',function(){ clearTimeout(report.t); report.t=setTimeout(report,150); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(report);
+  if(window.ResizeObserver) new ResizeObserver(report).observe(document.body);
+  report();
+})();
+</script>
+</body>
+</html>

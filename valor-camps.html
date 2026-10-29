@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camps and Clinics | Virginia Valor FC</title>
+<meta name="description" content="Virginia Valor FC Student Holiday Mini Camps: club-neutral, single-day camps on school holidays at EC Lawrence Park, full day or half day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static.wixstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   VALOR SITE SYSTEM  (shared by every consolidated page)
+   Same family as the Valor Rising, Valor Futures and Student Holiday Mini Camps pages:
+   white paper, brass accents, Big Shoulders Display + Source Serif 4 + IBM Plex Mono,
+   centered crest hero, two-tone wordmark, pill chips, at-a-glance cells.
+   Built for full-width Wix HTML embeds with a FIXED height:
+   - at 980px and wider every column, photo and table cell is a fixed px width,
+     so text wraps the same way and the page height is identical at any desktop width
+   - nothing expands, collapses or hides after load
+   ===================================================================== */
+:root{
+  --paper:#FFFFFF; --panel:#F8F6F1; --panel-2:#F1EEE6; --line:#E4E0D7;
+  --ink:#15141A; --body:#3B3941; --soft:#6A675F;
+  --brass:#C6A15B; --brass-lt:#E4CE9E; --brass-dk:#9A7B3E; --brass-ink:#7C5E1D;
+  /* names kept from the first build so page styles keep working */
+  --white:#FFFFFF; --off:var(--panel); --stone:var(--panel); --black:#15141A; --tile:#F1EEE6;
+  --gold:var(--brass-ink); --gold-d:#6F5418; --onblack:var(--body);
+  --head:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;
+  --text:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --maxw:980px; --pad:24px;
+  --c2:446px; --c3:288px; --c4:215px;   /* fixed desktop column widths (fit a 932px container) */
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper);-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--body);font-family:var(--text);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+b,strong{color:var(--ink);font-weight:600}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass-dk);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+.label{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--brass-ink);line-height:1.5}
+.h2{font-family:var(--head);font-weight:700;text-transform:uppercase;color:var(--ink);font-size:52px;line-height:.98;letter-spacing:.005em}
+.h3{font-family:var(--head);font-weight:700;text-transform:uppercase;color:var(--ink);font-size:30px;line-height:1;letter-spacing:.01em}
+.h4{font-family:var(--head);font-weight:700;text-transform:uppercase;color:var(--ink);font-size:23px;line-height:1.05;letter-spacing:.02em}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+p+p{margin-top:12px}
+.lead{font-size:20px;color:var(--body);max-width:640px}
+.small{font-size:15.5px;color:var(--soft)}
+.ghost{display:none}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ---------- hero (centered crest, two-tone wordmark) ---------- */
+.mast{position:relative;overflow:hidden;text-align:center;border-bottom:1px solid var(--line)}
+.mast::before{content:"";position:absolute;top:-60px;left:50%;width:760px;height:760px;transform:translateX(-50%);background:radial-gradient(circle at 50% 38%,rgba(198,161,91,.15),rgba(198,161,91,.06) 42%,transparent 68%);pointer-events:none}
+.mast-in{position:relative;padding-top:60px;padding-bottom:70px}
+.mast-top{position:relative;display:flex;flex-direction:column;align-items:center;gap:24px;animation:fadeUp .9s ease .05s both}
+.mast-top img{width:150px;height:150px;object-fit:contain;filter:drop-shadow(0 14px 30px rgba(20,15,5,.18))}
+.mast-top .label{letter-spacing:.28em}
+.mast-lock{display:flex;align-items:center;justify-content:center;gap:30px}
+.mast-lock .lock-div{flex:none;width:2px;height:118px;background:linear-gradient(to bottom,transparent,var(--brass),transparent)}
+.mast-top .mast-lock img.partner{width:auto;height:104px;filter:none}
+.mast-top .label span::before{content:"\00B7";margin:0 .7em;color:var(--brass)}
+.mast h1{position:relative;font-family:var(--head);font-weight:800;text-transform:uppercase;color:var(--ink);font-size:120px;line-height:.88;margin:16px 0 0;letter-spacing:.01em;animation:fadeUp .9s ease .2s both}
+.mast h1>span{display:block}
+.mast h1>span+span{font-weight:500;color:var(--brass-dk);letter-spacing:.04em}
+.mast h1.sm{font-size:104px}
+.mast .lead{position:relative;margin:24px auto 0;font-size:21px;max-width:640px;animation:fadeUp .9s ease .32s both}
+.mast .btns{justify-content:center;margin-top:32px}
+.mast-row{position:relative;display:flex;flex-direction:column;align-items:center}
+.mast-photo{position:relative;width:640px;height:356px;margin:38px auto 0;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 14px 34px -20px rgba(20,15,5,.4);animation:fadeUp .9s ease .42s both}
+.mast-photo img{width:100%;height:100%;object-fit:cover}
+/* on-page links as pill chips */
+.jump{position:relative;max-width:932px;margin:40px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;animation:fadeUp .9s ease .5s both}
+.jump a{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 18px;border:1px solid var(--line);border-radius:100px;background:var(--panel);text-decoration:none;white-space:nowrap;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
+.jump a b{font-weight:600;color:var(--brass-ink);text-transform:uppercase;letter-spacing:.12em}
+.jump a:hover{border-color:var(--brass);background:var(--paper)}
+.jump a:active{background:var(--brass-lt)}
+
+/* ---------- sections ---------- */
+.sec{position:relative;padding:80px 0;scroll-margin-top:12px}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec.stone{background:var(--panel);border-top:1px solid var(--line)}
+.sec.dark{background:radial-gradient(circle at 50% 0%,rgba(198,161,91,.12),transparent 55%),var(--panel);border-top:1px solid var(--line)}
+.sec-head{position:relative;max-width:720px;margin:0 0 40px}
+.sec-head .h2{margin:14px 0 0}
+.sec-head>p{font-size:19px;color:var(--body);margin:18px 0 0;max-width:640px}
+.sec-head .p-wide{max-width:680px}
+.sub{margin:48px 0 18px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.sub:first-child{margin-top:0}
+
+/* ---------- ruled spec rows ---------- */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:240px 660px;justify-content:space-between;gap:32px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;scroll-margin-top:12px}
+.row>dt,.row>.k{font-family:var(--head);font-weight:700;font-size:24px;line-height:1.05;text-transform:uppercase;color:var(--ink);letter-spacing:.02em}
+.row>dt small,.row>.k small{display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;color:var(--brass-ink);margin-top:7px;line-height:1.4}
+.row>dd,.row>.v{min-width:0;color:var(--body);font-size:17px}
+.row>dd ul,.row>.v ul{list-style:none}
+.row>dd li,.row>.v li{position:relative;padding-left:22px}
+.row>dd li+li,.row>.v li+li{margin-top:6px}
+.row>dd li::before,.row>.v li::before{content:"";position:absolute;left:0;top:.78em;width:10px;height:2px;background:var(--brass)}
+.rows.tight .row{padding:14px 0}
+.row.kv{grid-template-columns:150px minmax(0,1fr);gap:20px}
+
+/* ---------- column grids (fixed widths on desktop) ---------- */
+.g2,.g3,.g4{display:grid;justify-content:space-between;row-gap:40px}
+.g2{grid-template-columns:repeat(2,var(--c2))}
+.g3{grid-template-columns:repeat(3,var(--c3))}
+.g4{grid-template-columns:repeat(4,var(--c4))}
+.blk{border-top:2px solid var(--ink);padding-top:18px;min-width:0}
+.blk .h4,.blk .h3{margin:0 0 10px}
+.blk p{font-size:16.5px}
+.blk .label{display:block;margin:0 0 10px}
+.list{list-style:none}
+.list li{position:relative;padding-left:22px;font-size:16.5px}
+.list li+li{margin-top:7px}
+.list li::before{content:"";position:absolute;left:0;top:.78em;width:10px;height:2px;background:var(--brass)}
+
+/* ---------- column cards: dark header, rows aligned across cards (subgrid) ---------- */
+.cards{display:grid;justify-content:space-between;grid-template-rows:repeat(var(--r,4),auto)}
+.cards.c2{grid-template-columns:repeat(2,var(--c2))}
+.cards.c3{grid-template-columns:repeat(3,var(--c3))}
+.cards.c4{grid-template-columns:repeat(4,var(--c4))}
+.card{display:grid;grid-row:span var(--r,4);grid-template-rows:subgrid;background:var(--paper);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 14px 34px -26px rgba(20,15,5,.45);min-width:0}
+.card>header{padding:20px 20px 16px;background:var(--ink)}
+.card>header .no{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--brass-lt)}
+.card>header h3{font-family:var(--head);font-weight:800;font-size:38px;line-height:.95;text-transform:uppercase;color:var(--paper);margin-top:8px}
+.card>header p{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#CFCBC2;margin-top:6px}
+.card>.area{padding:16px 20px 18px;border-top:1px solid var(--line)}
+.card>header+.area{border-top:0}
+.card>.area h4{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass-ink);margin:0 0 8px}
+.card>.area p{font-size:15.5px}
+.card>.area ul{list-style:none}
+.card>.area li{position:relative;padding-left:16px;font-size:15.5px;line-height:1.45}
+.card>.area li+li{margin-top:6px}
+.card>.area li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:2px;background:var(--brass)}
+.card.light>header{background:var(--panel);border-bottom:2px solid var(--brass)}
+.card.light>header h3{color:var(--ink)}
+.card.light>header .no{color:var(--brass-ink)}
+.card.light>header p{color:var(--soft)}
+
+/* ---------- at a glance cells ---------- */
+.facts{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.facts>div{background:var(--panel);padding:28px 24px 30px;min-width:0}
+.sec.stone .facts>div,.sec.dark .facts>div{background:var(--paper)}
+.facts dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--brass-ink);margin:0 0 14px}
+.facts dd{font-family:var(--head);font-weight:700;font-size:28px;line-height:1;text-transform:uppercase;color:var(--ink)}
+.facts dd small{display:block;max-width:calc(932px / var(--n,4) - 50px);font-family:var(--text);font-size:15.5px;font-weight:400;line-height:1.5;text-transform:none;color:var(--soft);margin-top:10px;letter-spacing:0}
+
+/* ---------- tables ---------- */
+.tbl{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);font-size:16px;table-layout:fixed}
+.tbl th{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-ink);text-align:left;padding:14px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:bottom}
+.tbl td{padding:15px 12px 15px 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--body)}
+.tbl td.k{font-family:var(--head);font-weight:700;font-size:22px;line-height:1.05;text-transform:uppercase;color:var(--ink);letter-spacing:.01em}
+.tbl td b{font-weight:600}
+.tbl td a.tl{min-height:0}
+.tbl td>span.mw{display:block;max-width:600px}
+
+/* ---------- buttons and links ---------- */
+.btns{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin:32px 0 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 30px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1.5px solid var(--ink);border-radius:2px;background:var(--ink);color:var(--paper);transition:transform .15s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease,color .2s ease;text-align:center}
+.btn:hover{background:var(--brass-dk);border-color:var(--brass-dk)}
+.btn.gold{background:linear-gradient(180deg,var(--brass-lt),var(--brass));color:#241A05;border:1px solid var(--brass-dk);box-shadow:0 10px 24px -10px rgba(154,123,62,.6)}
+.btn.gold:hover{transform:translateY(-2px);box-shadow:0 16px 30px -10px rgba(154,123,62,.75)}
+.btn.line{background:transparent;color:var(--ink)}
+.btn.sm{min-height:44px;padding:0 20px;font-size:12px}
+.btn.line:hover{background:transparent;border-color:var(--brass-dk);color:var(--brass-ink)}
+.tl{display:inline-flex;align-items:center;min-height:44px;font-weight:600;font-size:16px;color:var(--brass-ink);text-decoration:underline;text-decoration-color:rgba(124,94,29,.45);text-decoration-thickness:1.5px;text-underline-offset:5px}
+.tl:hover{text-decoration-color:var(--brass-ink)}
+.links{list-style:none;border-top:1px solid var(--line)}
+.links li{border-bottom:1px solid var(--line)}
+.links a,.links .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;min-height:56px;padding:12px 0;text-decoration:none}
+.links a b,.links .it b{font-weight:600;color:var(--ink);font-size:17px;line-height:1.35}
+.links a span,.links .it span{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-ink);white-space:nowrap}
+.links a:hover b{color:var(--brass-ink)}
+a.mail{word-break:normal;overflow-wrap:break-word}
+a.tl.mail{display:inline;line-height:2}
+
+/* ---------- photos ---------- */
+.ph{position:relative;overflow:hidden;background:var(--panel);border-radius:6px;border:1px solid var(--line);box-shadow:0 14px 34px -20px rgba(20,15,5,.4)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .55s cubic-bezier(.2,.6,.2,1)}
+.ph:hover img{transform:scale(1.04)}
+.ph figcaption,.cap{font-family:var(--mono);font-size:12.5px;letter-spacing:.03em;color:var(--soft);margin-top:12px;line-height:1.65}
+.split{display:grid;grid-template-columns:var(--c2) var(--c2);justify-content:space-between;align-items:start}
+
+/* ---------- notes and contact ---------- */
+.note{font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;line-height:1.75;color:var(--soft);max-width:720px}
+.note b{color:var(--brass-ink)}
+.contact{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:28px 26px 28px}
+.sec.stone .contact,.sec.dark .contact{background:var(--paper)}
+.contact .h4{padding:0 0 14px;border-bottom:2px solid var(--brass)}
+.contact dl div{padding:13px 0;border-bottom:1px solid var(--line)}
+.contact dt{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-ink)}
+.contact dd{font-size:16px;color:var(--ink);margin-top:3px;line-height:1.45}
+.contact dd a{display:inline-block;padding:8px 0;margin:-6px 0;text-decoration:underline;text-decoration-color:rgba(124,94,29,.45);text-underline-offset:4px;overflow-wrap:break-word}
+.contact .btn{width:100%;margin-top:22px}
+
+/* people rows (name, role, email) */
+.people{list-style:none;border-top:1px solid var(--line)}
+.people li{display:grid;grid-template-columns:240px minmax(0,1fr) 300px;gap:20px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--line)}
+.people b{font-family:var(--head);font-weight:700;font-size:23px;line-height:1.05;text-transform:uppercase;color:var(--ink)}
+.people span{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-ink)}
+.people a{font-size:16px;color:var(--brass-ink);text-decoration:underline;text-decoration-color:rgba(124,94,29,.45);text-underline-offset:4px;justify-self:end;display:inline-flex;align-items:center;min-height:40px}
+
+/* ---------- tablet (only reached in Wix Studio or a resized desktop browser) ---------- */
+@media (max-width:979px){
+  :root{--c2:minmax(0,1fr);--c3:minmax(0,1fr);--c4:minmax(0,1fr)}
+  .h2{font-size:46px}
+  .mast h1{font-size:96px}.mast h1.sm{font-size:84px}
+  .mast-photo{width:min(640px,100%);height:auto;aspect-ratio:940/522}
+  .g2,.g3,.g4{column-gap:32px}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row{grid-template-columns:200px minmax(0,1fr);gap:24px}
+  .split{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px}
+  .people li{grid-template-columns:200px minmax(0,1fr);row-gap:2px}
+  .people a{grid-column:2;justify-self:start}
+  .tbl col{width:auto!important}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards.c3,.cards.c4{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;row-gap:20px;grid-template-rows:none}
+  .cards.c2{column-gap:20px}
+  .card{grid-row:auto;display:block}
+  .facts dd small{max-width:none}
+}
+@media (max-width:760px){
+  .g3{grid-template-columns:minmax(0,1fr)}
+  .split{grid-template-columns:minmax(0,1fr);row-gap:28px}
+}
+
+/* ---------- phone (Wix classic mobile renders the embed 320px wide) ---------- */
+@media (max-width:600px){
+  :root{--pad:20px}
+  body{font-size:17px}
+  .h2{font-size:38px}
+  .h3{font-size:26px}
+  .lead,.mast .lead{font-size:18px}
+  .mast::before{width:520px;height:520px;top:-40px}
+  .mast-in{padding-top:40px;padding-bottom:48px}
+  .mast-top{gap:18px}
+  .mast-top img{width:120px;height:120px}
+  .mast-lock{flex-direction:column;gap:14px}.mast-lock .lock-div{display:none}
+  .mast-top .mast-lock img{width:104px;height:104px}.mast-top .mast-lock img.partner{width:auto;height:46px;max-width:100%}
+  .mast-top .label{font-size:11px;letter-spacing:.2em}
+  .mast-top .label span{display:block;margin-top:4px}
+  .mast-top .label span::before{display:none}
+  .mast h1{font-size:15vw;margin-top:12px}.mast h1.sm{font-size:13vw}
+  .mast .lead{margin-top:18px}
+  .mast-photo{margin-top:28px}
+  .jump{margin-top:28px;gap:8px}
+  .jump a{min-height:40px;padding:0 14px;font-size:11.5px}
+  .jump a span{display:none}
+  .sec{padding:56px 0}
+  .sec-head{margin-bottom:28px}
+  .sec-head>p{font-size:17px}
+  .sub{margin:36px 0 14px}
+  .g2,.g4{grid-template-columns:minmax(0,1fr);row-gap:28px}
+  .cards.c2,.cards.c3,.cards.c4{grid-template-columns:minmax(0,1fr)}
+  .card>header h3{font-size:32px}
+  .g4.keep2{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}
+  .row,.row.kv{grid-template-columns:minmax(0,1fr);gap:6px;padding:16px 0}
+  .row>dt,.row>.k{font-size:22px}
+  .row>dd,.row>.v{font-size:16.5px}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .facts>div{padding:22px 20px 24px}
+  .facts dd{font-size:26px}
+  .facts dd small{font-size:15px}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{border-bottom:1px solid var(--line);padding:12px 0 14px}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td[data-l]::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-ink);margin-top:8px}
+  .tbl td.k{font-size:22px;padding-bottom:2px}
+  .tbl td.k::before{display:none}
+  .btns{gap:12px 18px}
+  .btn{min-height:52px;padding:0 18px;font-size:13px}
+  .btns .btn{width:100%}
+  .people li{grid-template-columns:minmax(0,1fr)}
+  .people a{grid-column:1}
+  .contact{padding:22px 18px 24px}
+  .ph:hover img{transform:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* ---------- page: camps ---------- */
+.days{display:grid;grid-template-columns:repeat(4,var(--c4));justify-content:space-between;row-gap:34px}
+.day{border-top:2px solid var(--ink);padding-top:14px;min-width:0}
+.day .d{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.day .d b{font-family:var(--head);font-weight:800;font-size:52px;line-height:.86;text-transform:uppercase;color:var(--ink)}
+.day .d span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);font-family:var(--mono)}
+.day .st{display:inline-block;margin:10px 0 0;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px;background:var(--gold);color:var(--white);font-family:var(--mono)}
+.day.past .st{background:var(--line);color:var(--soft)}
+.day.past .d b,.day.past .h4{color:var(--soft)}
+.day .h4{margin:12px 0 6px;font-size:23px;min-height:48px}
+.day p{font-size:14.5px}
+.day .tags{margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);line-height:1.5;font-family:var(--mono)}
+.book{display:grid;grid-template-columns:repeat(2,var(--c2));justify-content:space-between}
+.book .opt{border:1px solid var(--line);border-radius:4px;background:var(--paper);padding:32px 30px 32px}
+.book .opt .amt{font-family:var(--head);font-weight:800;font-size:86px;line-height:.85;color:var(--ink);margin:10px 0 12px}
+@media (max-width:979px){.days{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}.book{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}}
+@media (max-width:600px){.days{grid-template-columns:minmax(0,1fr);row-gap:26px}.day .h4{min-height:0}.book{grid-template-columns:minmax(0,1fr);row-gap:16px}.book .opt .amt{font-size:64px}}
+</style>
+</head>
+<body data-page="camps">
+<header class="mast">
+  <div class="wrap mast-in">
+    <div class="mast-top">
+      <img fetchpriority="high" src="https://static.wixstatic.com/media/1df62c_bb0adec454f24c9da68bc984023a966d~mv2.png/v1/fit/w_320,h_320,al_c,q_90,enc_auto/valor-crest.png" alt="Virginia Valor FC crest" width="52" height="52">
+      <p class="label">Virginia Valor FC<span>Camps and Events</span></p>
+    </div>
+    <h1><span>Camps</span><span>&amp; Clinics</span></h1>
+    <p class="lead"><b>Student Holiday Mini Camps</b> for 2026-27: eight single-day camps on days off school, all at EC Lawrence Park. The camps are club neutral, so players from any club are welcome, Valor or not.</p>
+    <div class="btns"><a class="btn gold" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5Mjg1MTE2MHw3ZDVta3FGWUtLcU9DeFE2S2tRaVhDN2ZlZEMxU1Y2eDQyM1kwaHozaFNFPQ==&amp;program_id=118416" target="_blank" rel="noopener">Register a player</a><a class="tl" href="#dates">See all eight dates</a></div>
+  </div>
+</header>
+
+<section class="sec" id="dates">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="label">September 2026 to January 2027</p><h2 class="h2">Eight Camp Days</h2></div>
+      <p>Each camp takes one part of the game and spends the whole day on it, with competitive games start to finish. Book one camp or all eight. Each date is registered separately and offers a full day and a half day.</p>
+    </div>
+    <div class="days">
+      <article class="day" data-date="2026-09-04"><div class="d"><b>Sep 4</b><span>Friday</span></div><span class="st">Open</span><h3 class="h4">Striking, Finishing and Goalkeeping</h3><p>Striking technique, finishing a range of chances and scoring under pressure, with specialized training for goalkeepers.</p><p class="tags">Finishing · Goalkeeping</p></article>
+      <article class="day" data-date="2026-09-07"><div class="d"><b>Sep 7</b><span>Monday</span></div><span class="st">Open</span><h3 class="h4">World Cup Camp</h3><p>Players represent different countries in competitions, challenges and small-sided games all day.</p><p class="tags">Small-sided games · Tournament</p></article>
+      <article class="day" data-date="2026-09-21"><div class="d"><b>Sep 21</b><span>Monday</span></div><span class="st">Open</span><h3 class="h4">Attacking Play</h3><p>Creating chances, attacking space, combining with teammates and making decisions in the final third.</p><p class="tags">Final third · Combinations</p></article>
+      <article class="day" data-date="2026-10-12"><div class="d"><b>Oct 12</b><span>Monday</span></div><span class="st">Open</span><h3 class="h4">1v1: How to Beat Your Opponent</h3><p>Changes of direction, speed, body movements, feints and creative dribbling to beat a defender.</p><p class="tags">1v1 · Footwork</p></article>
+      <article class="day" data-date="2026-11-02"><div class="d"><b>Nov 2</b><span>Monday</span></div><span class="st">Open</span><h3 class="h4">Complete Player Camp</h3><p>Ball mastery, attacking, finishing, defending, decision-making and game awareness in one day.</p><p class="tags">Ball mastery · Game awareness</p></article>
+      <article class="day" data-date="2026-11-03"><div class="d"><b>Nov 3</b><span>Tuesday</span></div><span class="st">Open</span><h3 class="h4">Technical Ball Mastery</h3><p>Foot skills, first touch, dribbling, coordination and creativity, with plenty of touches in tight spaces.</p><p class="tags">First touch · Tight spaces</p></article>
+      <article class="day" data-date="2027-01-18"><div class="d"><b>Jan 18</b><span>Monday</span></div><span class="st">Open</span><h3 class="h4">Small-Sided and Tactical Play</h3><p>Finding space, pressing as a group, switching play and knowing when to keep the ball.</p><p class="tags">Pressing · Reading the game</p></article>
+      <article class="day" data-date="2027-01-29"><div class="d"><b>Jan 29</b><span>Friday</span></div><span class="st">Open</span><h3 class="h4">Complete Player Camp</h3><p>A second complete-player day, for anyone who missed November or wants a mid-winter reset.</p><p class="tags">Ball mastery · Game awareness</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec stone" id="book">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="label">Two ways to book</p><h2 class="h2">Full Day or Half Day</h2></div>
+      <p>Same coaches, same theme, same field. Every camp has a waitlist, and families hear directly if a spot opens.</p>
+    </div>
+    <div class="book">
+      <div class="opt"><p class="label">Full day</p><p class="amt">$150</p><ul class="list"><li>The complete session, morning through afternoon</li><li>Extended competitive games in the afternoon</li><li>Capped at 30 players</li><li>Bring a lunch, snacks and plenty of water</li></ul></div>
+      <div class="opt"><p class="label">Half day</p><p class="amt">$100</p><ul class="list"><li>The morning block of the same camp</li><li>Full technical focus on the day's theme</li><li>Capped at 10 players</li><li>A good first camp for younger or newer players</li></ul></div>
+    </div>
+    <div class="btns"><a class="btn gold" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5Mjg1MTE2MHw3ZDVta3FGWUtLcU9DeFE2S2tRaVhDN2ZlZEMxU1Y2eDQyM1kwaHozaFNFPQ==&amp;program_id=118416" target="_blank" rel="noopener">Register in PlayMetrics</a></div>
+  </div>
+</section>
+
+<section class="sec" id="know">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="label">Before you go</p><h2 class="h2">What to Know</h2></div>
+      <p>Questions before you book go to <a class="tl mail" href="mailto:dsutherland@virginiavalorfc.org">dsutherland@<wbr>virginiavalorfc.org</a>.</p>
+    </div>
+    <dl class="rows">
+      <div class="row"><dt>Who can come</dt><dd>Any player from any club, whether or not they play for Valor. Bring a friend from school, a rec teammate or a sibling.</dd></div>
+      <div class="row"><dt>What to bring</dt><dd>Cleats, shin guards, a ball, a full water bottle and layers for the weather. Full day players pack a lunch and snacks.</dd></div>
+      <div class="row"><dt>Where</dt><dd>All eight camps are held at EC Lawrence Park. Field assignments go out by email the week of camp.</dd></div>
+      <div class="row"><dt>Weather</dt><dd>Camps run in most conditions. If weather forces a cancellation, families are told by email and text as early as possible.</dd></div>
+      <div class="row"><dt>Refunds</dt><dd>Camp cancellations follow the Valor camp refund policy, from a full refund 15 or more days out to credit only inside 72 hours. <a class="tl" href="https://www.virginiavalorfc.org/policies-and-procedures#commitment" target="_top">Camp refund policy</a></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="sec dark" id="more">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="label">More training</p><h2 class="h2">Other Programs</h2></div>
+      <p>Valor runs more training through the year for its own players and for younger players getting started.</p>
+    </div>
+    <div class="g3">
+      <div class="blk"><h3 class="h4">Competitive Futsal</h3><p>Winter futsal for Valor players U8 to U14 at the CYA Fieldhouse, January to February.</p><a class="tl" href="https://www.virginiavalorfc.org/valorfutsal" target="_top">Competitive Futsal</a></div>
+      <div class="blk"><h3 class="h4">Pre-Travel Development</h3><p>Valor Rising and Valor Futures for U7 and U8 players.</p><a class="tl" href="https://www.virginiavalorfc.org/pretravel" target="_top">Pre-Travel Development</a></div>
+      <div class="blk"><h3 class="h4">USL-Y Summer Soccer</h3><p>Summer league play for Valor teams, plus PRO U23 for college players.</p><a class="tl" href="https://www.virginiavalorfc.org/usl-y" target="_top">USL-Y Summer Soccer</a></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  /* Jump links: scrollIntoView also scrolls the Wix page around the embed. */
+  function go(id){
+    var el=document.getElementById(id); if(!el) return;
+    try{ el.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ el.scrollIntoView(true); }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]');
+    if(!a) return; var id=a.getAttribute('href').slice(1); if(!id) return;
+    e.preventDefault(); go(id);
+  });
+  /* Height report. A Wix HTML embed cannot be resized from page code, so every page is built
+     to a fixed height; this message is only for a future Wix Custom Element or Studio wrapper. */
+  var last=0;
+  function report(){
+    var h=Math.ceil(document.documentElement.scrollHeight);
+    if(h===last) return; last=h;
+    try{ window.parent.postMessage({type:'valor:height', page:document.body.getAttribute('data-page'), height:h}, '*'); }catch(e){}
+  }
+  window.addEventListener('load',report);
+  window.addEventListener('resize',function(){ clearTimeout(report.t); report.t=setTimeout(report,150); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(report);
+  if(window.ResizeObserver) new ResizeObserver(report).observe(document.body);
+})();
+</script>
+<script>
+(function(){
+  var t=new Date(); t.setHours(0,0,0,0);
+  document.querySelectorAll('.day[data-date]').forEach(function(d){
+    var p=d.getAttribute('data-date').split('-'), dt=new Date(+p[0],+p[1]-1,+p[2]);
+    if(dt<t){ d.classList.add('past'); d.querySelector('.st').textContent='Completed'; }
+  });
+})();
+</script>
+</body>
+</html>
