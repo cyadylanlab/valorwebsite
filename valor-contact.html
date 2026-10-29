@@ -300,6 +300,35 @@ a.tl.mail{display:inline;line-height:2}
 .start .card>.area .addr{margin-top:auto;padding-top:12px}
 @media (max-width:979px){.dir-list li{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.dir-list li .btn{justify-self:start}}
 @media (max-width:600px){.start .card>.area>p:first-child{min-height:0}.dir-list li{grid-template-columns:minmax(0,1fr);row-gap:4px}.dir-list li .btn{width:100%;margin-top:8px}}
+.ask{display:grid;grid-template-columns:var(--c2) var(--c2);justify-content:space-between;align-items:start}
+.ask .intro .list{margin-top:18px}
+.qf{position:relative;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--brass);border-radius:6px;padding:26px 26px 22px;box-shadow:0 14px 34px -26px rgba(20,15,5,.45)}
+.qf .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px 16px}
+.qf .full{grid-column:1 / -1}
+.qf .f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.qf .f>span{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass-ink)}
+.qf .f>span i{font-style:normal;color:var(--soft);letter-spacing:.06em;text-transform:none;font-weight:400}
+.qf input:not([type=checkbox]),.qf select,.qf textarea{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--panel);font-family:var(--text);font-size:16px;color:var(--ink);appearance:none;-webkit-appearance:none}
+.qf select{background-image:linear-gradient(45deg,transparent 50%,var(--brass-dk) 50%),linear-gradient(135deg,var(--brass-dk) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+.qf textarea{min-height:132px;resize:none}
+.qf input:disabled{opacity:.45;cursor:not-allowed}
+.qf input:focus,.qf select:focus,.qf textarea:focus{outline:2px solid var(--brass);outline-offset:1px;border-color:var(--brass-dk)}
+.anon{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:4px;background:var(--panel);font-size:15px;color:var(--ink);cursor:pointer}
+.anon input{width:18px;height:18px;accent-color:var(--brass-dk);flex:none}
+.anon-note{min-height:44px;margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--soft)}
+.qf .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+.qf .send{display:flex;align-items:center;gap:16px;margin-top:16px}
+.qf .send .btn{min-width:200px}
+.qf .send .btn[disabled]{opacity:.6;cursor:wait}
+.qf .status{min-height:44px;display:flex;align-items:center;font-size:14.5px}
+.qf .status.err{color:#9B2C1F}
+.qf .done{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--paper);border-radius:6px;padding:30px}
+.qf .done[hidden]{display:none}
+.qf .done p{max-width:340px;margin-top:12px}
+@media (max-width:979px){.ask{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px}}
+@media (max-width:760px){.ask{grid-template-columns:minmax(0,1fr);row-gap:26px}}
+@media (max-width:600px){.anon-note{min-height:66px}.qf{padding:20px 16px 18px}.qf .send{flex-direction:column;align-items:stretch;gap:8px}.qf .send .btn{min-width:0;width:100%}.qf .status{justify-content:center;text-align:center}}
+@media (max-width:420px){.qf .grid2{grid-template-columns:minmax(0,1fr)}.qf .full{grid-column:auto}}
 </style>
 </head>
 <body data-page="contact">
@@ -310,8 +339,9 @@ a.tl.mail{display:inline;line-height:2}
       <p class="label">Virginia Valor FC<span>Our Club</span></p>
     </div>
     <h1><span>Contact</span><span>Valor</span></h1>
-    <p class="lead">Find the right person for your question, reach the club office, or ask about coaching with Virginia Valor FC.</p>
-    <nav class="jump" style="--n:4" aria-label="On this page">
+    <p class="lead">Ask the club a question, find the right person to contact, reach the club office, or ask about coaching with Virginia Valor FC.</p>
+    <nav class="jump" style="--n:5" aria-label="On this page">
+      <a href="#ask"><b>Ask a Question</b><span>Named or anonymous</span></a>
       <a href="#start"><b>Where to Start</b><span>Common questions</span></a>
       <a href="#directors"><b>Directors</b><span>Emails by role</span></a>
       <a href="#office"><b>Club Office</b><span>Phone and address</span></a>
@@ -320,7 +350,38 @@ a.tl.mail{display:inline;line-height:2}
   </div>
 </header>
 
-<section class="sec start" id="start">
+<section class="sec" id="ask">
+  <div class="wrap">
+    <div class="ask">
+      <div class="intro">
+        <p class="label">Contact us</p>
+        <h2 class="h2" style="margin-top:10px">Ask a Question</h2>
+        <p style="margin-top:18px">Send the club a question about anything: programs, teams, fields, fees or the club itself. Put your name and email if you want a reply, or check the box to send it anonymously.</p>
+        <ul class="list">
+          <li>Questions go straight to Valor's Director of Soccer Operations</li>
+          <li>Anonymous questions do not ask for your name or email, so we cannot reply to them</li>
+          <li>For a specific team or player, the directors below are the fastest route</li>
+        </ul>
+      </div>
+      <form class="qf" id="qf" novalidate>
+        <div class="grid2">
+          <label class="f full"><span>Topic</span><select name="topic" required><option value="">Choose one</option><option>General question</option><option>Programs and teams</option><option>Tryouts</option><option>Registration and fees</option><option>Fields and schedules</option><option>Coaching at Valor</option><option>Feedback or a concern</option><option>Something else</option></select></label>
+          <label class="anon full"><input type="checkbox" name="anonymous" id="qf-anon">Send anonymously</label>
+          <label class="f"><span>Your name</span><input name="name" autocomplete="name" maxlength="80" required></label>
+          <label class="f"><span>Email</span><input name="email" type="email" autocomplete="email" maxlength="120" required></label>
+          <label class="f full"><span>Phone <i>(optional)</i></span><input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+          <label class="f full"><span>Your question</span><textarea name="message" required maxlength="2000"></textarea></label>
+        </div>
+        <p class="anon-note" id="qf-note">We will reply to the email you enter.</p>
+        <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+        <div class="send"><button class="btn gold" type="submit" id="qf-send">Send question</button><p class="status" id="qf-status" role="status"></p></div>
+        <div class="done" id="qf-done" hidden><p class="label">Thank you</p><h3 class="h3" style="margin-top:8px">Question sent</h3><p id="qf-done-msg">Your question is with the club.</p><button class="btn line sm" type="button" id="qf-again" style="margin-top:18px">Ask another question</button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="sec stone start" id="start">
   <div class="wrap">
     <div class="sec-head">
       <div><p class="label">Common questions</p><h2 class="h2">Where to Start</h2></div>
@@ -339,7 +400,7 @@ a.tl.mail{display:inline;line-height:2}
   </div>
 </section>
 
-<section class="sec stone" id="directors">
+<section class="sec" id="directors">
   <div class="wrap">
     <div class="sec-head">
       <div><p class="label">Technical leadership</p><h2 class="h2">Directors</h2></div>
@@ -359,7 +420,7 @@ a.tl.mail{display:inline;line-height:2}
   </div>
 </section>
 
-<section class="sec" id="office">
+<section class="sec stone" id="office">
   <div class="wrap">
     <div class="sec-head">
       <div><p class="label">Club office</p><h2 class="h2">Office and Mail</h2></div>
@@ -377,9 +438,9 @@ a.tl.mail{display:inline;line-height:2}
   <div class="wrap">
     <div class="sec-head">
       <div><p class="label">Careers</p><h2 class="h2">Become a Valor Coach</h2></div>
-      <p>Valor has more than 45 staff coaches across its girls and boys programs. If you would like to coach with the club, email the office with your coaching background and licenses, and the age groups you are interested in.</p>
+      <p>Valor has more than 45 staff coaches across its girls and boys programs. If you would like to coach with the club, email Dylan Sutherland, Director of Soccer Operations, with your coaching background and licenses, and the age groups you are interested in.</p>
     </div>
-    <div class="btns"><a class="btn gold" href="mailto:info@virginiavalorfc.org?subject=Coaching%20with%20Virginia%20Valor%20FC">Email about coaching</a><a class="btn line" href="https://www.virginiavalorfc.org/whyvalor" target="_top">Why Valor</a></div>
+    <div class="btns"><a class="btn gold" href="mailto:dsutherland@virginiavalorfc.org?subject=Coaching%20with%20Virginia%20Valor%20FC">Email about coaching</a><a class="btn line" href="https://www.virginiavalorfc.org/whyvalor" target="_top">Why Valor</a></div>
   </div>
 </section>
 <script>
@@ -408,6 +469,36 @@ a.tl.mail{display:inline;line-height:2}
   if(window.ResizeObserver) new ResizeObserver(report).observe(document.body);
 })();
 </script>
-
+<script>
+(function(){
+  var ENDPOINT='https://script.google.com/macros/s/AKfycby5PdA-LRwXLudf26Zn4C-KIyUGj91TIMPP5isvWrZ-fwQ2rhenGXw6ai-4bDB0Ejdy4w/exec';
+  var f=document.getElementById('qf'), anon=document.getElementById('qf-anon'), note=document.getElementById('qf-note'), st=document.getElementById('qf-status'), btn=document.getElementById('qf-send'), done=document.getElementById('qf-done');
+  var who=[f.elements['name'],f.email,f.phone];
+  function setAnon(){
+    var a=anon.checked;
+    who.forEach(function(el){ el.disabled=a; if(a) el.value=''; });
+    f.elements['name'].required=!a; f.email.required=!a;
+    note.textContent = a ? 'Your name and email will not be sent. Because of that, we cannot reply to this question.' : 'We will reply to the email you enter.';
+  }
+  anon.addEventListener('change',setAnon);
+  function say(t,err){ st.textContent=t; st.classList.toggle('err',!!err); }
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!f.checkValidity()){ var bad=f.querySelector(':invalid'); say('Please fill in the highlighted field.',true); if(bad){ bad.focus(); bad.reportValidity(); } return; }
+    var d={form:'question',topic:f.topic.value,anonymous:anon.checked?'Yes':'No',message:f.message.value.trim(),website:f.website.value,page:document.referrer||location.href};
+    if(!anon.checked){ d.name=f.elements['name'].value.trim(); d.email=f.email.value.trim(); d.phone=f.phone.value.trim(); }
+    btn.disabled=true; say('Sending...');
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)})
+      .then(function(r){return r.json();})
+      .then(function(r){
+        if(r&&r.ok){ say(''); document.getElementById('qf-done-msg').textContent = anon.checked ? 'Your anonymous question is with the club.' : 'Your question is with the club. We will reply by email, usually within a few days.'; done.hidden=false; }
+        else say((r&&r.error)||'Something went wrong. Please try again.',true);
+      })
+      .catch(function(){ say('Something went wrong. Please try again in a few minutes.',true); })
+      .then(function(){ btn.disabled=false; });
+  });
+  document.getElementById('qf-again').addEventListener('click',function(){ f.reset(); setAnon(); done.hidden=true; });
+})();
+</script>
 </body>
 </html>
