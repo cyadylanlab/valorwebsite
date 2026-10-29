@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virginia Valor FC — Footer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #d4b96a;
+    --gold-bright: #e6c978;
+    --black: #0a0a0a;
+    --black-soft: #1a1a1a;
+    --cream: #f5f0e4;
+    --muted: rgba(245, 240, 228, 0.60);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: transparent;
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .valor-footer {
+    position: relative;
+    background: linear-gradient(180deg, var(--black) 0%, var(--black-soft) 100%);
+    overflow: hidden;
+    padding: 64px 0 0 0;
+  }
+
+  .valor-footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 20%,
+      var(--gold-bright) 50%,
+      var(--gold) 80%,
+      transparent 100%);
+  }
+
+  .footer-container {
+    position: relative;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 56px;
+    padding-bottom: 40px;
+  }
+
+  .col-heading {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    position: relative;
+  }
+
+  .col-heading::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 32px; height: 2px;
+    background: var(--gold);
+  }
+
+  .link-list { list-style: none; }
+
+  .link-list li { margin-bottom: 12px; }
+
+  .link-list a {
+    color: var(--cream);
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+    display: inline-block;
+    position: relative;
+  }
+
+  .link-list a::before {
+    content: '›';
+    position: absolute;
+    left: -14px;
+    opacity: 0;
+    color: var(--gold);
+    transition: all 0.25s ease;
+  }
+
+  .link-list a:hover {
+    color: var(--gold-bright);
+    padding-left: 14px;
+  }
+
+  .link-list a:hover::before {
+    opacity: 1;
+    left: 0;
+  }
+
+  .contact-block { margin-bottom: 22px; }
+
+  .contact-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .contact-value {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+  }
+
+  .contact-value a {
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  .contact-value a:hover { color: var(--gold-bright); }
+
+  .newsletter-cta {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 12px 22px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-cta:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(212, 185, 106, 0.18);
+    padding: 24px 0 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nonprofit-line {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 640px;
+  }
+
+  .copyright {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .contact-col { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 560px) {
+    .valor-footer { padding-top: 48px; }
+    .footer-container { padding: 0 22px; }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<footer class="valor-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+
+      <div>
+        <h3 class="col-heading">Programs</h3>
+        <ul class="link-list">
+          <li><a href="https://www.virginiavalorfc.org/grassroots-soccer">Grassroots</a></li>
+          <li><a href="https://www.virginiavalorfc.org/risingvalorlite">U7-U8 Valor Rising</a></li>
+          <li><a href="https://www.virginiavalorfc.org/travel-soccer">Travel</a></li>
+          <li><a href="https://www.virginiavalorfc.org/usl-y">Pro 23</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="col-heading">More</h3>
+        <ul class="link-list">
+          <li><a href="https://www.virginiavalorfc.org/contactandcareers">Contact Us</a></li>
+          <li><a href="https://www.virginiavalorfc.org/contactandcareers">Interested in Coaching?</a></li>
+          <li><a href="https://www.virginiavalorfc.org/privacy-policy">Privacy Policy</a></li>
+          <li><a href="https://www.virginiavalorfc.org/policies-and-procedures">Policies and Procedures</a></li>
+        </ul>
+      </div>
+
+      <div class="contact-col">
+        <h3 class="col-heading">Contact</h3>
+
+        <div class="contact-block">
+          <div class="contact-value"><a href="tel:7037892876">703.789.2876</a></div>
+          <div class="contact-value"><a href="mailto:info@virginiavalorfc.org">INFO@VIRGINIAVALORFC.ORG</a></div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-label">Mailing Address</div>
+          <div class="contact-value">
+            4455 Brookfield Corporate Dr.<br>
+            Suite 104, Chantilly, VA 20151
+          </div>
+        </div>
+
+        <a class="newsletter-cta" href="https://lp.constantcontactpages.com/sl/jQJPuf2/ValorStandardSignUp" target="_blank" rel="noopener">
+          Join the Weekly Valor Newsletter
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="nonprofit-line">
+        Virginia Valor FC is a registered 501(c)(3) nonprofit organization dedicated to developing youth soccer players.
+      </div>
+      <div class="copyright">
+        <span id="yr">2026</span> All Rights Reserved
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
