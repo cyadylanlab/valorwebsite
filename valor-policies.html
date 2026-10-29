@@ -285,13 +285,14 @@ a.tl.mail{display:inline;line-height:2}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
 /* ---------- page: policies ---------- */
-.idx{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 34px}
-.idx a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:100px;background:var(--panel);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--brass-ink)}
-.idx a:hover{background:var(--paper);border-color:var(--brass)}
+.idx{display:grid;grid-template-columns:repeat(3,var(--c3));justify-content:space-between;margin:0 0 30px;counter-reset:ix;border-top:2px solid var(--ink)}
+.idx a{counter-increment:ix;display:flex;align-items:baseline;gap:12px;min-height:48px;padding:13px 0;border-bottom:1px solid var(--line);text-decoration:none;font-weight:600;font-size:16px;line-height:1.3;color:var(--ink)}
+.idx a::before{content:counter(ix,decimal-leading-zero);flex:none;width:22px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--brass-ink)}
+.idx a:hover{color:var(--brass-ink)}
 .pol{counter-reset:pol;border-top:0}
 .pol .row{grid-template-columns:310px 590px;padding:26px 0;align-items:start}
-.pol .row>dt{counter-increment:pol;font-size:32px;line-height:.98;padding:18px 20px 20px;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--brass);border-radius:6px}
-.pol .row>dt::before{content:counter(pol,decimal-leading-zero);display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--brass-ink);margin-bottom:10px}
+.pol .row>dt{counter-increment:pol;font-size:30px;line-height:1;padding-top:14px;border-top:3px solid var(--brass)}
+.pol .row>dt::before{content:counter(pol,decimal-leading-zero);display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--brass-ink);margin-bottom:8px}
 .pol .row>dd p{font-size:16px}
 .pol .row>dd p+ul,.pol .row>dd ul+p{margin-top:8px}
 .pol .row>dd h4{font-family:var(--text);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:14px 0 6px}
@@ -301,8 +302,9 @@ a.tl.mail{display:inline;line-height:2}
 .conduct .rule::before{counter-increment:c;content:counter(c);font-family:var(--head);font-weight:800;font-size:34px;line-height:1;color:var(--brass-dk)}
 .conduct .rule p{font-size:16px;color:var(--onblack)}
 .camp col.a{width:300px}
-@media (max-width:979px){.conduct .rule{grid-template-columns:50px minmax(0,1fr)}.pol .row{grid-template-columns:240px minmax(0,1fr)}}
-@media (max-width:600px){.idx{gap:8px}.idx a{font-size:11px;padding:0 12px}.pol .row{grid-template-columns:minmax(0,1fr);gap:14px;padding:20px 0}.pol .row>dt{font-size:26px;padding:14px 16px 16px}.conduct .rule{grid-template-columns:36px minmax(0,1fr)}.conduct .rule::before{font-size:26px}}
+@media (max-width:979px){.idx{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}.conduct .rule{grid-template-columns:50px minmax(0,1fr)}.pol .row{grid-template-columns:240px minmax(0,1fr)}}
+@media (max-width:760px){.idx{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}}
+@media (max-width:600px){.idx{grid-template-columns:minmax(0,1fr)}.idx a{padding:12px 0}.pol .row{grid-template-columns:minmax(0,1fr);gap:14px;padding:20px 0}.pol .row>dt{font-size:26px;padding-top:12px}.conduct .rule{grid-template-columns:36px minmax(0,1fr)}.conduct .rule::before{font-size:26px}}
 </style>
 </head>
 <body data-page="policies">
@@ -394,9 +396,7 @@ a.tl.mail{display:inline;line-height:2}
       <p>The policies below apply to players, families, coaches and staff across all Valor programs.</p>
     </div>
     <nav class="idx" aria-label="Policies">
-      <a href="#p-abuse">Abuse Training</a><a href="#p-bullying">Anti-Bullying</a><a href="#p-attendance">Attendance</a><a href="#p-ethics">Coaches Code of Ethics</a><a href="#p-concussion">Concussion</a>
-      <a href="#p-covid">COVID</a><a href="#p-comms">Electronic Communication</a><a href="#p-fundraising">Fundraising</a><a href="#p-guest">Guest Playing</a><a href="#p-harassment">Harassment</a>
-      <a href="#p-solicit">Non-Solicitation</a><a href="#p-background">Background Checks</a><a href="#p-hotel">Tournament Hotels</a><a href="#p-weather">Weather</a><a href="#p-refund">Refunds</a>
+      <a href="#p-abuse">Abuse training</a><a href="#p-bullying">Anti-bullying</a><a href="#p-attendance">Attendance</a><a href="#p-ethics">Coaches code of ethics</a><a href="#p-concussion">Concussion awareness</a><a href="#p-covid">COVID</a><a href="#p-comms">Electronic communication</a><a href="#p-fundraising">Fundraising</a><a href="#p-guest">Guest playing</a><a href="#p-harassment">Harassment</a><a href="#p-solicit">Non-solicitation</a><a href="#p-background">Staff background checks</a><a href="#p-hotel">Tournament hotels</a><a href="#p-weather">Weather</a><a href="#p-refund">Refunds</a>
     </nav>
     <dl class="rows pol">
       <div class="row" id="p-abuse"><dt>Abuse training</dt><dd><p>Coaching staff must stay current on the abuse prevention training required by the leagues (VPSL, ECNL RL, NCSL and USL-Y) and governing bodies (VYSA and US Club Soccer). Training is provided by SafeSport, and every coach completes the courses each year.</p></dd></div>
