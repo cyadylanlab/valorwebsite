@@ -75,8 +75,8 @@ p+p{margin-top:12px}
 .mast-photo{position:relative;width:640px;height:356px;margin:38px auto 0;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 14px 34px -20px rgba(20,15,5,.4);animation:fadeUp .9s ease .42s both}
 .mast-photo img{width:100%;height:100%;object-fit:cover}
 /* on-page links as pill chips */
-.jump{position:relative;max-width:932px;margin:40px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;animation:fadeUp .9s ease .5s both}
-.jump a{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 18px;border:1px solid var(--line);border-radius:100px;background:var(--panel);text-decoration:none;white-space:nowrap;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
+.jump{position:relative;width:min(100%,calc(var(--n,3) * 226px + (var(--n,3) - 1) * 12px));margin:40px auto 0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;animation:fadeUp .9s ease .5s both}
+.jump a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:66px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center;text-decoration:none;font-family:var(--mono);font-size:12px;line-height:1.3;letter-spacing:.04em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
 .jump a b{font-weight:600;color:var(--brass-ink);text-transform:uppercase;letter-spacing:.12em}
 .jump a:hover{border-color:var(--brass);background:var(--paper)}
 .jump a:active{background:var(--brass-lt)}
@@ -249,9 +249,11 @@ a.tl.mail{display:inline;line-height:2}
   .mast h1{font-size:15vw;margin-top:12px}.mast h1.sm{font-size:13vw}
   .mast .lead{margin-top:18px}
   .mast-photo{margin-top:28px}
-  .jump{margin-top:28px;gap:8px}
-  .jump a{min-height:40px;padding:0 14px;font-size:11.5px}
+  .jump{margin-top:28px;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .jump a{min-height:44px;padding:8px 10px;border-radius:100px;font-size:11px}
+  .jump a b{letter-spacing:.1em}
   .jump a span{display:none}
+  .jump a:last-child:nth-child(odd){grid-column:1 / -1}
   .sec{padding:56px 0}
   .sec-head{margin-bottom:28px}
   .sec-head>p{font-size:17px}
@@ -297,10 +299,17 @@ a.tl.mail{display:inline;line-height:2}
 .sched div:first-child{border-left:0;padding-left:0}
 .sched b{display:block;font-family:var(--head);font-weight:800;font-size:30px;line-height:.9;text-transform:uppercase}
 .sched span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-family:var(--mono)}
+.sl{margin:22px 0 0;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-family:var(--mono)}
+.sl+.sched{margin-top:8px}
+.sched.s4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.price{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin-top:26px;border-top:2px solid var(--ink)}
+.price div{padding-top:12px}
+.price b{display:block;font-family:var(--head);font-weight:800;font-size:52px;line-height:.86;color:var(--ink)}
+.price span{display:block;margin-top:8px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);line-height:1.4;font-family:var(--mono)}
 .cal col.d{width:110px}.cal col.e{width:250px}
 @media (max-width:979px){.prog{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px}}
 @media (max-width:760px){.prog{grid-template-columns:minmax(0,1fr);row-gap:32px}.prog .ph{height:auto;aspect-ratio:16/10}}
-@media (max-width:600px){.sched{grid-template-columns:repeat(4,minmax(0,1fr))}.sched div:nth-child(5){border-left:0;padding-left:0}.sched b{font-size:24px}.cmp th.p{font-size:20px}}
+@media (max-width:600px){.sched{grid-template-columns:repeat(4,minmax(0,1fr))}.sched div:nth-child(5){border-left:0;padding-left:0}.sched b{font-size:24px}.price b{font-size:42px}.cmp th.p{font-size:20px}}
 </style>
 </head>
 <body data-page="pretravel">
@@ -313,13 +322,13 @@ a.tl.mail{display:inline;line-height:2}
     <div class="mast-row">
       <div>
         <h1 class="sm"><span>Pre-Travel</span><span>Development</span></h1>
-        <p class="lead">Two ways for <b>U7 and U8 players</b> to start with Valor before travel soccer. <b>Valor Rising</b> is a weekly session with no tryout, alongside the rec season. <b>Valor Futures</b> is a full-year U8 league in a futsal format.</p>
+        <p class="lead">Two ways for <b>U7 and U8 players</b> to start with Valor before travel soccer. <b>Valor Rising</b> is a weekly session with no tryout, indoors at the CYA Fieldhouse this winter. <b>Valor Futures</b> is a full-year U8 league in a futsal format.</p>
       </div>
       <figure class="mast-photo"><img src="images/rising-2.webp" alt="Valor Rising girls in gold training jerseys" width="300" height="300"></figure>
     </div>
     <nav class="jump" style="--n:3" aria-label="On this page">
       <a href="#compare"><b>Compare</b><span>Rising or Futures</span></a>
-      <a href="#rising"><b>Valor Rising</b><span>U7 and U8, weekly</span></a>
+      <a href="#rising"><b>Valor Rising</b><span>Winter sessions</span></a>
       <a href="#futures"><b>Valor Futures</b><span>U8 league, full year</span></a>
     </nav>
   </div>
@@ -335,12 +344,12 @@ a.tl.mail{display:inline;line-height:2}
       <colgroup><col class="k0"><col class="k1"><col></colgroup>
       <thead><tr><th></th><th class="p">Valor Rising</th><th class="p">Valor Futures</th></tr></thead>
       <tbody>
-        <tr><td class="k">Ages</td><td data-l="Valor Rising">U7 and U8, boys and girls</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">U8, boys and girls</span></td></tr>
+        <tr><td class="k">Ages</td><td data-l="Valor Rising">U7 and U8, boys and girls born Aug 1, 2018 to Jul 31, 2020</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">U8, boys and girls born Aug 1, 2018 to Jul 31, 2019</span></td></tr>
         <tr><td class="k">Format</td><td data-l="Valor Rising">One coached session a week in small groups</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">5v5 league games on futsal-size fields, plus 4v4 festivals</span></td></tr>
-        <tr><td class="k">Season</td><td data-l="Valor Rising">Fall 2026, seven Monday sessions</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">Fall 2026 through spring 2027</span></td></tr>
+        <tr><td class="k">Season</td><td data-l="Valor Rising">Winter 2027, two four-week Tuesday sessions</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">Fall 2026 through spring 2027</span></td></tr>
         <tr><td class="k">To join</td><td data-l="Valor Rising">Open enrollment, no tryout</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">Register in PlayMetrics</span></td></tr>
-        <tr><td class="k">Cost</td><td data-l="Valor Rising">$140 for the fall, training jersey included</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">$1,450, fall through spring</span></td></tr>
-        <tr><td class="k">Where</td><td data-l="Valor Rising">Sully Highlands Park, Herndon</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">League match days and festivals at local fields</span></td></tr>
+        <tr><td class="k">Cost</td><td data-l="Valor Rising">$200 a session, or $300 for both</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">$1,450, fall through spring</span></td></tr>
+        <tr><td class="k">Where</td><td data-l="Valor Rising">CYA Fieldhouse, Chantilly</td><td data-l="Valor Futures"><span class="mw" style="max-width:370px">League match days and festivals at local fields</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -353,25 +362,35 @@ a.tl.mail{display:inline;line-height:2}
         <img loading="lazy" decoding="async" class="crest" src="images/rising-crest.webp" alt="Valor Rising crest" width="96" height="96">
         <p class="label">Open enrollment, U7 and U8</p>
         <h2 class="h2" style="margin-top:10px">Valor Rising</h2>
-        <p style="margin-top:18px">Valor Rising runs alongside your child's rec season. Once a week, Valor staff coaches run a session focused on the ball: dribbling, first touch and basic decision-making. There is no tryout and no team placement, and players work in small groups with children their own age.</p>
+        <p style="margin-top:18px">Valor Rising is a weekly session with Valor staff coaches, run alongside the rec season in the fall and indoors at the CYA Fieldhouse over the winter. Sessions focus on the ball: dribbling, first touch and basic decision-making. There is no tryout and no team placement, and players work in small groups with children their own age.</p>
         <ul class="list" style="margin-top:16px">
-          <li>One session a week with Valor staff coaches, all fall</li>
+          <li>One session a week with Valor staff coaches</li>
           <li>Small groups, so every player gets attention and touches</li>
-          <li>A Valor training jersey to keep, worn across fall, winter and spring sessions</li>
+          <li>A Valor training jersey, worn across fall, winter and spring sessions</li>
           <li>No tryout, no team commitment, no pressure to continue</li>
         </ul>
-        <div class="sub" style="margin-top:32px"><h3 class="h4">Fall 2026, Mondays at Sully Highlands Park</h3></div>
-        <p class="small">Boys 5:00 to 6:00 PM. Girls 6:00 to 7:00 PM. 13808 Wall Rd, Herndon, VA 20171.</p>
-        <div class="sched" aria-label="Fall 2026 session dates">
-          <div><span>Sep</span><b>14</b></div><div><span>Sep</span><b>21</b></div><div><span>Sep</span><b>28</b></div><div><span>Oct</span><b>5</b></div><div><span>Oct</span><b>19</b></div><div><span>Oct</span><b>26</b></div><div><span>Nov</span><b>2</b></div>
+        <div class="sub" style="margin-top:32px"><h3 class="h4">Winter 2027, Tuesdays at the CYA Fieldhouse</h3></div>
+        <p class="small">Girls 5:00 to 6:00 PM. Boys 6:00 to 7:00 PM. 14810 Murdock Street, Chantilly, VA 20151.</p>
+        <p class="sl">Session 1</p>
+        <div class="sched s4" aria-label="Winter Session 1 dates">
+          <div><span>Jan</span><b>5</b></div><div><span>Jan</span><b>12</b></div><div><span>Jan</span><b>19</b></div><div><span>Jan</span><b>26</b></div>
         </div>
-        <p class="small" style="margin-top:12px">No session on October 12. November 9 and 16 are held as make-up dates.</p>
-        <div class="btns"><a class="btn gold" href="https://playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5MDQzMTA0MXxLbWRIaHM2U3VMdmNFdHlvM3c3OWhlSFNYdEV3SFpNQlFlTU0wN2lSV3FzPQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Valor Rising, $140</a></div>
+        <p class="sl">Session 2</p>
+        <div class="sched s4" aria-label="Winter Session 2 dates">
+          <div><span>Feb</span><b>2</b></div><div><span>Feb</span><b>9</b></div><div><span>Feb</span><b>16</b></div><div><span>Feb</span><b>23</b></div>
+        </div>
+        <div class="price">
+          <div><b>$200</b><span>Per four-week session</span></div>
+          <div><b>$300</b><span>Both sessions, registered together</span></div>
+        </div>
+        <p class="small" style="margin-top:14px">Spots are limited by indoor field space. Cleats are not allowed at the Fieldhouse, so players wear turf shoes, indoor shoes or tennis shoes.</p>
+        <div class="btns"><a class="btn gold" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5ODM3ODQ5MHxXdWpoMzhCalpTcHA3YjZMaHVQZ2lyY3lNNzk4QnZnQnNDVGcvUXNDV3Z3PQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Winter Valor Rising</a></div>
       </div>
       <div>
+        <figure class="ph"><img src="images/rising-indoor.webp" alt="A Valor Rising group in gold Valor shirts with their coach on an indoor field" loading="lazy" width="446" height="300"></figure>
         <figure class="ph"><img src="images/rising-3.webp" alt="Valor Rising boys in gold training jerseys" loading="lazy" width="446" height="300"></figure>
         <figure class="ph"><img src="images/rising-1.webp" alt="Valor Rising girls with coaches at night training" loading="lazy" width="446" height="300"></figure>
-        <p class="cap">The gold training jersey is included and worn across the fall, winter and spring sessions.</p>
+        <p class="cap">Fall 2026 sessions at Sully Highlands Park end November 2, with November 9 and 16 held as make-up dates. The gold training jersey is worn across the fall, winter and spring sessions.</p>
       </div>
     </div>
   </div>

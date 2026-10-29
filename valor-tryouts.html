@@ -75,8 +75,8 @@ p+p{margin-top:12px}
 .mast-photo{position:relative;width:640px;height:356px;margin:38px auto 0;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 14px 34px -20px rgba(20,15,5,.4);animation:fadeUp .9s ease .42s both}
 .mast-photo img{width:100%;height:100%;object-fit:cover}
 /* on-page links as pill chips */
-.jump{position:relative;max-width:932px;margin:40px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;animation:fadeUp .9s ease .5s both}
-.jump a{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 18px;border:1px solid var(--line);border-radius:100px;background:var(--panel);text-decoration:none;white-space:nowrap;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
+.jump{position:relative;width:min(100%,calc(var(--n,3) * 226px + (var(--n,3) - 1) * 12px));margin:40px auto 0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;animation:fadeUp .9s ease .5s both}
+.jump a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:66px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center;text-decoration:none;font-family:var(--mono);font-size:12px;line-height:1.3;letter-spacing:.04em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
 .jump a b{font-weight:600;color:var(--brass-ink);text-transform:uppercase;letter-spacing:.12em}
 .jump a:hover{border-color:var(--brass);background:var(--paper)}
 .jump a:active{background:var(--brass-lt)}
@@ -249,9 +249,11 @@ a.tl.mail{display:inline;line-height:2}
   .mast h1{font-size:15vw;margin-top:12px}.mast h1.sm{font-size:13vw}
   .mast .lead{margin-top:18px}
   .mast-photo{margin-top:28px}
-  .jump{margin-top:28px;gap:8px}
-  .jump a{min-height:40px;padding:0 14px;font-size:11.5px}
+  .jump{margin-top:28px;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .jump a{min-height:44px;padding:8px 10px;border-radius:100px;font-size:11px}
+  .jump a b{letter-spacing:.1em}
   .jump a span{display:none}
+  .jump a:last-child:nth-child(odd){grid-column:1 / -1}
   .sec{padding:56px 0}
   .sec-head{margin-bottom:28px}
   .sec-head>p{font-size:17px}
@@ -352,9 +354,9 @@ a.tl.mail{display:inline;line-height:2}
     </div>
     <h1 class="sm"><span>Tryouts &amp;</span><span>Registration</span></h1>
     <p class="lead">How to join a Valor travel team for the <b>2026-27 season</b>: who to contact, how evaluations work, and which age group your player is in.</p>
-    <nav class="jump" style="--n:4" aria-label="On this page">
+    <nav class="jump" style="--n:5" aria-label="On this page">
       <a href="#now"><b>How to Join</b><span>2026-27 season</span></a>
-      <a href="#contacts"><b>Contacts</b><span>Directors of Coaching</span></a>
+      <a href="#contacts"><b>Contacts</b><span>Coaching directors</span></a>
       <a href="#ages"><b>Age Groups</b><span>Birth date ranges</span></a>
       <a href="#faq"><b>FAQ</b><span>Common questions</span></a>
       <a href="#young"><b>U7 and U8</b><span>Pre-travel programs</span></a>
@@ -455,8 +457,8 @@ a.tl.mail{display:inline;line-height:2}
     </div>
     <div class="cards c2 young" style="--r:3">
       <article class="card"><header><p class="no">U7 and U8 &middot; Open enrollment</p><h3>Valor Rising</h3></header>
-        <div class="area"><p>One coached session a week with Valor staff coaches in the fall, run alongside the rec season. No tryout, no team commitment, training jersey included.</p></div>
-        <div class="area foot"><p class="amt">$140<small>fall season</small></p><a class="btn gold sm" href="https://playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5MDQzMTA0MXxLbWRIaHM2U3VMdmNFdHlvM3c3OWhlSFNYdEV3SFpNQlFlTU0wN2lSV3FzPQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Valor Rising</a></div></article>
+        <div class="area"><p>One coached session a week with Valor staff coaches, alongside the rec season in the fall and indoors at the CYA Fieldhouse in the winter. No tryout, no team commitment.</p></div>
+        <div class="area foot"><p class="amt">$200<small>per winter session</small></p><a class="btn gold sm" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5ODM3ODQ5MHxXdWpoMzhCalpTcHA3YjZMaHVQZ2lyY3lNNzk4QnZnQnNDVGcvUXNDV3Z3PQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Valor Rising</a></div></article>
       <article class="card"><header><p class="no">U8 &middot; Full year</p><h3>Valor Futures</h3></header>
         <div class="area"><p>A full-year U8 league, fall 2026 through spring 2027, played 5v5 in a futsal format with 4v4 festivals. Development first, with no scores kept in the season.</p></div>
         <div class="area foot"><p class="amt">$1,450<small>fall to spring</small></p><a class="btn gold sm" href="https://playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTcxNDQyMDk0N3x0SVRkRm13Y3ZSVG15T01xNTcxejBDWDNUU1V0c2ZLRUpmWTdzMUtpd2NvPQ==&amp;program_id=28449" target="_blank" rel="noopener">Register for Valor Futures</a></div></article>

@@ -75,8 +75,8 @@ p+p{margin-top:12px}
 .mast-photo{position:relative;width:640px;height:356px;margin:38px auto 0;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 14px 34px -20px rgba(20,15,5,.4);animation:fadeUp .9s ease .42s both}
 .mast-photo img{width:100%;height:100%;object-fit:cover}
 /* on-page links as pill chips */
-.jump{position:relative;max-width:932px;margin:40px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;animation:fadeUp .9s ease .5s both}
-.jump a{display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 18px;border:1px solid var(--line);border-radius:100px;background:var(--panel);text-decoration:none;white-space:nowrap;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
+.jump{position:relative;width:min(100%,calc(var(--n,3) * 226px + (var(--n,3) - 1) * 12px));margin:40px auto 0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;animation:fadeUp .9s ease .5s both}
+.jump a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:66px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center;text-decoration:none;font-family:var(--mono);font-size:12px;line-height:1.3;letter-spacing:.04em;color:var(--soft);transition:border-color .2s ease,background .2s ease}
 .jump a b{font-weight:600;color:var(--brass-ink);text-transform:uppercase;letter-spacing:.12em}
 .jump a:hover{border-color:var(--brass);background:var(--paper)}
 .jump a:active{background:var(--brass-lt)}
@@ -249,9 +249,11 @@ a.tl.mail{display:inline;line-height:2}
   .mast h1{font-size:15vw;margin-top:12px}.mast h1.sm{font-size:13vw}
   .mast .lead{margin-top:18px}
   .mast-photo{margin-top:28px}
-  .jump{margin-top:28px;gap:8px}
-  .jump a{min-height:40px;padding:0 14px;font-size:11.5px}
+  .jump{margin-top:28px;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .jump a{min-height:44px;padding:8px 10px;border-radius:100px;font-size:11px}
+  .jump a b{letter-spacing:.1em}
   .jump a span{display:none}
+  .jump a:last-child:nth-child(odd){grid-column:1 / -1}
   .sec{padding:56px 0}
   .sec-head{margin-bottom:28px}
   .sec-head>p{font-size:17px}
@@ -327,8 +329,10 @@ a.tl.mail{display:inline;line-height:2}
       <article class="ev" data-date="2026-11-15"><div class="when"><b>Nov 15</b><span>Sunday</span></div><div><span class="st">Store</span><h3 class="h4">Valor x ISlide store closes</h3><p>Custom Valor slides, slippers and socks are made to order. The store is open until November 15.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/store#islide" target="_top">Valor Store</a></div></article>
       <article class="ev" data-date="2026-11-22"><div class="when"><b>Nov 22</b><span>Sunday</span></div><div><span class="st">Deadline</span><h3 class="h4">Community Cup registration closes</h3><p>Team registration closes at 11:59 PM. Registration runs through PlayMetrics.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/3v3communitycup" target="_top">Community Cup</a></div></article>
       <article class="ev" data-date="2026-11-28"><div class="when"><b>Nov 28</b><span>Saturday</span></div><div><span class="st">Event</span><h3 class="h4">3v3 Community Cup and Gift Drive</h3><p>The second annual one-day tournament at Sully Highlands Park, U8 through U14, boys and girls. No club affiliation required.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/3v3communitycup" target="_top">Community Cup</a></div></article>
+      <article class="ev" data-date="2027-01-05"><div class="when"><b>Jan 5</b><span>Tuesday</span></div><div><span class="st">Training</span><h3 class="h4">Winter Valor Rising, Session 1</h3><p>Four Tuesdays for U7 and U8 players at the CYA Fieldhouse: girls 5:00 to 6:00 PM, boys 6:00 to 7:00 PM.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/pretravel#rising" target="_top">Pre-Travel Development</a></div></article>
       <article class="ev" data-date="2027-01-18"><div class="when"><b>Jan 18</b><span>Monday</span></div><div><span class="st">Camp</span><h3 class="h4">Small-Sided and Tactical Play Mini Camp</h3><p>A Student Holiday Mini Camp at EC Lawrence Park. The Complete Player Camp runs again on Friday, January 29.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/camps" target="_top">Camps and Clinics</a></div></article>
       <article class="ev" data-date="2027-01-24"><div class="when"><b>Jan 23 to 24</b><span>Weekend</span></div><div><span class="st">Futsal</span><h3 class="h4">Competitive Futsal, first matches</h3><p>Block 1 matches at the CYA Fieldhouse: Saturday for U8 to U10, Sunday for U11 to U14.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/valorfutsal" target="_top">Competitive Futsal</a></div></article>
+      <article class="ev" data-date="2027-02-02"><div class="when"><b>Feb 2</b><span>Tuesday</span></div><div><span class="st">Training</span><h3 class="h4">Winter Valor Rising, Session 2</h3><p>The second four-week session at the CYA Fieldhouse. Register for both sessions together for $300.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/pretravel#rising" target="_top">Pre-Travel Development</a></div></article>
       <article class="ev" data-date="2027-02-28"><div class="when"><b>Feb 27 to 28</b><span>Weekend</span></div><div><span class="st">Futsal</span><h3 class="h4">Competitive Futsal, second matches</h3><p>Block 2 matches at the CYA Fieldhouse.</p></div><div class="go"><a class="tl" href="https://www.virginiavalorfc.org/valorfutsal" target="_top">Competitive Futsal</a></div></article>
     </div>
   </div>
