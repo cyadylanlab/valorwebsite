@@ -136,23 +136,53 @@
   .btn-ghost:hover{border-color:var(--brass-dk);color:var(--brass-ink)}
   .btn:focus-visible{outline:2px solid var(--star-a);outline-offset:3px}
 
-  .facts{
-    margin:44px 0 0;
-    display:flex;justify-content:center;flex-wrap:wrap;
-    gap:12px;
+  /* ---------- PRICING: the two-session deal ---------- */
+  .deal{
+    margin:36px auto 0;
+    max-width:640px;
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
     animation:fadeUp .9s ease .6s both;
   }
-  .fact{
-    font-family:var(--mono);
-    font-size:12.5px;
-    letter-spacing:.06em;
-    color:var(--ink-soft);
-    border:1px solid var(--line);
-    border-radius:100px;
-    padding:9px 16px;
+  .opt{
+    position:relative;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px 16px 22px;
+    border:1px solid var(--line);border-radius:10px;
     background:var(--panel);
+    text-align:center;
   }
-  .fact b{color:var(--brass-ink);font-weight:600}
+  .opt .o-label{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass-ink)}
+  .opt .o-price{font-family:var(--display);font-weight:800;font-size:clamp(46px,7vw,60px);line-height:.9;color:var(--ink);margin:12px 0 8px}
+  .opt .o-note{font-size:15px;line-height:1.4;color:var(--ink-soft)}
+  .opt.best{background:linear-gradient(180deg,#FBF6EA,#F3E8CF);border:2px solid var(--brass)}
+  .opt.best .o-note b{color:var(--brass-ink)}
+  .badge{
+    position:absolute;top:0;left:50%;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;
+    padding:6px 12px;border-radius:4px;
+    background:linear-gradient(180deg,var(--brass-lt),var(--brass));color:#241A05;border:1px solid var(--brass-dk);
+  }
+  .deal-line{
+    margin:14px auto 0;max-width:640px;
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--ink-soft);
+    animation:fadeUp .9s ease .65s both;
+  }
+  .deal-line b{color:var(--brass-ink)}
+
+  /* ---------- QUICK FACTS: three even tiles ---------- */
+  .facts{
+    margin:28px auto 0;
+    max-width:640px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+    animation:fadeUp .9s ease .7s both;
+  }
+  .fact{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    padding:16px 10px;background:var(--paper);text-align:center;
+  }
+  .fact .f-label{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-ink)}
+  .fact .f-val{font-family:var(--display);font-weight:700;font-size:21px;line-height:1.05;text-transform:uppercase;color:var(--ink)}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
@@ -186,18 +216,9 @@
     border-top:1px solid var(--line);
   }
   .includes li{
-    display:flex;gap:18px;align-items:baseline;
-    padding:20px 4px;
+    display:block;
+    padding:20px 0;
     border-bottom:1px solid var(--line);
-  }
-  .includes .num{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--brass-ink);
-    letter-spacing:.1em;
-    min-width:34px;
-    padding-top:3px;
-    font-weight:600;
   }
   .includes .txt{font-size:18px;color:var(--ink-body)}
   .includes .txt b{color:var(--ink);font-weight:600}
@@ -263,6 +284,7 @@
     color:var(--ink-soft);
     line-height:1.5;
   }
+  .cell .cdetail b.save{color:var(--brass-ink);font-weight:600}
   .cell a.maplink{color:var(--brass-ink);text-decoration:none;border-bottom:1px solid rgba(124,94,29,.4);font-weight:500}
   .cell a.maplink:hover{border-color:var(--brass-ink)}
 
@@ -347,6 +369,8 @@
     line-height:1.9;
   }
   .reg-meta b{color:var(--ink)}
+  .register p.reg-deal{display:inline-block;margin-top:22px;padding:12px 18px;border:2px solid var(--brass);border-radius:8px;background:#FBF6EA;font-size:17px;color:var(--ink)}
+  .register p.reg-deal b{color:var(--brass-ink)}
 
   /* ---------- FOOTER ---------- */
   footer{padding:44px 0;text-align:center}
@@ -404,6 +428,13 @@
     .times-strip{flex-direction:column}
     .btn{width:100%;text-align:center}
     .cta-row{flex-direction:column}
+    .deal{gap:10px;margin-top:34px}
+    .opt{padding:22px 10px 18px}
+    .opt .o-note{font-size:14px}
+    .badge{font-size:10px;letter-spacing:.12em;padding:5px 9px}
+    .fact{padding:14px 6px}
+    .fact .f-label{font-size:10px;letter-spacing:.14em}
+    .fact .f-val{font-size:18px}
   }
   @media(prefers-reduced-motion:reduce){
     *{animation:none!important}
@@ -442,15 +473,19 @@
     <div class="wrap hero-inner hero-body">
       <p class="hero-eyebrow eyebrow">Open Enrollment &middot; U7 &amp; U8 &middot; Winter 2027</p>
       <p class="hero-sub">Valor Rising is our <b>open-enrollment program for U7 and U8 players</b>. This winter it moves indoors to the CYA Fieldhouse: one coached session a week on Tuesdays, in two four-week sessions, with no tryout to join.</p>
+      <div class="deal" aria-label="Pricing">
+        <div class="opt"><span class="o-label">One session</span><span class="o-price">$200</span><span class="o-note">Four Tuesdays, January or February</span></div>
+        <div class="opt best"><span class="badge">Best value</span><span class="o-label">Both sessions</span><span class="o-price">$300</span><span class="o-note">All eight Tuesdays. <b>Save $100</b></span></div>
+      </div>
+      <p class="deal-line">Register for both sessions at the same time to get the <b>$300</b> price.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5ODM3ODQ5MHxXdWpoMzhCalpTcHA3YjZMaHVQZ2lyY3lNNzk4QnZnQnNDVGcvUXNDV3Z3PQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Winter</a>
         <a class="btn btn-ghost" href="#season">See the Schedule</a>
       </div>
       <div class="facts">
-        <span class="fact"><b>No tryout</b> to join</span>
-        <span class="fact"><b>One</b> session a week</span>
-        <span class="fact">Indoors at the <b>CYA Fieldhouse</b></span>
-        <span class="fact"><b>$200</b> a session, <b>$300</b> for both</span>
+        <div class="fact"><span class="f-label">Tryout</span><span class="f-val">None</span></div>
+        <div class="fact"><span class="f-label">Training</span><span class="f-val">Once a week</span></div>
+        <div class="fact"><span class="f-label">Where</span><span class="f-val">CYA Fieldhouse</span></div>
       </div>
     </div>
   </header>
@@ -464,10 +499,10 @@
         <p class="lead">Valor Rising runs alongside the rec season in the fall and moves indoors for the winter. Once a week, Valor's staff coaches run a session focused on the ball: dribbling, first touch, and basic decision-making. There is no tryout and no team placement. Players work in small groups with kids their own age, which gives them a head start if they decide to try travel soccer later.</p>
       </div>
       <ul class="includes">
-        <li><span class="num">01</span><span class="txt">One session a week, led by <b>Valor's staff coaches</b>, through each four-week session</span></li>
-        <li><span class="num">02</span><span class="txt">Small groups, so players get real <b>attention and touches on the ball</b></span></li>
-        <li><span class="num">03</span><span class="txt">A <b>Valor training jersey</b> to keep and wear across the fall, winter, and spring sessions</span></li>
-        <li><span class="num">04</span><span class="txt">No tryout, no team commitment, and <b>no pressure to continue</b> after the season</span></li>
+        <li><span class="txt">One session a week, led by <b>Valor's staff coaches</b>, through each four-week session</span></li>
+        <li><span class="txt">Small groups, so players get real <b>attention and touches on the ball</b></span></li>
+        <li><span class="txt">A <b>Valor training jersey</b> to keep and wear across the fall, winter, and spring sessions</span></li>
+        <li><span class="txt">No tryout, no team commitment, and <b>no pressure to continue</b> after the season</span></li>
       </ul>
     </div>
   </section>
@@ -514,8 +549,8 @@
         </div>
         <div class="cell">
           <p class="clabel">Cost</p>
-          <p class="cmain">$200</p>
-          <p class="cdetail">Per four-week session, or $300 for both sessions registered together.</p>
+          <p class="cmain">$200 or $300</p>
+          <p class="cdetail">$200 for one four-week session. <b class="save">$300 for both, a $100 savings</b>, when you register for both at the same time.</p>
         </div>
       </div>
     </div>
@@ -562,13 +597,14 @@
       <span class="eyebrow">Registration Open</span>
       <h2 class="h2">Register for the winter sessions</h2>
       <p>Registration is open now. Space is limited by indoor field space, so early sign-ups are encouraged.</p>
+      <p class="reg-deal"><b>Best value:</b> register for both sessions at the same time for $300 and save&nbsp;$100.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS04NzYtMTc5ODM3ODQ5MHxXdWpoMzhCalpTcHA3YjZMaHVQZ2lyY3lNNzk4QnZnQnNDVGcvUXNDV3Z3PQ==&amp;program_id=110852" target="_blank" rel="noopener">Register for Valor Rising</a>
       </div>
       <p class="reg-meta">
         <b>CYA Fieldhouse</b> &middot; 14810 Murdock Street, Chantilly, VA 20151<br>
         Tuesdays, Jan 5 through Feb 23 &middot; Girls 5:00 PM &middot; Boys 6:00 PM<br>
-        $200 a session or $300 for both &middot; U7 &amp; U8 &middot; No tryout
+        $200 for one session or $300 for both &middot; U7 &amp; U8 &middot; No tryout
       </p>
     </div>
   </section>
