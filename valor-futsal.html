@@ -164,6 +164,7 @@ section[id]{scroll-margin-top:52px}
 .strip{display:grid;border:3px solid var(--ink)}
 .blk{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr))}
 .blk + .blk{border-top:3px solid var(--ink)}
+.blk.fin .cell{grid-column:2 / -1}
 .bl{display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--brass);font-stretch:62%;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;padding:10px}
 .cell{padding:22px 6px;text-align:center;border-left:3px solid var(--ink);background:var(--floor);font-stretch:120%;font-weight:900;text-transform:uppercase;font-size:clamp(15px,2.1vw,26px);line-height:1;transition:background .35s ease,color .35s ease}
 .cell small{display:block;font-stretch:62%;font-weight:700;letter-spacing:.1em;font-size:11px;color:var(--muted);margin-top:8px}
@@ -171,7 +172,7 @@ section[id]{scroll-margin-top:52px}
 .cell.mt small{color:var(--brass)}
 .cell.on{background:var(--gold);color:#fff}
 .cell.on small{color:#f3eedf}
-@media(max-width:600px){.blk{grid-template-columns:repeat(2,minmax(0,1fr))}.bl{grid-column:1/-1;padding:8px}.cell{border-left:0;border-top:3px solid var(--ink);font-size:17px;padding:18px 6px}.blk .cell:nth-child(odd){border-left:3px solid var(--ink)}}
+@media(max-width:600px){.blk.fin .cell{grid-column:1 / -1;border-left:0}.blk{grid-template-columns:repeat(2,minmax(0,1fr))}.bl{grid-column:1/-1;padding:8px}.cell{border-left:0;border-top:3px solid var(--ink);font-size:17px;padding:18px 6px}.blk .cell:nth-child(odd){border-left:3px solid var(--ink)}}
 .format p{margin-top:14px;color:var(--ink-2)}
 
 /* ============ FOCUS ============ */
@@ -231,7 +232,7 @@ section[id]{scroll-margin-top:52px}
 .mark .what{font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.4vw,28px);line-height:1;margin:6px 0 8px;color:#fff}
 .mark p{color:#cfc8b6;font-size:16px}
 @media(min-width:900px){
-  .sideline{grid-template-columns:repeat(4,1fr);gap:30px;padding-left:0;padding-top:42px}
+  .sideline{grid-template-columns:repeat(5,1fr);gap:24px;padding-left:0;padding-top:42px}
   .sideline::before{left:0;right:0;top:8px;bottom:auto;width:auto;height:3px}
   .sideline .fill{left:0;top:8px;height:3px;width:0;transition:width 1.6s cubic-bezier(.5,.1,.2,1)}
   .sideline.on .fill{height:3px;width:100%}
@@ -532,7 +533,7 @@ section[id]{scroll-margin-top:58px}
   <div class="facts facts-desk">
     <div class="wrap">
       <ul>
-        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 27 to 28</strong></li>
+        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 13 to 14</strong></li>
         <li><b>Program fee</b><strong>$375</strong></li>
         <li><b>Where</b><strong>CYA Fieldhouse</strong></li>
         <li><b>Age groups</b><strong>U8 to U14</strong></li>
@@ -563,7 +564,7 @@ section[id]{scroll-margin-top:58px}
   <div class="facts facts-mob" aria-hidden="false">
     <div class="wrap">
       <ul>
-        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 27 to 28</strong></li>
+        <li><b>Matches</b><strong>Jan 23 to 24<br>Feb 13 to 14</strong></li>
         <li><b>Program fee</b><strong>$375</strong></li>
         <li><b>Where</b><strong>CYA Fieldhouse</strong></li>
         <li><b>Age groups</b><strong>U8 to U14</strong></li>
@@ -605,7 +606,7 @@ section[id]{scroll-margin-top:58px}
           <li>Training sessions led by Valor directors and coaches</li>
           <li>Practices and games on Saturdays for U8 to U10, Sundays for U11 to U14</li>
           <li>Two blocks of three practices with review, each ending in a match against another club</li>
-          <li>Matches January 23 to 24 and February 27 to 28</li>
+          <li>Matches January 23 to 24 and February 13 to 14, with a final session February 27 to 28</li>
           <li>One payment or two installments</li>
         </ul>
       </div>
@@ -635,13 +636,13 @@ section[id]{scroll-margin-top:58px}
       <div class="day">
         <div class="dname">Saturdays</div>
         <div class="ages">U8 to U10</div>
-        <div class="dates"><span>Match Jan 23</span><span>Match Feb 27</span></div>
+        <div class="dates"><span>Match Jan 23</span><span>Match Feb 13</span><span>Finale Feb 27</span></div>
         <p class="note">Practices and games for the younger age groups.</p>
       </div>
       <div class="day sun">
         <div class="dname">Sundays</div>
         <div class="ages">U11 to U14</div>
-        <div class="dates"><span>Match Jan 24</span><span>Match Feb 28</span></div>
+        <div class="dates"><span>Match Jan 24</span><span>Match Feb 14</span><span>Finale Feb 28</span></div>
         <p class="note">Practices and games for the older age groups.</p>
       </div>
     </div>
@@ -660,10 +661,14 @@ section[id]{scroll-margin-top:58px}
           <div class="cell">Practice<small>With review</small></div>
           <div class="cell">Practice<small>With review</small></div>
           <div class="cell">Practice<small>With review</small></div>
-          <div class="cell mt">Match<small>Feb 27 and 28</small></div>
+          <div class="cell mt">Match<small>Feb 13 and 14</small></div>
+        </div>
+        <div class="blk fin">
+          <div class="bl">Finale</div>
+          <div class="cell mt">Final session<small>Feb 27 and 28</small></div>
         </div>
       </div>
-      <p>The program runs in two blocks. Each block is three practices with review, where coaches break down what players are working on and correct it on the court, followed by a match against another club. That makes six practices and two matches in all.</p>
+      <p>The program runs in two blocks. Each block is three practices with review, where coaches break down what players are working on and correct it on the court, followed by a match against another club. That makes six practices and two matches in all. The program wraps up with a final session on February 27 and 28, with something fun planned for the remaining teams.</p>
     </div>
   </div>
 </section>
@@ -773,7 +778,7 @@ section[id]{scroll-margin-top:58px}
         <div>
           <div class="label">Season</div>
           <strong>January to February</strong>
-          <p>Six practices and two matches: January 23 to 24 and February 27 to 28.</p>
+          <p>Six practices and two matches: January 23 to 24 and February 13 to 14. The final session is February 27 to 28.</p>
         </div>
         <div>
           <div class="label">Location</div>
@@ -815,9 +820,14 @@ section[id]{scroll-margin-top:58px}
         <p>After the first three practices. Saturday for U8 to U10, Sunday for U11 to U14.</p>
       </div>
       <div class="mark">
-        <div class="when">Feb 27 and 28, 2027</div>
+        <div class="when">Feb 13 and 14, 2027</div>
         <div class="what">Second match</div>
-        <p>After three more practices. Saturday for U8 to U10, Sunday for U11 to U14.</p>
+        <p>Moved up from February 27 and 28. Saturday for U8 to U10, Sunday for U11 to U14.</p>
+      </div>
+      <div class="mark">
+        <div class="when">Feb 27 and 28, 2027</div>
+        <div class="what">Final session</div>
+        <p>The last session of the program, with something fun planned for the remaining teams to wrap up the winter.</p>
       </div>
     </div>
   </div>
