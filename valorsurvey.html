@@ -49,7 +49,7 @@
 
   /* ===== Progress ===== */
   .progress{margin-bottom:6px}
-  .ticks{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;list-style:none;margin:0;padding:0}
+  .ticks{display:grid;gap:5px;list-style:none;margin:0;padding:0}
   .ticks li{height:6px;background:var(--line);transition:background .25s}
   .ticks li.done{background:var(--ink)}
   .ticks li.now{background:var(--gold)}
@@ -100,10 +100,12 @@
   .q legend,.q > label.qlabel{display:block;font-weight:700;font-size:19px;line-height:1.32;margin-bottom:14px;max-width:58ch}
   .opt{font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-left:8px;white-space:nowrap}
   .help{margin:-6px 0 14px;color:var(--muted);font-size:15.5px}
-  .fees{margin:0 0 18px;padding:16px 18px;list-style:none;columns:2;column-gap:28px;font-size:15px;background:var(--warm)}
+  .fees{margin:0 0 18px;padding:16px 18px 6px;font-size:15px;background:var(--warm);display:grid;grid-template-columns:repeat(3,1fr);gap:4px 24px}
+  .fees h4{margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  .fees ul{list-style:none;margin:0 0 12px;padding:0}
   .fees li{break-inside:avoid;padding:3px 0 3px 16px;position:relative}
   .fees li::before{content:"";position:absolute;left:0;top:12px;width:7px;height:7px;background:var(--gold)}
-  @media (max-width:560px){.fees{columns:1}}
+  @media (max-width:700px){.fees{grid-template-columns:1fr}}
 
   /* Answer bars */
   .bars{display:grid;grid-template-columns:1fr;gap:8px}
@@ -122,8 +124,8 @@
   /* Scale */
   .scale{display:grid;gap:6px}
   .scale.s5{grid-template-columns:repeat(5,1fr)}
-  .scale.s11{grid-template-columns:repeat(11,1fr)}
-  @media (max-width:520px){.scale.s11{grid-template-columns:repeat(6,1fr)}}
+  .scale.s10{grid-template-columns:repeat(10,1fr)}
+  @media (max-width:520px){.scale.s10{grid-template-columns:repeat(5,1fr)}}
   .pt{position:relative;cursor:pointer}
   .pt input{position:absolute;opacity:0;width:1px;height:1px}
   .pt span{display:grid;place-items:center;height:52px;border:1.5px solid #cfc7b3;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;transition:background .15s,color .15s,border-color .15s;position:relative}
@@ -308,60 +310,68 @@ const CONFIG = {
 const PREVIEW = !CONFIG.SCRIPT_URL;
 
 /* ===== Questions (IDs must match FIELDS in Code.gs) ===== */
-const NEW_FAMILY = 'New to Valor this season';
-const RATE5 = {min:1, max:5, low:'Poor', high:'Excellent'};
-const LIKELY = {min:0, max:10, low:'Not at all likely', high:'Extremely likely'};
-const FEES = ['Up to 5 tournaments','Fall, winter and spring training, plus Travel Academy for all U9-U12 players','Winter indoor training space','League, VYSA, US Club Soccer and USYSA memberships','VEO camera access','College ID and support programs','Nutrition guidance','Technical staff support, background checks and certification','Technical staff pay','Operations and administrative staff support','Club insurance','Referee fees','Field permits'];
+const NEW_FAMILY = 'We are new to Valor in 2026';
+const LIKELY = {min:1, max:10, low:'Highly Unlikely', high:'Extremely Likely'};
+const COMM = {min:1, max:5, low:'Does not communicate effectively', high:'Communicates very effectively'};
+const FEES = [
+  {group:'On the field', items:['Team training and functional sessions','Goalkeeper academy','Winter indoor programming for U9 to U12','Up to five team events','Tournament coaching','League and governing body fees','Field and facility fees','Referee fees']},
+  {group:'Development and support', items:['HUDL camera access','College ID and support program','Nutritional guidance','Player development programs','Coaching education','Financial assistance program']},
+  {group:'Running the club', items:['Coach compensation','Background checks','Staff support','Marketing','Valor office and media room','Club insurance']}
+];
+const AGE_GROUPS = ['U9 (born Aug 1, 2017 to Jul 31, 2018)','U10 (born Aug 1, 2016 to Jul 31, 2017)','U11 (born Aug 1, 2015 to Jul 31, 2016)','U12 (born Aug 1, 2014 to Jul 31, 2015)','U13 (born Aug 1, 2013 to Jul 31, 2014)','U14 (born Aug 1, 2012 to Jul 31, 2013)','U15 (born Aug 1, 2011 to Jul 31, 2012)','U16 (born Aug 1, 2010 to Jul 31, 2011)','U17 (born Aug 1, 2009 to Jul 31, 2010)','U18 (born Aug 1, 2008 to Jul 31, 2009)','U7 or U8 (Valor Rising or Valor Futures)'];
 
 const STEPS = [
   { title:'Your player', intro:'If you have more than one player at Valor, answer for one player now. You can start a survey for your next player at the end.', q:[
     {id:'gender', type:'choice', label:"Player's gender", options:['Boy','Girl'], two:true, required:true},
-    {id:'age_group', type:'select', label:"Player's age group", options:['U9','U10','U11','U12','U13','U14','U15','U16','U17','U18/U19'], required:true},
-    {id:'team_level', type:'choice', label:"Player's team level", options:['ECNL','Pre-ECNL','Gold','White','Black','Silver','Blue'], two:true, required:true},
-    {id:'position', type:'choice', label:"Player's primary position", options:['Field player','Goalkeeper'], two:true, required:true},
-    {id:'tenure', type:'choice', label:'Which best describes your time with Valor?', options:[NEW_FAMILY,'Returning Valor family'], required:true},
-    {id:'new_from', type:'choice', label:'Before Valor, where did your player play?', options:['Another travel soccer program','Recreational soccer','New to organized soccer'], required:true, show:{id:'tenure', eq:NEW_FAMILY}},
-    {id:'found_via', type:'choice', label:'How did you first hear about Virginia Valor FC?', options:['Recommendation from a friend or colleague','Playing against Valor teams','Camp or clinic','Internet search','Social media','Other'], required:true, show:{id:'tenure', eq:NEW_FAMILY}},
-    {id:'found_other', type:'shorttext', label:'Where did you hear about us?', required:true, show:{id:'found_via', eq:'Other'}},
-    {id:'family_players', type:'choice', label:'How many players in your immediate family play for Virginia Valor FC?', options:['1','2','3','4 or more'], two:true, required:true}
+    {id:'age_group', type:'select', label:"Player's age group", help:'2026-27 age groups follow the school year, August 1 to July 31.', options:AGE_GROUPS, required:true},
+    {id:'team_level', type:'choice', label:"Player's team level", options:['ECNL-RL','Pre-ECNL','Gold','White','Black','Valor Academy'], two:true, required:true},
+    {id:'position', type:'choice', label:"Player's primary position", options:['Field Player','Goalkeeper'], two:true, required:true},
+    {id:'tenure', type:'choice', label:'Which best describes your tenure with Valor?', options:[NEW_FAMILY,'We are a returning Valor family.'], required:true},
+    {id:'new_from', type:'choice', label:'If you are new to Valor, which best describes your situation?', options:['We moved to Valor from another Travel Soccer program.','We moved to Valor from Recreational Soccer.','We are new to organized Soccer.'], required:true, show:{id:'tenure', eq:NEW_FAMILY}},
+    {id:'found_via', type:'choice', label:'How did you initially find out about Virginia Valor FC?', options:['Recommendation from friend or colleague','Playing against Valor teams','Camp or Clinic','Internet search','Social Media','Other (please specify)'], required:true, show:{id:'tenure', eq:NEW_FAMILY}},
+    {id:'found_other', type:'shorttext', label:'Where did you hear about us?', required:true, show:{id:'found_via', eq:'Other (please specify)'}},
+    {id:'family_players', type:'choice', label:'How many players in your immediate family do you have playing at Virginia Valor FC?', options:['1','2','3','4','5'], two:true, required:true}
   ]},
   { title:'Overall', q:[
     Object.assign({id:'recommend', type:'scale', label:'How likely are you to recommend Virginia Valor FC to others?', required:true}, LIKELY),
-    Object.assign({id:'return_next', type:'scale', label:'How likely are you to return to Virginia Valor FC next season?', required:true}, LIKELY)
+    Object.assign({id:'return_next', type:'scale', label:'How likely are you to return to Virginia Valor FC next year?', required:true}, LIKELY, {low:'Will Not Return', high:'Highly Likely to Return'})
   ]},
   { title:'Coaching', q:[
-    Object.assign({id:'coach_quality', type:'scale', label:'How do you rate the overall quality of coaching your player receives from their coach?', required:true}, RATE5),
-    {id:'coach_quality_why', type:'text', label:'What is behind your rating?'},
-    {id:'coach_contact', type:'choice', label:"How often do you interact with your team's coach?", options:['Daily','Weekly','Every couple of weeks','Monthly','Every couple of months',"I have not communicated with my player's coach"], required:true},
-    Object.assign({id:'coach_comm', type:'scale', label:"How well does your team's coach communicate with your player?", required:true}, RATE5),
-    {id:'coach_comm_why', type:'text', label:'What is behind your rating?'}
+    {id:'coach_quality', type:'scale', label:'How do you rate the overall quality of coaching your player receives from their coach at Valor?', required:true, min:1, max:5, low:'Poor', high:'Very Strong'},
+    {id:'coach_quality_why', type:'text', label:"Please provide detail on your rating of the quality of your team's coach at Valor."},
+    {id:'coach_contact', type:'choice', label:"How often do you interact with your team's coach at Valor?", options:['Daily','Weekly','Once every couple weeks','Monthly','Once every couple months','I have not communicated with the technical staff at Valor'], required:true},
+    Object.assign({id:'coach_comm', type:'scale', label:"How well does your team's coach communicate with your player at Valor?", required:true}, COMM)
+  ]},
+  { title:'Club communication', intro:'These two questions are about communication from the club as a whole, separate from your team\'s coach.', q:[
+    Object.assign({id:'club_comm', type:'scale', label:"How would you rate the quality of Valor's club-level communication with your family?", required:true}, COMM),
+    Object.assign({id:'director_comm', type:'scale', label:"How would you rate the quality of Valor's director-level communication with your family?", required:true}, COMM)
   ]},
   { title:'Training and games', q:[
-    Object.assign({id:'facilities', type:'scale', label:"How do you rate Valor's training facilities?", required:true}, RATE5),
-    {id:'facilities_why', type:'text', label:'What is behind your rating?'},
-    Object.assign({id:'train_compete', type:'scale', label:'How do you rate the competitive environment at training?', required:true}, RATE5),
-    Object.assign({id:'games_compete', type:'scale', label:'How do you rate the competitive environment in league games?', required:true}, RATE5),
-    {id:'compete_why', type:'text', label:'Anything to add about training or league games?'}
+    {id:'facilities', type:'scale', label:'How do you rate the training facilities at Virginia Valor FC?', required:true, min:1, max:5, low:'Poor', high:'Excellent'},
+    {id:'facilities_why', type:'text', label:'Please provide detail supporting your answer about Valor training facilities.'},
+    {id:'train_compete', type:'scale', label:'How do you rate the overall competitive environment of training at Valor?', required:true, min:1, max:5, low:'Low', high:'High'},
+    {id:'games_compete', type:'scale', label:'How do you rate the overall competitive environment of league games at Valor?', required:true, min:1, max:5, low:'Low', high:'High'},
+    {id:'compete_why', type:'text', label:'Please provide any commentary on the competitiveness of both training and league games at Valor.'}
   ]},
   { title:'Cost and value', q:[
-    {id:'cost', type:'choice', label:'How would you rate the cost of playing at Valor?', options:['High','Moderate','Low'], required:true},
-    {id:'value', type:'choice', label:'How would you rate the value you get for that cost?', options:['High','Moderate','Low'], required:true},
-    {id:'fees_value', type:'choice', label:'Your annual Valor fees cover the costs below. Do you see value in what is included?', fees:true, options:['Yes','No'], two:true, required:true}
+    {id:'cost', type:'choice', label:'How do you rate the overall cost of participation at Virginia Valor FC?', options:['High','Moderate','Low'], required:true},
+    {id:'value', type:'choice', label:'How do you rate the overall value of participation at Virginia Valor FC?', options:['High','Moderate','Low'], required:true},
+    {id:'fees_value', type:'choice', label:'Do you find value in the fact that your annual Valor fees cover the following?', fees:true, options:['Yes','No'], two:true, required:true}
   ]},
   { title:'Priorities', q:[
-    {id:'rank', type:'rank', label:'Rank what matters most to you when choosing a soccer program.', help:'1 is most important. Use each number once.', items:[
-      {id:'rank_proximity', label:'Distance from home'},
+    {id:'rank', type:'rank', label:'Please rank the following criteria for selecting a soccer program in order of importance.', help:'1 is most important. Please do not use the same number twice. Choose N/A for anything that does not apply.', items:[
+      {id:'rank_proximity', label:'Proximity to home'},
       {id:'rank_coaching', label:'Quality of coaching'},
       {id:'rank_facilities', label:'Quality of facilities'},
       {id:'rank_cost', label:'Cost'},
       {id:'rank_competition', label:'Level of competition'},
-      {id:'rank_friends', label:'Playing with friends or family'}
+      {id:'rank_friends', label:'Opportunity to play with friends and/or family'}
     ]},
-    {id:'intl_trip', type:'choice', label:'Would you be interested in an international trip with your team or age group?', options:['Yes','No'], two:true, required:true},
-    {id:'intl_type', type:'choice', label:'Would you prefer tournaments or friendlies?', options:['Tournaments','Friendlies'], two:true, required:true, show:{id:'intl_trip', eq:'Yes'}}
+    {id:'intl_trip', type:'choice', label:'Are you interested in an international trip with your team or age group?', options:['Yes','No'], two:true, required:true},
+    {id:'intl_type', type:'choice', label:'If an international team trip is of interest, would you prefer to play tournaments or friendlies?', options:['Tournament','Friendly'], two:true, required:true, show:{id:'intl_trip', eq:'Yes'}}
   ]},
   { title:'Anything else', recap:true, q:[
-    {id:'feedback', type:'text', label:'Is there anything else you would like to share that would improve the experience for our players?'}
+    {id:'feedback', type:'text', label:'Please provide any additional thoughts, feedback or suggestions that you have, which you believe will benefit the experience for our players.'}
   ]}
 ];
 
@@ -385,7 +395,7 @@ function renderQ(q){
   const help = q.help ? `<p class="help" id="${q.id}-help">${esc(q.help)}</p>` : '';
   const err = `<p class="err" id="${q.id}-err" role="alert" hidden></p>`;
   if (q.type === 'choice'){
-    const fees = q.fees ? `<ul class="fees">${FEES.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : '';
+    const fees = q.fees ? `<div class="fees">${FEES.map(g => `<div><h4>${esc(g.group)}</h4><ul>${g.items.map(f => `<li>${esc(f)}</li>`).join('')}</ul></div>`).join('')}</div>` : '';
     return `<fieldset class="q" data-q="${q.id}"${show}><legend>${esc(q.label)}${optLabel(q)}</legend>${help}${fees}
       <div class="bars${q.two ? ' two' : ''}">${q.options.map(o => `<label class="bar"><input type="radio" name="${q.id}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join('')}</div>${err}</fieldset>`;
   }
@@ -409,7 +419,7 @@ function renderQ(q){
       <input type="text" id="${q.id}" name="${q.id}" maxlength="200">${err}</div>`;
   }
   if (q.type === 'rank'){
-    const nums = q.items.map((_, i) => `<option>${i + 1}</option>`).join('');
+    const nums = q.items.map((_, i) => `<option>${i + 1}</option>`).join('') + '<option>N/A</option>';
     return `<fieldset class="q" data-q="${q.id}"><legend>${esc(q.label)}</legend>${help}
       ${q.items.map(it => `<div class="rank-row"><label for="${it.id}">${esc(it.label)}</label><select id="${it.id}" name="${it.id}"><option value="">Rank</option>${nums}</select></div>`).join('')}${err}</fieldset>`;
   }
@@ -427,6 +437,7 @@ function renderForm(){
       <p class="err" data-submit-err role="alert" hidden></p>
     </section>`).join('');
   $('#ticks').innerHTML = STEPS.map(() => '<li></li>').join('');
+  $('#ticks').style.gridTemplateColumns = `repeat(${STEPS.length}, 1fr)`;
 }
 
 function renderRecap(){
@@ -473,7 +484,7 @@ function validateStep(i){
       if (q.type === 'rank'){
         const v = q.items.map(it => val(it.id));
         if (v.some(x => !x)) msg = 'Please rank every item.';
-        else if (new Set(v).size !== v.length) msg = 'Each number can only be used once.';
+        else { const n = v.filter(x => x !== 'N/A'); if (new Set(n).size !== n.length) msg = 'Each number can only be used once.'; }
       } else if (q.required && !val(q.id)){
         msg = q.type === 'select' ? 'Please choose one.' : (q.type === 'shorttext' ? 'Please fill this in.' : 'Please choose an answer.');
       }
