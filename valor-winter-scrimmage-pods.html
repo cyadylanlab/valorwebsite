@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Winter Scrimmage Pods 2026-27 | Virginia Valor FC</title>
+<meta name="description" content="Pod assignments, game times and rosters for Virginia Valor FC winter scrimmage pods, 2026-27.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#121212; --paper:#ffffff; --cream:#F7F5F0;
+  --gold:#8B7A4C; --brass:#C8B98F;
+  --line:#E2DED4; --line2:#CFC9BA; --muted:#6C6760;
+  --disp:'Big Shoulders Display','Arial Narrow','Helvetica Neue Condensed',Impact,sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --pad:clamp(18px,5vw,64px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%}
+a{color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+.mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:500}
+h1,h2,h3{font-family:var(--disp);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:-.01em;margin:0}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---------- banner ---------- */
+.banner{position:relative;background:var(--ink);color:var(--cream);overflow:hidden;padding:clamp(34px,7vw,74px) 0 clamp(28px,5vw,56px)}
+.ghost{position:absolute;right:-.14em;top:50%;transform:translateY(-50%);font-family:var(--disp);font-weight:900;
+  font-size:clamp(300px,52vw,620px);line-height:.7;color:#fff;opacity:.045;pointer-events:none;user-select:none}
+.banner .wrap{position:relative}
+.eyebrow{color:var(--brass)}
+h1{font-size:clamp(40px,13.2vw,170px);margin:.22em 0 0;max-width:100%}
+h1 .g{color:var(--gold)}
+.lede{display:flex;gap:clamp(16px,3vw,30px);margin-top:clamp(20px,3vw,32px);max-width:720px}
+.lede .rule{flex:0 0 3px;background:var(--gold)}
+.lede p{margin:0;color:#DAD6CC;font-size:clamp(15px,1.5vw,18px)}
+.jump{display:flex;flex-wrap:wrap;gap:0 clamp(16px,3vw,30px);margin-top:clamp(24px,4vw,40px);border-top:1px solid #333;padding-top:16px}
+.jump a{color:var(--cream);text-decoration:none;padding:5px 0;border-bottom:2px solid transparent;font-family:var(--mono);
+  text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:500;transition:border-color .15s,color .15s}
+.jump a:hover{border-bottom-color:var(--gold);color:#fff}
+
+/* ---------- generic section ---------- */
+section{padding:clamp(40px,7vw,86px) 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.sechead h2{font-size:clamp(32px,5.6vw,58px)}
+.sechead .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--gold);padding-bottom:6px;font-weight:600}
+.subhead{color:var(--muted);max-width:60ch;margin:10px 0 0;font-size:16px}
+
+/* ---------- 1. lookup ---------- */
+#find{background:var(--cream);border-bottom:1px solid var(--line2)}
+.findgrid{display:grid;gap:clamp(24px,4vw,44px);margin-top:clamp(22px,3vw,34px)}
+.searchbox{position:relative}
+.searchbox label{display:block;color:var(--gold);margin-bottom:10px;font-weight:600}
+#q{width:100%;padding:16px 16px 16px 0;border:0;border-bottom:3px solid var(--ink);background:none;
+  font-family:var(--disp);font-weight:700;text-transform:uppercase;font-size:clamp(26px,4.6vw,42px);line-height:1.1}
+#q::placeholder{color:#B5AFA3}
+#q:focus{outline:none;border-bottom-color:var(--gold)}
+.hits{margin:14px 0 0;padding:0;list-style:none;max-height:300px;overflow:auto}
+.hits li+li{border-top:1px solid var(--line)}
+.hits button{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;text-align:left;padding:11px 2px}
+.hits button:hover,.hits button:focus{background:#fff}
+.hits .nm{font-size:17px}
+.hits .pd{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.sidenote{border-left:3px solid var(--brass);padding-left:18px;color:var(--muted);font-size:15px}
+.sidenote strong{color:var(--ink);font-weight:600}
+
+.card{display:none;margin-top:clamp(26px,4vw,40px);background:var(--paper);border:1px solid var(--line2)}
+.card.on{display:block}
+.cardtop{background:var(--ink);color:var(--cream);padding:clamp(18px,3vw,26px) clamp(18px,3vw,28px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.cardtop .who{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(26px,4.4vw,40px);line-height:.9}
+.cardtop .pod{color:var(--gold);font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(19px,2.6vw,26px);line-height:1}
+.cardtop .meta{color:var(--brass);margin-top:6px}
+.cardbody{padding:clamp(18px,3vw,28px)}
+.wklist{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.wklist li{display:grid;grid-template-columns:62px 1fr;gap:3px 16px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.wklist .o{grid-column:2/-1}
+@media(min-width:560px){.wklist li{grid-template-columns:62px 112px 1fr}.wklist .o{grid-column:auto}}
+.wklist .w{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:600;text-transform:uppercase}
+.wklist .t{font-family:var(--mono);font-size:15px;font-weight:600}
+.wklist .o{color:var(--muted);font-size:15px}
+.mates{margin-top:22px}
+.mates .mono{color:var(--gold);display:block;margin-bottom:10px;font-weight:600}
+.mates ul{margin:0;padding:0;list-style:none;columns:1;column-gap:28px;font-size:15px}
+.mates li{padding:3px 0;break-inside:avoid}
+.mates .me{font-weight:600}
+.mates .lv{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.wklist .w em{display:block;font-style:normal;color:var(--muted);margin-top:2px;letter-spacing:.08em}
+.cal{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.cal>.mono{color:var(--gold);display:block;margin-bottom:11px;font-weight:600}
+.calbtn{border:1px solid var(--ink);padding:11px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;font-weight:600;transition:background .15s,color .15s}
+.calbtn:hover{background:var(--ink);color:var(--cream)}
+.glinks{margin-top:15px}
+.glinks span{display:block;color:var(--muted);margin-bottom:8px}
+.glinks a{display:inline-block;border:1px solid var(--line2);padding:7px 9px;margin:0 5px 5px 0;font-family:var(--mono);
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.glinks a:hover{border-color:var(--gold);color:var(--ink)}
+.wkdate{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(20px,3vw,28px);
+  color:var(--gold);margin-bottom:14px;line-height:1}
+table.season thead th em{display:block;font-style:normal;color:#8A857C;margin-top:3px;letter-spacing:.08em}
+
+/* ---------- 2. week lanes ---------- */
+.weektabs{display:flex;flex-wrap:wrap;gap:6px;margin:clamp(20px,3vw,30px) 0 clamp(24px,3vw,34px)}
+.weektabs button{border:1px solid var(--line2);padding:9px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  font-weight:600;text-transform:uppercase;transition:background .15s,color .15s,border-color .15s}
+.weektabs button:hover{border-color:var(--ink)}
+.weektabs button[aria-pressed=true]{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.lanehead{display:none;grid-template-columns:var(--lanecols);gap:0 clamp(14px,2vw,26px);border-bottom:2px solid var(--ink);padding-bottom:8px}
+.lanehead span:nth-child(2){color:var(--gold)}
+.lanehead span:nth-child(3){color:var(--gold)}
+.lane{display:grid;grid-template-columns:1fr;gap:0;border-bottom:1px solid var(--line);padding:16px 0}
+.lane .clock{font-family:var(--mono);font-weight:600;line-height:1;white-space:nowrap}
+.lane .clock b{display:block;font-size:clamp(26px,4vw,38px);font-weight:600;letter-spacing:-.02em}
+.lane .clock span{display:block;font-size:10px;letter-spacing:.14em;color:var(--muted);margin-top:5px;text-transform:uppercase}
+.game{padding:12px 0 0}
+.game .ct{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;font-weight:600}
+.game .vs{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(20px,2.7vw,27px);line-height:1;margin-top:7px}
+.game .vs i{font-style:normal;color:var(--gold);padding:0 4px}
+.game .sz{color:var(--muted);font-size:14px;margin-top:6px}
+
+/* ---------- 3. season grid ---------- */
+#season{background:var(--ink);color:var(--cream);border-bottom:0}
+#season .sechead .num,#season .lede .rule{color:var(--brass)}
+#season .subhead{color:#AFAAA1}
+.gridwrap{margin-top:clamp(22px,3vw,34px);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gtitle{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:22px;color:var(--gold);
+  margin:clamp(22px,3vw,32px) 0 10px;letter-spacing:.01em}
+table.season{border-collapse:collapse;width:100%;min-width:720px}
+table.season th,table.season td{text-align:left;padding:9px 12px;border-bottom:1px solid #2E2E2E;vertical-align:top}
+table.season thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--brass);text-transform:uppercase;
+  font-weight:600;border-bottom:2px solid var(--gold);white-space:nowrap}
+table.season tbody th{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:17px;white-space:nowrap;
+  position:sticky;left:0;background:var(--ink);padding-left:0;border-right:1px solid #2E2E2E}
+table.season td{font-family:var(--mono);font-size:12px;line-height:1.5;white-space:nowrap}
+table.season td b{display:block;font-weight:600;font-size:13px}
+table.season td span{color:#9C978E}
+.scrollhint{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#8A857C;text-transform:uppercase;margin-top:12px}
+
+/* ---------- 4. pods ---------- */
+.podcols{display:grid;gap:clamp(26px,4vw,40px);margin-top:clamp(22px,3vw,34px)}
+.colhead{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:24px;padding-bottom:9px;
+  border-bottom:3px solid var(--gold);margin-bottom:4px}
+details.pod{border-bottom:1px solid var(--line)}
+details.pod summary{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0;cursor:pointer;list-style:none}
+details.pod summary::-webkit-details-marker{display:none}
+details.pod summary:hover .pn{color:var(--gold)}
+.pn{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:21px;line-height:1;transition:color .15s}
+.pmeta{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;white-space:nowrap;text-align:right}
+.pmeta em{font-style:normal;color:var(--gold);display:block;margin-top:3px}
+details.pod[open] summary .pn{color:var(--gold)}
+.roster{margin:0 0 20px;padding:0;list-style:none;border-top:1px solid var(--line)}
+.roster li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:8px 0;border-bottom:1px solid #F0EDE6;align-items:baseline}
+.roster .rn{font-size:16px}
+.roster .ra{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--gold);font-weight:600}
+
+/* ---------- 5. notes ---------- */
+#notes{background:var(--cream)}
+.notegrid{display:grid;gap:clamp(22px,3vw,38px);margin-top:clamp(20px,3vw,30px)}
+.note h3{font-size:19px;margin-bottom:8px;letter-spacing:0}
+.note p{margin:0;color:var(--muted);font-size:15.5px}
+.note a{color:var(--gold)}
+footer{background:var(--ink);color:#8A857C;padding:34px 0;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer b{color:var(--cream);font-weight:500}
+
+/* ---------- responsive ---------- */
+@media(min-width:640px){
+  .lane{grid-template-columns:96px 1fr;gap:0 clamp(14px,2vw,26px);align-items:start}
+  .game{padding-top:0}
+  .game+.game{margin-top:16px}
+  .mates ul{columns:2}
+}
+@media(min-width:900px){
+  :root{--lanecols:112px 1fr 1fr}
+  .findgrid{grid-template-columns:1.45fr .85fr;align-items:start}
+  .sidenote{margin-top:46px}
+  .lanehead{display:grid}
+  .lane{grid-template-columns:var(--lanecols);align-items:center;padding:18px 0}
+  .lane .clock{margin-left:calc(-1 * clamp(10px,2.4vw,34px))}
+  .game+.game{margin-top:0}
+  .podcols{grid-template-columns:1fr 1fr}
+  .notegrid{grid-template-columns:repeat(2,1fr)}
+  .mates ul{columns:3}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@media print{
+  .banner{background:#fff;color:#000;padding:0 0 18px}
+  .ghost,.jump,.weektabs,#find,.scrollhint{display:none!important}
+  h1{font-size:46px;color:#000}h1 .g{color:#000}
+  .lede p{color:#000}
+  #season{background:#fff;color:#000}
+  #season .subhead{color:#444}
+  table.season tbody th{background:#fff;color:#000}
+  table.season th,table.season td{border-color:#bbb}
+  table.season thead th{color:#000}
+  table.season td span{color:#444}
+  .gridwrap{overflow:visible}
+  table.season{min-width:0;font-size:10px}
+  details.pod{page-break-inside:avoid}
+  footer{background:#fff;color:#000}
+  section{border-color:#bbb;padding:18px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="ghost" aria-hidden="true">8</div>
+  <div class="wrap">
+    <div class="mono eyebrow"><span style="white-space:nowrap">Virginia Valor FC</span> &nbsp;|&nbsp; <span style="white-space:nowrap">Winter 2026-27</span></div>
+    <h1>Winter<br>Scrimmage <span class="g">Pods</span></h1>
+    <div class="lede">
+      <div class="rule" aria-hidden="true"></div>
+      <p>Eight Saturdays at the Fieldhouse for U11 and U12, from January 2 to February 27. Twenty pods, two courts, five time slots. Every pod plays one game a week, and the time slot changes week to week, so check your week before you leave the house.</p>
+    </div>
+    <nav class="jump" aria-label="Sections">
+      <a href="#find">Find a player</a>
+      <a href="#week">Week by week</a>
+      <a href="#season">All eight weeks</a>
+      <a href="#pods">Pods and rosters</a>
+      <a href="#notes">Good to know</a>
+    </nav>
+  </div>
+</header>
+
+<section id="find">
+  <div class="wrap">
+    <div class="sechead"><span class="num">01</span><h2>Find a player</h2></div>
+    <p class="subhead">Type a first or last name to get their pod, their court, and all eight game times.</p>
+    <div class="findgrid">
+      <div class="searchbox">
+        <label class="mono" for="q">Player name</label>
+        <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Start typing" aria-describedby="qhelp">
+        <ul class="hits" id="hits" aria-live="polite"></ul>
+        <p id="qhelp" class="mono" style="color:var(--muted);margin-top:12px">172 players &nbsp;|&nbsp; 76 girls &nbsp;|&nbsp; 96 boys</p>
+      </div>
+      <div class="sidenote">
+        <p><strong>Girls play on Court 1 and boys play on Court 2</strong>, in every slot and every week. Pods are fixed for the whole eight weeks, so a player keeps the same pod and the same teammates throughout. Only the opponent and the time change.</p>
+      </div>
+    </div>
+    <div class="card" id="card" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="week">
+  <div class="wrap">
+    <div class="sechead"><span class="num">02</span><h2>Week by week</h2></div>
+    <p class="subhead">The full morning for one week. Pick a week to see all ten games across both courts.</p>
+    <div class="weektabs" id="weektabs" role="group" aria-label="Choose a week"></div>
+    <div class="wkdate" id="wkdate"></div>
+    <div class="lanehead mono" aria-hidden="true"><span>Time</span><span>Court 1 / Girls</span><span>Court 2 / Boys</span></div>
+    <div id="lanes"></div>
+  </div>
+</section>
+
+<section id="season">
+  <div class="wrap">
+    <div class="sechead"><span class="num">03</span><h2>All eight weeks</h2></div>
+    <p class="subhead">Every pod's season on one grid. Each cell shows the opponent and the kickoff time for that week.</p>
+    <div class="gtitle">Girls, Court 1</div>
+    <div class="gridwrap"><table class="season" id="gseason"></table></div>
+    <div class="gtitle">Boys, Court 2</div>
+    <div class="gridwrap"><table class="season" id="bseason"></table></div>
+    <p class="scrollhint">Scroll the grid sideways to see later weeks</p>
+  </div>
+</section>
+
+<section id="pods">
+  <div class="wrap">
+    <div class="sechead"><span class="num">04</span><h2>Pods and rosters</h2></div>
+    <p class="subhead">Tap a pod to see its roster and add its games to a calendar.</p>
+    <div class="podcols">
+      <div><div class="colhead">Girls</div><div id="gpods"></div></div>
+      <div><div class="colhead">Boys</div><div id="bpods"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="notes">
+  <div class="wrap">
+    <div class="sechead"><span class="num">05</span><h2>Good to know</h2></div>
+    <div class="notegrid">
+      <div class="note">
+        <h3>No session February 20</h3>
+        <p>The Fieldhouse is booked for a gymnastics event that weekend, so there is no week between February 13 and February 27. The eight weeks still run as listed.</p>
+      </div>
+      <div class="note">
+        <h3>Questions</h3>
+        <p>For roster or schedule questions, contact <a href="mailto:dsutherland@virginiavalorfc.org">dsutherland@virginiavalorfc.org</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Virginia Valor FC</b> &nbsp;|&nbsp; Winter Scrimmage Pods 2026-27</span>
+    <span>Two courts &nbsp;|&nbsp; Five slots &nbsp;|&nbsp; Eight weeks</span>
+  </div>
+</footer>
+
+<script>
+const D={"T":["8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","12:00-1:00"],"P":{"G1":{"n":"Girls Pod 1","sex":"G","court":1,"r":[["Alyssa Rutland",0],["Piper Elgert",0],["Grace Covey",0],["Avery Merry",0],["Railey Chiang-Krobot",1],["Ruah Lee",1],["Josephine Palmer",1],["Eden Kim",1]],"s":[[2,"G10"],[0,"G9"],[4,"G8"],[3,"G7"],[1,"G6"],[0,"G5"],[4,"G4"],[2,"G3"]]},"G2":{"n":"Girls Pod 2","sex":"G","court":1,"r":[["Elizabeth Thorstad",0],["Renata Harriford",0],["Julianne Kelly",0],["Carly Deal",0],["Sloane Lewis",1],["Sadie Fullen",1],["Melissa Li",1],["Elin Myers",1]],"s":[[4,"G9"],[2,"G7"],[3,"G5"],[0,"G3"],[4,"G10"],[1,"G8"],[2,"G6"],[0,"G4"]]},"G3":{"n":"Girls Pod 3","sex":"G","court":1,"r":[["Ella Norrington",0],["Samantha Larson",0],["Lily Doyle",0],["Chloe Martin",0],["Avery Fuerst",1],["Sofia Kim",1],["Myra Nannapaneni",1],["Nyeli Espinoza",1]],"s":[[1,"G8"],[4,"G6"],[2,"G4"],[0,"G2"],[3,"G9"],[4,"G7"],[1,"G5"],[2,"G1"]]},"G4":{"n":"Girls Pod 4","sex":"G","court":1,"r":[["Isla Newbold",0],["Zaina Phillips",0],["Lois Lee",0],["Emmanuelle McCausland",0],["Brooke Craddock",1],["Adelaide Weeks",1],["Nyra Daughtry",1],["Sophia Kalifa",1]],"s":[[3,"G7"],[1,"G5"],[2,"G3"],[1,"G10"],[0,"G8"],[3,"G6"],[4,"G1"],[0,"G2"]]},"G5":{"n":"Girls Pod 5","sex":"G","court":1,"r":[["Mackayla Sobota",0],["Arabella Thomas",0],["Mackenzie Fraser",0],["Layan Alkhujah",0],["Cameron Seitz",1],["Alyssa Wakefield",1],["Olivia Osborne",1],["Thaliya Padmanabhan",1]],"s":[[0,"G6"],[1,"G4"],[3,"G2"],[4,"G9"],[2,"G7"],[0,"G1"],[1,"G3"],[3,"G10"]]},"G6":{"n":"Girls Pod 6","sex":"G","court":1,"r":[["Madeline Buffa",0],["Ava Determan",0],["Madeline Van Aken",0],["Mary Downes",0],["Emmy O'Neil",1],["Audrey Lininger",1],["Abby Deysher",1],["Veronica Jones",1]],"s":[[0,"G5"],[4,"G3"],[0,"G10"],[2,"G8"],[1,"G1"],[3,"G4"],[2,"G2"],[1,"G9"]]},"G7":{"n":"Girls Pod 7","sex":"G","court":1,"r":[["Madison Hansel",0],["Carly Blackwell",0],["Mira Kanaan",0],["Penelope Cruz Diaz",0],["Faith Sackie",1],["Avery Anderson",1],["Abigail Cullerot",1]],"s":[[3,"G4"],[2,"G2"],[1,"G9"],[3,"G1"],[2,"G5"],[4,"G3"],[0,"G10"],[4,"G8"]]},"G8":{"n":"Girls Pod 8","sex":"G","court":1,"r":[["Molly Lawson",0],["Danya Cushing",0],["Natalia Aponte",0],["Savannah Rahi",0],["Greta Macchio",1],["Claire Shoemaker",1],["Amelia Poole",1]],"s":[[1,"G3"],[3,"G10"],[4,"G1"],[2,"G6"],[0,"G4"],[1,"G2"],[3,"G9"],[4,"G7"]]},"G9":{"n":"Girls Pod 9","sex":"G","court":1,"r":[["Paige DiSabato",0],["Emma Pomerantz",0],["Tisa Shrestha",0],["Taylor Evans",0],["Lauren Garver",1],["Fiona Hoy",1],["Celine Kalifa",1]],"s":[[4,"G2"],[0,"G1"],[1,"G7"],[4,"G5"],[3,"G3"],[2,"G10"],[3,"G8"],[1,"G6"]]},"G10":{"n":"Girls Pod 10","sex":"G","court":1,"r":[["Paris Vongsaly",0],["Estella Liu",0],["Alina El-Bardisi",0],["Madison Hennessy",1],["Olivia Epperson",1],["Isabelle Massey",1],["Colette Raucci",1]],"s":[[2,"G1"],[3,"G8"],[0,"G6"],[1,"G4"],[4,"G2"],[2,"G9"],[0,"G7"],[3,"G5"]]},"B1":{"n":"Boys Pod 1","sex":"B","court":2,"r":[["Aaron Alabi",0],["Ryan Page",0],["Finley Vance",0],["Benjamin Hoke",0],["Mateo Gonzales",0],["Ethan Hanlon",1],["Aaron Dannels",1],["Reed Christie",1],["Liam Choi",1],["Graham Miller",1]],"s":[[4,"B10"],[3,"B9"],[0,"B8"],[2,"B7"],[1,"B6"],[3,"B5"],[0,"B4"],[4,"B3"]]},"B2":{"n":"Boys Pod 2","sex":"B","court":2,"r":[["Cameron Sorensen",0],["Tuguldur Maingerel",0],["Kevin Garcia-Tellez",0],["Caleb Willerth",0],["Oliver Mudd",0],["Evan Santo Domingo",1],["Adam Wakefield",1],["Siddhant Thakkar",1],["Luke Keller",1],["Mateo Garces",1]],"s":[[0,"B9"],[4,"B7"],[2,"B5"],[3,"B3"],[0,"B10"],[1,"B8"],[4,"B6"],[2,"B4"]]},"B3":{"n":"Boys Pod 3","sex":"B","court":2,"r":[["Easton Heggestad",0],["Ved Mariyappa",0],["Lukas Luft",0],["Carter DeKeuster",0],["Tharun Aadithya Nandhakumar",0],["Jacob Barry",1],["Alejandro Machado",1],["Tucker Duff",1],["Nathan Croot",1],["Mateo Patricio",1]],"s":[[1,"B8"],[0,"B6"],[4,"B4"],[3,"B2"],[2,"B9"],[0,"B7"],[1,"B5"],[4,"B1"]]},"B4":{"n":"Boys Pod 4","sex":"B","court":2,"r":[["Emmanuel Tovar Chara",0],["Vincent Nguyen",0],["Max Manuel",0],["Ellis Hall",0],["Daniel Iskander",0],["Nicholas Tzirimis",1],["Caden Kistner",1],["Alexander Dabidian",1],["Nicholas Feuling",1],["Paul Hwang",1]],"s":[[3,"B7"],[1,"B5"],[4,"B3"],[1,"B10"],[3,"B8"],[2,"B6"],[0,"B1"],[2,"B2"]]},"B5":{"n":"Boys Pod 5","sex":"B","court":2,"r":[["Jaxon Morris",0],["Adrian House",0],["Oliver Mendel",0],["Ethan Dong",0],["Patrick Evon",0],["Noah Jang",1],["Carter Yeh",1],["Evan Lin",1],["Samuel Lee",1],["Royce Jisung Lee",1]],"s":[[2,"B6"],[1,"B4"],[2,"B2"],[0,"B9"],[4,"B7"],[3,"B1"],[1,"B3"],[3,"B10"]]},"B6":{"n":"Boys Pod 6","sex":"B","court":2,"r":[["Justin Kroopnick",0],["Alex Avetisyan",0],["Oliver Pelaez",0],["Everett Bell",0],["Shayan George",0],["Oghlan Zurki",1],["Dhruv Kashyap",1],["Gabe Wood",1],["Vihaan Chugh",1],["Turbold Gantsogt",1]],"s":[[2,"B5"],[0,"B3"],[3,"B10"],[4,"B8"],[1,"B1"],[2,"B4"],[4,"B2"],[1,"B9"]]},"B7":{"n":"Boys Pod 7","sex":"B","court":2,"r":[["Mario Julian Fajardo Martinez",0],["Anthony Shin",0],["Ryan Hurley",0],["Grant Bach",0],["Charles Berndsen",1],["Santino Bustinza",1],["Finn Haney",1],["Grayson Carey",1],["Alex VanYperen",1]],"s":[[3,"B4"],[4,"B2"],[1,"B9"],[2,"B1"],[4,"B5"],[0,"B3"],[2,"B10"],[0,"B8"]]},"B8":{"n":"Boys Pod 8","sex":"B","court":2,"r":[["Marlon Screen",0],["Aryan Kamawal",0],["Wyatt Ehrman",0],["Leo Zhang",0],["Dechlan McCarty",1],["Vivaan Dandyala",1],["Hiro Tanaka",1],["Humza Rawn",1],["Brandon Kim",1]],"s":[[1,"B3"],[2,"B10"],[0,"B1"],[4,"B6"],[3,"B4"],[1,"B2"],[3,"B9"],[0,"B7"]]},"B9":{"n":"Boys Pod 9","sex":"B","court":2,"r":[["Nathan Glaser",0],["Bradyn Bastian",0],["Artin Bashardoust",0],["Logan Nguyen",0],["Enoch Lee",1],["William Sukhbaatar",1],["Jacob Solomon",1],["Jace Muessig",1],["Dhanvik Dhakshin",1]],"s":[[0,"B2"],[3,"B1"],[1,"B7"],[0,"B5"],[2,"B3"],[4,"B10"],[3,"B8"],[1,"B6"]]},"B10":{"n":"Boys Pod 10","sex":"B","court":2,"r":[["Omar Zeroual",0],["Carter Bernys",0],["Austin Flory",0],["Martin Beardsley",0],["Enzo Monsalve",1],["Yunus Emre Musa",1],["Matthew Epley",1],["Jacob Ordonez Sanchez",1],["Diego Diaz Cortez",1]],"s":[[4,"B1"],[2,"B8"],[3,"B6"],[1,"B4"],[0,"B2"],[4,"B9"],[2,"B7"],[3,"B5"]]}}};
+const P=D.P,T=D.T;
+const AG=['U11','U12'];
+const DATES=['2027-01-02','2027-01-09','2027-01-16','2027-01-23','2027-01-30','2027-02-06','2027-02-13','2027-02-27'];
+const MON=['January','February'],MS=['Jan','Feb'];
+const dObj=i=>{const[y,m,d]=DATES[i].split('-').map(Number);return{y:y,m:m,d:d}};
+const dShort=i=>{const o=dObj(i);return MS[o.m-1]+' '+o.d};
+const dLong=i=>{const o=dObj(i);return 'Saturday, '+MON[o.m-1]+' '+o.d};
+const SH=[8,9,10,11,12],EH=[9,10,11,12,13];
+const p2=n=>String(n).padStart(2,'0');
+const stampAt=(i,h)=>{const o=dObj(i);return ''+o.y+p2(o.m)+p2(o.d)+'T'+p2(h)+'0000'};
+const NOW=new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+const VENUE='CYA Fieldhouse';
+function evTitle(id,w){return P[id].n+' vs '+P[P[id].s[w][1]].n}
+function icsFor(id){
+  const p=P[id],L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Virginia Valor FC//Winter Scrimmage Pods//EN',
+    'CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:'+p.n+' winter scrimmage'];
+  p.s.forEach((s,i)=>{
+    L.push('BEGIN:VEVENT','UID:vvfc-'+id+'-w'+(i+1)+'@virginiavalorfc.org','DTSTAMP:'+NOW,
+      'DTSTART:'+stampAt(i,SH[s[0]]),'DTEND:'+stampAt(i,EH[s[0]]),
+      'SUMMARY:Week '+(i+1)+', '+evTitle(id,i),'LOCATION:'+VENUE,
+      'DESCRIPTION:Court '+p.court+'. Virginia Valor FC winter scrimmage pods.','END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+function dlIcs(id){
+  try{
+    const b=new Blob([icsFor(id)],{type:'text/calendar;charset=utf-8'});
+    const u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u;a.download=P[id].n.toLowerCase().replace(/ /g,'-')+'-winter-scrimmage.ics';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),3000);
+  }catch(e){}
+}
+function gLink(id,w){
+  const s=P[id].s[w];
+  const q='action=TEMPLATE&text='+encodeURIComponent('Week '+(w+1)+', '+evTitle(id,w))+
+    '&dates='+stampAt(w,SH[s[0]])+'/'+stampAt(w,EH[s[0]])+
+    '&location='+encodeURIComponent(VENUE)+
+    '&details='+encodeURIComponent('Court '+P[id].court+'. Virginia Valor FC winter scrimmage pods.');
+  return 'https://calendar.google.com/calendar/render?'+q;
+}
+function calBlock(id){
+  let g='';
+  for(let w=0;w<8;w++)g+='<a href="'+gLink(id,w)+'" target="_blank" rel="noopener">W'+(w+1)+' '+dShort(w)+'</a>';
+  return '<div class="cal"><span class="mono">Add these games to your calendar</span>'+
+    '<button type="button" class="calbtn" data-ics="'+id+'">Apple, Outlook or other (.ics)</button>'+
+    '<div class="glinks"><span class="mono">Google Calendar, one game at a time</span>'+g+'</div></div>';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-ics]');
+  if(b)dlIcs(b.getAttribute('data-ics'));
+});
+const short=t=>t.split('-')[0];
+const endOf=t=>t.split('-')[1];
+const ids=Object.keys(P);
+const players=[];
+ids.forEach(id=>P[id].r.forEach((r,i)=>players.push({n:r[0],a:r[1],pod:id,i:i})));
+
+/* ---- 01 lookup ---- */
+const q=document.getElementById('q'),hits=document.getElementById('hits'),card=document.getElementById('card');
+function render(list){
+  hits.innerHTML='';
+  list.forEach(p=>{
+    const li=document.createElement('li'),b=document.createElement('button');
+    b.type='button';
+    b.innerHTML='<span class="nm"></span><span class="pd"></span>';
+    b.querySelector('.nm').textContent=p.n;
+    b.querySelector('.pd').textContent=P[p.pod].n+' / '+AG[p.a];
+    b.onclick=()=>show(p);
+    li.appendChild(b);hits.appendChild(li);
+  });
+}
+function show(p){
+  const pod=P[p.pod],u11=pod.r.filter(r=>r[1]===0).length;
+  let w='';
+  pod.s.forEach((s,i)=>{
+    w+='<li><span class="w">Week '+(i+1)+'<em>'+dShort(i)+'</em></span><span class="t">'+T[s[0]]+'</span><span class="o">vs '+P[s[1]].n+'</span></li>';
+  });
+  let m='';
+  pod.r.forEach((r,i)=>{
+    m+='<li class="'+(i===p.i?'me':'')+'">'+r[0]+' <span class="lv">'+AG[r[1]]+'</span></li>';
+  });
+  card.innerHTML=
+    '<div class="cardtop"><div><div class="who">'+p.n+'</div><div class="mono meta">'+AG[p.a]+'</div></div>'+
+    '<div><div class="pod">'+pod.n+'</div><div class="mono meta">Court '+pod.court+' &nbsp;|&nbsp; '+pod.r.length+' players</div></div></div>'+
+    '<div class="cardbody"><ul class="wklist">'+w+'</ul>'+calBlock(p.pod)+
+    '<div class="mates"><span class="mono">Pod roster &middot; '+u11+' U11, '+(pod.r.length-u11)+' U12</span><ul>'+m+'</ul></div></div>';
+  card.classList.add('on');
+  card.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+q.addEventListener('input',()=>{
+  const v=q.value.trim().toLowerCase();
+  if(v.length<2){hits.innerHTML='';return;}
+  const starts=[],inside=[];
+  players.forEach(p=>{
+    const n=p.n.toLowerCase();
+    if(n.startsWith(v)||n.split(' ').some(w=>w.startsWith(v)))starts.push(p);
+    else if(n.includes(v))inside.push(p);
+  });
+  render(starts.concat(inside).slice(0,10));
+});
+
+/* ---- 02 week lanes ---- */
+const tabs=document.getElementById('weektabs'),lanes=document.getElementById('lanes');
+function week(w){
+  [...tabs.children].forEach((b,i)=>b.setAttribute('aria-pressed',i===w));
+  document.getElementById('wkdate').textContent=dLong(w);
+  let h='';
+  for(let s=0;s<5;s++){
+    const g=ids.find(id=>P[id].sex==='G'&&P[id].s[w][0]===s);
+    const b=ids.find(id=>P[id].sex==='B'&&P[id].s[w][0]===s);
+    h+='<div class="lane"><div class="clock"><b>'+short(T[s])+'</b><span>to '+endOf(T[s])+'</span></div>'+
+       cell(g,w,1)+cell(b,w,2)+'</div>';
+  }
+  lanes.innerHTML=h;
+}
+function cell(id,w,court){
+  const o=P[id].s[w][1];
+  return '<div class="game"><div class="ct">Court '+court+' &middot; '+(court===1?'Girls':'Boys')+'</div>'+
+    '<div class="vs">'+P[id].n.replace(/^(Girls|Boys) /,'')+' <i>vs</i> '+P[o].n.replace(/^(Girls|Boys) /,'')+'</div>'+
+    '<div class="sz">'+P[id].r.length+' v '+P[o].r.length+' players</div></div>';
+}
+for(let i=0;i<8;i++){
+  const b=document.createElement('button');
+  b.type='button';b.textContent='Week '+(i+1);b.onclick=()=>week(i);
+  tabs.appendChild(b);
+}
+week(0);
+
+/* ---- 03 season grid ---- */
+function grid(sex,el){
+  let h='<thead><tr><th scope="col">Pod</th>';
+  for(let i=0;i<8;i++)h+='<th scope="col">Week '+(i+1)+'<em>'+dShort(i)+'</em></th>';
+  h+='</tr></thead><tbody>';
+  ids.filter(id=>P[id].sex===sex).forEach(id=>{
+    h+='<tr><th scope="row">'+P[id].n.replace(/^(Girls|Boys) /,'')+'</th>';
+    P[id].s.forEach(s=>{
+      h+='<td><b>vs '+P[s[1]].n.replace(/^(Girls|Boys) Pod /,'Pod ')+'</b><span>'+T[s[0]]+'</span></td>';
+    });
+    h+='</tr>';
+  });
+  el.innerHTML=h+'</tbody>';
+}
+grid('G',document.getElementById('gseason'));
+grid('B',document.getElementById('bseason'));
+
+/* ---- 04 pods ---- */
+function podlist(sex,el){
+  let h='';
+  ids.filter(id=>P[id].sex===sex).forEach(id=>{
+    const p=P[id],u11=p.r.filter(r=>r[1]===0).length;
+    h+='<details class="pod"><summary><span class="pn">'+p.n.replace(/^(Girls|Boys) /,'')+'</span>'+
+      '<span class="pmeta">'+p.r.length+' players<em>'+u11+' U11 &middot; '+(p.r.length-u11)+' U12</em></span></summary><ul class="roster">';
+    p.r.forEach(r=>{
+      h+='<li><span class="rn">'+r[0]+'</span><span class="ra">'+AG[r[1]]+'</span></li>';
+    });
+    h+='</ul>'+calBlock(id)+'</details>';
+  });
+  el.innerHTML=h;
+}
+podlist('G',document.getElementById('gpods'));
+podlist('B',document.getElementById('bpods'));
+</script>
+</body>
+</html>
