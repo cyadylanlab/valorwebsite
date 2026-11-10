@@ -45,10 +45,10 @@ h1 .g{color:var(--gold)}
   text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:500;transition:border-color .15s,color .15s}
 .jump a:hover{border-bottom-color:var(--gold);color:#fff}
 .jump a[aria-current=page]{border-bottom-color:var(--gold);color:#fff}
-[hidden]{display:none!important}
 
 /* ---------- generic section ---------- */
-section{padding:clamp(40px,7vw,86px) 0;border-bottom:1px solid var(--line)}
+section{padding:clamp(40px,7vw,86px) 0;border-bottom:1px solid var(--line);scroll-margin-top:0}
+section:focus{outline:none}
 .sechead{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:8px}
 .sechead h2{font-size:clamp(32px,5.6vw,58px)}
 .sechead .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--gold);padding-bottom:6px;font-weight:600}
@@ -194,7 +194,6 @@ footer b{color:var(--cream);font-weight:500}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 @media print{
-  section[hidden]{display:block!important}
   .banner{background:#fff;color:#000;padding:0 0 18px}
   .ghost,.jump,.weektabs,#find,.scrollhint{display:none!important}
   h1{font-size:46px;color:#000}h1 .g{color:#000}
@@ -306,7 +305,7 @@ footer b{color:var(--cream);font-weight:500}
 <footer>
   <div class="wrap">
     <span><b>Virginia Valor FC</b> &nbsp;|&nbsp; Winter Scrimmage Pods 2026-27</span>
-    <span>Two courts &nbsp;|&nbsp; Five slots &nbsp;|&nbsp; Eight weeks</span>
+    <span>Two courts &nbsp;|&nbsp; Five slots &nbsp;|&nbsp; Eight weeks &nbsp;|&nbsp; Build 8</span>
   </div>
 </footer>
 
@@ -371,23 +370,31 @@ const ids=Object.keys(P);
 const players=[];
 ids.forEach(id=>P[id].r.forEach((r,i)=>players.push({n:r[0],a:r[1],pod:id,i:i})));
 
-/* ---- jump nav: show one section at a time. Scrolling to an anchor
-       fails when the page is embedded in a frame that sizes itself to
-       the content, so navigation never depends on scrolling here. ---- */
-const VIEWS=['find','week','season','pods','notes'];
+/* ---- jump nav. Three mechanisms, because the page may be embedded:
+       scrollIntoView moves this document when it is the scroller and
+       also scrolls an ancestor frame; postMessage lets a host page
+       scroll if it chooses to listen. A plain #hash does neither
+       inside a sandboxed frame, which is why these are handled here. ---- */
+const smooth=!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches;
 const navLinks=[...document.querySelectorAll('.jump a[href^="#"]')];
-function showView(id){
-  if(VIEWS.indexOf(id)<0)id=VIEWS[0];
-  VIEWS.forEach(v=>{const el=document.getElementById(v);if(el)el.hidden=(v!==id);});
+function goTo(id){
+  const t=document.getElementById(id);
+  if(!t)return;
+  try{t.scrollIntoView({behavior:smooth?'smooth':'auto',block:'start'});}
+  catch(_){try{t.scrollIntoView();}catch(e2){}}
+  try{
+    if(window.parent&&window.parent!==window){
+      const y=Math.round(t.getBoundingClientRect().top+(window.scrollY||window.pageYOffset||0));
+      window.parent.postMessage({type:'valor:scrollTo',id:id,y:y},'*');
+    }
+  }catch(_){}
   navLinks.forEach(a=>{
     if(a.getAttribute('href')==='#'+id)a.setAttribute('aria-current','page');
     else a.removeAttribute('aria-current');
   });
-  try{window.scrollTo(0,0);}catch(_){}
-  try{document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(_){}
 }
 navLinks.forEach(a=>{
-  a.addEventListener('click',e=>{e.preventDefault();showView(a.getAttribute('href').slice(1));});
+  a.addEventListener('click',e=>{e.preventDefault();goTo(a.getAttribute('href').slice(1));});
 });
 
 /* ---- 01 lookup ---- */
@@ -494,8 +501,6 @@ function podlist(sex,el){
 }
 podlist('G',document.getElementById('gpods'));
 podlist('B',document.getElementById('bpods'));
-
-showView('find');
 </script>
 </body>
 </html>
