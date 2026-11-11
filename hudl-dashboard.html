@@ -51,6 +51,7 @@
   .list li:first-child { border-top: 1px solid var(--hair); }
   details { margin-top: 10px; }
   summary { cursor: pointer; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .banner { margin: 16px 0 0; padding: 12px 14px; border-left: 8px solid var(--gold); background: #faf7f0; }
   .rq { padding: 12px 0; border-bottom: 1px solid var(--hair); }
   .rqrow { display: flex; gap: 10px; margin-top: 10px; }
   .rqrow select { flex: 0 0 38%; }
@@ -158,7 +159,7 @@
       open: [{ camera: 'Hudl 5', date: d(-1), by: 'Juan Vasquez', at: '11/10/26 1:20 PM' }],
       needsCamera: [{ date: d(2), time: '2:00 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2012/13', coach: 'Cory Fick' },
                     { date: d(2), time: '3:45 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2009/10', coach: 'Juan Vasquez' }],
-      mode: 'approval', closes: [{ date: d(3), text: d(2).slice(5).replace('-', '/') + ' 4:00 PM', closed: false }],
+      mode: 'approval', emailMode: 'test', closes: [{ date: d(3), text: d(2).slice(5).replace('-', '/') + ' 4:00 PM', closed: false }],
       requests: [
         { date: d(2), field: 'Sully Highlands 2', requestedBy: ['Cory Fick'], suggested: 'Hudl 1', free: ['Hudl 1', 'Hudl 2', 'Hudl 4', 'Hudl 5'],
           games: [{ time: '2:00 PM', team: 'ECNL RL B2012/13', coach: 'Cory Fick', division: 'ECNL RL' }, { time: '3:45 PM', team: 'ECNL RL B2009/10', coach: 'Cory Fick', division: 'ECNL RL' }] },
@@ -246,6 +247,11 @@
 
   function render() {
     var out = [];
+    if (dash.emailMode && dash.emailMode !== 'on') {
+      out.push(h('div', { class: 'banner' }, h('b', null, dash.emailMode === 'off' ? 'Email is off.' : 'Email is in test mode.'), ' ',
+        dash.emailMode === 'off' ? 'Nothing is being sent to anyone.' : 'Everything goes to admins instead of coaches.',
+        ' Change Email mode on the Settings tab when you are ready.'));
+    }
 
     // Requests
     var dl = (dash.closes || []).map(function (c) { return dayText(c.date) + ': ' + (c.closed ? 'closed' : 'closes ' + c.text); });
