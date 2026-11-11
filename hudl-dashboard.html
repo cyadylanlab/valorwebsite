@@ -16,20 +16,28 @@
   .big { font-size: 32px; font-weight: 700; line-height: 1.1; }
   .muted { color: var(--muted); }
 
-  .mast { background: var(--ink); color: #fff; padding: 18px 0 14px; }
-  .club { color: var(--brass); font-weight: 700; }
-  .mast h1 { margin: 6px 0 12px; }
-  .who { display: flex; justify-content: space-between; gap: 12px; color: #e6e6e6; }
+  .mast { background: var(--ink); color: #fff; padding: 16px 0 14px; border-bottom: 3px solid var(--gold); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .crest { height: 44px; width: auto; display: block; flex: 0 0 auto; }
+  .club { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); font-weight: 700; }
+  .mast h1 { margin: 2px 0 0; font-size: 26px; line-height: 1.1; }
+  .who { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #2d2d2d; color: #e6e6e6; font-size: 15px; }
   .linkbtn { background: none; border: 0; padding: 6px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; color: var(--brass); }
 
-  .signin { padding: 28px 0 56px; max-width: 460px; }
-  .signin p { margin: 0 0 22px; }
+  .signin { padding: 0 0 48px; display: flex; justify-content: center; }
+  .tag { width: 100%; max-width: 420px; margin-top: 34px; background: #fff; border: 1px solid var(--hair); border-top: 10px solid var(--gold); padding: 26px 22px 24px; }
+  .tag .kicker { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+  .tag h2 { margin: 6px 0 0; padding: 0; border: 0; font-size: 26px; line-height: 1.1; }
+  .tag .sub { margin: 10px 0 22px; color: var(--muted); }
+  .rule { height: 1px; background: var(--hair); margin: 0 0 20px; }
   label { display: block; font-weight: 700; margin-bottom: 8px; }
   input[type="email"] { width: 100%; min-height: 56px; padding: 10px 12px; font: 400 18px var(--sans); border: 2px solid var(--ink); border-radius: 0; }
-  .btn { display: block; width: 100%; min-height: 60px; margin-top: 14px; border: 2px solid var(--ink); border-radius: 0;
+  .btn { display: block; width: 100%; min-height: 56px; margin-top: 14px; border: 2px solid var(--ink); border-radius: 0;
     background: var(--ink); color: #fff; cursor: pointer; font-weight: 700; }
   .btn:disabled { opacity: .45; }
-  .err { margin: 14px 0 0; font-weight: 700; }
+  .err { margin: 16px 0 0; padding: 10px 0 10px 12px; border-left: 5px solid var(--red); color: var(--red); font-weight: 700; }
+  .err:empty { display: none; }
+  .tagfoot { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
 
   section { margin: 0 0 36px; }
   h2 { margin: 36px 0 12px; padding-top: 8px; border-top: 4px solid var(--ink); font-size: 18px; font-weight: 700; }
@@ -180,12 +188,25 @@
       btn.disabled = true; btn.textContent = 'Checking';
       load(true);
     } }, h('label', { for: 'em' }, 'Your Valor email'), input, btn, h('p', { class: 'err', role: 'alert' }, signInError));
-    app.replaceChildren(masthead(false), h('main', { class: 'wrap signin' }, h('p', null, 'This page is for club admins.'), form));
+    app.replaceChildren(masthead(false), h('main', { class: 'wrap signin' }, h('div', { class: 'tag' },
+      h('div', { class: 'kicker' }, 'Club admins'),
+      h('h2', null, 'Camera dashboard'),
+      h('p', { class: 'sub' }, 'Requests waiting, who has what, and who returns it.'),
+      h('div', { class: 'rule' }),
+      form,
+      h('p', { class: 'tagfoot' }, 'Same sign in as the coach page.'))));
+  }
+  // Drop valor-crest.png next to this file and the crest appears.
+  function crest() {
+    var img = h('img', { class: 'crest', src: 'valor-crest.png', alt: 'Virginia Valor FC' });
+    img.addEventListener('error', function () { img.style.display = 'none'; });
+    return img;
   }
   function masthead(signedIn) {
     return h('header', { class: 'mast' }, h('div', { class: 'wrap' },
-      h('div', { class: 'club' }, 'Virginia Valor FC'),
-      h('h1', { class: 'big' }, 'Hudl camera dashboard'),
+      h('div', { class: 'brand' }, crest(), h('div', null,
+        h('div', { class: 'club' }, 'Virginia Valor FC'),
+        h('h1', null, 'Hudl camera dashboard'))),
       signedIn ? h('div', { class: 'who' }, h('span', null, 'Updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })),
         h('span', null, h('button', { class: 'linkbtn', onclick: function () { load(false); } }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))) : null));
   }

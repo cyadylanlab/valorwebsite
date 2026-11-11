@@ -15,10 +15,12 @@
   .wrap { max-width: 640px; margin: 0 auto; padding: 0 14px; }
   .muted { color: var(--muted); }
 
-  .mast { background: var(--ink); color: #fff; position: sticky; top: 0; z-index: 4; }
-  .mrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0 2px; }
-  .title { font-size: 20px; font-weight: 700; }
-  .title span { color: var(--brass); }
+  .mast { background: var(--ink); color: #fff; position: sticky; top: 0; z-index: 4; border-bottom: 3px solid var(--gold); }
+  .mrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0 6px; }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .crest { height: 34px; width: auto; display: block; flex: 0 0 auto; }
+  .title { font-size: 19px; font-weight: 700; line-height: 1.1; }
+  .title span { display: block; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); font-weight: 700; }
   .who { color: #e6e6e6; font-size: 14px; text-align: right; }
   .linkbtn { background: none; border: 0; padding: 6px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
   .mast .linkbtn { color: var(--brass); }
@@ -26,12 +28,19 @@
   .tab { background: none; border: 0; border-bottom: 3px solid transparent; padding: 8px 0 7px; cursor: pointer; font-weight: 700; color: #bdbdbd; }
   .tab[aria-selected="true"] { color: #fff; border-bottom-color: var(--brass); }
 
-  .signin { padding: 28px 0 56px; max-width: 460px; }
-  .signin p { margin: 0 0 20px; }
+  .signin { padding: 0 0 48px; display: flex; justify-content: center; }
+  .tag { width: 100%; max-width: 420px; margin-top: 34px; background: var(--card); border: 1px solid var(--hair); border-top: 10px solid var(--gold); padding: 26px 22px 24px; }
+  .tag .kicker { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+  .tag h1 { margin: 6px 0 0; font-size: 28px; line-height: 1.1; font-weight: 700; }
+  .tag .sub { margin: 10px 0 22px; color: var(--muted); }
+  .rule { height: 1px; background: var(--hair); margin: 0 0 20px; }
   label { display: block; font-weight: 700; margin-bottom: 8px; }
   input[type="email"], input[type="text"] { width: 100%; min-height: 52px; padding: 10px 12px; font: 400 16px var(--sans);
     border: 2px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); }
-  .err { margin: 14px 0 0; font-weight: 700; }
+  .signin .btn { margin-top: 14px; }
+  .err { margin: 16px 0 0; padding: 10px 0 10px 12px; border-left: 5px solid var(--red); color: var(--red); font-weight: 700; }
+  .err:empty { display: none; }
+  .tagfoot { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
 
   .strip { display: flex; gap: 8px; overflow-x: auto; padding: 12px 14px 10px; margin: 0 -14px; scrollbar-width: thin; }
   .chip { flex: 0 0 auto; min-width: 66px; padding: 7px 6px 6px; background: var(--card); border: 2px solid var(--hair); border-radius: 0; cursor: pointer; text-align: center; line-height: 1.2; }
@@ -288,8 +297,14 @@
       load(true);
     } }, h('label', { for: 'em' }, 'Your Valor email'), input, btn, h('p', { class: 'err', role: 'alert' }, signInError));
     app.replaceChildren(
-      h('header', { class: 'mast' }, h('div', { class: 'wrap' }, h('div', { class: 'mrow' }, h('div', { class: 'title' }, h('span', null, 'Valor'), ' Hudl cameras')))),
-      h('main', { class: 'wrap signin' }, h('p', null, 'Sign in once and this phone will remember you.'), form));
+      masthead(null),
+      h('main', { class: 'wrap signin' }, h('div', { class: 'tag' },
+        h('div', { class: 'kicker' }, 'Equipment check out'),
+        h('h1', null, 'Hudl cameras'),
+        h('p', { class: 'sub' }, 'Sign in once and this phone will remember you.'),
+        h('div', { class: 'rule' }),
+        form,
+        h('p', { class: 'tagfoot' }, 'Pick up, hand off and return, from the sideline.'))));
   }
 
   function load(fromSignIn) {
@@ -306,17 +321,29 @@
   }
 
   // ---------- app ----------
+  // Drop valor-crest.png next to this file and the crest appears. Without it the wordmark stands alone.
+  function crest() {
+    var img = h('img', { class: 'crest', src: 'valor-crest.png', alt: 'Virginia Valor FC' });
+    img.addEventListener('error', function () { img.style.display = 'none'; });
+    return img;
+  }
+  function masthead(right) {
+    return h('header', { class: 'mast' }, h('div', { class: 'wrap' },
+      h('div', { class: 'mrow' },
+        h('div', { class: 'brand' }, crest(), h('div', { class: 'title' }, h('span', null, 'Virginia Valor FC'), 'Hudl cameras')),
+        right),
+      right ? nav : null));
+  }
+  var nav = null;
+
   function renderApp() {
     var tabs = [['mine', 'My games'], ['all', 'All games']];
-    var nav = h('div', { class: 'tabs', role: 'tablist' }, tabs.map(function (t) {
+    nav = h('div', { class: 'tabs', role: 'tablist' }, tabs.map(function (t) {
       return h('button', { class: 'tab', role: 'tab', 'aria-selected': String(tab === t[0]), onclick: function () { tab = t[0]; renderApp(); } }, t[1]);
     }));
     app.replaceChildren(
-      h('header', { class: 'mast' }, h('div', { class: 'wrap' },
-        h('div', { class: 'mrow' }, h('div', { class: 'title' }, h('span', null, 'Valor'), ' Hudl cameras'),
-          h('div', { class: 'who' }, state.coach.name, h('br'),
-            h('button', { class: 'linkbtn', onclick: refresh }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))),
-        nav)),
+      masthead(h('div', { class: 'who' }, state.coach.name, h('br'),
+        h('button', { class: 'linkbtn', onclick: refresh }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))),
       h('main', { class: 'wrap', role: 'tabpanel' }, renderList(), DEMO ? h('p', { class: 'foot' }, 'Sample data. Nothing here is saved.') : null));
   }
 
