@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hudl Camera Dashboard | Virginia Valor FC</title>
+<style>
+  :root { --ink: #0d0d0d; --paper: #fff; --gold: #8B7A4C; --brass: #C8B98F; --muted: #555; --hair: #d9d9d9;
+          --green: #1B7F3B; --red: #C62828; --sans: Arial, Helvetica, sans-serif; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.4 var(--sans); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .big { font-size: 32px; font-weight: 700; line-height: 1.1; }
+  .muted { color: var(--muted); }
+
+  .mast { background: var(--ink); color: #fff; padding: 18px 0 14px; }
+  .club { color: var(--brass); font-weight: 700; }
+  .mast h1 { margin: 6px 0 12px; }
+  .who { display: flex; justify-content: space-between; gap: 12px; color: #e6e6e6; }
+  .linkbtn { background: none; border: 0; padding: 6px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; color: var(--brass); }
+
+  .signin { padding: 28px 0 56px; max-width: 460px; }
+  .signin p { margin: 0 0 22px; }
+  label { display: block; font-weight: 700; margin-bottom: 8px; }
+  input[type="email"] { width: 100%; min-height: 56px; padding: 10px 12px; font: 400 18px var(--sans); border: 2px solid var(--ink); border-radius: 0; }
+  .btn { display: block; width: 100%; min-height: 60px; margin-top: 14px; border: 2px solid var(--ink); border-radius: 0;
+    background: var(--ink); color: #fff; cursor: pointer; font-weight: 700; }
+  .btn:disabled { opacity: .45; }
+  .err { margin: 14px 0 0; font-weight: 700; }
+
+  section { margin: 0 0 36px; }
+  h2 { margin: 36px 0 12px; padding-top: 8px; border-top: 4px solid var(--ink); font-size: 18px; font-weight: 700; }
+  h2.alert { border-top-color: var(--red); color: var(--red); }
+  h2.good { border-top-color: var(--green); color: var(--green); }
+  .tw { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-weight: 700; padding: 8px 10px 8px 0; border-bottom: 2px solid var(--ink); vertical-align: bottom; }
+  td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  th.n, td.n { text-align: right; padding-right: 0; padding-left: 10px; }
+  td.n { white-space: nowrap; }
+  td.k { white-space: nowrap; font-weight: 700; }
+  .flag { font-weight: 700; color: var(--red); }
+  .in { font-weight: 700; color: var(--green); }
+  .out { font-weight: 700; color: var(--red); }
+  .off { font-weight: 700; color: var(--muted); }
+  .list { margin: 0; padding: 0; list-style: none; }
+  .list li { padding: 10px 0; border-bottom: 1px solid var(--hair); }
+  .list li:first-child { border-top: 1px solid var(--hair); }
+  details { margin-top: 10px; }
+  summary { cursor: pointer; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .rq { padding: 12px 0; border-bottom: 1px solid var(--hair); }
+  .rqrow { display: flex; gap: 10px; margin-top: 10px; }
+  .rqrow select { flex: 0 0 38%; }
+  .rqrow .btn { margin-top: 0; min-height: 52px; }
+  select { min-height: 52px; padding: 6px 10px; font: 400 18px var(--sans); border: 2px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); }
+  details input[type="text"] { width: 100%; min-height: 48px; padding: 8px 10px; font: 400 16px var(--sans); border: 2px solid var(--ink); border-radius: 0; margin: 6px 0; }
+  .btn.go { background: var(--green); border-color: var(--green); }
+  .btn.stop { background: var(--red); border-color: var(--red); }
+  section .btn { margin-top: 12px; }
+  .foot { margin: 28px 0 48px; color: var(--muted); }
+  .linkbtn { padding: 11px 6px; min-height: 44px; }
+  summary { padding: 11px 0; min-height: 44px; }
+  button, summary, select, input { touch-action: manipulation; -webkit-tap-highlight-color: rgba(139,122,76,.25); }
+  .toast { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Paste the same Apps Script web app /exec URL used by the coach page. Empty runs on sample data.
+  var CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbzupmfQbCMb4e0gHAKwAXlNjHIJr1OXva2UtJsUkOEh9bN51yIIO40BOfq7YvrmgmxjdQ/exec' };
+  var DEMO = !CONFIG.API_URL;
+
+  var app = document.getElementById('app');
+  var mem = {}, email = store('hudl_email'), dash = null, signInError = '';
+
+  function store(k, v) {
+    try {
+      if (v === undefined) return localStorage.getItem(k);
+      if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v);
+    } catch (e) { if (v === undefined) return mem[k] || null; mem[k] = v; }
+    return null;
+  }
+  function h(tag, props) {
+    var n = document.createElement(tag);
+    props = props || {};
+    Object.keys(props).forEach(function (k) {
+      var v = props[k];
+      if (k === 'class') n.className = v;
+      else if (k.indexOf('on') === 0) n.addEventListener(k.slice(2), v);
+      else if (v === true) n.setAttribute(k, '');
+      else if (v !== false && v != null) n.setAttribute(k, v);
+    });
+    for (var i = 2; i < arguments.length; i++) append(n, arguments[i]);
+    return n;
+  }
+  function append(n, c) {
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) { c.forEach(function (x) { append(n, x); }); return; }
+    n.appendChild(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function parseKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2], 12); }
+  function keyOf(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function addDays(k, n) { var d = parseKey(k); d.setDate(d.getDate() + n); return keyOf(d); }
+  function dayText(k) {
+    var d = parseKey(k), t = DAYS[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+    return k === dash.today ? 'Today' : t;
+  }
+
+  // ---------- API ----------
+  function api(payload) {
+    payload = payload || { action: 'dashboard' };
+    payload.email = email;
+    if (DEMO) return Promise.resolve(demoApi(payload));
+    return fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(payload) })
+      .then(function (r) { return r.json(); });
+  }
+  var demoReq = null;
+  function demoApi(p) {
+    var r = demoDash();
+    if (!demoReq) demoReq = r.dash.requests;
+    if (p.action === 'assign') { demoReq = demoReq.filter(function (x) { return !(x.date === p.date && x.field === p.field); }); r.message = (p.camera || 'Hudl 1') + ' assigned to ' + p.field + '.'; }
+    else if (p.action === 'decline') { demoReq = demoReq.filter(function (x) { return !(x.date === p.date && x.field === p.field); }); r.message = 'Declined.'; }
+    else if (p.action === 'assign_all') { demoReq = []; r.message = 'Assigned 2 fields.'; }
+    r.dash.requests = demoReq;
+    return r;
+  }
+  function demoDash() {
+    var t = keyOf(new Date());
+    function d(n) { return addDays(t, n); }
+    return { ok: true, dash: {
+      today: t,
+      now: [
+        { camera: 'Hudl 1', active: true, holder: '', today: null },
+        { camera: 'Hudl 2', active: true, holder: 'Oscar Hernandez', since: '8:12 AM', today: { field: 'Robinson HS Stadium', firstTime: '9:00 AM', lastTime: '1:00 PM', status: 'out' } },
+        { camera: 'Hudl 3', active: false, holder: '', today: null },
+        { camera: 'Hudl 4', active: true, holder: '', today: { field: 'Chantilly High School Stadium', firstTime: '4:30 PM', lastTime: '6:15 PM', status: 'waiting' } },
+        { camera: 'Hudl 5', active: true, holder: 'Juan Vasquez', since: '11/10/26 1:20 PM', today: null }
+      ],
+      upcoming: [{ date: d(0), games: 9, withCamera: 9, withoutCamera: 0, cameras: 3 }, { date: d(2), games: 14, withCamera: 11, withoutCamera: 3, cameras: 4 }, { date: d(3), games: 12, withCamera: 12, withoutCamera: 0, cameras: 4 }],
+      history: [
+        { date: d(-1), cameras: 6, pickedUp: 6, returned: 5, noRecord: 0, notReturned: 1 },
+        { date: d(-8), cameras: 7, pickedUp: 6, returned: 6, noRecord: 1, notReturned: 0 },
+        { date: d(-9), cameras: 7, pickedUp: 7, returned: 7, noRecord: 0, notReturned: 0 }],
+      coaches: [
+        { name: 'Juan Vasquez', duties: 4, doneByThem: 2, coveredByOthers: 0, missed: 2 },
+        { name: 'Rob Olson', duties: 5, doneByThem: 4, coveredByOthers: 1, missed: 0 },
+        { name: 'Cory Fick', duties: 6, doneByThem: 6, coveredByOthers: 0, missed: 0 }],
+      open: [{ camera: 'Hudl 5', date: d(-1), by: 'Juan Vasquez', at: '11/10/26 1:20 PM' }],
+      needsCamera: [{ date: d(2), time: '2:00 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2012/13', coach: 'Cory Fick' },
+                    { date: d(2), time: '3:45 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2009/10', coach: 'Juan Vasquez' }],
+      mode: 'approval', closes: [{ date: d(3), text: d(2).slice(5).replace('-', '/') + ' 4:00 PM', closed: false }],
+      requests: [
+        { date: d(2), field: 'Sully Highlands 2', requestedBy: ['Cory Fick'], suggested: 'Hudl 1', free: ['Hudl 1', 'Hudl 2', 'Hudl 4', 'Hudl 5'],
+          games: [{ time: '2:00 PM', team: 'ECNL RL B2012/13', coach: 'Cory Fick', division: 'ECNL RL' }, { time: '3:45 PM', team: 'ECNL RL B2009/10', coach: 'Cory Fick', division: 'ECNL RL' }] },
+        { date: d(3), field: 'Fair Oaks Field 1', requestedBy: ['Rob Olson'], suggested: 'Hudl 2', free: ['Hudl 2', 'Hudl 4'],
+          games: [{ time: '9:00 AM', team: 'NCSL G2010/11', coach: 'Rob Olson', division: 'NCSL' }] }],
+      recent: [{ at: '8:12 AM', name: 'Oscar Hernandez', camera: 'Hudl 2', date: 'today', action: 'pickup', note: '' }]
+    } };
+  }
+
+  // ---------- sign in ----------
+  function renderSignIn() {
+    var input = h('input', { type: 'email', id: 'em', autocomplete: 'email', inputmode: 'email', autocapitalize: 'off', spellcheck: 'false', required: true, value: email || '' });
+    var btn = h('button', { type: 'submit', class: 'btn' }, 'Continue');
+    var form = h('form', { onsubmit: function (e) {
+      e.preventDefault();
+      email = input.value.trim().toLowerCase();
+      if (!email) return;
+      btn.disabled = true; btn.textContent = 'Checking';
+      load(true);
+    } }, h('label', { for: 'em' }, 'Your Valor email'), input, btn, h('p', { class: 'err', role: 'alert' }, signInError));
+    app.replaceChildren(masthead(false), h('main', { class: 'wrap signin' }, h('p', null, 'This page is for club admins.'), form));
+  }
+  function masthead(signedIn) {
+    return h('header', { class: 'mast' }, h('div', { class: 'wrap' },
+      h('div', { class: 'club' }, 'Virginia Valor FC'),
+      h('h1', { class: 'big' }, 'Hudl camera dashboard'),
+      signedIn ? h('div', { class: 'who' }, h('span', null, 'Updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })),
+        h('span', null, h('button', { class: 'linkbtn', onclick: function () { load(false); } }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))) : null));
+  }
+  function load(fromSignIn) {
+    api().then(function (r) {
+      if (r && r.ok) { dash = r.dash; signInError = ''; store('hudl_email', email); render(); }
+      else {
+        signInError = (r && r.message) || 'Could not sign in.';
+        if (fromSignIn || !dash) { dash = null; store('hudl_email', null); renderSignIn(); }
+      }
+    }).catch(function () {
+      signInError = 'Could not reach the server. Check your connection and try again.';
+      if (!dash) renderSignIn();
+    });
+  }
+  function signOut() { store('hudl_email', null); email = null; dash = null; signInError = ''; renderSignIn(); }
+
+  // ---------- dashboard ----------
+  function table(cols, rows) {
+    return h('div', { class: 'tw' }, h('table', null,
+      h('thead', null, h('tr', null, cols.map(function (c) { return h('th', { class: c.n ? 'n' : '' }, c.t); }))),
+      h('tbody', null, rows.map(function (r) {
+        return h('tr', null, r.map(function (cell, i) {
+          var cls = (cols[i].n ? 'n' : '') + (cols[i].k ? ' k' : '');
+          return h('td', { class: cls.trim() }, cell);
+        }));
+      }))));
+  }
+
+  var msg = '', working = false;
+  function send(payload) {
+    if (working) return;
+    working = true;
+    api(payload).then(function (r) {
+      working = false;
+      if (r && r.dash) dash = r.dash;
+      msg = (r && r.message) || '';
+      render();
+    }).catch(function () { working = false; msg = 'Could not reach the server. Nothing was saved.'; render(); });
+  }
+
+  function requestCards() {
+    var reqs = dash.requests || [];
+    if (!reqs.length) return h('p', { class: 'in' }, 'No requests waiting.');
+    var cards = reqs.map(function (g) {
+      var sel = h('select', { 'aria-label': 'Camera for ' + g.field }, g.free.map(function (c) { return h('option', { value: c, selected: c === g.suggested }, c); }));
+      var note = h('input', { type: 'text', maxlength: '200', placeholder: 'Reason (optional)', 'aria-label': 'Reason for declining' });
+      return h('article', { class: 'rq' },
+        h('div', null, h('b', null, dayText(g.date)), '  ', g.field),
+        g.games.map(function (x) { return h('div', { class: 'muted' }, x.time + ', ' + x.team + ', ' + x.coach); }),
+        g.free.length
+          ? h('div', { class: 'rqrow' }, sel, h('button', { class: 'btn go', onclick: function () { send({ action: 'assign', date: g.date, field: g.field, camera: sel.value }); } }, 'Assign'))
+          : h('p', { class: 'flag' }, 'No cameras are free that day.'),
+        h('details', null, h('summary', null, 'Decline'), note,
+          h('button', { class: 'btn stop', onclick: function () { send({ action: 'decline', date: g.date, field: g.field, note: note.value }); } }, 'Decline request')));
+    });
+    return [cards, h('button', { class: 'btn', onclick: function () { send({ action: 'assign_all' }); } }, 'Assign all with suggested cameras')];
+  }
+
+  function render() {
+    var out = [];
+
+    // Requests
+    var dl = (dash.closes || []).map(function (c) { return dayText(c.date) + ': ' + (c.closed ? 'closed' : 'closes ' + c.text); });
+    out.push(h('section', null, h('h2', { class: (dash.requests || []).length ? 'alert' : 'good' }, 'Camera requests'),
+      dash.mode === 'selfserve' ? h('p', { class: 'muted' }, 'Camera mode is Self-serve. Coaches pick their own cameras.') : null,
+      msg ? h('p', { class: 'in', role: 'status' }, msg) : null,
+      requestCards(),
+      dl.length ? h('p', { class: 'muted' }, 'Deadlines. ' + dl.join('. ') + '.') : null));
+
+    // Needs attention
+    var items = [];
+    dash.open.forEach(function (o) {
+      items.push(h('li', null, h('span', { class: 'flag' }, o.camera + ' has not been returned. '), 'With ' + o.by + ' since ' + o.at + '.'));
+    });
+    if (dash.needsCamera.length) {
+      items.push(h('li', null, h('span', { class: 'flag' }, dash.needsCamera.length + ' game' + (dash.needsCamera.length === 1 ? '' : 's') + ' in the next 14 days with no camera. '),
+        'No request has come in for these yet.',
+        h('details', null, h('summary', null, 'See the games'),
+          table([{ t: 'Day' }, { t: 'Game' }], dash.needsCamera.map(function (g) {
+            return [dayText(g.date), g.time + ', ' + g.field + ', ' + g.team + ', ' + g.coach];
+          })))));
+    }
+    out.push(h('section', null, h('h2', { class: items.length ? 'alert' : 'good' }, 'Needs attention'),
+      items.length ? h('ul', { class: 'list' }, items) : h('p', { class: 'in' }, 'Nothing needs attention.')));
+
+    // Right now
+    out.push(h('section', null, h('h2', null, 'Right now'),
+      table([{ t: 'Camera', k: true }, { t: 'Status' }, { t: 'Today' }], dash.now.map(function (c) {
+        var status = !c.active ? h('span', { class: 'off' }, 'Out of service') : c.holder ? h('span', { class: 'out' }, 'Out with ' + c.holder + ' since ' + c.since) : h('span', { class: 'in' }, 'Available');
+        var today = c.today ? c.today.field + ', ' + c.today.firstTime + (c.today.lastTime !== c.today.firstTime ? ' to ' + c.today.lastTime : '') : 'Not scheduled';
+        return [c.camera, status, today];
+      }))));
+
+    // Next days
+    if (dash.upcoming.length) {
+      out.push(h('section', null, h('h2', null, 'Coming up'),
+        table([{ t: 'Day', k: true }, { t: 'Games', n: true }, { t: 'No camera', n: true }], dash.upcoming.map(function (u) {
+          return [dayText(u.date), u.games, u.withoutCamera ? h('span', { class: 'flag' }, u.withoutCamera) : 0];
+        }))));
+    }
+
+    // History
+    var tot = dash.history.reduce(function (a, r) {
+      a.c += r.cameras; a.p += r.pickedUp; a.r += r.returned; return a;
+    }, { c: 0, p: 0, r: 0 });
+    out.push(h('section', null, h('h2', null, 'Last 60 days'),
+      dash.history.length
+        ? [h('p', null, tot.c + ' camera days. ' + tot.p + ' picked up, ' + tot.r + ' returned.'),
+           table([{ t: 'Day', k: true }, { t: 'Picked up', n: true }, { t: 'Returned', n: true }, { t: 'Missed', n: true }],
+             dash.history.slice(0, 14).map(function (r) {
+               return [dayText(r.date), r.pickedUp + ' of ' + r.cameras, r.returned + ' of ' + r.cameras, r.noRecord || r.notReturned ? h('span', { class: 'flag' }, r.noRecord + r.notReturned) : 0];
+             }))]
+        : h('p', null, 'History builds as coaches start checking cameras out and in.')));
+
+    // Coaches
+    out.push(h('section', null, h('h2', null, 'Coaches'),
+      dash.coaches.length
+        ? table([{ t: 'Coach' }, { t: 'Done', n: true }, { t: 'Covered', n: true }, { t: 'Missed', n: true }],
+            dash.coaches.map(function (c) { return [c.name, c.doneByThem + ' of ' + c.duties, c.coveredByOthers, c.missed ? h('span', { class: 'flag' }, c.missed) : 0]; }))
+        : h('p', null, 'No past games with camera duties yet.'),
+      dash.coaches.length ? h('p', { class: 'muted' }, 'Duties are pick ups and returns. Covered means someone else did it.') : null));
+
+    // Recent
+    var ACT = { pickup: 'picked up', 'return': 'returned', undo_pickup: 'undid pick up of', undo_return: 'undid return of', claim: 'claimed', note: 'added a note on' };
+    out.push(h('section', null, h('h2', null, 'Recent activity'),
+      dash.recent.length
+        ? h('ul', { class: 'list' }, dash.recent.map(function (r) {
+            return h('li', null, r.at + '  ' + r.name + ' ' + (ACT[r.action] || r.action) + ' ' + r.camera + (r.note ? ' (' + r.note + ')' : ''));
+          }))
+        : h('p', null, 'No activity yet.')));
+
+    app.replaceChildren(masthead(true), h('main', { class: 'wrap' }, out, DEMO ? h('p', { class: 'foot' }, 'Sample data.') : null));
+  }
+
+  setInterval(function () { if (dash && !document.hidden) load(false); }, 120000);
+  if (DEMO) email = 'demo@example.org';
+  if (email) load(false); else renderSignIn();
+})();
+</script>
+</body>
+</html>

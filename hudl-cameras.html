@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hudl Cameras | Virginia Valor FC</title>
+<style>
+  :root { --ink: #0d0d0d; --page: #f3f3f1; --card: #fff; --gold: #8B7A4C; --brass: #C8B98F; --muted: #555; --hair: #dcdcd8;
+          --green: #1B7F3B; --red: #C62828; --sans: Arial, Helvetica, sans-serif; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 400 16px/1.4 var(--sans); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 14px; }
+  .muted { color: var(--muted); }
+
+  .mast { background: var(--ink); color: #fff; position: sticky; top: 0; z-index: 4; }
+  .mrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0 2px; }
+  .title { font-size: 20px; font-weight: 700; }
+  .title span { color: var(--brass); }
+  .who { color: #e6e6e6; font-size: 14px; text-align: right; }
+  .linkbtn { background: none; border: 0; padding: 6px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .mast .linkbtn { color: var(--brass); }
+  .tabs { display: flex; gap: 24px; }
+  .tab { background: none; border: 0; border-bottom: 3px solid transparent; padding: 8px 0 7px; cursor: pointer; font-weight: 700; color: #bdbdbd; }
+  .tab[aria-selected="true"] { color: #fff; border-bottom-color: var(--brass); }
+
+  .signin { padding: 28px 0 56px; max-width: 460px; }
+  .signin p { margin: 0 0 20px; }
+  label { display: block; font-weight: 700; margin-bottom: 8px; }
+  input[type="email"], input[type="text"] { width: 100%; min-height: 52px; padding: 10px 12px; font: 400 16px var(--sans);
+    border: 2px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); }
+  .err { margin: 14px 0 0; font-weight: 700; }
+
+  .strip { display: flex; gap: 8px; overflow-x: auto; padding: 12px 14px 10px; margin: 0 -14px; scrollbar-width: thin; }
+  .chip { flex: 0 0 auto; min-width: 66px; padding: 7px 6px 6px; background: var(--card); border: 2px solid var(--hair); border-radius: 0; cursor: pointer; text-align: center; line-height: 1.2; }
+  .chip .dw { display: block; font-size: 13px; color: var(--muted); }
+  .chip .dn { display: block; font-size: 20px; font-weight: 700; }
+  .chip .fr { display: block; font-size: 13px; font-weight: 700; color: var(--green); }
+  .chip .fr.none { color: var(--red); }
+  .chip[aria-selected="true"] { border-color: var(--ink); box-shadow: inset 0 -4px 0 var(--ink); }
+  .chip.late { border-color: var(--red); }
+  .chip.late .dn, .chip.late .fr { color: var(--red); }
+
+  .filter { display: flex; align-items: center; gap: 10px; padding-top: 10px; }
+  .filter label { margin: 0; }
+  select { min-height: 44px; padding: 6px 10px; font: 400 16px var(--sans); border: 2px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); }
+  .dayhead { margin: 8px 0 10px; }
+  .dayhead .dt { font-size: 20px; font-weight: 700; }
+  .dayhead .av { margin-top: 2px; font-weight: 700; }
+  .dayhead .av b { color: var(--green); }
+  .dayhead .av b.none { color: var(--red); }
+  .cams { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .cm { min-width: 34px; padding: 3px 6px; text-align: center; font-size: 14px; font-weight: 700; border: 2px solid var(--green); color: var(--green); background: #fff; }
+  .cm.used { border-color: var(--hair); color: #777; background: #ebebe8; font-weight: 400; }
+  .legend { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+
+  .card { margin: 0 0 10px; background: var(--card); border: 1px solid var(--hair); border-left: 8px solid var(--ink); padding: 10px 12px 12px; }
+  .card.in { border-left-color: var(--green); }
+  .card.out { border-left-color: var(--red); }
+  .head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .cam { font-size: 22px; font-weight: 700; }
+  .st { font-weight: 700; text-align: right; }
+  .st.in { color: var(--green); }
+  .st.out { color: var(--red); }
+  .game { padding: 6px 0; border-top: 1px solid var(--hair); }
+  .head + .game { margin-top: 6px; }
+  .game.mine { box-shadow: inset 4px 0 0 var(--gold); padding-left: 10px; margin-left: -2px; }
+  .line { margin: 6px 0 0; }
+  .sm { font-size: 14px; }
+
+  .row { display: flex; gap: 10px; align-items: stretch; margin-top: 10px; }
+  .btn { display: block; width: 100%; min-height: 52px; border: 2px solid var(--ink); border-radius: 0;
+    background: var(--ink); color: #fff; cursor: pointer; font-weight: 700; }
+  .row .btn { flex: 1; }
+  .btn.go { background: var(--green); border-color: var(--green); }
+  .btn.stop { background: var(--red); border-color: var(--red); }
+  .btn.sm2 { min-height: 46px; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .claims { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .more { margin-top: 8px; }
+  details { margin-top: 8px; }
+  summary { cursor: pointer; padding: 4px 0; text-decoration: underline; text-underline-offset: 3px; }
+  details input { margin-top: 6px; }
+  .acts { display: flex; flex-direction: column; align-items: flex-start; gap: 0; margin-top: 2px; }
+
+  .empty { padding: 24px 0 16px; max-width: 30ch; }
+  .foot { margin: 20px 0 40px; color: var(--muted); }
+  .toast { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; padding: 14px; background: var(--ink); color: var(--brass);
+    font-weight: 700; transform: translateY(110%); visibility: hidden; transition: transform .15s ease-out, visibility 0s .15s; }
+  .toast.show { transform: none; visibility: visible; transition: transform .15s ease-out; }
+  .toast .wrap { padding: 0; }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+  .linkbtn { padding: 11px 6px; min-height: 44px; }
+  summary { padding: 11px 0; min-height: 44px; }
+  button, summary, select, input { touch-action: manipulation; -webkit-tap-highlight-color: rgba(139,122,76,.25); }
+  .toast { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"><div class="wrap" id="toastText"></div></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Paste the Apps Script web app /exec URL here. Leave empty to run on built-in sample data.
+  var CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbzupmfQbCMb4e0gHAKwAXlNjHIJr1OXva2UtJsUkOEh9bN51yIIO40BOfq7YvrmgmxjdQ/exec' };
+  var DEMO = !CONFIG.API_URL;
+
+  var app = document.getElementById('app');
+  var toastEl = document.getElementById('toast');
+  var toastText = document.getElementById('toastText');
+  var toastTimer = null, mem = {};
+  var state = null, email = store('hudl_email'), tab = 'mine', sel = null, divFilter = 'all', busy = false, signInError = '';
+
+  // ---------- helpers ----------
+  function store(k, v) {
+    try {
+      if (v === undefined) return localStorage.getItem(k);
+      if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v);
+    } catch (e) { if (v === undefined) return mem[k] || null; mem[k] = v; }
+    return null;
+  }
+  function h(tag, props) {
+    var n = document.createElement(tag);
+    props = props || {};
+    Object.keys(props).forEach(function (k) {
+      var v = props[k];
+      if (k === 'class') n.className = v;
+      else if (k.indexOf('on') === 0) n.addEventListener(k.slice(2), v);
+      else if (v === true) n.setAttribute(k, '');
+      else if (v !== false && v != null) n.setAttribute(k, v);
+    });
+    for (var i = 2; i < arguments.length; i++) append(n, arguments[i]);
+    return n;
+  }
+  function append(n, c) {
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) { c.forEach(function (x) { append(n, x); }); return; }
+    n.appendChild(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  function toast(msg) {
+    toastText.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 4200);
+  }
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function parseKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2], 12); }
+  function keyOf(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function addDays(k, n) { var d = parseKey(k); d.setDate(d.getDate() + n); return keyOf(d); }
+  function dayText(k) {
+    var d = parseKey(k), t = DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+    if (k === state.today) return 'Today, ' + t;
+    if (k === addDays(state.today, 1)) return 'Tomorrow, ' + t;
+    return t;
+  }
+  function fkey(f) { return String(f || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  function first(n) { return String(n || '').split(' ')[0]; }
+
+  // ---------- API ----------
+  function api(payload) {
+    if (DEMO) return Promise.resolve(demoApi(payload));
+    payload.email = email;
+    return fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify(payload) }).then(function (r) { return r.json(); });
+  }
+
+  // ---------- sample data (only when API_URL is empty) ----------
+  var demo = null;
+  function stampNow() {
+    var d = new Date(), hr = d.getHours(), ap = hr >= 12 ? 'PM' : 'AM';
+    hr = hr % 12 || 12;
+    return (d.getMonth() + 1) + '/' + d.getDate() + '/' + String(d.getFullYear()).slice(2) + ' ' + hr + ':' + ('0' + d.getMinutes()).slice(-2) + ' ' + ap;
+  }
+  function demoInit() {
+    var t = keyOf(new Date()), tm = addDays(t, 1), y = addDays(t, -1);
+    function mk(date, cam, games, extra) {
+      var c = { date: date, camera: cam, status: 'waiting', overdue: false, outBy: '', outAt: '', inBy: '', inAt: '', notes: '', prior: null,
+        games: games.map(function (g) { return { time: g[0], field: g[1], team: g[2], coach: g[3], opponent: 'Sample', role: 'hold' }; }) };
+      var n = c.games.length;
+      c.games.forEach(function (g, i) { g.role = n === 1 ? 'only' : i === 0 ? 'pickup' : i === n - 1 ? 'return' : 'hold'; });
+      Object.keys(extra || {}).forEach(function (k) { c[k] = extra[k]; });
+      return c;
+    }
+    demo = { today: t, chains: [
+      mk(y, 'Hudl 5', [['2:00 PM', 'Westfield High School Stadium', 'ECNL RL B2009/10', 'Juan Vasquez'], ['4:00 PM', 'Westfield High School Stadium', 'ECNL RL B2008/09', 'Sofiane Allaouat']],
+        { status: 'out', outBy: 'Juan Vasquez', outAt: '11/9/26 1:20 PM', overdue: true }),
+      mk(t, 'Hudl 4', [['4:30 PM', 'Chantilly High School Stadium', 'ECNL RL G2011/12', 'Cory Fick']]),
+      mk(tm, 'Hudl 2', [['9:00 AM', 'Robinson HS Stadium', 'ECNL RL G2012/13', 'Oscar Hernandez'], ['11:00 AM', 'Robinson HS Stadium', 'ECNL RL G2011/12', 'Cory Fick'],
+        ['1:00 PM', 'Robinson HS Stadium', 'ECNL RL G2013/14', 'Cory Fick']]),
+      mk(tm, 'Hudl 3', [['10:00 AM', 'Robinson HS Upper Turf', 'ECNL RL B2011/12', 'Cory Fick'], ['12:00 PM', 'Robinson HS Upper Turf', 'ECNL RL B2010/11', 'Rob Olson']],
+        { prior: { by: 'Craig Harwell', date: y } })
+    ], unassigned: [{ date: tm, time: '2:00 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2012/13', coach: 'Cory Fick', opponent: 'Sample' },
+                    { date: tm, time: '3:45 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2009/10', coach: 'Juan Vasquez', opponent: 'Sample' }],
+      free: {}, claimed: {}, maxClaims: 2, mode: 'approval', closes: {}, requested: {} };
+    demo.unassigned.push({ date: tm, time: '5:30 PM', field: 'Fair Oaks Field 1', team: 'ECNL RL G2010/11', coach: 'Rob Olson', opponent: 'Sample' });
+    demo.free[tm] = ['Hudl 1', 'Hudl 6', 'Hudl 7'];
+    demo.total = 11;
+  }
+  function demoSnapshot() {
+    var s = JSON.parse(JSON.stringify(demo)), me = 'Cory Fick';
+    s.coach = { name: me, email: 'demo@example.org', admin: false };
+    s.chains.forEach(function (c) { c.outEmail = c.outBy ? 'demo@example.org' : ''; c.inEmail = c.inBy ? 'demo@example.org' : ''; });
+    s.mode = demo.mode; s.newbie = false; s.closes = {}; s.closes[addDays(s.today, 1)] = { text: addDays(s.today, 0).slice(5).replace('-', '/') + ' 4:00 PM', closed: false };
+    s.unassigned.forEach(function (g) { var r = demo.requested[g.date + '|' + g.field + '|' + g.team]; if (r) { g.req = 'requested'; g.reqBy = r; } });
+    s.avail = {};
+    for (var i = 0; i < 21; i++) {
+      var k = addDays(s.today, i), used = {};
+      s.chains.forEach(function (c) { if (c.date === k) used[c.camera] = 1; });
+      var all = []; for (var n = 1; n <= 12; n++) if (n !== 8) all.push('Hudl ' + n);
+      var fr = all.filter(function (x) { return !used[x]; });
+      s.avail[k] = { total: 11, free: fr.length, cameras: fr };
+      if (s.unassigned.some(function (g) { return g.date === k; })) s.free[k] = fr;
+    }
+    s.chains.forEach(function (c) {
+      c.games.forEach(function (g) { g.mine = g.coach === me; g.division = /^ECNL/.test(g.team) ? 'ECNL RL' : 'NCSL'; });
+      c.mine = c.games.some(function (g) { return g.mine; });
+    });
+    s.unassigned.forEach(function (g) { g.mine = g.coach === me; g.division = g.field.indexOf('Fair Oaks') === 0 ? 'NCSL' : 'ECNL RL'; });
+    return s;
+  }
+  function demoApi(p) {
+    if (!demo) demoInit();
+    if (p.action === 'signin' || p.action === 'state') return { ok: true, state: demoSnapshot() };
+    var me = 'Cory Fick', msg = '';
+    if (p.action === 'request') {
+      demo.unassigned.forEach(function (g) { if (g.date === p.date && g.field === p.field && g.coach === me) demo.requested[g.date + '|' + g.field + '|' + g.team] = me; });
+      return { ok: true, message: 'Request sent for ' + p.field + '. You will get an email when a camera is assigned.', state: demoSnapshot() };
+    }
+    if (p.action === 'cancel_request') {
+      Object.keys(demo.requested).forEach(function (k) { if (k.indexOf(p.date + '|' + p.field + '|') === 0) delete demo.requested[k]; });
+      return { ok: true, message: 'Request cancelled.', state: demoSnapshot() };
+    }
+    if (p.action === 'claim') {
+      demo.unassigned = demo.unassigned.filter(function (g) {
+        if (g.date === p.date && g.field === p.field) {
+          var c = demo.chains.filter(function (x) { return x.camera === p.camera && x.date === p.date; })[0];
+          if (!c) { c = { date: p.date, camera: p.camera, status: 'waiting', overdue: false, outBy: '', outAt: '', inBy: '', inAt: '', notes: '', prior: null, games: [] }; demo.chains.push(c); }
+          c.games.push({ time: g.time, field: g.field, team: g.team, coach: g.coach, opponent: g.opponent, role: 'hold' });
+          return false;
+        }
+        return true;
+      });
+      demo.chains.forEach(function (c) { var n = c.games.length; c.games.forEach(function (g, i) { g.role = n === 1 ? 'only' : i === 0 ? 'pickup' : i === n - 1 ? 'return' : 'hold'; }); });
+      demo.free[p.date] = (demo.free[p.date] || []).filter(function (x) { return x !== p.camera; });
+      demo.claimed[p.date + '|' + fkey(p.field)] = p.camera;
+      return { ok: true, message: p.camera + ' is claimed for ' + p.field + '.', state: demoSnapshot() };
+    }
+    if (p.action === 'release') {
+      var cm = demo.claimed[p.date + '|' + fkey(p.field)];
+      var ch = demo.chains.filter(function (x) { return x.camera === cm && x.date === p.date; })[0];
+      if (ch) {
+        ch.games = ch.games.filter(function (g) {
+          if (g.field !== p.field) return true;
+          demo.unassigned.push({ date: p.date, time: g.time, field: g.field, team: g.team, coach: g.coach, opponent: g.opponent }); return false;
+        });
+        if (!ch.games.length) demo.chains.splice(demo.chains.indexOf(ch), 1);
+        demo.free[p.date] = (demo.free[p.date] || []).concat([cm]).sort();
+      }
+      delete demo.claimed[p.date + '|' + fkey(p.field)];
+      return { ok: true, message: cm + ' is given back.', state: demoSnapshot() };
+    }
+    var c = demo.chains.filter(function (x) { return x.camera === p.camera && x.date === p.date; })[0];
+    if (!c) return { ok: false, message: 'That camera is not assigned on that date.' };
+    var who = p.sub ? p.sub + ' (for ' + me + ')' : me;
+    if (p.action === 'pickup') { c.status = 'out'; c.outBy = who; c.outAt = stampNow(); c.prior = null; msg = p.sub ? c.camera + ' is with ' + p.sub + '.' : c.camera + ' is yours.'; }
+    else if (p.action === 'return') { c.status = 'returned'; c.inBy = who; c.inAt = stampNow(); c.overdue = false; msg = c.camera + ' is returned. Thank you.'; }
+    else if (p.action === 'undo_pickup') { c.status = 'waiting'; c.outBy = ''; c.outAt = ''; msg = 'Undone.'; }
+    else if (p.action === 'undo_return') { c.status = 'out'; c.inBy = ''; c.inAt = ''; msg = 'Undone.'; }
+    if (p.note) c.notes = (c.notes ? c.notes + ' | ' : '') + me + ': ' + p.note;
+    return { ok: true, message: msg, state: demoSnapshot() };
+  }
+
+  // ---------- sign in ----------
+  function renderSignIn() {
+    var input = h('input', { type: 'email', id: 'em', name: 'email', autocomplete: 'email', inputmode: 'email',
+      autocapitalize: 'off', spellcheck: 'false', required: true, value: email || '' });
+    var btn = h('button', { type: 'submit', class: 'btn' }, 'Continue');
+    var form = h('form', { onsubmit: function (e) {
+      e.preventDefault();
+      email = input.value.trim().toLowerCase();
+      if (!email) return;
+      btn.disabled = true; btn.textContent = 'Checking';
+      load(true);
+    } }, h('label', { for: 'em' }, 'Your Valor email'), input, btn, h('p', { class: 'err', role: 'alert' }, signInError));
+    app.replaceChildren(
+      h('header', { class: 'mast' }, h('div', { class: 'wrap' }, h('div', { class: 'mrow' }, h('div', { class: 'title' }, h('span', null, 'Valor'), ' Hudl cameras')))),
+      h('main', { class: 'wrap signin' }, h('p', null, 'Sign in once and this phone will remember you.'), form));
+  }
+
+  function load(fromSignIn) {
+    api({ action: 'signin' }).then(function (r) {
+      if (r && r.ok) { state = r.state; signInError = ''; store('hudl_email', email); renderApp(); }
+      else {
+        signInError = (r && r.message) || 'Could not sign in.';
+        if (fromSignIn || !state) { state = null; store('hudl_email', null); renderSignIn(); }
+      }
+    }).catch(function () {
+      signInError = 'Could not reach the server. Check your connection and try again.';
+      if (!state) renderSignIn(); else toast(signInError);
+    });
+  }
+
+  // ---------- app ----------
+  function renderApp() {
+    var tabs = [['mine', 'My games'], ['all', 'All games']];
+    var nav = h('div', { class: 'tabs', role: 'tablist' }, tabs.map(function (t) {
+      return h('button', { class: 'tab', role: 'tab', 'aria-selected': String(tab === t[0]), onclick: function () { tab = t[0]; renderApp(); } }, t[1]);
+    }));
+    app.replaceChildren(
+      h('header', { class: 'mast' }, h('div', { class: 'wrap' },
+        h('div', { class: 'mrow' }, h('div', { class: 'title' }, h('span', null, 'Valor'), ' Hudl cameras'),
+          h('div', { class: 'who' }, state.coach.name, h('br'),
+            h('button', { class: 'linkbtn', onclick: refresh }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))),
+        nav)),
+      h('main', { class: 'wrap', role: 'tabpanel' }, renderList(), DEMO ? h('p', { class: 'foot' }, 'Sample data. Nothing here is saved.') : null));
+  }
+
+  function renderList() {
+    var mine = tab === 'mine';
+    var divs = [];
+    state.chains.forEach(function (c) { c.games.forEach(function (g) { if (g.division && divs.indexOf(g.division) < 0) divs.push(g.division); }); });
+    state.unassigned.forEach(function (g) { if (g.division && divs.indexOf(g.division) < 0) divs.push(g.division); });
+    divs.sort();
+    if (divs.indexOf(divFilter) < 0) divFilter = 'all';
+    var useDiv = !mine && divFilter !== 'all';
+    var chains = state.chains.filter(function (c) {
+      if (useDiv && !c.games.some(function (g) { return g.division === divFilter; })) return false;
+      return !mine || c.mine || c.overdue;
+    });
+    var unass = state.unassigned.filter(function (g) { return (!mine || g.mine) && (!useDiv || g.division === divFilter); });
+    var late = chains.filter(function (c) { return c.overdue; });
+    var dates = [];
+    chains.forEach(function (c) { if (!c.overdue && dates.indexOf(c.date) < 0) dates.push(c.date); });
+    unass.forEach(function (g) { if (dates.indexOf(g.date) < 0) dates.push(g.date); });
+    dates.sort();
+    if (!late.length && !dates.length) {
+      return h('p', { class: 'empty' }, mine ? 'You have no games coming up in the next three weeks.' : 'No games are scheduled in the next three weeks.');
+    }
+    var keys = (late.length ? ['late'] : []).concat(dates);
+    if (keys.indexOf(sel) < 0) sel = late.length ? 'late' : (dates.indexOf(state.today) >= 0 ? state.today : dates[0]);
+
+    var strip = h('div', { class: 'strip', role: 'tablist', 'aria-label': 'Days' }, keys.map(function (k) {
+      var on = String(sel === k);
+      if (k === 'late') {
+        return h('button', { class: 'chip late', role: 'tab', 'aria-selected': on, onclick: function () { sel = k; renderApp(); } },
+          h('span', { class: 'dw' }, 'Not'), h('span', { class: 'dn' }, late.length), h('span', { class: 'fr' }, 'returned'));
+      }
+      var d = parseKey(k), av = state.avail && state.avail[k];
+      return h('button', { class: 'chip', role: 'tab', 'aria-selected': on, onclick: function () { sel = k; renderApp(); } },
+        h('span', { class: 'dw' }, k === state.today ? 'Today' : DAYS[d.getDay()]),
+        h('span', { class: 'dn' }, d.getDate()),
+        av ? h('span', { class: 'fr' + (av.free ? '' : ' none') }, av.free + ' free') : null);
+    }));
+
+    var body = [];
+    if (sel === 'late') {
+      body.push(h('div', { class: 'dayhead' }, h('div', { class: 'dt', style: 'color:#C62828' }, 'Not returned'),
+        h('div', { class: 'muted' }, 'These cameras are still out from an earlier day.')));
+      late.forEach(function (c) { body.push(card(c)); });
+    } else {
+      body.push(dayHead(sel));
+      chains.filter(function (c) { return !c.overdue && c.date === sel; }).forEach(function (c) { body.push(card(c)); });
+      var fields = [];
+      unass.filter(function (g) { return g.date === sel; }).forEach(function (g) {
+        var f = fields.filter(function (x) { return x.field === g.field; })[0];
+        if (!f) { f = { field: g.field, games: [] }; fields.push(f); }
+        f.games.push(g);
+      });
+      fields.forEach(function (f) { body.push(claimCard(sel, f)); });
+    }
+    var filter = (!mine && divs.length > 1) ? h('div', { class: 'filter' }, h('label', { for: 'dv' }, 'Division'),
+      h('select', { id: 'dv', onchange: function (e) { divFilter = e.target.value; renderApp(); } },
+        [h('option', { value: 'all' }, 'All')].concat(divs.map(function (d) { return h('option', { value: d, selected: d === divFilter }, d); })))) : null;
+    return [filter, strip, body];
+  }
+
+  function dayHead(k) {
+    var d = parseKey(k), av = state.avail && state.avail[k];
+    var t = DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
+    var nodes = [h('div', { class: 'dt' }, (k === state.today ? 'Today, ' : k === addDays(state.today, 1) ? 'Tomorrow, ' : '') + t)];
+    if (av) {
+      nodes.push(h('div', { class: 'av' }, h('b', { class: av.free ? '' : 'none' }, av.free + ' of ' + av.total), ' cameras free'));
+      var taken = [];
+      state.chains.forEach(function (c) { if (c.date === k && taken.indexOf(c.camera) < 0) taken.push(c.camera); });
+      var all = av.cameras.map(function (c) { return [c, true]; }).concat(taken.map(function (c) { return [c, false]; }));
+      all.sort(function (a, b) { return parseInt(a[0].replace(/\D/g, ''), 10) - parseInt(b[0].replace(/\D/g, ''), 10); });
+      nodes.push(h('div', { class: 'cams', role: 'list' }, all.map(function (x) {
+        return h('span', { class: 'cm' + (x[1] ? '' : ' used'), role: 'listitem', 'aria-label': x[0] + (x[1] ? ' free' : ' taken') }, x[0].replace(/\D/g, ''));
+      })));
+      nodes.push(h('div', { class: 'legend' }, 'Green is free. Gray is taken.'));
+    }
+    var cl = state.closes && state.closes[k];
+    if (cl && state.mode !== 'selfserve') {
+      nodes.push(h('div', { class: 'line ' + (cl.closed ? 'flag-out' : 'muted') }, cl.closed ? 'Requests for this day are closed.' : 'Requests close ' + cl.text + '.'));
+    }
+    return h('div', { class: 'dayhead' }, nodes);
+  }
+
+  function gameLine(g, withCoach) {
+    return h('div', { class: 'game' + (g.mine ? ' mine' : '') },
+      h('b', null, g.time), '  ', g.field,
+      h('div', { class: 'muted sm' }, g.team + (withCoach && g.coach ? ', ' + g.coach : '')));
+  }
+
+  function card(c) {
+    var mineView = tab === 'mine', name = state.coach.name, admin = state.coach.admin;
+    var pickupMine = c.games.some(function (g) { return g.mine && (g.role === 'pickup' || g.role === 'only'); });
+    var returnMine = c.games.some(function (g) { return g.mine && (g.role === 'return' || g.role === 'only'); });
+    var status = c.overdue ? 'Not returned' : c.status === 'out' ? 'Out with ' + first(c.outBy) : c.status === 'returned' ? 'Returned' : 'Available';
+    var tone = c.status === 'out' ? 'out' : 'in';
+
+    var shown = mineView ? c.games.filter(function (g) { return g.mine; }) : c.games;
+    var rest = mineView ? c.games.filter(function (g) { return !g.mine; }) : [];
+    var role = null;
+    if (mineView && c.mine) {
+      role = pickupMine && returnMine ? 'You pick this up and return it.' : pickupMine ? 'You pick this up.' : returnMine ? 'You return this.' : 'Nothing to check out or in for your game.';
+    }
+    var detail = null;
+    if (c.status === 'out') detail = (c.overdue ? 'Still out. ' : '') + 'Picked up by ' + c.outBy + ' ' + c.outAt + '.';
+    else if (c.status === 'returned') detail = 'Returned by ' + c.inBy + ' ' + c.inAt + '.';
+    else if (c.prior) detail = 'Still with ' + c.prior.by + ' from ' + dayText(c.prior.date).replace(/^(Today|Tomorrow), /, '') + '. Picking it up takes it over.';
+
+    var noteInput = h('input', { type: 'text', maxlength: '300', 'aria-label': 'Note', placeholder: 'Example: leaving it with Dan for Sunday' });
+    var subInput = h('input', { type: 'text', maxlength: '60', 'aria-label': 'Name of the person picking up', placeholder: 'Name of the volunteer' });
+    var showPick = c.status === 'waiting' && (!mineView || pickupMine);
+    var showRet = c.status === 'out' && (!mineView || returnMine || c.overdue);
+    var main = null;
+    if (showPick) main = h('button', { class: 'btn go', onclick: function () { act(c, 'pickup', noteInput.value, subInput.value); } }, 'Pick up ' + c.camera);
+    if (showRet) main = h('button', { class: 'btn stop', onclick: function () { act(c, 'return', noteInput.value, subInput.value); } }, 'Return ' + c.camera);
+    var small = [];
+    if (c.status === 'out' && (admin || c.outEmail === state.coach.email)) small.push(h('button', { class: 'linkbtn', onclick: function () { act(c, 'undo_pickup', ''); } }, 'Undo pick up'));
+    if (c.status === 'returned' && (admin || c.inEmail === state.coach.email)) small.push(h('button', { class: 'linkbtn', onclick: function () { act(c, 'undo_return', ''); } }, 'Undo return'));
+    if (c.status === 'waiting') {
+      var fields = [];
+      c.games.forEach(function (g) {
+        var k = c.date + '|' + fkey(g.field);
+        if (state.claimed && state.claimed[k] === c.camera && fields.indexOf(g.field) < 0) fields.push(g.field);
+      });
+      fields.forEach(function (f) {
+        small.push(h('button', { class: 'linkbtn', onclick: function () { send({ action: 'release', camera: c.camera, date: c.date, field: f }); } }, 'Give back ' + c.camera));
+      });
+    }
+
+    return h('article', { class: 'card ' + tone },
+      h('div', { class: 'head' }, h('span', { class: 'cam' }, c.camera), h('span', { class: 'st ' + tone }, status)),
+      shown.map(function (g) { return gameLine(g, !mineView); }),
+      rest.length ? h('details', { class: 'more' }, h('summary', null, 'Other games on this camera'), rest.map(function (g) { return gameLine(g, true); })) : null,
+      role ? h('p', { class: 'line' }, role) : null,
+      (showPick && c.games.some(function (g) { return g.mine; })) ? h('p', { class: 'line sm' }, 'Charge the camera and battery pack to 100% before game day.') : null,
+      detail ? h('p', { class: 'line muted sm' }, detail) : null,
+      c.notes ? h('p', { class: 'line muted sm' }, 'Notes: ' + c.notes) : null,
+      main ? h('div', { class: 'row' }, main) : null,
+      (main || small.length) ? h('div', { class: 'acts' }, main ? h('details', null, h('summary', null, 'Add a note'), noteInput) : null,
+        main ? h('details', null, h('summary', null, showPick ? 'Someone else is picking up' : 'Someone else is returning'), subInput) : null, small) : null);
+  }
+
+  function claimCard(date, f) {
+    var free = state.free[date] || [], admin = state.coach.admin, selfServe = state.mode === 'selfserve';
+    var mineHere = f.games.some(function (g) { return g.mine; });
+    var status = f.games.filter(function (g) { return g.req === 'requested'; });
+    var declined = f.games.filter(function (g) { return g.req === 'declined'; });
+    var cl = state.closes && state.closes[date];
+    var max = state.maxClaims || 0, used = 0;
+    Object.keys(state.claimed || {}).forEach(function (k) { if (k.indexOf(date + '|') === 0) used++; });
+    var head = 'Unassigned', body = [];
+
+    function claimButtons() {
+      if (!free.length) return h('p', { class: 'line' }, 'No cameras are free that day. Ask Craig or Dylan.');
+      if (max && used >= max) return h('p', { class: 'line' }, 'You have claimed ' + used + ' cameras for this day, the most one coach can hold. Give one back or ask Craig or Dylan.');
+      return [h('p', { class: 'line' }, 'Pick a camera for this field:'),
+        h('div', { class: 'claims' }, free.map(function (cam) {
+          return h('button', { class: 'btn sm2', onclick: function () { claim(date, f.field, cam); } }, cam);
+        }))];
+    }
+
+    if (status.length) {
+      head = 'Requested';
+      body.push(h('p', { class: 'line' }, 'Requested by ' + status[0].reqBy + '. You will get an email when a camera is assigned.'));
+      if (admin || status.some(function (g) { return g.mine; })) {
+        body.push(h('div', { class: 'acts' }, h('button', { class: 'linkbtn', onclick: function () { send({ action: 'cancel_request', date: date, field: f.field }); } }, 'Cancel request')));
+      }
+      if (admin && free.length) body.push(claimButtons());
+    } else if (selfServe || admin) {
+      if (!mineHere && !admin) body.push(h('p', { class: 'line muted' }, 'Only a coach with a game here can take a camera for this field.'));
+      else body.push(claimButtons());
+      if (!selfServe && admin) {
+        body.push(h('div', { class: 'row' }, h('button', { class: 'btn', onclick: function () { send({ action: 'request', date: date, field: f.field }); } }, 'Request a camera')));
+      }
+    } else if (!mineHere) {
+      body.push(h('p', { class: 'line muted' }, 'Only a coach with a game here can ask for a camera for this field.'));
+    } else if (state.newbie) {
+      body.push(h('p', { class: 'line' }, 'Meet Craig or Dylan to get set up on the Hudl app. They will turn requests on for you.'));
+    } else if (cl && cl.closed) {
+      body.push(h('p', { class: 'line flag-out' }, 'Requests for this day are closed. Ask Craig or Dylan.'));
+    } else {
+      if (declined.length) body.push(h('p', { class: 'line' }, 'Not assigned this time.' + (declined[0].reqNote ? ' ' + declined[0].reqNote : '')));
+      body.push(h('div', { class: 'row' }, h('button', { class: 'btn', onclick: function () { send({ action: 'request', date: date, field: f.field }); } },
+        declined.length ? 'Request again' : 'Request a camera')));
+      if (cl) body.push(h('p', { class: 'line muted sm' }, 'Requests close ' + cl.text + '.'));
+    }
+    return h('article', { class: 'card' },
+      h('div', { class: 'head' }, h('span', { class: 'cam' }, 'No camera'), h('span', { class: 'st' }, head)),
+      f.games.map(function (g) { return gameLine(g, true); }), body);
+  }
+
+  // ---------- actions ----------
+  function setBusy(b) { busy = b; Array.prototype.forEach.call(document.querySelectorAll('.btn'), function (x) { x.disabled = b; }); }
+  function send(payload) {
+    if (busy) return;
+    setBusy(true);
+    api(payload).then(function (r) {
+      if (r && r.state) state = r.state;
+      toast((r && r.message) || 'Done.');
+      busy = false; renderApp();
+    }).catch(function () { busy = false; setBusy(false); toast('Could not reach the server. Nothing was saved. Try again.'); });
+  }
+  function act(c, action, note, sub) { send({ action: action, camera: c.camera, date: c.date, note: (note || '').trim(), sub: (sub || '').trim() }); }
+  function claim(date, field, cam) { send({ action: 'claim', camera: cam, date: date, field: field }); }
+  function refresh() { if (!busy) { load(false); toast('Updated.'); } }
+  function signOut() { store('hudl_email', null); email = null; state = null; signInError = ''; renderSignIn(); }
+
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && state && !busy) load(false); });
+  setInterval(function () { if (state && !busy && !document.hidden) load(false); }, 120000);
+
+  if (DEMO) email = 'demo@example.org';
+  if (email) load(false); else renderSignIn();
+})();
+</script>
+</body>
+</html>
