@@ -203,6 +203,9 @@
     return DAYS[d.getDay()] + ' ' + MONTHS[d.getMonth()] + ' ' + d.getDate();
   }
   function first(n) { return String(n || '').split(' ')[0]; }
+  function span(c) { return dayName(c.date) + ' through ' + dayName(c.endDate); }
+  function isMe(n) { return !!n && !!state && !!state.coach &&
+    String(n).trim().toLowerCase() === String(state.coach.name).trim().toLowerCase(); }
   function fkey(f) { return String(f || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
   function camNum(c) { var m = String(c).match(/(\d+)/); return m ? +m[1] : 999; }
 
@@ -223,11 +226,14 @@
         out.push({ chain: c, kind: 'return', urgent: true,
           title: c.camera + ' is still out', sub: 'Picked up ' + (c.outAt || 'earlier') + ' by ' + c.outBy });
       } else if (c.status === 'waiting' && pickMine) {
-        out.push({ chain: c, kind: 'pickup', urgent: c.date === state.today,
-          title: 'Pick up ' + c.camera, sub: c.first.field, when: c.first.time + ', ' + dayName(c.date), date: c.date });
+        out.push({ chain: c, kind: 'pickup', urgent: c.date <= state.today,
+          title: 'Pick up ' + c.camera, sub: c.first.field,
+          when: c.multi ? span(c) : (c.first.time + ', ' + dayName(c.date)), date: c.date });
       } else if (c.status === 'out' && retMine) {
-        out.push({ chain: c, kind: 'return', urgent: c.date === state.today,
-          title: 'Return ' + c.camera, sub: c.last.field, when: 'After your ' + c.last.time + ' game', date: c.date });
+        out.push({ chain: c, kind: 'return', urgent: c.endDate <= state.today,
+          title: 'Return ' + c.camera, sub: c.last.field,
+          when: c.multi ? 'When you are back, after ' + dayName(c.endDate) : 'After your ' + c.last.time + ' game',
+          date: c.date });
       }
     });
     return out.sort(function (a, b) {
@@ -307,16 +313,27 @@
     if (c.status === 'waiting' && state.claimed && state.claimed[c.date + '|' + fkey(c.first.field)] === c.camera) {
       small.push(h('button', { class: 'linkbtn', onclick: function () { send({ action: 'release', camera: c.camera, date: c.date, field: c.first.field }); } }, 'Give it back'));
     }
+    // Where this coach sits in the day's running order for the camera, so they know when it leaves them.
+    var mine = null;
+    c.games.forEach(function (g) { if (g.mine && !mine) mine = g; });
+    var chainNote = null;
+    if (c.multi) chainNote = 'This camera is yours for the whole event. Nobody else is on it.';
+    else if (mine && j.kind === 'pickup' && mine.to && !isMe(mine.to)) chainNote = 'You hand it to ' + first(mine.to) + ' after your game.';
+    else if (mine && j.kind === 'pickup' && mine.to) chainNote = 'You keep it through your later games, then return it.';
+    else if (mine && j.kind === 'pickup') chainNote = 'You have it all day and return it yourself.';
+    else if (mine && j.kind === 'return' && mine.from && !isMe(mine.from)) chainNote = first(mine.from) + ' hands it to you before your game.';
     return h('article', { class: 'act' + (c.overdue ? ' late' : j.urgent ? ' today' : '') },
       h('div', { class: 'cam' }, c.camera),
       h('div', { class: 'where' }, j.sub),
       j.when ? h('div', { class: 'when' }, j.when) : null,
+      chainNote ? h('div', { class: 'when sm' }, chainNote) : null,
       c.prior ? h('div', { class: 'when sm' }, 'Still with ' + c.prior.by + '. Picking it up takes it over.') : null,
       c.notes ? h('div', { class: 'when sm' }, 'Note: ' + c.notes) : null,
       h('button', { class: 'btn ' + (j.kind === 'pickup' ? 'go' : 'stop'),
         onclick: function () { act(c, j.kind, note.value, sub.value); } },
         (j.kind === 'pickup' ? 'Pick up ' : 'Return ') + c.camera),
       j.kind === 'pickup' ? h('div', { class: 'when sm', style: 'margin-top:8px' }, 'Charge the camera and battery pack to 100%.') : null,
+      j.kind === 'return' && state.place ? h('div', { class: 'when sm', style: 'margin-top:8px' }, 'Goes back to ' + state.place + '.') : null,
       h('details', { class: 'more' }, h('summary', null, 'Someone else is doing it, or add a note'), sub, note),
       small.length ? h('div', { class: 'acts' }, small) : null);
   }
@@ -329,7 +346,9 @@
       c.games.forEach(function (g) {
         if (!g.mine) return;
         var role = g.role === 'hold' ? 'none' : (g.role === 'pickup' ? 'pickup' : g.role === 'return' ? 'return' : 'both');
-        bucket(c.date).push({ time: g.time, field: g.field, team: g.team, camera: c.camera, status: c.status, role: role, div: g.division });
+        bucket(c.date).push({ time: c.multi ? 'All event' : g.time, field: g.field, team: g.team,
+          camera: c.camera, status: c.status, role: role, div: g.division,
+          from: g.from, to: g.to, multi: c.multi, endDate: c.endDate });
       });
     });
     state.unassigned.forEach(function (g) {
@@ -350,7 +369,7 @@
     }
     if (r.status === 'returned') return h('span', { class: 'chip go' }, 'Returned');
     if (r.status === 'out') return h('span', { class: 'chip stop' }, 'Out');
-    if (r.role === 'none') return h('span', { class: 'chip none' }, 'Nothing to do');
+    if (r.role === 'none') return h('span', { class: 'chip none' }, r.to && !isMe(r.to) ? 'Hand to ' + first(r.to) : 'You keep it');
     return h('span', { class: 'chip wait' }, r.role === 'return' ? 'You return it' : 'You pick it up');
   }
 
@@ -527,7 +546,11 @@
         notes: '', outEmail: '', inEmail: '', prior: null,
         games: games.map(function (g) { return { time: g[0], field: g[1], team: g[2], coach: g[3], opponent: 'Sample', division: 'ECNL RL', role: 'hold' }; }) };
       var n = c.games.length;
-      c.games.forEach(function (g, i) { g.role = n === 1 ? 'only' : i === 0 ? 'pickup' : i === n - 1 ? 'return' : 'hold'; });
+      c.games.forEach(function (g, i) {
+        g.role = n === 1 ? 'only' : i === 0 ? 'pickup' : i === n - 1 ? 'return' : 'hold';
+        g.from = i > 0 ? c.games[i - 1].coach : '';
+        g.to = i < n - 1 ? c.games[i + 1].coach : '';
+      });
       Object.keys(extra || {}).forEach(function (k) { c[k] = extra[k]; });
       return c;
     }
@@ -539,11 +562,13 @@
                         ['11:00 AM', 'Robinson HS Stadium', 'ECNL RL G2011/12', 'Cory Fick'],
                         ['1:00 PM', 'Robinson HS Stadium', 'ECNL RL G2013/14', 'Cory Fick']]),
       mk(tm, 'Hudl 3', [['10:00 AM', 'Robinson HS Upper Turf', 'ECNL RL B2011/12', 'Rob Olson'],
-                        ['12:00 PM', 'Robinson HS Upper Turf', 'ECNL RL B2010/11', 'Rob Olson']])
+                        ['12:00 PM', 'Robinson HS Upper Turf', 'ECNL RL B2010/11', 'Rob Olson']]),
+      mk(tm, 'Hudl 7', [['', 'Hunt Country Classic (U13 ECNL-RL G2013/14)', 'ECNL RL G2013/14', 'Cory Fick']],
+        { multi: true, endDate: addDays(t, 3) })
     ], unassigned: [
       { date: tm, time: '2:00 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2012/13', coach: 'Cory Fick', division: 'ECNL RL', req: '' },
       { date: tm, time: '3:45 PM', field: 'Sully Highlands 2', team: 'ECNL RL B2009/10', coach: 'Cory Fick', division: 'ECNL RL', req: '' }
-    ], free: {}, claimed: {}, maxClaims: 2, mode: 'approval', requested: {} };
+    ], free: {}, claimed: {}, maxClaims: 2, mode: 'approval', requested: {}, place: 'the equipment cage at the Fieldhouse' };
     demo.free[tm] = ['Hudl 1', 'Hudl 6', 'Hudl 7'];
   }
   function demoSnapshot() {
