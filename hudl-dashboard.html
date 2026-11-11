@@ -231,6 +231,7 @@
         { date: d(-9), camera: 'Hudl 7', field: 'EC Lawrence Park Field #3A', division: 'NCSL', state: 'none',
           outBy: '', outAt: '', inBy: '', inAt: '', note: '',
           games: [{ time: '8:00 AM', team: 'B2017/18 Silver', coach: 'Alec Mitchell', opponent: 'GFR U9B Gold' }] }],
+      statsFrom: d(-9), statsPinned: true, 
       recent: [{ at: '8:12 AM', name: 'Oscar Hernandez', camera: 'Hudl 2', date: 'today', action: 'pickup', note: '' }]
     } };
   }
@@ -375,22 +376,25 @@
     var tot = dash.history.reduce(function (a, r) {
       a.c += r.cameras; a.p += r.pickedUp; a.r += r.returned; return a;
     }, { c: 0, p: 0, r: 0 });
-    out.push(h('section', null, h('h2', null, 'Last 60 days'),
+    var since = dash.statsFrom ? dayText(dash.statsFrom) : '';
+    var window = dash.statsPinned ? 'Counting from ' + since + '.' : 'Counting the last 60 days.';
+    out.push(h('section', null, h('h2', null, 'Signing record by day'),
+      h('p', { class: 'muted' }, window + ' A camera day is one camera out for one day, covering every game it filmed.'),
       dash.history.length
-        ? [h('p', null, tot.c + ' camera days. ' + tot.p + ' picked up, ' + tot.r + ' returned.'),
-           table([{ t: 'Day', k: true }, { t: 'Picked up', n: true }, { t: 'Returned', n: true }, { t: 'Missed', n: true }],
+        ? [h('p', null, tot.c + ' camera days. ' + tot.p + ' signed out, ' + tot.r + ' signed back in.'),
+           table([{ t: 'Day', k: true }, { t: 'Signed out', n: true }, { t: 'Signed in', n: true }, { t: 'Unsigned', n: true }],
              dash.history.slice(0, 14).map(function (r) {
                return [dayText(r.date), r.pickedUp + ' of ' + r.cameras, r.returned + ' of ' + r.cameras, r.noRecord || r.notReturned ? h('span', { class: 'flag' }, r.noRecord + r.notReturned) : 0];
              }))]
-        : h('p', null, 'History builds as coaches start checking cameras out and in.')));
+        : h('p', null, 'Nothing yet. This fills in as coaches sign cameras out and in.')));
 
     // Coaches
-    out.push(h('section', null, h('h2', null, 'Coaches'),
+    out.push(h('section', null, h('h2', null, 'Signing record by coach'),
+      h('p', { class: 'muted' }, 'Every camera day creates two jobs: the first game\'s coach signs it out, the last game\'s coach signs it back in. ' + window),
       dash.coaches.length
-        ? table([{ t: 'Coach' }, { t: 'Done', n: true }, { t: 'Covered', n: true }, { t: 'Missed', n: true }],
-            dash.coaches.map(function (c) { return [c.name, c.doneByThem + ' of ' + c.duties, c.coveredByOthers, c.missed ? h('span', { class: 'flag' }, c.missed) : 0]; }))
-        : h('p', null, 'No past games with camera duties yet.'),
-      dash.coaches.length ? h('p', { class: 'muted' }, 'Duties are pick ups and returns. Covered means someone else did it.') : null));
+        ? [table([{ t: 'Coach', k: true }, { t: 'Signed', n: true }, { t: 'Done by someone else', n: true }, { t: 'Unsigned', n: true }],
+            dash.coaches.map(function (c) { return [c.name, c.doneByThem + ' of ' + c.duties, c.coveredByOthers, c.missed ? h('span', { class: 'flag' }, c.missed) : 0]; }))]
+        : h('p', null, 'Nothing yet.')));
 
     // Recent
     var ACT = { pickup: 'picked up', 'return': 'returned', undo_pickup: 'undid pick up of', undo_return: 'undid return of', claim: 'claimed', note: 'added a note on' };
