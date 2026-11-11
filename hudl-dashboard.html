@@ -37,7 +37,11 @@
   .btn:disabled { opacity: .45; }
   .err { margin: 16px 0 0; padding: 10px 0 10px 12px; border-left: 5px solid var(--red); color: var(--red); font-weight: 700; }
   .err:empty { display: none; }
-  .tagfoot { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
+  .tagfoot { display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
+  .hudl { height: 18px; width: auto; display: block; flex: 0 0 auto; }
+  .foot { display: flex; align-items: center; gap: 10px; }
+  .foot .hudl { height: 16px; }
 
   section { margin: 0 0 36px; }
   h2 { margin: 36px 0 12px; padding-top: 8px; border-top: 4px solid var(--ink); font-size: 18px; font-weight: 700; }
@@ -59,6 +63,18 @@
   .list li:first-child { border-top: 1px solid var(--hair); }
   details { margin-top: 10px; }
   summary { cursor: pointer; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+  .hfilter { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 8px; }
+  .hfilter input { flex: 1 1 220px; min-height: 48px; padding: 8px 12px; font: 400 16px var(--sans); border: 2px solid var(--ink); border-radius: 0; }
+  .hcount { color: var(--muted); font-size: 15px; }
+  .hrow { padding: 14px 0; border-bottom: 1px solid var(--hair); }
+  .hhead { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .hcam { font-size: 19px; font-weight: 700; }
+  .hdate { font-weight: 700; }
+  .hwhere { margin-top: 2px; color: var(--muted); }
+  .hgame { margin-top: 6px; padding-left: 12px; border-left: 3px solid var(--brass); }
+  .hwho { margin-top: 8px; }
+  .hwho span { display: inline-block; margin-right: 16px; }
+  .hnote { margin-top: 6px; color: var(--muted); font-size: 14px; }
   .banner { margin: 16px 0 0; padding: 12px 14px; border-left: 8px solid var(--gold); background: #faf7f0; }
   .rq { padding: 12px 0; border-bottom: 1px solid var(--hair); }
   .rqrow { display: flex; gap: 10px; margin-top: 10px; }
@@ -173,6 +189,17 @@
           games: [{ time: '2:00 PM', team: 'ECNL RL B2012/13', coach: 'Cory Fick', division: 'ECNL RL' }, { time: '3:45 PM', team: 'ECNL RL B2009/10', coach: 'Cory Fick', division: 'ECNL RL' }] },
         { date: d(3), field: 'Fair Oaks Field 1', requestedBy: ['Rob Olson'], suggested: 'Hudl 2', free: ['Hudl 2', 'Hudl 4'],
           games: [{ time: '9:00 AM', team: 'NCSL G2010/11', coach: 'Rob Olson', division: 'NCSL' }] }],
+      log: [
+        { date: d(-1), camera: 'Hudl 2', field: 'Robinson HS Stadium', division: 'ECNL RL', state: 'returned',
+          outBy: 'Oscar Hernandez', outAt: '11/10/26 8:12 AM', inBy: 'Cory Fick', inAt: '11/10/26 2:40 PM', note: '',
+          games: [{ time: '9:00 AM', team: 'ECNL RL G2012/13', coach: 'Oscar Hernandez', opponent: 'BRYC Academy' },
+                  { time: '11:00 AM', team: 'ECNL RL G2011/12', coach: 'Cory Fick', opponent: 'BRYC Academy' }] },
+        { date: d(-8), camera: 'Hudl 5', field: 'Westfield High School Stadium', division: 'ECNL RL', state: 'open',
+          outBy: 'Juan Vasquez', outAt: '11/3/26 1:20 PM', inBy: '', inAt: '', note: 'Left in the equipment room.',
+          games: [{ time: '2:00 PM', team: 'ECNL RL B2009/10', coach: 'Juan Vasquez', opponent: 'Great Falls Reston' }] },
+        { date: d(-9), camera: 'Hudl 7', field: 'EC Lawrence Park Field #3A', division: 'NCSL', state: 'none',
+          outBy: '', outAt: '', inBy: '', inAt: '', note: '',
+          games: [{ time: '8:00 AM', team: 'B2017/18 Silver', coach: 'Alec Mitchell', opponent: 'GFR U9B Gold' }] }],
       recent: [{ at: '8:12 AM', name: 'Oscar Hernandez', camera: 'Hudl 2', date: 'today', action: 'pickup', note: '' }]
     } };
   }
@@ -194,7 +221,13 @@
       h('p', { class: 'sub' }, 'Requests waiting, who has what, and who returns it.'),
       h('div', { class: 'rule' }),
       form,
-      h('p', { class: 'tagfoot' }, 'Same sign in as the coach page.'))));
+      h('div', { class: 'tagfoot' }, h('span', null, 'Same sign in as the coach page.'), hudlMark()))));
+  }
+  // Drop hudl-logo.png next to this file to show the Hudl mark.
+  function hudlMark() {
+    var img = h('img', { class: 'hudl', src: 'hudl-logo.png', alt: 'Hudl' });
+    img.addEventListener('error', function () { img.style.display = 'none'; });
+    return img;
   }
   // Drop valor-crest.png next to this file and the crest appears.
   function crest() {
@@ -236,7 +269,7 @@
       }))));
   }
 
-  var msg = '', working = false;
+  var msg = '', working = false, hq = '', hShown = 25;
   function send(payload) {
     if (working) return;
     working = true;
@@ -337,6 +370,48 @@
 
     // Recent
     var ACT = { pickup: 'picked up', 'return': 'returned', undo_pickup: 'undid pick up of', undo_return: 'undid return of', claim: 'claimed', note: 'added a note on' };
+    // Checkout history
+    var log = dash.log || [];
+    var hBody = h('div');
+    var hCount = h('div', { class: 'hcount' });
+    var hInput = h('input', { type: 'search', placeholder: 'Filter by coach, camera, team or field', 'aria-label': 'Filter history', value: hq });
+    var shown = hShown;
+    function drawHistory() {
+      var q = hq.trim().toLowerCase();
+      var rows = log.filter(function (r) {
+        if (!q) return true;
+        var hay = [r.camera, r.field, r.division, r.outBy, r.inBy, r.date].concat(
+          r.games.map(function (g) { return g.team + ' ' + g.coach + ' ' + (g.opponent || ''); })).join(' ').toLowerCase();
+        return hay.indexOf(q) >= 0;
+      });
+      hCount.textContent = rows.length + (rows.length === 1 ? ' checkout ' : ' checkouts ') +
+        (q ? (rows.length === 1 ? 'matches your filter' : 'match your filter') : 'on record');
+      var slice = rows.slice(0, shown);
+      hBody.replaceChildren.apply(hBody, slice.map(function (r) {
+        var state = r.state === 'returned' ? h('span', { class: 'in' }, 'Returned')
+                  : r.state === 'open' ? h('span', { class: 'out' }, 'No return recorded')
+                  : h('span', { class: 'off' }, 'No record');
+        return h('article', { class: 'hrow' },
+          h('div', { class: 'hhead' }, h('span', { class: 'hcam' }, r.camera), h('span', { class: 'hdate' }, dayText(r.date)), state),
+          h('div', { class: 'hwhere' }, r.field + (r.division ? ', ' + r.division : '')),
+          r.games.map(function (g) {
+            return h('div', { class: 'hgame' }, h('b', null, g.time || 'All weekend'), '  ', g.team,
+              h('div', { class: 'muted' }, g.coach + (g.opponent ? ' vs ' + g.opponent : '')));
+          }),
+          h('div', { class: 'hwho' },
+            h('span', null, h('b', null, 'Out: '), r.outBy ? r.outBy + (r.outAt ? ', ' + r.outAt : '') : 'not recorded'),
+            h('span', null, h('b', null, 'In: '), r.inBy ? r.inBy + (r.inAt ? ', ' + r.inAt : '') : 'not recorded')),
+          r.note ? h('div', { class: 'hnote' }, r.note) : null);
+      }).concat(rows.length > shown
+        ? [h('button', { class: 'btn', onclick: function () { shown += 25; hShown = shown; drawHistory(); } }, 'Show 25 more')]
+        : []));
+      if (!rows.length) hBody.replaceChildren(h('p', { class: 'muted' }, 'Nothing matches that filter.'));
+    }
+    hInput.addEventListener('input', function () { hq = hInput.value; shown = 25; hShown = 25; drawHistory(); });
+    drawHistory();
+    out.push(h('section', null, h('h2', null, 'Checkout history'),
+      h('div', { class: 'hfilter' }, hInput, hCount), hBody));
+
     out.push(h('section', null, h('h2', null, 'Recent activity'),
       dash.recent.length
         ? h('ul', { class: 'list' }, dash.recent.map(function (r) {
@@ -344,7 +419,8 @@
           }))
         : h('p', null, 'No activity yet.')));
 
-    app.replaceChildren(masthead(true), h('main', { class: 'wrap' }, out, DEMO ? h('p', { class: 'foot' }, 'Sample data.') : null));
+    app.replaceChildren(masthead(true), h('main', { class: 'wrap' }, out,
+      h('div', { class: 'foot' }, hudlMark(), h('span', null, DEMO ? 'Sample data.' : 'Valor cameras are Hudl Focus units.'))));
   }
 
   setInterval(function () { if (dash && !document.hidden) load(false); }, 120000);

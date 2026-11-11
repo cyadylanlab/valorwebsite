@@ -40,7 +40,11 @@
   .signin .btn { margin-top: 14px; }
   .err { margin: 16px 0 0; padding: 10px 0 10px 12px; border-left: 5px solid var(--red); color: var(--red); font-weight: 700; }
   .err:empty { display: none; }
-  .tagfoot { margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
+  .tagfoot { display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--muted); }
+  .hudl { height: 18px; width: auto; display: block; flex: 0 0 auto; }
+  .foot { display: flex; align-items: center; gap: 10px; }
+  .foot .hudl { height: 16px; }
 
   .strip { display: flex; gap: 8px; overflow-x: auto; padding: 12px 14px 10px; margin: 0 -14px; scrollbar-width: thin; }
   .chip { flex: 0 0 auto; min-width: 66px; padding: 7px 6px 6px; background: var(--card); border: 2px solid var(--hair); border-radius: 0; cursor: pointer; text-align: center; line-height: 1.2; }
@@ -304,7 +308,7 @@
         h('p', { class: 'sub' }, 'Sign in once and this phone will remember you.'),
         h('div', { class: 'rule' }),
         form,
-        h('p', { class: 'tagfoot' }, 'Pick up, hand off and return, from the sideline.'))));
+        h('div', { class: 'tagfoot' }, h('span', null, 'Pick up, hand off and return, from the sideline.'), hudlMark()))));
   }
 
   function load(fromSignIn) {
@@ -327,6 +331,12 @@
     img.addEventListener('error', function () { img.style.display = 'none'; });
     return img;
   }
+  // Drop hudl-logo.png next to this file to show the Hudl mark.
+  function hudlMark() {
+    var img = h('img', { class: 'hudl', src: 'hudl-logo.png', alt: 'Hudl' });
+    img.addEventListener('error', function () { img.style.display = 'none'; });
+    return img;
+  }
   function masthead(right) {
     return h('header', { class: 'mast' }, h('div', { class: 'wrap' },
       h('div', { class: 'mrow' },
@@ -344,7 +354,8 @@
     app.replaceChildren(
       masthead(h('div', { class: 'who' }, state.coach.name, h('br'),
         h('button', { class: 'linkbtn', onclick: refresh }, 'Refresh'), '  ', h('button', { class: 'linkbtn', onclick: signOut }, 'Switch'))),
-      h('main', { class: 'wrap', role: 'tabpanel' }, renderList(), DEMO ? h('p', { class: 'foot' }, 'Sample data. Nothing here is saved.') : null));
+      h('main', { class: 'wrap', role: 'tabpanel' }, renderList(),
+        h('div', { class: 'foot' }, hudlMark(), h('span', null, DEMO ? 'Sample data. Nothing here is saved.' : 'Valor cameras are Hudl Focus units.'))));
   }
 
   function renderList() {
@@ -430,7 +441,7 @@
 
   function gameLine(g, withCoach) {
     return h('div', { class: 'game' + (g.mine ? ' mine' : '') },
-      h('b', null, g.time), '  ', g.field,
+      h('b', null, g.time || (g.division === 'Tournament' ? 'All weekend' : 'Time TBA')), '  ', g.field,
       h('div', { class: 'muted sm' }, g.team + (withCoach && g.coach ? ', ' + g.coach : '')));
   }
 
