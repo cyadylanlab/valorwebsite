@@ -725,7 +725,14 @@ let sx=0,sy=0;
 addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
 addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
   if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4) go(dx<0?1:-1);},{passive:true});
-function fullscreen(){try{const d=document;if(!d.fullscreenElement)d.documentElement.requestFullscreen().catch(()=>{});else d.exitFullscreen()}catch(e){}}
+function popOut(){try{window.open(location.href,'_blank','noopener')}catch(e){}}
+function fullscreen(){const d=document;
+  try{if(d.fullscreenElement){d.exitFullscreen();return}
+      if(d.fullscreenEnabled){d.documentElement.requestFullscreen().catch(popOut);return}}catch(e){}
+  popOut();}
+// embedded pages are refused fullscreen by the browser, so say what the button will do
+if(!document.fullscreenEnabled){const fb=document.getElementById('fs');
+  fb.textContent='Open Full';fb.title='Opens the deck in its own tab, where full screen works';}
 document.getElementById('fs').onclick=fullscreen;
 const tl=document.getElementById('toclist');
 pages.forEach((p,k)=>{const li=document.createElement('li');li.innerHTML='<button><span>'+pad(k+1)+'</span><b>'+p.dataset.title+'</b></button>';
