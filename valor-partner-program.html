@@ -225,7 +225,7 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
 .seg button{padding:10px 18px;font:700 12px var(--body);letter-spacing:.16em;text-transform:uppercase}
 .seg button+button{border-left:2px solid var(--ink)}
 .seg button.act{background:var(--ink);color:var(--paper)}
-.shirt{width:min(100%,420px);height:auto;max-height:calc(calc(var(--vh)*100) - 330px)}
+.shirt{width:auto;max-width:100%;height:auto;max-height:calc(calc(var(--vh)*100) - 300px);object-fit:contain;filter:drop-shadow(0 18px 28px rgba(17,17,16,.18))}
 .shirt .body-s{transition:fill .5s}
 .shirt .trim{transition:stroke .5s,fill .5s}
 .zone rect{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-dasharray:8 6;animation:dash 1.4s linear infinite}
@@ -234,7 +234,7 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
 .stage .cap{font-size:13px;color:var(--mute);text-align:center;max-width:40ch}
 .kit .r{position:relative;overflow:hidden;border-left:1px solid var(--rule)}
 .kit .r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:41% 50%}
-.kit .r .lab{position:absolute;left:0;right:0;bottom:0;background:var(--paper);padding:14px 18px 6px;font-size:13px;line-height:1.4;color:var(--ink2)}
+.kit .r .lab{position:absolute;left:0;right:0;bottom:0;background:var(--paper);padding:14px clamp(96px,calc(var(--vw)*8),132px) 6px 18px;font-size:13px;line-height:1.4;color:var(--ink2)}
 .kit .r .lab b{display:block;font:700 18px/1.1 var(--disp);text-transform:uppercase;letter-spacing:.04em;color:var(--ink);margin-bottom:4px}
 
 /* ---------- 9 events / fixtures ---------- */
@@ -358,26 +358,7 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
 .way .hd p{max-width:40ch;margin-bottom:4px}
 .way .art{background:#000;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:3px solid var(--gold)}
 .way .art img{width:100%;height:100%;object-fit:contain}
-/* ---------- next season kit page ---------- */
-.nk .body{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
-.nk .l{padding:var(--pad);display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,calc(var(--vh)*2),22px)}
-.nk h2{font-size:clamp(44px,calc(var(--vw)*5.4),96px)}
-.nk .chips2{display:flex;flex-direction:column;border-top:2px solid var(--ink)}
-.nk .chips2 div{display:flex;justify-content:space-between;gap:16px;padding:9px 0 7px;border-bottom:1px solid var(--rule);font:600 12px/1.3 var(--body);letter-spacing:.14em;text-transform:uppercase}
-.nk .chips2 span{color:var(--mute)}
-.nk .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,calc(var(--vw)*1.4),22px);padding:var(--pad) var(--pad) var(--pad) 0;min-height:0}
-.nk .tile{margin:0;display:flex;flex-direction:column;min-height:0}
-.nk .stagej{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow:hidden}
-.nk .jw{position:relative;display:inline-block;max-width:100%;max-height:100%;line-height:0}
-.nk .jw img{max-width:100%;max-height:calc(var(--vh)*56);width:auto;height:auto}
-.nk .chest{position:absolute;left:var(--x);top:var(--y);width:var(--w);transform:translate(-50%,-50%);background:#fff;padding:3.2% 3.6%;border-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,.35);line-height:0}
-.nk .chest img{width:100%;max-width:none;max-height:none;height:auto}
-.nk .tile figcaption{padding:10px 2px 0;font:700 13px/1.2 var(--disp);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
-.nk .tile figcaption small{display:block;font:500 11px/1.3 var(--body);letter-spacing:.04em;text-transform:none;color:var(--mute);margin-top:3px}
 @media (max-width:820px){
-  .nk .body{display:block;overflow:auto}
-  .nk .tiles{grid-template-columns:1fr;padding:0 var(--pad) var(--pad)}
-  .nk .jw img{max-height:calc(var(--vh)*44)}
   .way .art{height:calc(var(--vh)*46)}
 }
 </style>
@@ -419,7 +400,7 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
       <div class="kick in">Who we are</div>
       <h2 class="in d1">Two clubs, one pathway</h2>
       <p class="lead in d1">Virginia Valor FC is the travel club of Chantilly Youth Association and Southwestern Youth Association. The two clubs combined their travel programs in 2021.</p>
-      <div class="eq in d2" aria-label="CYA plus SYA equals Virginia Valor FC"><span>CYA</span><i>+</i><span>SYA</span><i>=</i><img src="images/crest.webp" alt="Virginia Valor FC"></div>
+      <div class="eq in d2" aria-label="CYA plus SYA equals Virginia Valor FC"><img class="club" src="images/cya.webp" alt="Chantilly Youth Association"><i>+</i><img class="club sya" src="images/sya.webp" alt="Southwestern Youth Association"><i>=</i><img class="vv" src="images/crest.webp" alt="Virginia Valor FC"></div>
       <dl class="facts in d3">
         <dt>Status</dt><dd>Registered 501(c)(3) nonprofit</dd>
         <dt>Travel soccer</dt><dd>U9 to U19, a 10-month program from August through June</dd>
@@ -580,39 +561,14 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
     </div>
     <div class="stage">
       <div class="seg in" id="seg" role="tablist">
-        <button class="act" data-k="home">Home</button><button data-k="away">Away</button><button data-k="practice">Practice</button>
+        <button class="act" data-k="gold">Gold</button><button data-k="maroon">Maroon</button><button data-k="black">Black</button>
       </div>
-      <svg class="shirt in d1" id="shirt" viewBox="0 0 420 440" role="img" aria-label="Jersey diagram showing the chest sponsor placement">
-        <path class="body-s" d="M138 22 L172 12 Q210 46 248 12 L282 22 L392 84 L358 178 L314 156 L314 426 L106 426 L106 156 L62 178 L28 84 Z" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
-        <path class="trim" d="M172 12 Q210 46 248 12 Q210 64 172 12 Z" stroke="#111" stroke-width="3"/>
-        <path class="trim" d="M62 178 L28 84 M358 178 L392 84" stroke-width="10" stroke-linecap="square" fill="none" opacity=".9"/>
-        <image href="images/crest.webp" x="246" y="84" width="38" height="50"/>
-        <g class="zone"><rect x="138" y="168" width="144" height="70"/><text x="210" y="211" id="zt">YOUR LOGO</text></g>
-      </svg>
-      <div class="cap">Placement diagram. Current jersey partners are STACK Infrastructure, Parsons and Cheron Orthodontics.</div>
+      <img class="shirt in d1" id="shirtimg" src="images/jersey-gold.webp" alt="Next season Valor jersey with STACK Infrastructure on the chest">
+      <div class="cap">Next season's kit, shown with a chest sponsor. Current jersey partners are STACK Infrastructure, Parsons and Cheron Orthodontics.</div>
     </div>
     <figure class="r in d2"><img src="images/stackkit.webp" alt="Young Valor players, one wearing a STACK Infrastructure jersey"><figcaption class="lab"><b>On the field now</b>STACK Infrastructure branding on a Valor jersey.</figcaption></figure>
   </div>
   <div class="folio">Page<b>08</b></div>
-</section>
-
-<!-- 8b NEXT SEASON KIT -->
-<section class="page nk" id="nextkit" data-title="Next Season's Kit">
-  <header class="run"><span class="rl"><img src="images/vmark.webp" alt="">Virginia Valor FC</span><span class="rr">Kit preview</span></header>
-  <div class="body">
-    <div class="l">
-      <div class="kick in">Next season's kit</div>
-      <h2 class="in d1">STACK on the chest</h2>
-      <p class="lead in d1">Three jersey designs are in the running for next season, each shown with the STACK Infrastructure chest placement.</p>
-      <div class="chips2 in d2"><div><b>Placement</b><span>Center chest</span></div><div><b>Partner</b><span>STACK Infrastructure</span></div><div><b>Designs</b><span>Three</span></div></div>
-    </div>
-    <div class="tiles in d2">
-      <figure class="tile"><div class="stagej" style="--bg:#f8f8f8"><div class="jw"><img src="images/jersey-gold.webp" alt="Gold and white jersey design"><span class="chest" style="--x:50%;--y:42%;--w:30%"><img src="images/stack.webp" alt="STACK Infrastructure"></span></div></div><figcaption>Gold and white<small>Concept with STACK placement</small></figcaption></figure>
-      <figure class="tile"><div class="stagej" style="--bg:#c2c2c1"><div class="jw"><img src="images/jersey-maroon.webp" alt="Maroon and white jersey design"><span class="chest" style="--x:51%;--y:38%;--w:28%"><img src="images/stack.webp" alt="STACK Infrastructure"></span></div></div><figcaption>Maroon and white<small>Concept with STACK placement</small></figcaption></figure>
-      <figure class="tile"><div class="stagej" style="--bg:#d1d1d1"><div class="jw"><img src="images/jersey-black.webp" alt="Black and white jersey design"><span class="chest" style="--x:50%;--y:38%;--w:30%"><img src="images/stack.webp" alt="STACK Infrastructure"></span></div></div><figcaption>Black and white<small>Concept with STACK placement</small></figcaption></figure>
-    </div>
-  </div>
-  <div class="folio">Page<b>09</b></div>
 </section>
 
 <!-- 9 EVENTS -->
@@ -627,9 +583,8 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
         <li><button class="act"><span class="nm">Golf Tournament</span><span class="ty">Fundraiser</span><span class="more">Annual fundraiser with title, hole, contest and meal sponsorships.</span></button></li>
         <li><button><span class="nm">Father's Day Fiesta</span><span class="ty">All-star tourney</span><span class="more">Valor's all-star tournament on Father's Day weekend.</span></button></li>
         <li><button><span class="nm">3v3 Community Cup</span><span class="ty">Gift drive</span><span class="more">Second annual in 2026: Saturday, November 28 at Sully Highlands Park, U8 through U14, with a gift drive for DC Candlelighters Childhood Cancer Foundation. Pictured here.</span></button></li>
-        <li><button><span class="nm">Annual Turkey Trot</span><span class="ty">Community</span><span class="more">Valor's annual Thanksgiving run, backed by local business sponsors.</span></button></li>
         <li><button><span class="nm">Valor Southwest Trip</span><span class="ty">Travel</span><span class="more">A U14 club event each February: the DelSol Desert Classic in Phoenix or the San Antonio Copa.</span></button></li>
-        <li><button><span class="nm">Winter Gala</span><span class="ty">Recognition</span><span class="more">An evening recognizing our players and families for their commitment, support and success.</span></button></li>
+        <li><button><span class="nm">Winter Awards Banquet</span><span class="ty">Recognition</span><span class="more">An evening recognizing our players and families for their commitment, support and success.</span></button></li>
       </ul>
     </div>
     <div class="r in d1"><img class="a" src="images/giftdrive.webp" alt="Valor gift drive tent at the 3v3 Community Cup"><img class="b" src="images/champions.webp" alt="3v3 Community Cup champions"><span class="evcap">3v3 Community Cup and Gift Drive</span></div>
@@ -646,7 +601,7 @@ p{font-size:clamp(15px,calc(var(--vw)*1.25),19px);line-height:1.5;color:var(--in
       <h2 class="in d1">Become a partner</h2>
       <div class="ways in d2">
         <div><b>Jersey sponsor</b><span>Front-of-shirt placement on the home, away or practice jersey.</span></div>
-        <div><b>Event sponsor</b><span>Golf tournament, 3v3 Community Cup, Turkey Trot and Winter Gala.</span></div>
+        <div><b>Event sponsor</b><span>Golf tournament, 3v3 Community Cup and the Winter Awards Banquet.</span></div>
         <div><b>Digital feature</b><span>Your events and promotions shared with our families online.</span></div>
       </div>
       <dl class="contact in d3">
@@ -809,13 +764,11 @@ document.querySelectorAll('.post').forEach(p=>p.onclick=()=>{document.querySelec
 
 
 /* ---------- jersey toggle ---------- */
-const kits={home:{b:'#111110',t:'#8B7A4C',z:'#C8B98F'},away:{b:'#F4F1E8',t:'#111110',z:'#111110'},practice:{b:'#8B7A4C',t:'#111110',z:'#111110'}};
-const sh=document.getElementById('shirt');
-function kit(k){const c=kits[k];sh.querySelector('.body-s').setAttribute('fill',c.b);
-  sh.querySelectorAll('.trim').forEach(e=>{e.setAttribute('stroke',c.t);if(e.tagName==='path'&&e.getAttribute('fill')!=='none')e.setAttribute('fill',c.t)});
-  sh.querySelector('#zt').setAttribute('fill',c.z);sh.querySelector('.zone rect').style.stroke=c.z;
-  document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('act',b.dataset.k===k));}
-document.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>kit(b.dataset.k));kit('home');
+const shirt=document.getElementById('shirtimg');
+document.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{
+  shirt.src='images/jersey-'+b.dataset.k+'.webp';
+  document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('act',x===b));});
+['gold','maroon','black'].forEach(k=>{const i=new Image();i.src='images/jersey-'+k+'.webp';});
 
 /* ---------- events ---------- */
 document.querySelectorAll('#fx button').forEach(b=>b.onclick=()=>document.querySelectorAll('#fx button').forEach(x=>x.classList.toggle('act',x===b)));
