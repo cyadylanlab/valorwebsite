@@ -114,9 +114,16 @@
   .minibtn{margin-top:9px;background:transparent;border:1.5px solid var(--deep);color:var(--gold);
     border-radius:9px;padding:9px 13px;font-size:14px;font-weight:700;cursor:pointer;min-height:42px}
   .minibtn:active{transform:scale(.98)}
-  .reqbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:11px 14px;
-    background:var(--raise);border:1px solid var(--line);border-radius:11px;font-size:14px;color:var(--soft)}
-  .reqbar b{color:var(--ink);font-weight:700}
+  .needs{display:grid;gap:12px}
+  .need{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+    border-radius:14px;box-shadow:var(--sh);padding:14px 16px}
+  .need .gmtop{margin-bottom:6px}
+  .askrow{display:flex;gap:10px;align-items:stretch;margin-top:12px;flex-wrap:wrap}
+  .askrow .picker{flex:0 0 auto}
+  .askrow .btn{flex:1;min-width:190px;min-height:48px;font-size:15px}
+  .tally{margin:0 0 13px;font-family:var(--mono);font-size:13px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--faint)}
+  .tally b{color:var(--ink);font-weight:600}
   .picker{background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:9px;
     padding:9px 11px;min-height:44px;max-width:100%}
   .tag{flex:0 0 auto;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.07em;
@@ -143,16 +150,15 @@
   .day[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#17160f}
   .day[aria-pressed="true"] small{color:#4a4126}
 
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   .cam{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);overflow:hidden;
-    display:flex;flex-direction:column;border-top:4px solid #3a362d;transition:transform .14s ease}
-  .cam:active{transform:scale(.99)}
+    display:flex;flex-direction:column;border-top:4px solid #3a362d}
   .cam.free{border-top-color:var(--go)}
   .cam.busy{border-top-color:var(--stop)}
   .cam.mine{border-top-color:var(--gold)}
-  .shot{position:relative;padding:20px 10px 4px;
+  .shot{position:relative;padding:16px 10px 2px;
     background:radial-gradient(ellipse at 50% 140%, rgba(200,185,143,.16), rgba(255,255,255,0) 70%)}
-  .shot img{width:100%;max-width:104px;height:auto;display:block;margin:0 auto;
+  .shot img{width:100%;max-width:88px;height:auto;display:block;margin:0 auto;
     filter:drop-shadow(0 5px 8px rgba(20,19,15,.15))}
   .cam.off .shot img{filter:grayscale(1) opacity(.4)}
   .cam.busy .shot img{filter:grayscale(.75) opacity(.72)}
@@ -166,7 +172,7 @@
   .cam.mine .state{color:var(--gold)} .cam.mine .state i{background:var(--gold)}
   .cam.off .state{color:var(--faint)}
   .camact .flat.gold{color:var(--gold)}
-  .who{padding:3px 11px 10px;font-size:13px;color:var(--soft);line-height:1.3;min-height:18px}
+  .who{padding:2px 11px 12px;font-size:13px;color:var(--soft);line-height:1.3;min-height:16px}
   .camact{padding:0 10px 11px;margin-top:auto}
   .camact .btn{min-height:44px;font-size:14px;border-radius:9px;line-height:1.2;padding:6px 8px;white-space:normal}
   .camact .flat{text-align:center;font-size:12px;color:var(--faint);padding:0 0 6px;
@@ -201,7 +207,8 @@
     .jobs{grid-template-columns:repeat(2,1fr)}
   }
   @media (min-width:900px){
-    .grid{grid-template-columns:repeat(4,1fr)}
+    .grid{grid-template-columns:repeat(6,1fr)}
+    .needs{grid-template-columns:repeat(2,1fr)}
     .weeks{grid-template-columns:repeat(2,1fr);align-items:start}
   }
   @media (min-width:1150px){
@@ -210,6 +217,7 @@
     .word{height:40px}
     .band h1{font-size:25px}
     .grid{grid-template-columns:repeat(6,1fr)}   /* two rows of six */
+    .needs{grid-template-columns:repeat(3,1fr)}
     .weeks{grid-template-columns:repeat(4,1fr)}
     .jobs{grid-template-columns:repeat(3,1fr)}
     .toast{left:auto;right:28px;max-width:430px}
@@ -486,12 +494,6 @@
               h('b',{class:'gmteam'},g.team),
               h('p',{class:'gmwhere'},placeName(g.field,g.team)),
               g.camera?h('p',{class:'gmcam'},g.camera):null];
-            if(!g.camera&&g.req==='requested')
-              body.push(h('button',{class:'linkbtn',
-                onclick:function(){ send({action:'cancel_request',date:d.date,field:g.field}); }},'Cancel request'));
-            else if(!g.camera&&canRequest(d.date))
-              body.push(h('button',{class:'minibtn',
-                onclick:function(){ send({action:'request',date:d.date,field:g.field}); }},'Request a camera'));
             if(g.reqNote) body.push(h('p',{class:'gmwhere'},g.reqNote));
             return h('div',{class:'gm'},body);
           });
@@ -541,10 +543,49 @@
     return hit||list[0];
   }
 
+  // Requests live here, where the event is named. One card per game of yours with no camera.
+  function needsSection(){
+    var mine=(state.unassigned||[]).filter(function(u){ return u.mine; })
+      .sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+    if(!mine.length) return h('p',{class:'muted',style:'margin:0;font-size:15px'},
+      'Every game of yours has a camera sorted. Nothing to ask for.');
+    return h('div',{class:'needs'},mine.map(function(u){
+      var freeThen=(state.cameras||[]).filter(function(c){
+        return c.active&&camStateOn(c.name,u.date).k==='free'; })
+        .sort(function(a,b){ return camNum(a.name)-camNum(b.name); });
+      var sel=h('select',{class:'picker','aria-label':'Preferred camera'},
+        [h('option',{value:''},'Any camera')].concat(freeThen.map(function(c){
+          return h('option',{value:c.name},c.name); })));
+      var body=[
+        h('div',{class:'gmtop'},
+          h('span',{class:'gmday'},dayName(u.date)+(u.time?'  '+u.time:'  All event')),
+          u.req==='requested'?h('span',{class:'tag wait'},'Requested')
+            :u.req==='declined'?h('span',{class:'tag stop'},'Turned down')
+            :h('span',{class:'tag none'},'No camera')),
+        h('b',{class:'gmteam'},u.team),
+        h('p',{class:'gmwhere'},placeName(u.field,u.team))];
+      if(u.req==='requested'){
+        body.push(h('p',{class:'gmcam'},u.asked?('You asked for '+u.asked+'. Craig will confirm.')
+                                              :'Craig will confirm which camera you get.'));
+        body.push(h('button',{class:'linkbtn',
+          onclick:function(){ send({action:'cancel_request',date:u.date,field:u.field}); }},'Cancel request'));
+      } else if(!canRequest(u.date)){
+        body.push(h('p',{class:'gmcam'},'Requests for that day are closed. Ask Craig or Dylan.'));
+      } else {
+        if(u.reqNote) body.push(h('p',{class:'gmcam'},u.reqNote));
+        body.push(h('div',{class:'askrow'},
+          freeThen.length?sel:null,
+          h('button',{class:'btn',onclick:function(){
+            send({action:'request',date:u.date,field:u.field,camera:sel.value}); }},'Request a camera')));
+      }
+      return h('article',{class:'need'},body);
+    }));
+  }
+
+  // Read only. Which cameras are in and out on a given day.
   function camGrid(){
     var days=dayOptions();
     if(!pickDay||days.indexOf(pickDay)<0){
-      // open on the next day the coach actually needs a camera
       var want='';
       days.forEach(function(d){ if(!want&&myGamesOn(d).length) want=d; });
       pickDay=want||days[0]||state.today;
@@ -556,65 +597,26 @@
         h('b',null,monthOf(d)+' '+dayNum(d)));
     }));
 
-    var open=myGameOn(pickDay), mineToday=myGamesOn(pickDay), target=targetGame(pickDay);
     var cams=(state.cameras||[]).slice().sort(function(a,b){ return camNum(a.name)-camNum(b.name); });
+    var nFree=0,nOut=0,nOff=0;
     var tiles=cams.map(function(cam){
       var st=cam.active?camStateOn(cam.name,pickDay):{k:'off'};
+      if(st.k==='off') nOff++; else if(st.k==='free') nFree++; else nOut++;
       var cls='cam '+(st.k==='off'?'off':st.k==='free'?'free':st.k==='mine'?'mine':'busy');
-      var label=st.k==='off'?'Out of service':st.k==='free'?'Free':st.k==='mine'?'Yours':'Taken';
-      var who=st.k==='off'?(cam.notes||''):
-              st.k==='free'?'Nobody has it':
-              st.k==='mine'?(st.status==='out'?'Signed out to you':'Assigned to you'):
-              (first(st.holder)?'With '+st.holder:'In use');
-      var action=null;
-      if(st.k==='mine'&&st.c){
-        var pickMine=st.c.games[0].mine, retMine=st.c.games[st.c.games.length-1].mine;
-        if(st.c.status==='waiting'&&pickMine)
-          action=h('button',{class:'btn go',onclick:(function(c){return function(){act(c,'pickup');};})(st.c)},'Sign out');
-        else if(st.c.status==='out'&&retMine)
-          action=h('button',{class:'btn stop',onclick:(function(c){return function(){act(c,'return');};})(st.c)},'Sign in');
-        else action=h('div',{class:'flat'},st.c.status==='returned'?'Signed back in':'No tap needed');
-      } else if(st.k==='off'){
-        action=null;
-      } else if(st.k==='free'){
-        if(!target) action=h('div',{class:'flat'},'No game that day');
-        else if(!canRequest(pickDay)) action=h('div',{class:'flat'},'Requests closed');
-        else if(target.req==='requested')
-          action=target.asked===cam.name?h('div',{class:'flat gold'},'You asked for this one')
-                 :null;
-        else action=h('button',{class:'btn quiet',onclick:(function(o,name){return function(){
-          send({action:'request',date:o.date,field:o.field,camera:name});};})(target,cam.name)},'Request this camera');
-      } else {
-        action=h('div',{class:'flat'},st.status==='returned'?'Back in':'Booked');
-      }
+      var label=st.k==='off'?'Out of service':st.k==='free'?'In':st.k==='mine'?'Yours':'Out';
+      var who=st.k==='off'?(cam.notes||'')
+            :st.k==='free'?''
+            :st.k==='mine'?(st.status==='out'?'Signed out to you':'Assigned to you')
+            :(first(st.holder)?'With '+first(st.holder):'In use');
       return h('article',{class:cls},
         h('div',{class:'shot'},h('span',{class:'num'},cam.name),h('img',{src:CAM_SHOT,alt:''})),
         h('div',{class:'state'},h('i'),label),
-        h('div',{class:'who'},who),
-        h('div',{class:'camact'},action));
+        h('div',{class:'who'},who));
     });
 
-    var note=null;
-    if(mineToday.length>1&&canRequest(pickDay)){
-      var sel=h('select',{class:'picker','aria-label':'Which game to request for',
-        onchange:function(e){ reqFor=e.target.value; render(); }},
-        mineToday.map(function(u){
-          var k=u.time+'|'+u.field;
-          return h('option',{value:k,selected:target&&k===(target.time+'|'+target.field)},
-            (u.time?u.time+'  ':'')+u.team+'  ·  '+placeName(u.field,u.team));
-        }));
-      note=h('div',{class:'reqbar'},h('span',null,'Requesting for'),sel);
-    } else if(target&&target.req==='requested')
-      note=h('div',{class:'reqbar'},
-        h('span',null,target.asked?('You asked for '+target.asked+' for'):'Request in for'),
-        h('b',null,(target.time?target.time+'  ':'')+target.team),
-        h('span',null,'Craig will confirm which camera you get.'));
-    else if(target&&canRequest(pickDay))
-      note=h('div',{class:'reqbar'},h('span',null,'Requesting for'),
-        h('b',null,(target.time?target.time+'  ':'')+target.team+'  ·  '+placeName(target.field,target.team)));
-    else if(!mineToday.length)
-      note=h('p',{class:'muted',style:'margin:0 0 14px;font-size:15px'},
-        'No game of yours needs a camera that day. This is the whole fleet, so you can still see what is free.');
+    var note=h('p',{class:'tally'},
+      h('b',null,nFree),' in  ',h('b',null,nOut),' out',
+      nOff?[' ',h('b',null,nOff),' out of service']:null);
 
     return [pills,note,cams.length?h('div',{class:'grid'},tiles):h('div',{class:'wkempty'},'No cameras listed yet.')];
   }
@@ -633,9 +635,12 @@
       later.length?h('p',{class:'muted',style:'margin:14px 0 0;font-size:15px'},
         later.length===1?'One more camera job later this month. It is in your games below.'
                         :later.length+' more camera jobs later this month. They are in your games below.'):null,
+      h('h2',null,'Needs a camera'),
+      needsSection(),
       h('h2',null,'Your games'),
       weeksSection(),
-      h('h2',null,'Every camera'),
+      h('div',{class:'h2row'},h('h2',null,'What is in and out'),
+        h('span',{class:'muted sm'},'Pick a day')),
       camGrid(),
       h('div',{class:'foot'},h('img',{class:'hudl',src:HUDL_LOGO,alt:'Hudl'}),
         h('span',null,DEMO?'Sample data.':'Virginia Valor FC'),
