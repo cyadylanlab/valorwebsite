@@ -485,40 +485,29 @@
     .remove-player:hover{color:#a01a3f}
     .roster-tip{font-size:13px;color:var(--muted)}
 
-    /* medical release upload, one per player */
-    .release{grid-column:2/-1;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:11px 14px;border:1.5px dashed var(--line-2);border-radius:8px;background:#fbfcfd}
-    .release.has{border-style:solid;border-color:#bfe3c9;background:#f3fbf5}
-    .release.invalid{border-color:#c2264c;border-style:solid;background:#fffafb}
-    .release-pick{position:relative;overflow:hidden;display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border:1.5px solid var(--line-2);border-radius:8px;background:#fff;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer;white-space:nowrap}
-    .release-pick:hover{border-color:var(--blue-deep);color:var(--blue-deep)}
-    .release-pick:focus-within{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(0,174,235,.16)}
-    .release-pick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
-    .release-text{flex:1 1 220px;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
-    .release-text b{color:var(--ink);font-weight:750}
-    .release .field-msg{flex-basis:100%;margin:0}
-    .release.invalid .field-msg{display:block}
-    .form-link{font-weight:750;color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
-
-    .squad.with-rel td.dob{width:22%}
-    .squad td.rel{width:36%;font-size:14px}
-    .rel-on,.rel-miss,.rel-wait{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:750;vertical-align:middle;line-height:1.3}
+    /* medical releases: family link and signed status */
+    .share-box{margin:22px 0 6px;padding:20px 22px;background:#f3fbfd;border:1px solid #cfe8f1;border-left:4px solid var(--blue-deep);border-radius:10px;text-align:left}
+    .share-box > strong{display:block;font-size:15.5px;font-weight:800;color:var(--ink)}
+    .share-box > span{display:block;margin-top:6px;font-size:14.5px;color:var(--ink-2);line-height:1.55}
+    .share-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .share-row input{flex:1 1 260px;min-width:0;min-height:44px;padding:10px 12px;border:1.5px solid var(--line-2);border-radius:8px;background:#fff;font-size:14px;color:var(--ink-2)}
+    .share-row .btn{min-height:44px;padding:10px 16px;font-size:14.5px}
+    .share-done{display:block;margin-top:10px;font-size:13px;font-weight:700;color:#1d6b35;min-height:1em}
+    .squad.with-rel td.dob{width:24%}
+    .squad td.rel{width:34%}
+    .rel-on,.rel-miss,.rel-wait{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:750;line-height:1.3}
     .rel-on{color:#1d6b35}
-    .rel-on i,.rel-miss i{width:8px;height:8px;border-radius:50%;background:#2c9a4f}
-    .rel-miss{color:#a01a3f}
-    .rel-miss i{background:#c2264c}
+    .rel-miss{color:#9c3c10}
+    .rel-on i,.rel-miss i{width:8px;height:8px;border-radius:50%;background:#2c9a4f;flex:none}
+    .rel-miss i{background:var(--orange)}
     .rel-wait{color:var(--muted);font-weight:600}
-    .rel-btn{position:relative;overflow:hidden;display:inline-block;vertical-align:middle;line-height:1.3;margin-left:12px;font-size:13.5px;font-weight:700;color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-    .rel-btn input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
-    .rel-btn:focus-within{outline:3px solid rgba(0,174,235,.35);outline-offset:2px}
-    .rel-note{display:block;margin-top:4px;font-size:12.5px;font-weight:600;color:#a01a3f}
-    .banner.release-alert{margin:18px 0 0;background:#fff1f4;border:1px solid #e6adbc;border-left:4px solid #c2264c}
-    .banner.release-alert strong{color:#87152f}
+    .rel-by{display:block;margin-top:2px;font-size:12.5px;color:var(--muted)}
+    .banner.release-alert{margin:18px 0 0;background:#fff6ee;border:1px solid #f0d6bd;border-left:4px solid var(--orange)}
+    .banner.release-alert strong{color:#7a3c05}
     .banner.release-done{margin:18px 0 0;background:#f3fbf5;border:1px solid #bfe3c9;border-left:4px solid #2c9a4f}
     .banner.release-done strong{color:#1d6b35}
-    @media(max-width:900px){
-      .release{grid-column:2}
-    }
-    @media print{.rel-btn,.release-pick,#rv-rel-alert{display:none !important}}
+    .form-link{font-weight:750;color:var(--blue-deep);text-decoration:underline;text-underline-offset:3px}
+    @media print{.share-box{display:none !important}}
 
     .ack-box{background:#f3fbfd;border:1px solid #cfe8f1;border-radius:10px;padding:20px 22px}
     .ack-row{display:grid;grid-template-columns:21px minmax(0,1fr);gap:12px;align-items:start}
@@ -852,10 +841,10 @@
         <aside class="roster-aside">
           <div class="rule-bar" aria-hidden="true"></div>
           <h2 id="roster-title" class="display">Send in<br>your squad.</h2>
-          <p>One adult coach or team representative fills this in once for the whole team. You need every player's full name, date of birth and signed medical release, and the name of your head coach.</p>
-          <p class="note"><strong>Medical releases come in here.</strong><br>Every family fills out and signs the <a class="form-link" href="community-cup-2026-medical-release.pdf" target="_blank" rel="noopener">Cup medical release form</a>. Upload a photo or PDF of each one with your roster. Club and generic forms are not accepted.</p>
-          <p class="note"><strong>PlayMetrics is for registration and payment only.</strong><br>Your roster and releases come to us through this page, never through PlayMetrics.</p>
-          <p class="note"><strong>Proof of age stays with you.</strong><br>Have a current player card, or a copy or photo of a birth certificate or passport, on hand for every player in case we ask on tournament day. Do not upload it here.</p>
+          <p>One adult coach or team representative fills this in once for the whole team. You need every player's full name and date of birth, and the name of your head coach.</p>
+          <p class="note"><strong>Medical releases are signed online.</strong><br>Once your roster is in, you get a link to send your families. Each parent fills in the release for their child and signs with a click. Nothing to print, scan or collect.</p>
+          <p class="note"><strong>PlayMetrics is for registration and payment only.</strong><br>Your roster comes to us through this page, never through PlayMetrics.</p>
+          <p class="note"><strong>Proof of age stays with you.</strong><br>Have a current player card, or a copy or photo of a birth certificate or passport, on hand for every player in case we ask on tournament day. Do not send it here.</p>
           <a class="aside-jump" href="#find">Already sent a roster?</a>
         </aside>
 
@@ -907,6 +896,7 @@
                 <tbody id="rv-players"></tbody>
               </table>
               <div class="banner release-alert" id="rv-rel-alert" role="status" hidden></div>
+              <div class="share-box" id="rv-share" hidden></div>
             </div>
 
             <div class="review-foot">
@@ -972,7 +962,7 @@
                 <fieldset>
                   <legend>Players</legend>
                   <p class="legend-hint">Three players minimum, six maximum. Three on the pitch at a time, so a squad of five or six gives you cover.</p>
-                  <p class="legend-hint" id="release-hint" hidden>Each player needs a signed <a class="form-link" href="community-cup-2026-medical-release.pdf" target="_blank" rel="noopener">Cup medical release</a>. Upload a clear photo or a PDF of the whole form, one per player.</p>
+                  <p class="legend-hint" id="release-hint" hidden>Use each player's full legal name. Parents pick their child from this list when they sign the medical release.</p>
                   <div id="player-rows"></div>
                   <div class="row-actions">
                     <button class="add-player" type="button" id="add-player"><span class="glyph" aria-hidden="true">+</span> Add a player</button>
@@ -995,7 +985,7 @@
               <div class="form-error" id="form-error" role="alert" tabindex="-1" hidden></div>
 
               <div class="form-foot">
-                <p class="fine">Player details and medical releases go only to the tournament registrar. Double-check the dates of birth before you send.</p>
+                <p class="fine">Player details go to the tournament registrar for roster review. Double-check the dates of birth before you send.</p>
                 <button class="btn submit-btn" type="submit" id="submit-roster">Submit roster</button>
               </div>
             </form>
@@ -1010,7 +1000,7 @@
                 <strong>Check your email.</strong>
                 <span>We have sent a copy of the roster to <b id="success-email"></b>, with a private link you can use to look at it or change it later. If it has not arrived in a few minutes, check your spam folder.</span>
               </div>
-              <div class="success-warn" id="success-rel" hidden></div>
+              <div class="share-box" id="success-share" hidden></div>
               <p id="success-pm">Your place in the bracket is held by your PlayMetrics registration, not by this roster. If you are not sure you are registered and paid, check your PlayMetrics confirmation email.</p>
               <div class="gate-actions">
                 <button class="btn ghost" type="button" id="view-roster">See what I sent</button>
@@ -1096,11 +1086,10 @@
 
       staffEmail: 'dsutherland@virginiavalorfc.org',
 
-      // Apps Script web app /exec URL from Releases.gs. While this still
-      // says PASTE, the page works exactly as before with no upload step.
+      // Apps Script web app /exec URL from Releases.gs. Families sign their
+      // medical releases on 3v3release.html; this page shows the coach the
+      // team link and who has signed. Set to '' to switch that off.
       releasesEndpoint: 'https://script.google.com/macros/s/AKfycbyO5ZJkF7GCvrnf4uh1Oiu7LbMP11sJNmsin4MLMgavsRSqy8vGW4m523xoko5OZ8tcWg/exec',
-      releaseFormUrl: 'community-cup-2026-medical-release.pdf',
-      maxReleaseMB: 10,
 
       // Earliest date of birth allowed in each age group, 2026-27 season,
       // August 1 to July 31. Playing up is allowed, playing down is not.
@@ -1127,7 +1116,6 @@
     let loaded = null;    // the roster we are looking at, if any
     let token  = '';      // private link token, if any
     let busy   = false;
-    let onFile = {};      // normalised player name -> true, releases already uploaded
 
     /* ------------------------------------------------------------------ */
     /* small helpers                                                       */
@@ -1177,131 +1165,69 @@
     function emailOk(v) { return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(String(v || '').trim()); }
 
     /* ------------------------------------------------------------------ */
-    /* medical releases                                                    */
+    /* medical releases: the family link and who has signed                */
     /* ------------------------------------------------------------------ */
 
     function norm(name) { return String(name || '').trim().toLowerCase().replace(/\s+/g, ' '); }
 
-    function postRel(payload) {
+    function releaseStatus(tok) {
       return fetch(ROSTER.releasesEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      }).then(function (r) { return r.json(); });
-    }
-
-    function releaseTypeOk(file) {
-      const t = String(file.type || '').toLowerCase();
-      if (/^(application\/pdf|image\/(jpeg|png|webp|heic|heif))$/.test(t)) return true;
-      return /\.(pdf|jpe?g|png|webp|heic|heif)$/i.test(file.name || '');
-    }
-
-    function checkReleaseFile(file) {
-      if (!file) return 'Choose a file.';
-      if (!releaseTypeOk(file)) return 'Upload a photo (JPG, PNG or HEIC) or a PDF of the signed form.';
-      const isPdf = /pdf/i.test(file.type) || /\.pdf$/i.test(file.name);
-      if (isPdf && file.size > ROSTER.maxReleaseMB * 1048576) return 'That PDF is over ' + ROSTER.maxReleaseMB + ' MB. Try a photo of the form instead.';
-      if (file.size > 25 * 1048576) return 'That file is too large. Try a smaller photo of the form.';
-      return '';
-    }
-
-    /* Phone photos are often 4 to 8 MB. Shrink them before upload so six
-       players do not take minutes on a weak signal. Anything the browser
-       cannot draw, like HEIC outside Safari, goes up as it is. */
-    function shrink(file) {
-      if (!/^image\/(jpeg|png|webp)$/i.test(file.type || '')) return Promise.resolve(file);
-      return new Promise(function (resolve) {
-        const url = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = function () {
-          URL.revokeObjectURL(url);
-          const max = 2200;
-          const w = img.naturalWidth, h = img.naturalHeight;
-          const k = Math.min(1, max / Math.max(w, h));
-          if (k === 1 && file.size < 1500000) { resolve(file); return; }
-          const c = document.createElement('canvas');
-          c.width = Math.round(w * k); c.height = Math.round(h * k);
-          const ctx = c.getContext('2d');
-          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
-          ctx.drawImage(img, 0, 0, c.width, c.height);
-          c.toBlob(function (b) {
-            if (b && b.size < file.size) {
-              resolve(new File([b], String(file.name || 'release').replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' }));
-            } else resolve(file);
-          }, 'image/jpeg', 0.85);
-        };
-        img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };
-        img.src = url;
-      });
-    }
-
-    function toBase64(blob) {
-      return new Promise(function (resolve, reject) {
-        const fr = new FileReader();
-        fr.onload = function () { resolve(String(fr.result).split(',')[1] || ''); };
-        fr.onerror = function () { reject(fr.error); };
-        fr.readAsDataURL(blob);
-      });
-    }
-
-    /* r is the roster (reference, teamName, email ...), p is { name, dob } */
-    function uploadRelease(r, p, file) {
-      return shrink(file).then(function (f) {
-        if (f.size > ROSTER.maxReleaseMB * 1048576) throw new Error('That file is over ' + ROSTER.maxReleaseMB + ' MB.');
-        return toBase64(f).then(function (data) {
-          return postRel({
-            action: 'upload',
-            reference: r.reference || '',
-            teamName: r.teamName || '',
-            ageGroup: r.ageGroup || '',
-            division: r.division || '',
-            coachName: r.coachName || '',
-            email: r.email || '',
-            playerName: p.name,
-            playerDob: p.dob || '',
-            fileName: f.name || 'release',
-            mimeType: f.type || '',
-            data: data
-          });
-        });
-      }).then(function (res) {
-        if (!res || !res.ok) throw new Error((res && res.error) || 'The upload did not go through.');
-        onFile[norm(p.name)] = true;
+        body: JSON.stringify({ action: 'coach', token: tok })
+      }).then(function (r) { return r.json(); }).then(function (res) {
+        if (!res || !res.ok) throw new Error((res && res.error) || 'status');
         return res;
       });
     }
 
-    function fetchReleaseStatus(r) {
-      if (!relLive || !r || !r.reference) return Promise.resolve(null);
-      return postRel({ action: 'status', reference: r.reference, email: r.email || '' })
-        .then(function (res) {
-          if (!res || !res.ok) throw new Error('status');
-          onFile = {};
-          (res.players || []).forEach(function (n) { onFile[norm(n)] = true; });
-          return onFile;
-        });
+    function copyText(text, input) {
+      function fallback() {
+        if (input) { input.focus(); input.select(); }
+        else {
+          const t = document.createElement('textarea');
+          t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+          document.body.appendChild(t); t.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          t.remove();
+          return Promise.resolve();
+        }
+        try { document.execCommand('copy'); } catch (e) {}
+        return Promise.resolve();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(fallback);
+      }
+      return fallback();
     }
 
-    function paintRelease(row) {
-      const box = $('.release', row);
-      if (!box) return;
-      const name = $('[data-name]', row).value;
-      const txt = $('.release-text', box);
-      const pick = $('.release-pick span', box);
-      box.classList.remove('invalid');
-      if (row._file) {
-        box.classList.add('has');
-        txt.innerHTML = '<b>' + esc(row._file.name) + '</b> will upload when you submit.';
-        pick.textContent = 'Choose a different file';
-      } else if (name && onFile[norm(name)]) {
-        box.classList.add('has');
-        txt.innerHTML = '<b>Release on file.</b> Choose a file only if you need to replace it.';
-        pick.textContent = 'Replace release';
-      } else {
-        box.classList.remove('has');
-        txt.innerHTML = 'Upload a photo or PDF of this player\'s signed medical release.';
-        pick.textContent = 'Upload medical release';
-      }
+    function familyMessage(st, coach) {
+      return 'Hi ' + st.teamName + ' families, please complete your child\'s medical release for the 3v3 Community Cup on ' +
+        ROSTER.eventDate + '. It takes about three minutes on your phone and there is nothing to print: ' + st.shareUrl +
+        ' Please have it done by ' + (st.deadline || ROSTER.rosterDeadline) + '. Thank you!' + (coach ? ' ' + coach : '');
+    }
+
+    function paintShare(box, st, coach) {
+      box.innerHTML =
+        '<strong>Send this link to your families.</strong>' +
+        '<span>Each parent opens it, picks their child from your roster, fills in the medical release and signs with a click. ' +
+        'Come back to your private roster link to see who has signed.</span>' +
+        '<div class="share-row">' +
+          '<input type="text" readonly aria-label="Family link for medical releases" value="' + esc(st.shareUrl) + '">' +
+          '<button class="btn primary" type="button" data-copy="link">Copy link</button>' +
+          '<button class="btn ghost" type="button" data-copy="msg">Copy a message for families</button>' +
+        '</div>' +
+        '<span class="share-done" aria-live="polite"></span>';
+      const input = $('input', box);
+      const done = $('.share-done', box);
+      input.addEventListener('focus', function () { input.select(); });
+      $('[data-copy="link"]', box).addEventListener('click', function () {
+        copyText(st.shareUrl, input).then(function () { done.textContent = 'Link copied. Paste it into your team chat or email.'; });
+      });
+      $('[data-copy="msg"]', box).addEventListener('click', function () {
+        copyText(familyMessage(st, coach)).then(function () { done.textContent = 'Message copied, link included. Paste it into your team chat or email.'; });
+      });
+      show(box, true);
     }
 
     /* ------------------------------------------------------------------ */
@@ -1316,7 +1242,7 @@
         row.classList.toggle('extra', i >= ROSTER.minPlayers);
         const rm = $('.remove-player', row);
         if (rm) rm.hidden = i < ROSTER.minPlayers;
-        $$('input[data-base]', row).forEach(function (inp) {
+        $$('input', row).forEach(function (inp) {
           const base = inp.getAttribute('data-base');
           inp.id = base + '-' + (i + 1);
           const lab = $('label[for]', inp.closest('.field'));
@@ -1326,8 +1252,6 @@
           'Player ' + (i + 1) + ' full name' + (i < ROSTER.minPlayers ? ' <span class="req">*</span>' : '');
         $('[data-role="dob-label"]', row).innerHTML =
           'Date of birth' + (i < ROSTER.minPlayers ? ' <span class="req">*</span>' : '');
-        const relIn = $('.release input', row);
-        if (relIn) relIn.setAttribute('aria-label', 'Medical release for player ' + (i + 1));
       });
       countPill.textContent = rowCount() + ' of ' + ROSTER.maxPlayers + ' players';
       $('#add-player').disabled = rowCount() >= ROSTER.maxPlayers;
@@ -1349,45 +1273,16 @@
           '<input data-base="p-dob" data-dob type="date" min="2005-01-01" max="2021-12-31">' +
           '<p class="field-msg" data-msg>Enter a date of birth.</p>' +
           '<button class="remove-player" type="button" hidden>Remove this player</button>' +
-        '</div>' +
-        (relLive
-          ? '<div class="release">' +
-              '<label class="release-pick"><span>Upload medical release</span>' +
-                '<input type="file" accept="image/*,application/pdf,.pdf,.heic,.heif"></label>' +
-              '<p class="release-text"></p>' +
-              '<p class="field-msg" data-msg>Upload this player\'s signed medical release.</p>' +
-            '</div>'
-          : '');
+        '</div>';
       $('.remove-player', row).addEventListener('click', function () {
         row.remove();
         renumber();
       });
-      $$('input[data-base]', row).forEach(function (inp) {
+      $$('input', row).forEach(function (inp) {
         inp.addEventListener('input', function () { markField(inp.closest('[data-field]'), false); });
       });
       if (name) $('[data-name]', row).value = name;
       if (dob)  $('[data-dob]', row).value = String(dob).slice(0, 10);
-      const relIn = $('.release input', row);
-      if (relIn) {
-        relIn.addEventListener('change', function () {
-          const f = relIn.files && relIn.files[0];
-          relIn.value = '';
-          if (!f) return;
-          const problem = checkReleaseFile(f);
-          if (problem) {
-            row._file = null;
-            paintRelease(row);
-            const box = $('.release', row);
-            box.classList.add('invalid');
-            $('.field-msg', box).textContent = problem;
-            return;
-          }
-          row._file = f;
-          paintRelease(row);
-        });
-        $('[data-name]', row).addEventListener('input', function () { paintRelease(row); });
-        paintRelease(row);
-      }
       rows.appendChild(row);
       renumber();
       return row;
@@ -1473,13 +1368,6 @@
           if (seen[key]) bad(nameWrap, 'This player is already on the roster.');
           seen[key] = true;
         }
-        if (relLive && p.name && !p.row._file && !onFile[norm(p.name)]) {
-          const box = $('.release', p.row);
-          box.classList.add('invalid');
-          $('.field-msg', box).textContent = 'Upload this player\'s signed medical release.';
-          problems.push('Upload a signed medical release for every player.');
-          if (!firstBad) firstBad = $('input', box);
-        }
         if (!p.dob) bad(dobWrap, 'Enter a date of birth.');
         else if (cutoff && p.dob < cutoff) {
           bad(dobWrap, 'Too old for ' + d.ageGroup + '. Players must be born on or after ' + prettyDate(cutoff) + '.');
@@ -1561,48 +1449,25 @@
         loaded = res.roster || null;
         token  = res.token || token;
 
-        /* The roster is saved. Now send each player's release, one at a
-           time, against the roster's reference number. */
-        const ref = res.reference || (loaded && loaded.reference) || '';
-        const who = {
-          reference: ref, teamName: d.teamName, ageGroup: d.ageGroup, division: d.division,
-          coachName: d.coachName, email: d.email
-        };
-        const queue = relLive ? d.players.filter(function (p) { return p.row._file; }) : [];
-        const failed = [];
-        let done = 0;
-        let chain = Promise.resolve();
-        queue.forEach(function (p, i) {
-          chain = chain.then(function () {
-            submitBtn.textContent = 'Uploading release ' + (i + 1) + ' of ' + queue.length;
-            return uploadRelease(who, p, p.row._file)
-              .then(function () { done++; p.row._file = null; })
-              .catch(function () { failed.push(p.name); });
-          });
-        });
-        return chain.then(function () {
-          return { res: res, done: done, failed: failed, total: queue.length };
-        });
-      }).then(function (out) {
-        const res = out.res;
-        const rel = $('#success-rel');
-        if (out.failed.length) {
-          rel.innerHTML = '<strong>' + out.failed.length + ' medical release' + (out.failed.length === 1 ? '' : 's') + ' did not upload.</strong>' +
-            '<span>Your roster is saved. Still needed for ' + esc(out.failed.join(', ')) + '. Tap See what I sent below and use the Upload link next to each name, or open the private link in your email.</span>';
-          show(rel, true);
-        } else {
-          show(rel, false);
-        }
-
         $('#success-title').textContent = res.revised ? 'Roster updated.' : 'Roster received.';
-        const relLine = out.done ? ' ' + out.done + ' medical release' + (out.done === 1 ? ' is' : 's are') + ' on file.' : '';
-        $('#success-description').textContent = (res.revised
+        $('#success-description').textContent = res.revised
           ? 'Your changes are saved. The version the registrar sees is the one you just sent, and they have been told it changed.'
-          : d.teamName + ' is on the list for ' + ROSTER.eventDate + '.' +
-            (out.failed.length ? '' : ' Nothing else is needed from you until check-in.')) + relLine;
+          : d.teamName + ' is on the list for ' + ROSTER.eventDate + '. Nothing else is needed from you until check-in.';
         $('#confirmation-number').textContent = res.reference || '';
         $('#success-email').textContent = d.email;
         show($('#success-pm'), !res.revised);
+        show($('#success-share'), false);
+        if (relLive && token) {
+          const tok = token;
+          const tryShare = function (left) {
+            releaseStatus(tok).then(function (st) {
+              if (token === tok) paintShare($('#success-share'), st, d.coachName);
+            }).catch(function () {
+              if (left > 0) setTimeout(function () { tryShare(left - 1); }, 2000);
+            });
+          };
+          tryShare(2);
+        }
 
         show(form, false);
         show($('#success-panel'), true);
@@ -1629,8 +1494,7 @@
     $('#another-roster').addEventListener('click', function () {
       token = '';
       loaded = null;
-      onFile = {};
-      show($('#success-rel'), false);
+      show($('#success-share'), false);
       form.reset();
       resetRows([]);
       $$('[data-field]').forEach(function (w) { markField(w, false); });
@@ -1685,18 +1549,21 @@
         return '<tr><td class="n">' + (i + 1) + '</td>' +
                '<td>' + esc(p.name) + '</td>' +
                '<td class="dob">' + esc(prettyDate(p.dob)) + '</td>' +
-               (relLive ? '<td class="rel" data-i="' + i + '"><span class="rel-wait">Checking</span></td>' : '') +
+               (relLive && token ? '<td class="rel" data-name="' + esc(norm(p.name)) + '"><span class="rel-wait">Checking</span></td>' : '') +
                '</tr>';
       }).join('');
-      $('.squad').classList.toggle('with-rel', relLive);
-      $$('.rel-col').forEach(function (th) { th.hidden = !relLive; });
+      const withRel = relLive && !!token;
+      $('.squad').classList.toggle('with-rel', withRel);
+      $$('.rel-col').forEach(function (th) { th.hidden = !withRel; });
       show($('#rv-rel-alert'), false);
-      if (relLive) {
-        fetchReleaseStatus(r)
-          .then(function () { if (loaded === r) paintReviewReleases(r); })
-          .catch(function () {
-            $$('#rv-players td.rel').forEach(function (td) { td.innerHTML = '<span class="rel-wait">Could not check right now</span>'; });
-          });
+      show($('#rv-share'), false);
+      if (withRel) {
+        releaseStatus(token).then(function (st) {
+          if (loaded !== r) return;
+          paintReleases(st, r);
+        }).catch(function () {
+          $$('#rv-players td.rel').forEach(function (td) { td.innerHTML = '<span class="rel-wait">Could not check just now</span>'; });
+        });
       }
 
       show($('#review-card'), true);
@@ -1712,49 +1579,38 @@
       document.title = (r.teamName ? r.teamName + ' roster' : 'Your roster') + ' | 3v3 Community Cup';
     }
 
-    function paintReviewReleases(r) {
-      let missing = 0;
+    function paintReleases(st, r) {
+      const byName = {};
+      (st.players || []).forEach(function (p) { byName[norm(p.name)] = p; });
+      let waiting = 0;
       $$('#rv-players td.rel').forEach(function (td) {
-        const p = (r.players || [])[Number(td.getAttribute('data-i'))];
-        if (!p) return;
-        const has = !!onFile[norm(p.name)];
-        if (!has) missing++;
-        td.innerHTML =
-          (has ? '<span class="rel-on"><i aria-hidden="true"></i>On file</span>'
-               : '<span class="rel-miss"><i aria-hidden="true"></i>Missing</span>') +
-          '<label class="rel-btn">' + (has ? 'Replace' : 'Upload') +
-            '<input type="file" accept="image/*,application/pdf,.pdf,.heic,.heif" aria-label="' +
-            (has ? 'Replace' : 'Upload') + ' medical release for ' + esc(p.name) + '"></label>';
-        const inp = $('input', td);
-        inp.addEventListener('change', function () {
-          const f = inp.files && inp.files[0];
-          inp.value = '';
-          if (!f) return;
-          const problem = checkReleaseFile(f);
-          if (problem) {
-            td.insertAdjacentHTML('beforeend', '<span class="rel-note">' + esc(problem) + '</span>');
-            return;
-          }
-          td.innerHTML = '<span class="rel-wait">Uploading</span>';
-          uploadRelease(r, p, f)
-            .then(function () { paintReviewReleases(r); })
-            .catch(function (err) {
-              paintReviewReleases(r);
-              td.insertAdjacentHTML('beforeend', '<span class="rel-note">' +
-                esc((err && err.message) || 'The upload did not go through.') + ' Try again.</span>');
-            });
-        });
+        const p = byName[td.getAttribute('data-name')];
+        if (p && p.signed) {
+          td.innerHTML = '<span class="rel-on"><i aria-hidden="true"></i>Signed</span>' +
+            '<span class="rel-by">' + esc(p.signedBy) + (p.signedAt ? ', ' + esc(p.signedAt) : '') + '</span>';
+        } else {
+          waiting++;
+          td.innerHTML = '<span class="rel-miss"><i aria-hidden="true"></i>Waiting</span>';
+        }
       });
+      const total = (r.players || []).length;
       const alertBox = $('#rv-rel-alert');
-      if (missing) {
+      let extra = '';
+      if (st.extras && st.extras.length) {
+        extra = ' We also have a release for ' + esc(st.extras.join(', ')) +
+          ', who is not on this roster under that name. If that is a spelling difference, revise the roster to match.';
+      }
+      if (waiting) {
         alertBox.className = 'banner release-alert';
-        alertBox.innerHTML = '<strong>' + missing + ' player' + (missing === 1 ? ' still needs' : 's still need') + ' a medical release.</strong>' +
-          'Have each family fill out and sign the <a class="form-link" href="' + esc(ROSTER.releaseFormUrl) + '" target="_blank" rel="noopener">Cup medical release form</a>, then use the Upload link next to each name. Your roster stays as it is and you do not need to sign it again.';
+        alertBox.innerHTML = '<strong>' + (total - waiting) + ' of ' + total + ' medical releases signed.</strong>' +
+          'Send the family link below to anyone still waiting. Releases are due by ' + esc(st.deadline || ROSTER.rosterDeadline) + '.' + extra;
       } else {
         alertBox.className = 'banner release-done';
-        alertBox.innerHTML = '<strong>Every player has a medical release on file.</strong>Nothing else is needed until check-in. Bring proof of age for each player in case we ask.';
+        alertBox.innerHTML = '<strong>Every player has a signed medical release.</strong>' +
+          'Nothing else is needed until check-in. Bring proof of age for each player in case we ask.' + extra;
       }
       show(alertBox, true);
+      paintShare($('#rv-share'), st, r.coachName);
     }
 
     $('#rv-revise').addEventListener('click', function () {
