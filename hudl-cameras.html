@@ -121,6 +121,38 @@
   .askrow{display:flex;gap:10px;align-items:stretch;margin-top:12px;flex-wrap:wrap}
   .askrow .picker{flex:0 0 auto}
   .askrow .btn{flex:1;min-width:190px;min-height:48px;font-size:15px}
+  .kit{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .kit li{background:var(--raise);border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:14px;font-weight:600}
+  .kit li::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:8px}
+  .confirm{padding:14px 18px 16px}
+  .ctitle{margin:0;font-size:18px;font-weight:800;letter-spacing:-.01em}
+  .csub{margin:11px 0 13px;color:var(--soft);font-size:14px}
+  .confirm .fld{margin-bottom:10px}
+  .jnote b{color:var(--ink)}
+  .jnote.first{border:1px solid var(--deep);color:var(--ink)}
+  .chipbtn{background:var(--raise);border:1px solid var(--deep);color:var(--gold);border-radius:999px;
+    padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer;margin:0 0 9px;min-height:36px}
+  .firstnote{margin:16px 0 0;padding:13px 16px;background:var(--card);border:1px solid var(--deep);border-radius:12px;
+    font-size:15px;color:var(--soft)}
+  .firstnote b{color:var(--ink)}
+  .askform{border-left-color:var(--deep)}
+  .askgrid{display:grid;gap:9px;margin:12px 0}
+  .askgrid .fld{margin-bottom:0}
+  .picker.wide{width:100%}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .fld.half{min-width:0}
+  input[type="date"].fld{color-scheme:dark}
+  .guide{display:grid;gap:9px}
+  .gd{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 16px}
+  .gd>summary{cursor:pointer;list-style:none;padding:14px 0;font-weight:700;font-size:16px;display:flex;
+    justify-content:space-between;align-items:center}
+  .gd>summary::-webkit-details-marker{display:none}
+  .gd>summary::after{content:'+';color:var(--gold);font-family:var(--mono);font-size:18px}
+  .gd[open]>summary::after{content:'-'}
+  .gd ol{margin:0 0 12px;padding-left:20px;color:var(--soft);font-size:15px}
+  .gd li{padding:4px 0}
+  .glink{display:inline-block;margin:0 0 15px;color:var(--gold);font-weight:700;font-size:14px;text-underline-offset:3px}
+  .ghelp{margin:4px 0 0;color:var(--faint);font-size:14px}
   .tally{margin:0 0 13px;font-family:var(--mono);font-size:13px;letter-spacing:.07em;
     text-transform:uppercase;color:var(--faint)}
   .tally b{color:var(--ink);font-weight:600}
@@ -218,6 +250,8 @@
     .band h1{font-size:25px}
     .grid{grid-template-columns:repeat(6,1fr)}   /* two rows of six */
     .needs{grid-template-columns:repeat(3,1fr)}
+    .guide{grid-template-columns:repeat(2,1fr);align-items:start}
+    .ghelp{grid-column:1/-1}
     .weeks{grid-template-columns:repeat(4,1fr)}
     .jobs{grid-template-columns:repeat(3,1fr)}
     .toast{left:auto;right:28px;max-width:430px}
@@ -237,6 +271,8 @@
 
   var app=document.getElementById('app');
   var mem={}, state=null, email=store('hudl_email'), signInError='', msg='', working=false, pickDay='', reqFor='';
+  var confirming='', problemOpen=false;   // which sign in is on its confirm step
+  var ask={when:'',start:'',end:'',team:'',other:'',where:''};   // the ask-for-dates form, kept across redraws
 
   function store(k,v){
     try{ if(v===undefined) return localStorage.getItem(k);
@@ -343,8 +379,11 @@
       if(msg) setTimeout(function(){ msg=''; var t=document.querySelector('.toast'); if(t) t.remove(); },4200);
     }).catch(function(){ working=false; msg='Could not reach the server. Nothing was saved.'; render(); });
   }
-  function act(c,action,note,sub){
-    send({action:action,camera:c.camera,date:c.date,note:(note||'').trim(),sub:(sub||'').trim()});
+  function act(c,action,note,sub,issue){
+    sub=(sub||'').trim();
+    if(sub) store('hudl_sub',sub);
+    confirming=''; problemOpen=false;
+    send({action:action,camera:c.camera,date:c.date,note:(note||'').trim(),sub:sub,issue:(issue||'').trim()});
   }
 
   // ---------- working out what is mine ----------
@@ -359,11 +398,12 @@
       if(c.status==='out'&&c.overdue&&(retMine||isMe(c.outBy)))
         out.push({c:c,kind:'return',rank:0,head:c.camera+' is still out',when:'Was due '+dayName(c.endDate)});
       else if(c.status==='waiting'&&pickMine)
-        out.push({c:c,kind:'pickup',rank:c.date<=state.today?1:3,head:'Sign out '+c.camera,
+        out.push({c:c,kind:'pickup',rank:c.date<=addDays(state.today,1)?1:3,head:'Sign out '+c.camera,
           when:c.multi?(dayName(c.date)+' through '+dayName(c.endDate)):(c.games[0].time?c.games[0].time+', '+dayName(c.date):dayName(c.date))});
       else if(c.status==='out'&&retMine)
         out.push({c:c,kind:'return',rank:c.endDate<=state.today?2:4,head:'Sign in '+c.camera,
-          when:c.multi?('When you are back, after '+dayName(c.endDate)):('After your '+c.games[c.games.length-1].time+' game')});
+          when:c.multi?('When you are back, after '+dayName(c.endDate))
+               :(c.games[c.games.length-1].time?'After your '+c.games[c.games.length-1].time+' game':'After your game, '+dayName(c.date))});
     });
     return out.sort(function(a,b){ return a.rank-b.rank||(a.c.date<b.c.date?-1:1); });
   }
@@ -373,7 +413,8 @@
     if(late) return {cls:'stop',h:late===1?'A camera has not been signed back in':late+' cameras have not been signed back in',
       p:'Sign it in below, or say who has it.'};
     var now=js.filter(function(j){ return j.rank<=2; });
-    if(now.length) return {cls:'todo',h:now[0].head+' today',p:now.length>1?(now.length-1)+' more to do today.':'One tap and you are done.'};
+    if(now.length) return {cls:'todo',h:now[0].head+(now[0].c.date>state.today&&now[0].kind==='pickup'?' before tomorrow':' today'),
+      p:now.length>1?(now.length-1)+' more to do after that.':'One tap when you have it in your hands.'};
     if(js.length) return {cls:'todo',h:'Nothing to do yet today',p:'Your next job is '+js[0].when.toLowerCase()+'.'};
     return {cls:'go',h:'You are all square',p:'No camera is waiting on you. Check back before your next game.'};
   }
@@ -387,44 +428,85 @@
         h('button',{class:'ghostbtn',onclick:function(){ load(false); }},'Refresh')))));
   }
 
+  function kitList(){
+    return h('ul',{class:'kit'},['Camera','Tripod','Water bag','Battery pack and cable'].map(function(x){ return h('li',null,x); }));
+  }
+
   function jobCard(j){
     var c=j.c, note=h('input',{type:'text',class:'fld',maxlength:'200',placeholder:'Note, optional'});
     var sub=h('input',{type:'text',class:'fld',maxlength:'60',placeholder:'Their name'});
     var cls='job'+(c.overdue?' late':j.rank<=2?' now':'');
     var g=c.games[0], lastG=c.games[c.games.length-1];
-    var chain=null;
+    var key=c.camera+'|'+c.date;
     var mineG=null; c.games.forEach(function(x){ if(x.mine&&!mineG) mineG=x; });
-    if(c.multi) chain='Yours for the whole event. Nobody else is on this camera.';
-    else if(mineG&&j.kind==='pickup'&&mineG.to&&!isMe(mineG.to)) chain='Hand it to '+first(mineG.to)+' after your game.';
+    var sameNext=mineG&&mineG.to&&squash(c.games[c.games.indexOf(mineG)+1].field)===squash(mineG.field);
+    var chain=null;
+    if(c.multi) chain='Yours for the whole stretch. Nobody else is on this camera. Charge it each night.';
+    else if(mineG&&j.kind==='pickup'&&mineG.to&&!isMe(mineG.to))
+      chain=sameNext?'You set it up. Leave it running for '+first(mineG.to)+' after your game.'
+                    :'You set it up. After your game, take it down and get it to '+first(mineG.to)+'.';
     else if(mineG&&j.kind==='pickup'&&mineG.to) chain='You keep it through your later games, then sign it back in.';
-    else if(mineG&&j.kind==='return'&&mineG.from&&!isMe(mineG.from)) chain=first(mineG.from)+' hands it to you before your game.';
+    else if(mineG&&j.kind==='return'&&mineG.from&&!isMe(mineG.from)) chain='You take it down. '+first(mineG.from)+' has it before you.';
 
-    var extras=[];
-    if(j.kind==='pickup') extras.push('Charge the camera and battery pack to 100%.');
-    if(j.kind==='return'&&state.place) extras.push('It goes back to '+state.place+'.');
-    if(c.prior) extras.push('Still with '+c.prior.by+'. Picking it up takes it over.');
-    if(c.notes) extras.push('Note: '+c.notes);
+    var head=h('div',{class:'jtop'},
+      h('div',{class:'jshot'},h('img',{src:CAM_SHOT,alt:''})),
+      h('div',{class:'jmeta'},
+        h('div',{class:'jnum'},c.camera),
+        h('h3',null,j.kind==='pickup'?'Sign it out':'Sign it in'),
+        h('p',{class:'jwhen'},placeName(j.kind==='pickup'?g.field:lastG.field,(j.kind==='pickup'?g:lastG).team)),
+        h('p',{class:'jwhen mono'},j.when)));
 
-    return h('article',{class:cls},
-      h('div',{class:'jtop'},
-        h('div',{class:'jshot'},h('img',{src:CAM_SHOT,alt:''})),
-        h('div',{class:'jmeta'},
-          h('div',{class:'jnum'},c.camera),
-          h('h3',null,j.kind==='pickup'?'Sign it out':'Sign it in'),
-          h('p',{class:'jwhen'},placeName(j.kind==='pickup'?g.field:lastG.field, (j.kind==='pickup'?g:lastG).team)),
-          h('p',{class:'jwhen mono'},j.when))),
-      chain?h('div',{class:'jnote'},chain):null,
-      extras.length?h('div',{class:'jnote'},extras.join(' ')):null,
+    // ---- sign in, second step: one look at the kit before it is closed out
+    if(j.kind==='return'&&confirming===key){
+      var prob=h('input',{type:'text',class:'fld',maxlength:'300',placeholder:'What is missing or broken'});
+      return h('article',{class:cls},head,
+        h('div',{class:'confirm'},
+          h('p',{class:'ctitle'},'Is all of it back'+(state.place?' at '+state.place:'')+'?'),
+          kitList(),
+          h('p',{class:'csub'},'Put the camera and the battery pack on charge for the next coach.'),
+          problemOpen
+            ? [prob,h('button',{class:'btn stop',onclick:function(){
+                if(!prob.value.trim()){ prob.focus(); return; }
+                act(c,'return',confirming_note,confirming_sub,prob.value); }},'Report it and sign in')]
+            : [h('button',{class:'btn go',onclick:function(){ act(c,'return',confirming_note,confirming_sub); }},'Yes, all back'),
+               h('button',{class:'btn quiet',style:'margin-top:9px',onclick:function(){ problemOpen=true; render(); }},
+                 'Something is missing or broken')],
+          h('button',{class:'linkbtn',onclick:function(){ confirming=''; problemOpen=false; render(); }},'Not yet, go back')));
+    }
+
+    var lines=[];
+    if(j.kind==='pickup'){
+      lines.push(h('div',{class:'jnote'},
+        h('b',null,'Take all four: '),'camera, tripod, water bag, battery pack.',
+        state.place?[h('br'),'Pick up from '+state.place+'.'+(state.pickupNote?' '+state.pickupNote:'')]:null));
+      lines.push(h('div',{class:'jnote'},
+        h('b',null,'Before game day: '),'charge the camera and the battery pack to 100%, and add the game to your schedule on hudl.com.',
+        c.games.length>=3?' This camera covers '+c.games.length+' games, so both need to be full.':''));
+      if(state.newbie) lines.push(h('div',{class:'jnote first'},
+        'First time: Craig will walk you through it when you pick up. Bring your phone with the Hudl Focus app, and your laptop.'));
+    }
+    if(chain) lines.push(h('div',{class:'jnote'},chain));
+    if(j.kind==='return'&&state.place) lines.push(h('div',{class:'jnote'},'It goes back to '+state.place+'.'));
+    if(c.prior) lines.push(h('div',{class:'jnote'},'Still signed out to '+c.prior.by+'. Signing it out takes it over.'));
+    if(c.notes) lines.push(h('div',{class:'jnote'},'Note: '+c.notes));
+
+    var savedSub=store('hudl_sub')||'';
+    return h('article',{class:cls},head,lines,
       h('div',{class:'jact'},
         h('button',{class:'btn '+(j.kind==='pickup'?'go':'stop'),
-          onclick:function(){ act(c,j.kind,note.value,sub.value); }},
+          onclick:function(){
+            if(j.kind==='return'){ confirming=key; confirming_note=note.value; confirming_sub=sub.value; problemOpen=false; render(); }
+            else act(c,'pickup',note.value,sub.value);
+          }},
           (j.kind==='pickup'?'Sign out ':'Sign in ')+c.camera),
         h('details',{class:'more'},h('summary',null,'Someone else is doing it, or add a note'),
+          savedSub?h('button',{class:'chipbtn',type:'button',onclick:function(){ sub.value=savedSub; }},'Use '+savedSub):null,
           sub,note),
         h('div',{class:'row2'},
           c.status==='out'&&isMe(c.outBy)?h('button',{class:'linkbtn',
             onclick:function(){ act(c,'undo_pickup'); }},'Undo sign out'):null)));
   }
+  var confirming_note='', confirming_sub='';
 
   // games of mine grouped into weeks, per the week-column layout
   function weekBlocks(){
@@ -502,7 +584,6 @@
   }
 
   function canRequest(d){
-    if(state.newbie) return false;
     var cl=state.closes&&state.closes[d];
     return !(cl&&cl.closed);
   }
@@ -547,8 +628,6 @@
   function needsSection(){
     var mine=(state.unassigned||[]).filter(function(u){ return u.mine; })
       .sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
-    if(!mine.length) return h('p',{class:'muted',style:'margin:0;font-size:15px'},
-      'Every game of yours has a camera sorted. Nothing to ask for.');
     return h('div',{class:'needs'},mine.map(function(u){
       var freeThen=(state.cameras||[]).filter(function(c){
         return c.active&&camStateOn(c.name,u.date).k==='free'; })
@@ -558,7 +637,7 @@
           return h('option',{value:c.name},c.name); })));
       var body=[
         h('div',{class:'gmtop'},
-          h('span',{class:'gmday'},dayName(u.date)+(u.time?'  '+u.time:'  All event')),
+          h('span',{class:'gmday'},dayName(u.date)+(u.endDate&&u.endDate>u.date?' to '+dayName(u.endDate):(u.time?'  '+u.time:''))),
           u.req==='requested'?h('span',{class:'tag wait'},'Requested')
             :u.req==='declined'?h('span',{class:'tag stop'},'Turned down')
             :h('span',{class:'tag none'},'No camera')),
@@ -579,7 +658,99 @@
             send({action:'request',date:u.date,field:u.field,camera:sel.value}); }},'Request a camera')));
       }
       return h('article',{class:'need'},body);
-    }));
+    }),askCard(mine.length));
+  }
+
+  // The next four weekends, Saturday and Sunday. If today is in one, it comes first.
+  function weekendChoices(){
+    var out=[], t=state.today, dow=parseKey(t).getDay();
+    var sat=dow===6?t:dow===0?addDays(t,6):addDays(t,6-dow);   // on a Sunday the next weekend is the one to plan for
+    for(var i=0;i<4;i++){
+      var s0=addDays(sat,i*7), e0=addDays(s0,1);
+      if(e0<t) continue;
+      out.push({start:s0<t?t:s0,end:e0,
+        label:((i===0&&dow!==0)?'This weekend':(i===0||(i===1&&dow!==0))?'Next weekend':'Weekend of')+', '+MON[parseKey(s0).getMonth()]+' '+dayNum(s0)+' to '+dayNum(e0)});
+    }
+    return out;
+  }
+
+  // Ask for a camera without a game being listed first. This is the same as replying to the weekly email.
+  function askCard(listed){
+    var wk=weekendChoices();
+    if(!ask.when) ask.when=wk.length?'0':'other';
+    var whenSel=h('select',{class:'picker wide','aria-label':'When',onchange:function(e){ ask.when=e.target.value; render(); }},
+      wk.map(function(w,i){ return h('option',{value:String(i),selected:ask.when===String(i)},w.label); }),
+      h('option',{value:'other',selected:ask.when==='other'},'Other dates'));
+    var d1=h('input',{type:'date',class:'fld half',min:state.today,value:ask.start,'aria-label':'First day',
+      onchange:function(e){ ask.start=e.target.value; }});
+    var d2=h('input',{type:'date',class:'fld half',min:state.today,value:ask.end,'aria-label':'Last day',
+      onchange:function(e){ ask.end=e.target.value; }});
+    var teams=state.teams||[];
+    if(!ask.team) ask.team=teams.length?teams[0]:'other';
+    var teamSel=teams.length?h('select',{class:'picker wide','aria-label':'Team',onchange:function(e){ ask.team=e.target.value; render(); }},
+      teams.map(function(t){ return h('option',{value:t,selected:ask.team===t},t); }),
+      h('option',{value:'other',selected:ask.team==='other'},'Another team')):null;
+    var teamTxt=h('input',{type:'text',class:'fld',maxlength:'60',placeholder:'Which team',value:ask.other,
+      oninput:function(e){ ask.other=e.target.value; }});
+    var where=h('input',{type:'text',class:'fld',maxlength:'80',placeholder:'Tournament or field, optional',value:ask.where,
+      oninput:function(e){ ask.where=e.target.value; }});
+    function go(){
+      var start,end;
+      if(ask.when==='other'){ start=ask.start; end=ask.end||ask.start; }
+      else { var w=wk[+ask.when]; start=w.start; end=w.end; }
+      var team=(ask.team==='other'||!teams.length)?ask.other.trim():ask.team;
+      if(!start){ msg='Pick the days you need the camera.'; render(); return; }
+      if(!team){ msg='Say which team it is for.'; render(); return; }
+      var p={action:'request_dates',start:start,end:end,team:team,where:ask.where.trim()};
+      ask.where=''; ask.other='';
+      send(p);
+    }
+    return h('article',{class:'need askform'},
+      h('b',{class:'gmteam'},listed?'Need one for a different day?':'Ask for a camera'),
+      h('p',{class:'gmwhere'},'Pick the days and the team. You keep the camera for the whole stretch.'+
+        (state.cutoff?' Ask by '+state.cutoff+'.':'')),
+      h('div',{class:'askgrid'},
+        whenSel,
+        ask.when==='other'?h('div',{class:'pair'},d1,d2):null,
+        teamSel,
+        (ask.team==='other'||!teams.length)?teamTxt:null,
+        where),
+      h('button',{class:'btn',onclick:go},'Request a camera'));
+  }
+
+  // ---------- how it works ----------
+  function guide(){
+    function sec(title,items,link,linkText){
+      return h('details',{class:'gd'},h('summary',null,title),
+        h('ol',null,items.map(function(x){ return h('li',null,x); })),
+        link?h('a',{class:'glink',href:link,target:'_blank',rel:'noopener'},linkText):null);
+    }
+    var home=state.place||'the office';
+    return h('div',{class:'guide'},
+      sec('Before game day',[
+        'Pick up all four pieces from '+home+': camera, tripod, water bag, battery pack. Sign it out here when it is in your hands.',
+        'Charge the camera and the battery pack to 100%. Check both when you pick up, the last coach may not have.',
+        'Add the game to your team schedule on hudl.com. Recording then starts from your schedule in the Hudl Focus app with one tap.',
+        'Have the Hudl Focus app on your phone and be signed in. Accept your Hudl team invite first if it is still pending.'],
+        'https://www.hudl.com/blog/hudl-focus-flex-update-schedule-recordings','Hudl: recording from your schedule'),
+      sec('Set up at the field',[
+        'Stand the tripod near the halfway line, back from the touchline. Fill the water bag and hang it so the tripod stays put.',
+        'Mount the camera and plug in the battery pack. Hudl recommends always recording with the battery pack connected.',
+        'Open the Hudl Focus app, line the camera up to the field when it asks, then start recording.',
+        'Sharing the camera at one field? Whoever is first sets up, and it stays running for the next game.'],
+        'https://www.hudl.com/support/focus-flex/guides/set-up-and-record','Hudl: set up and record'),
+      sec('Take down',[
+        'Stop the recording in the app after the final whistle.',
+        'Lower the tripod, empty the water bag, and pack the camera, battery pack and cable together.',
+        'Video uploads on its own once the camera is on Wi-Fi. Plug it in at home and leave it switched on until it finishes.',
+        'On a tournament weekend, charge the camera and the battery pack every night.'],
+        'https://www.hudl.com/support/focus-flex/videos/teardown','Hudl: take down video'),
+      sec('Bring it back',[
+        'Return all four pieces to '+home+'.',
+        'Put the camera and the battery pack on charge for the next coach.',
+        'Sign it in here. If anything is missing or broken, say so on that screen and Craig will see it.',
+        'A team volunteer can do the pick up or return for you. Tap "Someone else is doing it" and enter their name.']),
+      h('p',{class:'ghelp'},'Stuck at the field? Hudl phone support is under Get Help in the Hudl app. For anything about Valor cameras, ask Craig.'));
   }
 
   // Read only. Which cameras are in and out on a given day.
@@ -635,13 +806,17 @@
       later.length?h('p',{class:'muted',style:'margin:14px 0 0;font-size:15px'},
         later.length===1?'One more camera job later this month. It is in your games below.'
                         :later.length+' more camera jobs later this month. They are in your games below.'):null,
-      h('h2',null,'Needs a camera'),
+      state.newbie&&!now.length?h('div',{class:'firstnote'},h('b',null,'First time with a Hudl camera? '),
+        'Ask for one below as normal. Craig will meet you at pick up and walk you through it. Bring your phone with the Hudl Focus app, and your laptop.'):null,
+      h('h2',null,'Get a camera'),
       needsSection(),
       h('h2',null,'Your games'),
       weeksSection(),
       h('div',{class:'h2row'},h('h2',null,'What is in and out'),
         h('span',{class:'muted sm'},'Pick a day')),
       camGrid(),
+      h('h2',null,'How it works'),
+      guide(),
       h('div',{class:'foot'},h('img',{class:'hudl',src:HUDL_LOGO,alt:'Hudl'}),
         h('span',null,DEMO?'Sample data.':'Virginia Valor FC'),
         h('button',{class:'linkbtn',style:'margin-left:auto',onclick:signOut},'Not you?'))));
@@ -659,7 +834,13 @@
     if(p.action==='pickup'){ var c=find(p.camera,p.date); if(c){ c.status='out'; c.outBy=p.sub||s.coach.name; c.overdue=false; }
       m=p.camera+' is with '+(p.sub||first(s.coach.name))+'.'; }
     else if(p.action==='return'){ var c2=find(p.camera,p.date); if(c2){ c2.status='returned'; c2.inBy=p.sub||s.coach.name; c2.overdue=false; }
-      m=p.camera+' is signed back in. Thank you.'; }
+      m=p.issue?(p.camera+' is signed back in and the problem is reported. Thank you.'):(p.camera+' is signed back in. Thank you.'); }
+    else if(p.action==='request_dates'){
+      p.team=String(p.team).replace(/\s*\([^()]*\)\s*$/,'');
+      var lab=(p.where||(p.end>p.start?'Weekend games':'Game day'))+' ('+p.team+')';
+      s.unassigned.push({date:p.start,endDate:p.end,time:'',field:lab,team:p.team,coach:s.coach.name,opponent:'',division:'Requested',
+        mine:true,req:'requested',reqBy:s.coach.name,reqNote:'',asked:''});
+      m='Request sent for '+lab+'. You will get an email when a camera is assigned.'; }
     else if(p.action==='undo_pickup'){ var c3=find(p.camera,p.date); if(c3){ c3.status='waiting'; c3.outBy=''; } m='Sign out undone.'; }
     else if(p.action==='request'){ s.unassigned.forEach(function(u){ if(u.date===p.date&&u.field===p.field){ u.req='requested'; u.asked=p.camera||''; } });
       m=p.camera?(p.camera+' requested for '+p.field+'. You will get an email when it is confirmed.')
@@ -705,7 +886,8 @@
     for(var k=0;k<21;k++) avail[d(k)]={total:11,free:8,cameras:[]};
     return {coach:{name:'Cory Fick',email:'cfick@virginiavalorfc.org',admin:false},today:t,
       chains:chains,unassigned:unassigned,free:{},avail:avail,claimed:{},maxClaims:2,
-      cameras:cams,mode:'approval',newbie:false,closes:{},place:'the equipment cage at the Fieldhouse'};
+      cameras:cams,mode:'approval',newbie:false,closes:{},place:'the Valor office',
+      pickupNote:'',cutoff:'noon Thursday',teams:['ECNL RL G2013/14 (U13G)','ECNL RL G2011/12 (U15G)'],kit:''};
   }
 
   if(DEMO) email='demo@example.org';

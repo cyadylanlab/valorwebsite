@@ -261,6 +261,9 @@
   .hcard{background:var(--card);border:1px solid var(--line);border-left:4px solid #3a362d;border-radius:12px;
     padding:13px 15px}
   .hcard.ok{border-left-color:var(--go)} .hcard.open{border-left-color:var(--stop)}
+  .hcard.ok,.hcard.open{color:inherit;font-weight:400}
+  .hcard .gl{margin:7px 0 6px}
+  .hcard .gl div{font-size:14px;padding:2px 0}
   .hgrid{display:grid;gap:11px}
   .hfilter{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-bottom:13px}
   .hfilter input{flex:1 1 240px;min-height:48px;padding:10px 13px;border:1.5px solid var(--line);
@@ -271,6 +274,11 @@
   details.box>summary::after{content:' +';color:var(--gold);font-family:var(--mono)}
   details.box[open]>summary::after{content:' -'}
   details.box .inner{padding:0 0 16px}
+  .bookgrid{display:grid;gap:9px;margin-bottom:12px;max-width:520px}
+  .bookgrid .fld{margin-bottom:0}
+  .picker.wide{width:100%}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  input[type="date"].fld{color-scheme:dark;min-width:0}
   .cam .camact{padding:0 10px 10px}
   .cam details.more>summary{font-size:11px;color:var(--faint);text-decoration:none;font-family:var(--mono);
     letter-spacing:.06em;text-transform:uppercase;padding:6px 0;min-height:34px;text-align:center}
@@ -306,6 +314,7 @@
   var app=document.getElementById('app');
   var mem={}, dash=null, email=store('hudl_email'), signInError='', msg='', working=false;
   var pickDay='', hq='', hShown=18;
+  var bk={coach:'',when:'0',start:'',end:'',team:'',where:'',camera:''};   // the book-a-camera form
 
   function store(k,v){
     try{ if(v===undefined) return localStorage.getItem(k);
@@ -420,7 +429,9 @@
   }
 
   function headline(){
-    var late=dash.open.length, asks=(dash.requests||[]).length;
+    var late=dash.open.length, asks=(dash.requests||[]).length, probs=(dash.issues||[]).length;
+    if(!late&&!asks&&probs) return {cls:'stop',h:probs===1?'A camera came back with a problem':probs+' cameras came back with problems',
+      p:'See it under Needs chasing and decide whether it goes out again.'};
     if(late&&asks) return {cls:'stop',h:late+(late===1?' camera is out past its day':' cameras are out past their day'),
       p:asks+(asks===1?' request is':' requests are')+' also waiting on you.'};
     if(late) return {cls:'stop',h:late===1?'A camera has not come back':late+' cameras have not come back',
@@ -447,23 +458,24 @@
   // ---------- requests ----------
   function requestCards(){
     var reqs=dash.requests||[];
-    if(!reqs.length) return h('p',{class:'muted',style:'margin:0;font-size:15px'},
-      'No requests waiting. Coaches appear here when they ask for a camera.');
+    if(!reqs.length) return [h('p',{class:'muted',style:'margin:0 0 12px;font-size:15px'},
+      'No requests waiting. Coaches appear here when they ask for a camera.'),bookForm()];
     var cards=reqs.map(function(g){
       var sel=h('select',{class:'picker','aria-label':'Camera for '+g.field},
         g.free.map(function(c){ return h('option',{value:c,selected:c===g.suggested},c); }));
       var note=h('input',{type:'text',class:'fld',maxlength:'200',placeholder:'Reason, optional'});
       return h('article',{class:'ask'},
         h('div',{class:'gmtop'},
-          h('span',{class:'gmday'},dayName(g.date)),
-          h('span',{class:'tag wait'},'Waiting')),
+          h('span',{class:'gmday'},dayName(g.date)+(g.endDate&&g.endDate>g.date?' to '+dayName(g.endDate):'')),
+          g.firstTime?h('span',{class:'tag stop'},'First time'):h('span',{class:'tag wait'},'Waiting')),
         h('b',{class:'gmteam'},placeName(g.field,g.games[0]&&g.games[0].team)),
         h('p',{class:'who'},'Asked by '+g.requestedBy.join(', ')),
         h('div',{class:'gl'},g.games.map(function(x){
-          return h('div',null,h('span',{class:'mono'},x.time||'All event'),'  ',x.team,
+          return h('div',null,x.time?[h('span',{class:'mono'},x.time),'  ']:null,x.team,
             h('span',{class:'muted'},'  '+first(x.coach)));
         })),
         g.asked?h('p',{class:'pref'},'Asked for '+g.asked):null,
+        g.firstTime?h('p',{class:'who',style:'margin-top:8px'},'New to the cameras. Their email tells them you will walk them through it at pick up.'):null,
         g.free.length
           ? h('div',{class:'ctrl'},sel,h('button',{class:'btn',onclick:function(){
               send({action:'assign',date:g.date,field:g.field,camera:sel.value}); }},'Assign'))
@@ -473,8 +485,78 @@
             send({action:'decline',date:g.date,field:g.field,note:note.value}); }},'Decline')));
     });
     return [h('div',{class:'asks'},cards),
-      reqs.length>1?h('button',{class:'btn quiet',style:'margin-top:12px;max-width:420px',
-        onclick:function(){ send({action:'assign_all'}); }},'Assign every one with the suggested camera'):null];
+      reqs.length>1?h('button',{class:'btn quiet',style:'margin:12px 0;max-width:420px',
+        onclick:function(){ send({action:'assign_all'}); }},'Assign every one with the suggested camera'):h('div',{style:'height:12px'}),
+      bookForm()];
+  }
+
+  function weekendChoices(){
+    var out=[], t=dash.today, dow=parseKey(t).getDay();
+    var sat=dow===6?t:dow===0?addDays(t,6):addDays(t,6-dow);
+    for(var i=0;i<4;i++){
+      var s0=addDays(sat,i*7), e0=addDays(s0,1);
+      out.push({start:s0,end:e0,label:MON[parseKey(s0).getMonth()]+' '+dayNum(s0)+' to '+dayNum(e0)});
+    }
+    return out;
+  }
+  function freeBetween(a,b){
+    return (dash.cameras||[]).filter(function(c){
+      if(!c.active) return false;
+      return !(dash.board||[]).some(function(x){ return x.camera===c.name&&x.date<=b&&(x.endDate||x.date)>=a; });
+    }).map(function(c){ return c.name; }).sort(function(x,y){ return camNum(x)-camNum(y); });
+  }
+
+  // Give a camera straight to a coach, for when the request came by email or in person.
+  function bookForm(){
+    var wk=weekendChoices(), roster=dash.roster||[];
+    var span=bk.when==='other'?{start:bk.start,end:bk.end||bk.start}:wk[+bk.when];
+    var free=span&&span.start?freeBetween(span.start,span.end):[];
+    var who=null; roster.forEach(function(r){ if(r.name===bk.coach) who=r; });
+    var teams=who?who.teams:[];
+    if(who&&teams.indexOf(bk.team)<0) bk.team=teams[0]||'';
+    if(free.indexOf(bk.camera)<0) bk.camera=free[0]||'';
+    return h('details',{class:'box',open:!!bk.coach},h('summary',null,'Book a camera for a coach'),
+      h('div',{class:'inner'},
+        h('p',{class:'muted sm',style:'margin:0 0 11px'},'For when a coach asked you directly. They get the same email as any other assignment.'),
+        h('div',{class:'bookgrid'},
+          h('select',{class:'picker wide','aria-label':'Coach',onchange:function(e){ bk.coach=e.target.value; bk.team=''; render(); }},
+            h('option',{value:''},'Which coach'),
+            roster.map(function(r){ return h('option',{value:r.name,selected:bk.coach===r.name},r.name+(r.firstTime?'  (first time)':'')); })),
+          h('select',{class:'picker wide','aria-label':'When',onchange:function(e){ bk.when=e.target.value; render(); }},
+            wk.map(function(w,i){ return h('option',{value:String(i),selected:bk.when===String(i)},'Weekend, '+w.label); }),
+            h('option',{value:'other',selected:bk.when==='other'},'Other dates')),
+          bk.when==='other'?h('div',{class:'pair'},
+            h('input',{type:'date',class:'fld',value:bk.start,'aria-label':'First day',onchange:function(e){ bk.start=e.target.value; render(); }}),
+            h('input',{type:'date',class:'fld',value:bk.end,'aria-label':'Last day',onchange:function(e){ bk.end=e.target.value; render(); }})):null,
+          teams.length>1?h('select',{class:'picker wide','aria-label':'Team',onchange:function(e){ bk.team=e.target.value; }},
+            teams.map(function(t){ return h('option',{value:t,selected:bk.team===t},t); })):null,
+          h('input',{type:'text',class:'fld',maxlength:'80',placeholder:'Tournament or field, optional',value:bk.where,
+            oninput:function(e){ bk.where=e.target.value; }}),
+          free.length?h('select',{class:'picker wide','aria-label':'Camera',onchange:function(e){ bk.camera=e.target.value; }},
+            free.map(function(c){ return h('option',{value:c,selected:bk.camera===c},c); }))
+            :h('p',{class:'pref bad',style:'margin:0'},span&&span.start?'No camera is free on those days.':'Pick the days first.')),
+        h('button',{class:'btn',style:'max-width:420px',disabled:!(bk.coach&&free.length),onclick:function(){
+          var p={action:'book',coach:bk.coach,start:span.start,end:span.end,team:bk.team,where:bk.where,camera:bk.camera};
+          bk.coach=''; bk.where='';
+          send(p); }},'Book it and email the coach')));
+  }
+
+  // ---------- the weekend ahead ----------
+  function weekendPanel(){
+    var w=dash.weekend; if(!w) return null;
+    var none=w.noCamera||[], never=dash.neverFilmed||[];
+    var label=MON[parseKey(w.start).getMonth()]+' '+dayNum(w.start)+' to '+dayNum(w.end);
+    return h('div',{class:'panelbox'},
+      h('div',{class:'gmtop'},h('span',{class:'gmday'},label),
+        h('span',{class:'tag '+(w.free?'go':'stop')},w.free+(w.free===1?' camera free':' cameras free'))),
+      h('b',{class:'gmteam'},none.length?(none.length+(none.length===1?' coach has':' coaches have')+' nothing lined up'):'Every coach has something lined up'),
+      none.length?h('p',{class:'gmwhere'},none.join(', ')):null,
+      (none.length&&w.free)?h('button',{class:'btn quiet',style:'margin-top:12px;max-width:420px',onclick:function(){
+        send({action:'nudge'}); }},'Email them that cameras are free'):null,
+      (none.length&&w.free)?h('p',{class:'gmcam'},'Goes out under your name, once a day at most.'+
+        (dash.cutoff?' It asks them to reply by '+dash.cutoff+'.':'')):null,
+      never.length?[h('p',{class:'subhead',style:'margin-top:16px'},'Never had a camera'),
+        h('p',{class:'gmwhere',style:'margin:0'},never.join(', '))]:null);
   }
 
   // ---------- chasing ----------
@@ -496,6 +578,17 @@
           h('div',{class:'sub'},links)),
         h('span',{class:'tag stop'},'Overdue')));
     });
+    (dash.issues||[]).forEach(function(x){
+      items.push(h('div',{class:'line'},
+        h('span',{class:'m'},h('b',null,x.camera+' came back with a problem'),
+          h('div',{class:'sub'},x.text),
+          h('div',{class:'sub'},'Reported by '+x.by+', '+x.at),
+          h('div',{class:'sub'},
+            h('button',{class:'linkbtn',onclick:function(){ send({action:'camera_state',camera:x.camera,outOfService:true,note:x.text}); }},'Take it out of service'),
+            '   ',
+            h('button',{class:'linkbtn',onclick:function(){ send({action:'issue_clear',camera:x.camera}); }},'It is fine, clear this'))),
+        h('span',{class:'tag stop'},'Problem')));
+    });
     if(dash.needsCamera.length){
       var byDay={};
       dash.needsCamera.forEach(function(g){ (byDay[g.date]=byDay[g.date]||[]).push(g); });
@@ -509,7 +602,7 @@
       });
     }
     if(!items.length) return h('p',{class:'muted',style:'margin:0;font-size:15px'},
-      'Nothing to chase. Every camera is back and every game is covered.');
+      'Nothing to chase. Every camera is back and nothing has been reported.');
     return h('div',{class:'list'},items);
   }
 
@@ -623,7 +716,7 @@
           h('div',{class:'gmtop'},h('span',{class:'gmday'},dayName(r.date)+'  '+r.camera),tag),
           h('p',{class:'gmwhere'},placeName(r.field,r.games[0]&&r.games[0].team)),
           h('div',{class:'gl'},r.games.map(function(g){
-            return h('div',null,h('span',{class:'mono'},g.time||'All event'),'  ',g.team,
+            return h('div',null,g.time?[h('span',{class:'mono'},g.time),'  ']:null,g.team,
               h('span',{class:'muted'},'  '+first(g.coach)));
           })),
           h('p',{class:'gmcam'},'Out: '+(r.outBy?r.outBy+(r.outAt?', '+r.outAt:''):'nobody signed')),
@@ -647,7 +740,8 @@
     var ACT={pickup:'signed out','return':'signed in',undo_pickup:'undid the sign out of',
       undo_return:'undid the sign in of',claim:'took',release:'gave back',note:'added a note on',
       request:'requested a camera for',cancel_request:'cancelled a request for',assign:'assigned',
-      decline:'declined',out_of_service:'took out of service',back_in_service:'put back in service'};
+      decline:'declined',out_of_service:'took out of service',back_in_service:'put back in service',
+      issue:'reported a problem with',issue_clear:'cleared the problem on',nudge:'emailed a reminder to',request_dates:'requested a camera for'};
     if(!dash.recent.length) return null;
     return h('details',{class:'box'},h('summary',null,'Recent activity'),
       h('div',{class:'inner'},dash.recent.map(function(r){
@@ -672,6 +766,8 @@
       tiles(),
       h('h2',null,'Requests to fill'),
       requestCards(),
+      h('h2',null,'The weekend ahead'),
+      weekendPanel(),
       h('h2',null,'Needs chasing'),
       chasing(),
       h('div',{class:'h2row'},h('h2',null,'The fleet'),h('span',{class:'muted sm'},'Pick a day')),
@@ -702,7 +798,13 @@
       demo.requests=demo.requests.filter(function(x){ return !(x.date===p.date&&x.field===p.field); });
       m='Declined. The coach has been told.';
     } else if(p.action==='assign_all'){ demo.requests=[]; m='Assigned every waiting request.'; }
+    else if(p.action==='book'){
+      demo.board.push({camera:p.camera,date:p.start,endDate:p.end,coach:p.coach,team:p.team,field:(p.where||'Weekend games')+' ('+p.team+')',status:'waiting',games:1});
+      m=p.camera+' is booked for '+p.coach+'. They have been emailed.'; }
+    else if(p.action==='nudge'){ m='Reminder sent to '+demo.weekend.noCamera.length+' coaches.'; demo.weekend.noCamera=[]; }
+    else if(p.action==='issue_clear'){ demo.issues=demo.issues.filter(function(x){ return x.camera!==p.camera; }); m=p.camera+' is cleared.'; }
     else if(p.action==='camera_state'){
+      demo.issues=(demo.issues||[]).filter(function(x){ return x.camera!==p.camera; });
       demo.cameras.forEach(function(c){ if(c.name===p.camera){ c.active=!p.outOfService; c.notes=p.outOfService?(p.note||''):''; } });
       m=p.camera+(p.outOfService?' is marked out of service.':' is back in service.');
     }
@@ -741,12 +843,20 @@
       needsCamera:[{date:d(2),time:'2:00 PM',field:'Sully Highlands 2',team:'ECNL RL G2013/14',coach:'Cory Fick'},
                    {date:d(2),time:'3:45 PM',field:'Sully Highlands 2',team:'ECNL RL B2009/10',coach:'Juan Vasquez'},
                    {date:d(3),time:'9:00 AM',field:'Fair Oaks Field 1',team:'ECNL RL G2011/12',coach:'Rob Olson'}],
-      mode:'approval',emailMode:'test',statsFrom:d(-9),statsPinned:true,closes:[],
+      mode:'approval',emailMode:'test',statsFrom:d(-9),statsPinned:true,closes:[],cutoff:'noon Thursday',
+      issues:[{camera:'Hudl 8',by:'Rob Olson',at:d(-1)+' 4:10 PM',text:'Tripod leg will not lock'}],
+      neverFilmed:['Alec Mitchell','Carlos Guerra','Mallory Pasco','Victor Velasco'],
+      weekend:{start:d(6),end:d(7),free:7,noCamera:['Alec Mitchell','Carlos Guerra','Chris Meyers','Mallory Pasco','Susan Furlough']},
+      roster:[{name:'Cory Fick',teams:['ECNL RL G2013/14 (U13G)','ECNL RL G2011/12 (U15G)'],firstTime:false},
+              {name:'Rob Olson',teams:['ECNL RL B2010/11 (U16B)'],firstTime:false},
+              {name:'Mallory Pasco',teams:['G2016/17 White (U10G)'],firstTime:true}],
       requests:[
         {date:d(2),field:'Sully Highlands 2',requestedBy:['Cory Fick'],suggested:'Hudl 4',asked:'Hudl 4',
          free:['Hudl 2','Hudl 4','Hudl 6','Hudl 8'],
          games:[{time:'2:00 PM',team:'ECNL RL G2013/14',coach:'Cory Fick',division:'ECNL RL'},
                 {time:'3:45 PM',team:'ECNL RL B2009/10',coach:'Juan Vasquez',division:'ECNL RL'}]},
+        {date:d(6),endDate:d(7),field:'Weekend games (G2016/17 White)',requestedBy:['Mallory Pasco'],suggested:'Hudl 6',asked:'',firstTime:true,
+         free:['Hudl 2','Hudl 6','Hudl 8'],games:[{time:'',team:'G2016/17 White',coach:'Mallory Pasco',division:'Requested'}]},
         {date:d(3),field:'Fair Oaks Field 1',requestedBy:['Rob Olson'],suggested:'Hudl 6',asked:'',
          free:['Hudl 2','Hudl 6','Hudl 8'],
          games:[{time:'9:00 AM',team:'ECNL RL G2011/12',coach:'Rob Olson',division:'NCSL'}]}],
