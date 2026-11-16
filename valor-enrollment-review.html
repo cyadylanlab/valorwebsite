@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Valor Enrollment and Retention Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout idea: a printed annual report. Folio column (section name set vertically), a reading column, and a ledger margin for side figures. Charts span reading column and margin. */
+  --paper:#ffffff;
+  --ink:#141414;
+  --muted:#5f5c56;
+  --rule:#dcd8cf;
+  --grey:#bfbbb2;
+  --gold:#8B7A4C;
+  --brass:#C8B98F;
+  --display:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --body:"Newsreader", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.075rem;line-height:1.55;font-optical-sizing:auto}
+a{color:var(--ink)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:74rem;margin:0 auto;padding:0 1.25rem}
+
+/* Cover */
+.cover{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem;padding:3.5rem 0 2.5rem;border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
+.cover .org{font-family:var(--display);font-stretch:75%;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.82rem}
+.cover h1{font-family:var(--display);font-stretch:68%;font-weight:800;font-size:clamp(2.6rem,7vw,5.4rem);line-height:.92;margin:.2rem 0 0;max-width:12ch;text-wrap:balance;text-transform:uppercase}
+.cover .meta{font-family:var(--display);font-stretch:85%;font-size:.95rem;color:var(--muted);max-width:34rem}
+.cover .figure{position:absolute;right:-1.5rem;bottom:-3.2rem;font-family:var(--display);font-stretch:62%;font-weight:800;font-size:clamp(9rem,26vw,22rem);line-height:1;color:var(--brass);opacity:.55;pointer-events:none;font-variant-numeric:tabular-nums;z-index:0}
+.cover > *:not(.figure){position:relative;z-index:1}
+.cover .figcap{font-family:var(--display);font-stretch:85%;font-size:.95rem;max-width:22rem;border-top:1px solid var(--gold);padding-top:.5rem;margin-top:1.5rem}
+.cover .figcap b{font-size:1.6rem;font-stretch:70%;display:block;line-height:1.1}
+
+/* Sections */
+.sheet{display:grid;grid-template-columns:3.2rem minmax(0,40rem) minmax(0,17rem);column-gap:2.25rem;padding:2.75rem 0 2.25rem;border-bottom:1px solid var(--rule)}
+.folio{grid-column:1;grid-row:1 / span 40;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-stretch:70%;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:.8rem;color:var(--gold);border-left:1px solid var(--gold);padding-left:.6rem;align-self:start;white-space:nowrap}
+.sheet > h2{grid-column:2 / span 2;font-family:var(--display);font-stretch:72%;font-weight:800;font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.02;margin:0 0 .9rem;text-transform:uppercase;text-wrap:balance;max-width:24ch}
+.sheet > h3{grid-column:2;font-family:var(--display);font-stretch:80%;font-weight:700;font-size:1.2rem;margin:1.6rem 0 .3rem;text-transform:uppercase;letter-spacing:.03em}
+.main{grid-column:2}
+.main p{margin:0 0 .9rem}
+.lead{font-size:1.22rem;line-height:1.45}
+.note{grid-column:3;font-family:var(--display);font-stretch:85%;font-size:.9rem;align-self:start;border-top:2px solid var(--ink);padding-top:.5rem}
+.note h4{margin:0 0 .4rem;font-stretch:75%;text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;color:var(--muted)}
+.ledger{list-style:none;margin:0;padding:0}
+.ledger li{display:flex;gap:.4rem;align-items:baseline;padding:.22rem 0;border-bottom:1px dotted var(--grey)}
+.ledger li span:first-child{flex:1}
+.ledger li b{font-variant-numeric:tabular-nums;font-weight:700}
+.note p{margin:.5rem 0 0;color:var(--muted);font-size:.86rem}
+.wide{grid-column:2 / span 2;margin:1rem 0 1.25rem}
+figure{margin:0}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-family:var(--display);font-stretch:85%;font-size:.8rem;color:var(--muted);margin-top:.4rem;border-top:1px solid var(--rule);padding-top:.35rem}
+.chart-title{font-family:var(--display);font-stretch:78%;font-weight:700;font-size:1.05rem;margin:0}
+.chart-sub{font-family:var(--display);font-stretch:85%;font-size:.86rem;color:var(--muted);margin:.1rem 0 .4rem}
+
+/* Takeaways as ledger entries */
+.entries{grid-column:2 / span 2;display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.entries li{display:grid;grid-template-columns:minmax(0,40rem) minmax(0,17rem);column-gap:2.25rem;padding:.9rem 0;border-bottom:1px solid var(--rule)}
+.entries strong{font-family:var(--display);font-stretch:80%;font-weight:700;display:block;font-size:1.05rem;margin-bottom:.15rem}
+.entries .amt{font-family:var(--display);font-stretch:70%;font-weight:700;font-size:1.5rem;line-height:1.05;font-variant-numeric:tabular-nums;align-self:start}
+.entries .amt small{display:block;font-size:.8rem;font-weight:500;font-stretch:85%;color:var(--muted);line-height:1.3}
+
+/* Tables */
+.tablebox{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-family:var(--display);font-stretch:88%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:700;font-stretch:78%;text-transform:uppercase;letter-spacing:.05em;font-size:.74rem;color:var(--muted);border-bottom:2px solid var(--ink);padding:.45rem .55rem .35rem 0;vertical-align:bottom}
+td{border-bottom:1px solid var(--rule);padding:.45rem .55rem .45rem 0;vertical-align:top}
+td.n,th.n{text-align:right}
+td:first-child{white-space:nowrap}
+tr.total td{border-top:2px solid var(--ink);font-weight:700}
+.verdicts td:nth-child(3){font-family:var(--body);font-stretch:100%;font-size:.95rem;min-width:18rem}
+.verdicts td:first-child{min-width:12rem}
+.stamp{display:inline-block;font-weight:800;font-stretch:72%;text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;padding:.12rem .4rem;border:1.5px solid var(--ink);white-space:nowrap}
+.stamp.ok{border-color:var(--gold);color:var(--gold)}
+.stamp.rev{border-style:dashed}
+.stamp.no{background:var(--ink);color:var(--paper)}
+
+ol.q,ul.steps{margin:0 0 1rem;padding-left:1.3rem}
+ol.q li,ul.steps li{margin-bottom:.6rem}
+ul.steps{list-style:square}
+ul.steps li::marker{color:var(--gold)}
+.method li{margin-bottom:.55rem}
+footer{font-family:var(--display);font-stretch:85%;font-size:.82rem;color:var(--muted);padding:1.5rem 0 3rem}
+
+@media (max-width: 900px){
+  .sheet{grid-template-columns:minmax(0,1fr);column-gap:0}
+  .folio{grid-row:auto;writing-mode:horizontal-tb;transform:none;border-left:0;border-bottom:1px solid var(--gold);padding:0 0 .3rem;margin-bottom:.8rem;justify-self:start}
+  .sheet > h2,.sheet > h3,.main,.note,.wide,.entries{grid-column:1}
+  .note{margin:.5rem 0 1rem}
+  .entries li{grid-template-columns:minmax(0,1fr)}
+  .entries .amt{margin-top:.35rem}
+  .cover .figure{right:-1rem;bottom:-2rem}
+}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="org">Virginia Valor FC &middot; Travel program, U9-U19</div>
+  <h1>Enrollment and Retention Review</h1>
+  <div class="meta">Seasons 2021-22 through 2026-27. Prepared November 14, 2026 by Dylan Sutherland, Director of Operations.</div>
+  <div class="figcap"><b>689 players</b>registered this season. At the same date two seasons ago: 827.</div>
+  <div class="figure" aria-hidden="true">689</div>
+</header>
+
+<section class="sheet" id="summary">
+  <div class="folio">Summary</div>
+  <h2>Enrollment is down 17% in two seasons</h2>
+  <div class="main"><p class="lead">Valor has 689 travel players registered this season. At the same date in each of the four seasons through 2024-25 it had about 830, and last season 760.</p></div>
+  <ol class="entries">
+    <li><div><strong>Over six seasons, nearly all of the loss is at U15 and older.</strong>U17-U19 went from 201 players to 106, and U15-U16 from 216 to 178. U9-U14 has 405 players, against 420 in 2021-22.</div><div class="amt">201 to 106<small>U17-U19 players since 2021-22</small></div></li>
+    <li><div><strong>The last two seasons are different.</strong>Through 2024-25, growth at U9-U14 covered the loss of older players. Since then U9-U14 has fallen from 527 to 405, while U15 and older barely changed (300 to 284).</div><div class="amt">527 to 405<small>U9-U14 players since 2024-25</small></div></li>
+    <li><div><strong>Both returning and new players are down.</strong>Returning players went from 528 to 475 in two seasons, and new players from 299 to 214.</div><div class="amt">299 to 214<small>new players</small></div></li>
+    <li><div><strong>A smaller share of players return.</strong>Leaving out graduating seniors, 72% returned for 2022-23 and 64% for each of the last two seasons. The drop is mostly boys U13 and older.</div><div class="amt">72% to 64%<small>players returning</small></div></li>
+    <li><div><strong>More players leave without signing up for tryouts.</strong>That group grew from 10% of the roster to 15%. The share who sign up and don't return has stayed near 20%.</div><div class="amt">10% to 15%<small>left without signing up for tryouts</small></div></li>
+    <li><div><strong>Where a destination is recorded, it is another club.</strong>This includes 11 players who moved to Fairfax Virginia Union (FVU) this season.</div><div class="amt">11<small>players to FVU this season</small></div></li>
+  </ol>
+  <div class="main"><p style="font-size:.92rem;color:var(--muted);margin-top:1rem">All player counts are as of October 7 of each season, so the seasons compare evenly. Between 11 and 40 more players registered after that date in each earlier season.</p></div>
+</section>
+
+<section class="sheet" id="enrollment">
+  <div class="folio">Enrollment</div>
+  <h2>Level for four seasons, then two drops</h2>
+  <figure class="wide"><p class="chart-title">Players registered by October 7 of each season</p><p class="chart-sub">Travel players, U9-U19. The last two seasons in gold.</p><div id="c-enroll"></div><figcaption>Source: Valor registration records.</figcaption></figure>
+  <div class="main">
+    <p>Girls are down 23% in two seasons and boys 12%.</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>Age band</th><th class="n">Girls 24-25</th><th class="n">Girls 26-27</th><th class="n">Change</th><th class="n">Boys 24-25</th><th class="n">Boys 26-27</th><th class="n">Change</th></tr></thead>
+      <tbody>
+        <tr><td>U9-U12</td><td class="n">138</td><td class="n">109</td><td class="n">-21%</td><td class="n">200</td><td class="n">146</td><td class="n">-27%</td></tr>
+        <tr><td>U13-U14</td><td class="n">77</td><td class="n">45</td><td class="n">-42%</td><td class="n">112</td><td class="n">105</td><td class="n">-6%</td></tr>
+        <tr><td>U15-U19</td><td class="n">136</td><td class="n">118</td><td class="n">-13%</td><td class="n">164</td><td class="n">166</td><td class="n">+1%</td></tr>
+        <tr class="total"><td>All</td><td class="n">351</td><td class="n">272</td><td class="n">-23%</td><td class="n">476</td><td class="n">417</td><td class="n">-12%</td></tr>
+      </tbody></table></div>
+    <p style="font-size:.92rem;color:var(--muted);margin-top:.4rem">U9 includes a few younger players who play up.</p>
+  </div>
+</section>
+
+<section class="sheet" id="bands">
+  <div class="folio">By age</div>
+  <h2>Older groups shrank first; younger groups fell in the last two seasons</h2>
+  <div class="main"><p>Where the decline is depends on the starting point.</p></div>
+  <figure class="wide"><p class="chart-title">Players by age band</p><p class="chart-sub">Registered by October 7 of each season. U17-U19 in gold.</p><div id="c-bands"></div><figcaption>Source: Valor registration records. Age groups by birth year.</figcaption></figure>
+  <div class="wide tablebox"><table>
+    <thead><tr><th>Age band</th><th class="n">2021-22</th><th class="n">2024-25</th><th class="n">2026-27</th><th class="n">Change since 2021-22</th><th class="n">Change since 2024-25</th></tr></thead>
+    <tbody>
+      <tr><td>U9-U12</td><td class="n">255</td><td class="n">338</td><td class="n">255</td><td class="n">0</td><td class="n">-83</td></tr>
+      <tr><td>U13-U14</td><td class="n">165</td><td class="n">189</td><td class="n">150</td><td class="n">-15</td><td class="n">-39</td></tr>
+      <tr><td>U15-U16</td><td class="n">216</td><td class="n">168</td><td class="n">178</td><td class="n">-38</td><td class="n">+10</td></tr>
+      <tr><td>U17-U19</td><td class="n">201</td><td class="n">132</td><td class="n">106</td><td class="n">-95</td><td class="n">-26</td></tr>
+      <tr class="total"><td>All</td><td class="n">837</td><td class="n">827</td><td class="n">689</td><td class="n">-148</td><td class="n">-138</td></tr>
+    </tbody></table></div>
+  <div class="main">
+    <p><b>Since 2021-22:</b> U17-U19 accounts for 95 of the 148 players lost, and U15 and older for 133.</p>
+    <p><b>From 2021-22 to 2024-25:</b> the club lost 117 players at U15 and older and gained 107 at U9-U14, so the total stayed level.</p>
+    <p><b>Since 2024-25:</b> 122 of the 138 players lost are at U9-U14.</p>
+  </div>
+</section>
+
+<section class="sheet" id="older">
+  <div class="folio">Older players</div>
+  <h2>Half the U17-U19 players, half the teams</h2>
+  <div class="main"><p>Valor has about half the U17-U19 players it had in 2021-22, and half the teams for them.</p></div>
+  <aside class="note"><h4>U17-U19 players</h4><ul class="ledger"><li><span>2021-22</span><b>201</b></li><li><span>2022-23</span><b>172</b></li><li><span>2023-24</span><b>159</b></li><li><span>2024-25</span><b>132</b></li><li><span>2025-26</span><b>114</b></li><li><span>2026-27</span><b>106</b></li></ul></aside>
+  <figure class="wide"><p class="chart-title">Teams for players 17 and older</p><p class="chart-sub">By the birth years in the team name.</p><div id="c-older"></div><figcaption>Source: Valor registration records.</figcaption></figure>
+  <div class="main">
+    <p><b>Fewer players stay through the older ages.</b> Of U16 to U18 players who were not graduating, 64% returned for 2022-23 and 51% for this season.</p>
+    <p><b>Classes shrink more on the way up.</b> The boys who were U15 in 2021-22 numbered 72, and 34 were here at U18. The boys who were U15 in 2023-24 numbered 48, and 22 are here at U18. For girls the same two classes went from 43 to 31, and from 42 to 23.</p>
+    <p><b>New players at these ages held steady,</b> at 28 to 33 a season. Returning players at U17-U19 fell from 140 in 2022-23 to 73.</p>
+    <p><b>Senior teams.</b> U18 and U19 teams went from 7 in 2021-22 to 5 in each of the next three seasons and 3 in each of the last two. Since 2024-25 the two ages have shared teams, and this season has no team for players born in 2007-08.</p>
+  </div>
+</section>
+
+<section class="sheet" id="gains">
+  <div class="folio">Where we gained</div>
+  <h2>Some age groups were bigger than the year before</h2>
+  <div class="main"><p>In each of the last two seasons, some age groups had more players than the same age group a year earlier.</p></div>
+  <aside class="note"><h4>Class sizes, last four seasons</h4><ul class="ledger"><li><span>Boys born 2012</span><b>59, 61, 65, 64</b></li><li><span>Boys born 2016</span><b>6, 33, 39, 46</b></li></ul></aside>
+  <figure class="wide"><p class="chart-title">Each age group compared with the same age group one season earlier</p><p class="chart-sub">22 groups, U9 to U19, girls and boys. Gold: players added in groups that were bigger. Grey: players fewer in groups that were smaller.</p><div id="c-gains"></div><figcaption>Source: Valor registration records. Age groups by birth year.</figcaption></figure>
+  <div class="wide tablebox"><table>
+    <thead><tr><th>Season</th><th class="n">Net change</th><th>Age groups that were bigger than the year before</th></tr></thead>
+    <tbody>
+      <tr><td>2026-27</td><td class="n">-71</td><td>Girls U12 (+11), Boys U15 (+11), Boys U16 (+10), Girls U18 (+8), Boys U11 (+5), Boys U18 (+4)</td></tr>
+      <tr><td>2025-26</td><td class="n">-67</td><td>Boys U14 (+14), Boys U15 (+12), Girls U15 (+9), Girls U17 (+9), Boys U19 (+3), Girls U11 (+2), Girls U19 (+1), Boys U17 (+1)</td></tr>
+    </tbody></table></div>
+  <div class="main"><p>Most of these gains are a large class moving up, not a class adding players. The boys born in 2012 are the club's largest class, which is why boys U14 and then boys U15 were bigger. One class has added players every year: the boys born in 2016 went from 33 to 39 to 46.</p></div>
+</section>
+
+<section class="sheet" id="retnew">
+  <div class="folio">Returning and new</div>
+  <h2>Both returning and new players are down</h2>
+  <figure class="wide"><p class="chart-title">Players registered by October 7</p><p class="chart-sub">Returning from the season before, and new.</p><div id="c-retnew"></div><figcaption>Source: Valor registration records.</figcaption></figure>
+  <div class="main">
+    <p>New players fell most at U9-U12 and among girls U13-U14.</p>
+    <div class="tablebox"><table>
+      <thead><tr><th>New players by October 7</th><th class="n">2024-25</th><th class="n">2025-26</th><th class="n">2026-27</th></tr></thead>
+      <tbody>
+        <tr><td>Girls U9-U12</td><td class="n">56</td><td class="n">40</td><td class="n">28</td></tr>
+        <tr><td>Boys U9-U12</td><td class="n">91</td><td class="n">56</td><td class="n">57</td></tr>
+        <tr><td>Girls U13-U14</td><td class="n">31</td><td class="n">13</td><td class="n">14</td></tr>
+        <tr><td>Boys U13-U14</td><td class="n">36</td><td class="n">52</td><td class="n">28</td></tr>
+        <tr><td>Girls U15-U19</td><td class="n">26</td><td class="n">17</td><td class="n">27</td></tr>
+        <tr><td>Boys U15-U19</td><td class="n">59</td><td class="n">69</td><td class="n">60</td></tr>
+        <tr class="total"><td>All</td><td class="n">299</td><td class="n">247</td><td class="n">214</td></tr>
+      </tbody></table></div>
+    <p style="margin-top:1rem">The move to Aug 1 to Jul 31 age groups made this year's U9 class smaller than usual: only players born January to July 2018 were newly eligible. Next year's U9 class covers a full twelve months again.</p>
+  </div>
+</section>
+
+<section class="sheet" id="retention">
+  <div class="folio">Retention</div>
+  <h2>Boys return far less often from U13 on</h2>
+  <div class="main"><p>Leaving out graduating seniors, 72% of players returned for 2022-23, 68% for each of the next two seasons and 64% for each of the last two. Girls held between 66% and 75%. Boys fell to 56% for 2025-26 and 63% for this season.</p></div>
+  <aside class="note"><h4>Top team vs other teams</h4><ul class="ledger"><li><span>Top team, 2024-25</span><b>66%</b></li><li><span>Top team, 2025-26</span><b>61%</b></li><li><span>Top team, 2026-27</span><b>54%</b></li><li><span>Other teams</span><b>65-69%</b></li></ul><p>Top team means the ECNL-RL or Pre-ECNL team in each age group.</p></aside>
+  <figure class="wide"><p class="chart-title">Share of players who registered again the next season</p><p class="chart-sub">By age group. Gold: last two seasons. Grey: the three seasons before. Graduating seniors excluded.</p><div id="c-age"></div><figcaption>Source: Valor registration records. Age groups by birth year.</figcaption></figure>
+  <div class="main"><p>In the last two seasons, 42% of U15 boys and 41% of U17 boys came back, down from 58% and 63%. Girls held through U15, then dropped to 55% at U16 and U17.</p></div>
+</section>
+
+<section class="sheet" id="tryouts">
+  <div class="folio">Tryouts</div>
+  <h2>The rise in leaving is players who don't sign up for tryouts</h2>
+  <div class="main"><p>About one in five players signs up for tryouts and doesn't return every year, and that hasn't changed. Players who leave without signing up grew from 10% of the roster to 15%. Signing up is not the same as attending: in the three seasons with usable check-in records, 18% to 29% of the players who signed up and left have no check-in mark.</p></div>
+  <figure class="wide"><p class="chart-title">More players leave without signing up for tryouts</p><p class="chart-sub">Share of players who did not return, by whether they signed up for the next season's tryouts.</p><div id="c-walk"></div><figcaption>Source: Valor registration and tryout sign-up records.</figcaption></figure>
+  <div class="main"><p>Older boys account for most of the rise: 30% of boys U15 and older left without signing up in the last two seasons, up from 18%. The records don't show where players who don't sign up go.</p></div>
+  <h3>Players who signed up and didn't return</h3>
+  <div class="main"><p>The player-pool sheets record a destination or reason for about one in four of these players.</p></div>
+  <aside class="note"><h4>Top-team players not returning, 2026-27</h4><ul class="ledger"><li><span>Did not sign up for tryouts</span><b>45</b></li><li><span>Moved to FVU</span><b>11</b></li><li><span>Joined another club</span><b>15</b></li><li><span>Declined, no reason</span><b>6</b></li><li><span>Stopped, moved or injured</span><b>5</b></li><li><span>No outcome recorded</span><b>25</b></li><li><span>Total</span><b>107</b></li></ul></aside>
+  <figure class="wide"><p class="chart-title">When a destination is recorded, it is another club</p><p class="chart-sub">Players who signed up for tryouts and did not return, by what the player-pool sheet records.</p><div id="c-reasons"></div><figcaption>Source: Valor player-pool sheets, 2022-23 to 2026-27.</figcaption></figure>
+  <div class="main">
+    <p><b>Other clubs.</b> The sheets name another club for 20, 37, 29, 28 and 37 players over the five seasons, including FVU. That number has not risen the way leaving has. Herndon, VSA, Loudoun, McLean, Vienna and BRYC appear most often.</p>
+    <p><b>FVU.</b> 11 players moved to FVU this season, against 2 in each of the two seasons before and none earlier. All were on a top team.</p>
+    <p><b>Declines with no reason</b> ran between 45 and 61 for four seasons, then fell to 37.</p>
+  </div>
+</section>
+
+<section class="sheet" id="aid">
+  <div class="folio">Financial assistance</div>
+  <h2>About 10% of players request aid</h2>
+  <div class="main"><p>Requests ran 53 to 63 a season through 2023-24 and 70 to 79 since. The increase began the year registration moved to PlayMetrics. New families ask most: 13% to 16% of new players, against 6% to 8% of returning players. Since 2024-25, players who requested aid have returned at the same rate as everyone else.</p></div>
+</section>
+
+<section class="sheet" id="next">
+  <div class="folio">For the review</div>
+  <h2>Questions and next steps</h2>
+  <div class="main">
+    <ol class="q">
+      <li>Where do players who don't sign up for tryouts go? The records are blank for all of them, about 110 a season.</li>
+      <li>What is leading boys U13 and older to leave?</li>
+      <li>Why have fewer new U9-U12 players joined since 2025-26?</li>
+      <li>Should players who move to FVU be counted as leaving Valor?</li>
+    </ol>
+    <ul class="steps">
+      <li>Ask families who don't re-register why, and which club they're joining.</li>
+      <li>Record a destination or reason for every player who declines or doesn't sign up for tryouts, and mark tryout check-in for every player each year.</li>
+      <li>Save one complete season roster export each year, on the same date.</li>
+      <li>Watch 2027-28 U9 intake, the first full-year class under the new age groups.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Virginia Valor FC &middot; Enrollment and Retention Review &middot; November 14, 2026</footer>
+</div>
+
+<script>
+(function(){
+  var C={ink:'#141414',muted:'#5f5c56',rule:'#dcd8cf',grey:'#bfbbb2',gold:'#8B7A4C',brass:'#C8B98F',paper:'#ffffff'};
+  var F='Archivo, "Arial Narrow", Arial, sans-serif';
+  function el(tag,attrs,text){var e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(var k in attrs){e.setAttribute(k,attrs[k]);}if(text!==undefined){e.textContent=text;}return e;}
+  function svg(id,w,h,label){var s=el('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':label,'font-family':F,'font-size':'13'});document.getElementById(id).appendChild(s);return s;}
+  function txt(s,x,y,t,o){o=o||{};var a={x:x,y:y,fill:o.fill||C.ink,'text-anchor':o.anchor||'start','font-weight':o.weight||'400','font-stretch':o.stretch||'85%'};if(o.size){a['font-size']=o.size;}var e=el('text',a,t);s.appendChild(e);return e;}
+  function tip(node,t){node.appendChild(el('title',{},t));}
+
+
+  function bars(id,label,d,max){var s=svg(id,760,290,label);var L=20,W=720,base=250,top=30,band=W/d.length,bw=64;
+    d.forEach(function(r,i){var x=L+i*band+(band-bw)/2,h=r[1]/max*(base-top);
+      var b=el('rect',{x:x,y:base-h,width:bw,height:h,fill:r[2]?C.gold:C.grey});tip(b,r[0]+': '+r[1]);s.appendChild(b);
+      txt(s,x+bw/2,base-h-8,String(r[1]),{anchor:'middle',weight:'700',size:'15',stretch:'75%'});
+      txt(s,x+bw/2,base+20,r[0],{anchor:'middle',fill:C.muted});});
+    s.appendChild(el('line',{x1:L,x2:L+W,y1:base,y2:base,stroke:C.ink,'stroke-width':1.5}));}
+  bars('c-enroll','Players registered by October 7 of each season',[['2021-22',837],['2022-23',825],['2023-24',826],['2024-25',827],['2025-26',760,1],['2026-27',689,1]],950);
+
+  function stacked(id,label,d,max,names,fills,tf,minLabel,unit,H){H=H||330;var s=svg(id,760,H,label);var L=40,top=60,base=H-50,n=d.length,bw=n>3?Math.min(80,560/n):110,gap=n>3?(680-n*bw)/(n-1):90;
+    names.forEach(function(nm,i){s.appendChild(el('rect',{x:L+(i%3)*235,y:8+Math.floor(i/3)*20,width:13,height:13,fill:fills[i]}));txt(s,L+(i%3)*235+19,19+Math.floor(i/3)*20,nm,{fill:C.muted,size:'12'});});
+    d.forEach(function(r,i){var x=L+i*(bw+gap),acc=0,total=0;r[1].forEach(function(v){total+=v;});
+      r[1].forEach(function(v,k){if(!v){return;}var h=v/max*(base-top),yt=base-(acc+v)/max*(base-top);acc+=v;
+        var b=el('rect',{x:x,y:yt,width:bw,height:h,fill:fills[k],stroke:C.paper,'stroke-width':1});tip(b,r[0]+', '+names[k]+': '+v);s.appendChild(b);
+        if(v>=minLabel){txt(s,x+bw/2,yt+h/2+5,String(v),{anchor:'middle',weight:'700',fill:tf[k],size:'13',stretch:'75%'});}});
+      txt(s,x+bw/2,base-total/max*(base-top)-8,total+(unit||''),{anchor:'middle',fill:C.muted,size:'12'});
+      txt(s,x+bw/2,base+20,r[0],{anchor:'middle',weight:'700'});});
+    s.appendChild(el('line',{x1:L-10,x2:L+(n-1)*(bw+gap)+bw+10,y1:base,y2:base,stroke:C.ink,'stroke-width':1.5}));}
+  stacked('c-older','Teams for players 17 and older by season',[['2021-22',[5,7]],['2022-23',[5,5]],['2023-24',[4,5]],['2024-25',[2,5]],['2025-26',[4,3]],['2026-27',[3,3]]],16,['U17 teams','U18 and U19 teams'],[C.grey,C.gold],[C.ink,C.paper],1,' teams');
+  stacked('c-retnew','Returning and new players by season',[['2022-23',[557,268]],['2023-24',[545,281]],['2024-25',[528,299]],['2025-26',[513,247]],['2026-27',[475,214]]],1050,['Returning from the season before','New'],[C.grey,C.gold],[C.ink,C.paper],1,'');
+  stacked('c-reasons','Players who signed up for tryouts and did not return, by what was recorded',[['2022-23',[0,20,4,45,72]],['2023-24',[0,37,6,61,69]],['2024-25',[2,27,7,54,62]],['2025-26',[2,26,7,61,74]],['2026-27',[11,26,7,37,78]]],185,['Moved to FVU','Joined another club','Stopped, moved away or injured','Declined, no reason recorded','No outcome recorded'],[C.gold,C.brass,C.ink,C.grey,'#e9e6df'],[C.paper,C.ink,C.paper,C.ink,C.ink],11,' players',420);
+
+  (function(){
+    var seasons=['2021-22','2022-23','2023-24','2024-25','2025-26','2026-27'];
+    var series=[['U9-U12',[255,302,328,338,282,255],-8],['U15-U16',[216,167,158,168,174,178],-8],['U13-U14',[165,184,181,189,190,150],16],['U17-U19',[201,172,159,132,114,106],16]];
+    var s=svg('c-bands',760,330,'Players by age band, 2021-22 to 2026-27');var L=80,R=560,top=20,base=285,max=360;
+    function x(i){return L+i/5*(R-L);}function y(v){return base-v/max*(base-top);}
+    [0,100,200,300].forEach(function(t){s.appendChild(el('line',{x1:L,x2:R,y1:y(t),y2:y(t),stroke:t===0?C.ink:C.rule}));txt(s,L-44,y(t)+4,String(t),{anchor:'end',fill:C.muted,size:'12'});});
+    seasons.forEach(function(se,i){txt(s,x(i),base+20,se,{anchor:'middle',fill:C.muted,size:'12'});});
+    series.forEach(function(sr){var acc=sr[0]==='U17-U19',col=acc?C.gold:C.grey,tc=acc?C.gold:C.muted;
+      s.appendChild(el('polyline',{points:sr[1].map(function(v,i){return x(i)+','+y(v);}).join(' '),fill:'none',stroke:col,'stroke-width':acc?3:2}));
+      sr[1].forEach(function(v,i){var c=el('circle',{cx:x(i),cy:y(v),r:3.5,fill:col});tip(c,sr[0]+', '+seasons[i]+': '+v);s.appendChild(c);});
+      txt(s,x(0)-10,y(sr[1][0])+4+(sr[2]>0?4:-4),String(sr[1][0]),{anchor:'end',weight:'700',fill:tc});
+      txt(s,x(5)+12,y(sr[1][5])+4,sr[1][5]+'  '+sr[0],{weight:'700',fill:tc});});
+  })();
+
+  (function(){
+    var d=[['2022-23',90,102,12],['2023-24',74,73,10],['2024-25',80,79,10],['2025-26',51,118,8],['2026-27',49,120,6]];
+    var s=svg('c-gains',760,360,'Players gained and lost across age groups by season');
+    var L=40,W=680,top=40,zero=160,base=300,mu=120,md=150,band=W/d.length,bw=70;
+    function up(v){return zero-v/mu*(zero-top);} function dn(v){return zero+v/md*(base-zero);}
+    d.forEach(function(r,i){var x=L+i*band+(band-bw)/2,net=r[1]-r[2];
+      var a=el('rect',{x:x,y:up(r[1]),width:bw,height:zero-up(r[1]),fill:C.gold});tip(a,r[0]+': +'+r[1]+' across '+r[3]+' groups');s.appendChild(a);
+      txt(s,x+bw/2,up(r[1])-7,'+'+r[1],{anchor:'middle',weight:'700',stretch:'75%'});
+      txt(s,x+bw/2,up(r[1])-22,r[3]+' groups',{anchor:'middle',fill:C.muted,size:'12'});
+      var b=el('rect',{x:x,y:zero,width:bw,height:dn(r[2])-zero,fill:C.grey});tip(b,r[0]+': -'+r[2]);s.appendChild(b);
+      txt(s,x+bw/2,dn(r[2])+16,'-'+r[2],{anchor:'middle',weight:'700',stretch:'75%'});
+      txt(s,x+bw/2,base+30,r[0],{anchor:'middle',fill:C.muted,size:'12'});
+      txt(s,x+bw/2,base+48,'Net '+(net>0?'+':'')+net,{anchor:'middle',weight:'700'});});
+    s.appendChild(el('line',{x1:L,x2:L+W,y1:zero,y2:zero,stroke:C.ink,'stroke-width':1.5}));
+  })();
+  // retention by age group
+  (function(){
+    var data={Boys:{earlier:[70.8,70.8,78.0,74.8,64.8,68.0,57.6,61.6,63.2],recent:[72.9,81.2,67.9,64.3,56.6,54.5,41.7,53.7,40.6]},Girls:{earlier:[90.0,75.5,84.2,68.2,67.2,72.5,71.7,72.9,63.6],recent:[76.8,76.9,77.6,67.8,66.7,82.6,69.2,55.1,55.1]}};
+    var marks={Boys:6,Girls:7};
+    var s=svg('c-age',760,320,'Share of players returning by age group, boys and girls');
+    var pw=300,gap=80,L0=50,top=40,base=270;
+    function y(v){return base-(v-30)/70*(base-top);}
+    ['Boys','Girls'].forEach(function(g,gi){var L=L0+gi*(pw+gap);
+      txt(s,L,22,g,{weight:'700',size:'15',stretch:'75%'});
+      [40,60,80,100].forEach(function(t){s.appendChild(el('line',{x1:L,x2:L+pw,y1:y(t),y2:y(t),stroke:C.rule}));txt(s,L-8,y(t)+4,t+'%',{anchor:'end',fill:C.muted,size:'12'});});
+      for(var k=0;k<9;k++){txt(s,L+k/8*pw,base+20,'U'+(k+9),{anchor:'middle',fill:C.muted,size:'12'});}
+      ['earlier','recent'].forEach(function(era){var v=data[g][era],col=era==='recent'?C.gold:C.grey;
+        s.appendChild(el('polyline',{points:v.map(function(r,k){return (L+k/8*pw)+','+y(r);}).join(' '),fill:'none',stroke:col,'stroke-width':era==='recent'?3:2}));
+        v.forEach(function(r,k){var c=el('circle',{cx:L+k/8*pw,cy:y(r),r:3.5,fill:col});tip(c,g+' U'+(k+9)+', '+(era==='recent'?'last two seasons':'three seasons before')+': '+r+'%');s.appendChild(c);});
+        if(era==='recent'){var m=marks[g];txt(s,L+m/8*pw,y(v[m])+20,Math.round(v[m])+'%',{anchor:'middle',weight:'700',fill:C.gold});}
+      });});
+  })();
+
+  function twoLines(id,label,seasons,series,ymin,ymax,ticks){
+    var s=svg(id,760,290,label);var L=60,R=520,top=25,base=245;
+    function x(i){return L+i/(seasons.length-1)*(R-L);}function y(v){return base-(v-ymin)/(ymax-ymin)*(base-top);}
+    ticks.forEach(function(t){s.appendChild(el('line',{x1:L,x2:R,y1:y(t),y2:y(t),stroke:t===ymin?C.ink:C.rule}));txt(s,L-8,y(t)+4,t+'%',{anchor:'end',fill:C.muted,size:'12'});});
+    seasons.forEach(function(se,i){txt(s,x(i),base+20,se,{anchor:'middle',fill:C.muted,size:'12'});});
+    series.forEach(function(sr){var col=sr.accent?C.gold:C.grey;
+      s.appendChild(el('polyline',{points:sr.v.map(function(v,i){return x(i)+','+y(v);}).join(' '),fill:'none',stroke:col,'stroke-width':sr.accent?3:2}));
+      sr.v.forEach(function(v,i){var c=el('circle',{cx:x(i),cy:y(v),r:4,fill:col});tip(c,sr.name+', '+seasons[i]+': '+v+'%');s.appendChild(c);});
+      txt(s,x(0)+10,y(sr.v[0])-10,Math.round(sr.v[0])+'%',{weight:'700',fill:sr.accent?C.gold:C.muted});
+      txt(s,x(sr.v.length-1)+12,y(sr.v[sr.v.length-1])+4,Math.round(sr.v[sr.v.length-1])+'%  '+sr.name,{weight:'700',fill:sr.accent?C.gold:C.muted});
+    });
+  }
+  var S5=['2022-23','2023-24','2024-25','2025-26','2026-27'];
+  twoLines('c-walk','Share of players who left without signing up for tryouts, and who signed up and did not return',S5,[{name:'Signed up, did not return',v:[18.1,21.8,19.7,21.2,21.5]},{name:'Left without signing up',v:[10.2,10.1,12.4,15.2,14.5],accent:true}],0,30,[0,10,20,30]);
+})();
+</script>
+</body>
+</html>
