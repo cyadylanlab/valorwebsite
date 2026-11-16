@@ -1752,14 +1752,8 @@
     }
 
     /* a private link, ?t=... */
-    let t = new URLSearchParams(location.search).get('t');
-    if (!t && document.referrer) {
-      /* If this page is embedded in Wix, the query string lands on the parent
-         page and never reaches the frame. The referrer still carries it in
-         most browsers, so try there before giving up. */
-      try { t = new URL(document.referrer).searchParams.get('t'); } catch (e) {}
-    }
-    if (t && live) {
+    function openToken(t) {
+      if (!t || !live) return;
       show(shell, false);
       show($('#pm-bar'), false);
       fetch(ROSTER.endpoint + '?t=' + encodeURIComponent(t))
@@ -1775,6 +1769,28 @@
             '<a href="#find">Ask for a fresh link</a> or email ' + esc(ROSTER.staffEmail) + '.';
           show(errorBox, true);
         });
+    }
+
+    let t = new URLSearchParams(location.search).get('t');
+    if (!t && document.referrer) {
+      /* If this page is embedded in Wix, the query string lands on the parent
+         page and never reaches the frame. The referrer sometimes carries it. */
+      try { t = new URL(document.referrer).searchParams.get('t'); } catch (e) {}
+    }
+    if (t) {
+      openToken(t);
+    } else if (window.parent !== window) {
+      /* Embedded on the Wix page: the page code there sends the ?t= from the
+         Wix address as { type: 'valor-roster', t }. Until it does, the normal
+         roster form shows, so a page without a private link is unaffected. */
+      let got = false;
+      window.addEventListener('message', function (e) {
+        const m = e.data;
+        if (got || !m || m.type !== 'valor-roster') return;
+        got = true;
+        if (m.t) openToken(String(m.t));
+      });
+      try { window.parent.postMessage('valor-roster-ready', '*'); } catch (e) {}
     }
   })();
   </script>
