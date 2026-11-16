@@ -1169,7 +1169,7 @@
     });
 
     /* boot */
-    if (!ref || !key) { noLink(); return; }
+    function start() {
     fetch(CONF.endpoint + '?team=' + encodeURIComponent(ref) + '&k=' + encodeURIComponent(key))
       .then(function (r) { return r.json(); })
       .then(function (res) {
@@ -1184,6 +1184,28 @@
         noLink((err && err.message) ||
           'We could not load your team just now. Try the link again in a minute, or email ' + CONF.staffEmail + '.');
       });
+    }
+
+    if (ref && key) {
+      start();
+    } else if (window.parent !== window) {
+      /* Embedded on the Wix page. The team code stays in the Wix address bar,
+         so the page code there sends it in: { type: 'valor-release', team, k }.
+         We say we are ready in case our page loads after theirs. */
+      let got = false;
+      window.addEventListener('message', function (e) {
+        const m = e.data;
+        if (got || !m || m.type !== 'valor-release') return;
+        got = true;
+        ref = String(m.team || '').toUpperCase();
+        key = String(m.k || '');
+        if (ref && key) start(); else noLink();
+      });
+      try { window.parent.postMessage('valor-release-ready', '*'); } catch (e) {}
+      setTimeout(function () { if (!got) noLink(); }, 7000);
+    } else {
+      noLink();
+    }
   })();
   </script>
 </body>
