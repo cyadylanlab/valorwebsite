@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3v3 Community Cup Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: plain game-day information for parents and coaches, quick to read on a phone at the field.
+   IDEA: a game-day ticket book. Each game is a ticket with a tear-off stub; standings read like a printed program table.
+   PICTURE: the team sheet itself, a stack of tickets under the team name.
+   COLOUR and TYPE: the Cup page's ink, blue, pink, orange and aqua; Archivo at wide and narrow widths, as on the Cup page.
+   LAYOUT: crest and search up top, the team's tickets and table below, then standings and the full schedule. */
+:root{
+  color-scheme:light;
+  --ink:#101218;--ink-2:#3d434e;--muted:#5b6270;--line:#e2e6ec;--soft:#f6f8fa;--paper:#fff;
+  --blue:#00aeeb;--blue-deep:#0079a6;--pink:#f345ad;--pink-deep:#9c1a68;--orange:#ff743d;--orange-deep:#9c3c10;--aqua:#9ce7e9;
+  --focus:#006a94;
+  --sans:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:60px;-webkit-text-size-adjust:100%}
+button,a,input,select{-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font:16.5px/1.55 var(--sans);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3,p{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
+.spectrum{height:6px;background:linear-gradient(90deg,var(--blue) 0 30%,var(--pink) 30% 58%,var(--orange) 58% 79%,var(--aqua) 79% 100%)}
+.wide{font-stretch:118%;font-weight:900;letter-spacing:-.03em;line-height:1}
+.narrow{font-stretch:75%}
+
+/* masthead */
+.mast{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:center;padding:26px 0 22px;border-bottom:3px solid var(--ink)}
+.crest{width:132px;height:auto;display:block}
+.mast h1{font-size:clamp(34px,6vw,58px)}
+.mast .when{margin-top:10px;font-weight:650;color:var(--ink-2)}
+.mast .live{margin-top:6px;font-size:14px;color:var(--muted)}
+.live b{display:inline-block;width:9px;height:9px;border-radius:50%;background:#20b26b;margin-right:6px;vertical-align:1px}
+.live.off b{background:#c3c8d2}
+
+/* finder */
+.finder{position:relative;margin:26px 0 8px;max-width:640px}
+.finder label{display:block;font-weight:800;font-stretch:118%;font-size:15px;margin-bottom:8px}
+.finder input{width:100%;height:58px;padding:0 18px;border:3px solid var(--ink);border-radius:0;font-size:18px;background:#fff}
+.sugg{position:absolute;left:0;right:0;top:100%;z-index:20;background:#fff;border:3px solid var(--ink);border-top:0;max-height:340px;overflow:auto;list-style:none;margin:0;padding:0}
+.sugg li button{display:block;width:100%;text-align:left;padding:11px 18px;border-top:1px solid var(--line);min-height:48px}
+.sugg li button:hover,.sugg li button[aria-selected=true]{background:var(--aqua)}
+.sugg small{display:block;color:var(--muted);font-size:13.5px}
+.sugg .none{padding:14px 18px;color:var(--muted)}
+
+/* tabs */
+.tabs{display:flex;gap:0 26px;border-bottom:1px solid var(--line);margin-top:22px;position:sticky;top:0;z-index:15;background:rgba(255,255,255,.97)}
+.tabs button{min-height:48px;font-weight:750;font-size:15.5px;color:var(--ink-2);border-bottom:4px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--pink)}
+section[role=tabpanel]{padding:28px 0 56px}
+
+/* team sheet */
+.sheet-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;margin-bottom:20px}
+.sheet-head h2{font-size:clamp(32px,6.4vw,64px);overflow-wrap:anywhere}
+.sheet-head .meta{margin-top:10px;color:var(--ink-2);font-weight:600}
+.rank{text-align:right;border-left:3px solid var(--ink);padding-left:16px}
+.rank .n{font-size:clamp(40px,7vw,64px)}
+.rank small{display:block;font-size:13.5px;color:var(--muted);font-weight:650}
+.empty{padding:34px 0;color:var(--ink-2);max-width:56ch}
+.empty strong{display:block;font-size:22px;font-stretch:118%;font-weight:850;color:var(--ink);margin-bottom:6px}
+
+.tickets{display:grid;gap:12px;margin-bottom:34px}
+.ticket{display:grid;grid-template-columns:132px minmax(0,1fr) auto;align-items:stretch;background:#fff;border:2px solid var(--ink);position:relative}
+.stub{background:var(--blue);color:var(--ink);padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px dashed var(--ink)}
+.stub .t{font-size:27px;font-weight:900;font-stretch:110%;letter-spacing:-.02em;line-height:1;white-space:nowrap}
+.stub .t small{font-size:14px;font-weight:800;margin-left:3px}
+.stub .s{font-size:12.5px;font-weight:800;margin-top:10px}
+.ticket.now .stub{background:var(--orange)}
+.ticket.final .stub{background:var(--ink);color:#fff}
+.ticket.po .stub{background:var(--pink);color:#fff}
+.ticket.po.final .stub{background:var(--pink-deep)}
+.body{padding:12px 16px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.body .field{font-size:13.5px;font-weight:800;color:var(--ink-2)}
+.body .field b{font-size:17px;color:var(--ink);font-stretch:118%}
+.body .opp{font-size:19px;font-weight:750;line-height:1.25}
+.body .note{font-size:14px;color:var(--muted)}
+.score{display:flex;align-items:center;gap:6px;padding:0 18px;font-size:30px;font-weight:900;font-stretch:110%;white-space:nowrap}
+.score i{font-style:normal;color:#9aa1ad;font-size:22px}
+.score .res{font-size:12px;font-weight:850;letter-spacing:.02em;padding:4px 7px;margin-left:6px;background:var(--soft);border:1px solid var(--line)}
+.score .res.w{background:var(--aqua);border-color:var(--aqua)}
+
+/* program table */
+.prog{width:100%;border-collapse:collapse;font-size:15.5px}
+.prog caption{text-align:left;font-weight:900;font-stretch:118%;font-size:22px;letter-spacing:-.02em;padding-bottom:8px;border-bottom:3px solid var(--ink)}
+.prog th{font-size:12.5px;font-weight:800;color:var(--muted);text-align:right;padding:9px 6px;border-bottom:1px solid var(--ink)}
+.prog td{padding:10px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.prog th:nth-child(2),.prog td:nth-child(2){text-align:left;white-space:normal;width:44%}
+.prog th:first-child,.prog td:first-child{text-align:left;width:34px;font-weight:850}
+.prog td.pts{font-weight:900}
+.prog tr.me td{background:var(--aqua)}
+.prog tr.cut td{border-bottom:2px solid var(--ink)}
+.tablenote{font-size:13.5px;color:var(--muted);margin-top:10px;max-width:70ch}
+.scroll{overflow-x:auto}
+
+.po-list{margin-top:22px;display:grid;gap:8px}
+.po-list h3{font-size:16px;font-weight:850;font-stretch:118%}
+.po-row{display:grid;grid-template-columns:118px minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+.po-row .lbl{font-weight:800;font-size:14px}
+.po-row .lbl small{display:block;color:var(--muted);font-weight:650}
+.pk,.toss{display:block;font-size:12.5px;font-weight:750;color:var(--pink-deep)}
+.prog .toss{display:inline;margin-left:4px}
+.champ{margin-top:16px;padding:14px 18px;border:3px solid var(--ink);background:linear-gradient(90deg,var(--blue) 0 6px,#fff 6px);font-weight:750}
+
+/* standings view */
+.divpick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.divpick button{min-height:44px;padding:8px 14px;border:2px solid var(--ink);font-weight:750;font-size:14.5px;background:#fff}
+.divpick button[aria-pressed=true]{background:var(--ink);color:#fff}
+.two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:start}
+
+/* schedule view */
+.sbar{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:end;margin-bottom:26px}
+.seg{display:grid;gap:6px}
+.seg span,.sbar label{font-size:13.5px;font-weight:800}
+.seg div{display:flex}
+.seg button{min-height:46px;padding:0 16px;border:2px solid var(--ink);margin-left:-2px;font-weight:750;font-size:15px;background:#fff}
+.seg button:first-child{margin-left:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.sbar label{display:grid;gap:6px}
+.sbar select{height:46px;border:2px solid var(--ink);padding:0 12px;background:#fff;font-size:16px;min-width:190px}
+.grp{margin-bottom:30px;max-width:820px}
+.grp h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding:0 0 8px;border-bottom:3px solid var(--ink);font-size:24px;font-weight:900;font-stretch:118%;letter-spacing:-.02em}
+.grp h3 small{font-size:13.5px;font-weight:700;color:var(--muted);letter-spacing:0;font-stretch:100%}
+.grp h3 .nowtag{font-size:12.5px;font-weight:850;color:#fff;background:var(--orange-deep);padding:3px 8px;letter-spacing:0;font-stretch:100%}
+.row{display:grid;grid-template-columns:96px 128px minmax(0,1fr) 36px;gap:0 14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.row .m1{font-weight:850;white-space:nowrap}
+.row .m2{font-size:14px;color:var(--ink-2);font-weight:650}
+.row .tm{display:grid;gap:2px}
+.row .tm div{display:flex;justify-content:space-between;gap:12px;line-height:1.3}
+.row .tm .w{font-weight:800}
+.row .tm .l{color:var(--muted)}
+.row .m2 small{display:block;font-size:12.5px;font-weight:800;color:var(--pink-deep);margin-top:3px}
+.row .ss{display:grid;gap:2px;text-align:right;font-weight:900;line-height:1.3}
+.row.mine{background:rgba(156,231,233,.4);box-shadow:inset 5px 0 0 var(--aqua)}
+.row .m1{padding-left:12px}
+.row.now .m1{color:var(--orange-deep)}
+.fbadge{display:inline-block;min-width:38px;text-align:center;border:2px solid var(--ink);padding:2px 4px;font-weight:900;font-stretch:118%;font-size:14px}
+.row.tv{grid-template-columns:96px 128px minmax(0,1fr) 92px}
+.row.tv .ss{white-space:nowrap}
+.row.tv .ss i{font-style:normal;color:#9aa1ad;margin:0 2px}
+.row.tv em{font-style:normal;font-size:11.5px;font-weight:850;padding:2px 6px;margin-left:6px;background:var(--soft);border:1px solid var(--line);vertical-align:2px}
+.row.tv em.rW{background:var(--aqua);border-color:var(--aqua)}
+.mygrp h3{box-shadow:inset 0 -8px 0 var(--aqua)}
+.nores{color:var(--muted);padding:20px 0}
+.po-row .sc i{font-style:normal;color:#9aa1ad;margin:0 3px}
+.foot{border-top:3px solid var(--ink);padding:26px 0 40px;display:flex;flex-wrap:wrap;gap:18px 40px;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink-2)}
+.foot img{width:132px;height:auto;display:block}
+
+@media(max-width:760px){
+  .two{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:600px){
+  .mast h1{font-size:clamp(28px,8.4vw,40px)}
+  .finder{margin-top:18px}
+  .finder input{height:54px;font-size:17px}
+  .tabs{gap:0;justify-content:space-between}
+  .tabs button{flex:1;font-size:15px}
+  section[role=tabpanel]{padding:22px 0 44px}
+  .divpick{flex-wrap:nowrap;overflow-x:auto;margin-inline:-14px;padding:2px 14px 8px;scrollbar-width:none}
+  .divpick::-webkit-scrollbar{display:none}
+  .divpick button{flex:none}
+  .sbar{gap:12px}
+  .seg,.sbar label{width:100%}
+  .seg div{width:100%}
+  .seg button{flex:1;padding:0 4px;white-space:nowrap;font-size:13.5px}
+  .sbar select{width:100%}
+  .sheet-head h2{font-size:clamp(28px,9vw,44px)}
+  .grp h3{font-size:21px}
+  .two{gap:28px}
+  .foot{padding:22px 0 30px}
+  .wrap{width:calc(100% - 28px)}
+  .mast{grid-template-columns:76px minmax(0,1fr);gap:16px;padding:18px 0 16px}
+  .crest{width:76px}
+  .mast .when{font-size:14.5px;margin-top:6px}
+  .sheet-head{grid-template-columns:minmax(0,1fr)}
+  .rank{text-align:left;border-left:0;border-top:3px solid var(--ink);padding:10px 0 0;display:flex;gap:12px;align-items:baseline}
+  .ticket{grid-template-columns:96px minmax(0,1fr)}
+  .stub{padding:12px 10px}
+  .ticket{grid-template-columns:92px minmax(0,1fr)}
+  .stub .t{font-size:23px}
+  .stub .t small{display:block;margin:3px 0 0;font-size:13px}
+  .score{grid-column:2;padding:0 16px 12px;font-size:24px}
+  .body .opp{font-size:17px}
+  .row{grid-template-columns:84px minmax(0,1fr) 30px;gap:2px 10px}
+  .row .m1{font-size:14.5px;padding-left:8px}
+  .row .m2{grid-column:2;grid-row:1;font-size:13px}
+  .row .m1{grid-row:1/3}
+  .row .tm{grid-column:2}
+  .row .ss{grid-column:3;grid-row:2}
+  .row.tv{grid-template-columns:84px minmax(0,1fr) auto}
+  .row.tv .tm{grid-column:2}
+  .row.tv .ss{grid-column:3;grid-row:1/3}
+  .prog{font-size:14px}
+  .prog .hide-s{display:none}
+  .po-row{grid-template-columns:minmax(0,1fr) auto}
+  .po-row .lbl{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:no-preference){
+  .ticket{animation:tear .28s ease-out both}
+  @keyframes tear{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+}
+</style>
+</head>
+<body>
+<div class="spectrum"></div>
+<div class="wrap">
+  <header class="mast">
+    <img class="crest" src="data:image/webp;base64,__CREST__" alt="3v3 Community Cup 2026">
+    <div>
+      <h1 class="wide">Schedule and standings</h1>
+      <p class="when">Saturday, November 28 at Sully Highlands Park. First games at 9:00 AM.</p>
+      <p class="live off" id="live"><b></b><span>Loading</span></p>
+    </div>
+  </header>
+
+  <div class="finder">
+    <label for="q">Find your team</label>
+    <input id="q" type="search" autocomplete="off" placeholder="Team name or coach name" aria-autocomplete="list" aria-controls="sugg" aria-expanded="false">
+    <ul class="sugg" id="sugg" role="listbox" hidden></ul>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="t-team" aria-controls="p-team" aria-selected="true">My team</button>
+    <button role="tab" id="t-table" aria-controls="p-table" aria-selected="false">Standings</button>
+    <button role="tab" id="t-sched" aria-controls="p-sched" aria-selected="false">Full schedule</button>
+  </nav>
+
+  <section role="tabpanel" id="p-team" aria-labelledby="t-team"></section>
+  <section role="tabpanel" id="p-table" aria-labelledby="t-table" hidden></section>
+  <section role="tabpanel" id="p-sched" aria-labelledby="t-sched" hidden></section>
+
+  <footer class="foot">
+    <a href="https://www.virginiavalorfc.org/3v3communitycup" target="_top"><img src="data:image/webp;base64,__WORDMARK__" alt="Virginia Valor FC"></a>
+    <p>Scores are posted after each game is reported to the scorer's table. Times are Eastern.</p>
+  </footer>
+</div>
+
+<script>
+{
+/* Paste the Apps Script web app /exec URL here. Leave it blank to show the posted schedule without scores. */
+const DATA_URL = "";
+const REFRESH_MS = 60000;
+const EVENT_DATE = "2026-11-28";
+const ROUND_MIN = 35;
+const SNAPSHOT = {"updated": "", "games": [{"time": "9:00 AM", "field": "1A", "division": "U10 Boys", "a": "Goalazzo Kids", "b": "Big Bros", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "1B", "division": "U10 Boys", "a": "Reds", "b": "Loudoun U10B Madrid", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "1D", "division": "U9 Boys", "a": "Loudoun u9s", "b": "Valor B2017/18 White", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Luma Path", "b": "Nonchalant ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2A", "division": "U11-U12 Girls", "a": "Cleats & Chaos", "b": "The Predators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2B", "division": "U11-U12 Girls", "a": "Flaming Phoenixes", "b": "Pink Panthers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2C", "division": "U11-U12 Girls", "a": "Honey Badgers", "b": "RED REIGN", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2D", "division": "U10 Girls", "a": "Light blue", "b": "VYS Flow State", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2E", "division": "U8 Girls", "a": "Hermosas con botas FC", "b": "GU8 SPFC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:00 AM", "field": "2F", "division": "U8 Girls", "a": "Purple Penguins", "b": "Squishy Strikers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1A", "division": "U12 Boys", "a": "Feast Mode", "b": "OG 2015 Gold", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1B", "division": "U12 Boys", "a": "Infinite Void FC", "b": "VA Revolution", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1C", "division": "U12 Boys", "a": "Pre-ECNL B2014/15 Courage", "b": "War Pandas", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1D", "division": "U9 Boys", "a": "Loudoun u9s", "b": "Abdul's Crew", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1E", "division": "U8 Boys", "a": "Wildcats", "b": "Little Bros", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Feast Mode FC", "b": "Gunston SC U14 Premier", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "2A", "division": "U9 Girls", "a": "AYVA", "b": "Vicious Young Strikers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "2B", "division": "U9 Girls", "a": "Vienna HERRICANES", "b": "Chantilly Rise FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "2C", "division": "U9 Girls", "a": "Goalden Girls", "b": "Soccer Starz", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "2E", "division": "U11 Boys", "a": "VSA All-Stars", "b": "Scorpions", "stage": "Pool", "sa": "", "sb": ""}, {"time": "9:35 AM", "field": "2F", "division": "U11 Boys", "a": "Gladiators", "b": "JR FC Ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1A", "division": "U10 Boys", "a": "Reds", "b": "Big Bros", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1B", "division": "U10 Boys", "a": "Goalazzo Kids", "b": "Loudoun U10B Madrid", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1C", "division": "U10 Girls", "a": "CYA U10 Girls (TBD)", "b": "VYS Flow State", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1D", "division": "U9 Boys", "a": "Valor B2017/18 White", "b": "Abdul's Crew", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1E", "division": "U8 Boys", "a": "Wildcats", "b": "Loudoun u8", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Luma Path", "b": "Bananas Reunion", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2A", "division": "U11-U12 Girls", "a": "RED REIGN", "b": "The Predators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2B", "division": "U11-U12 Girls", "a": "Cleats & Chaos", "b": "Pink Panthers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2C", "division": "U11-U12 Girls", "a": "Honey Badgers", "b": "Flaming Phoenixes", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2D", "division": "U10 Girls", "a": "Light blue", "b": "Loudoun Spirit", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2E", "division": "U8 Girls", "a": "Hermosas con botas FC", "b": "Squishy Strikers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:10 AM", "field": "2F", "division": "U8 Girls", "a": "Purple Penguins", "b": "GU8 SPFC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "1A", "division": "U12 Boys", "a": "Pre-ECNL B2014/15 Courage", "b": "Feast Mode", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "1B", "division": "U12 Boys", "a": "Infinite Void FC", "b": "OG 2015 Gold", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "1C", "division": "U12 Boys", "a": "War Pandas", "b": "VA Revolution", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "1E", "division": "U8 Boys", "a": "Loudoun u8", "b": "Little Bros", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Gunston SC U14 Premier", "b": "Nonchalant ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2A", "division": "U9 Girls", "a": "AYVA", "b": "Chantilly Rise FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2B", "division": "U9 Girls", "a": "Soccer Starz", "b": "Vicious Young Strikers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2C", "division": "U9 Girls", "a": "Goalden Girls", "b": "Vienna HERRICANES", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2D", "division": "U10 Girls", "a": "Light blue", "b": "U10G Wave", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2E", "division": "U11 Boys", "a": "VSA All-Stars", "b": "Gladiators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "10:45 AM", "field": "2F", "division": "U11 Boys", "a": "Scorpions", "b": "JR FC Ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "1A", "division": "U10 Boys", "a": "Reds", "b": "Goalazzo Kids", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "1B", "division": "U10 Boys", "a": "Loudoun U10B Madrid", "b": "Big Bros", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "1D", "division": "U9 Boys", "a": "Valor B2017/18 White", "b": "Loudoun u9s", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Feast Mode FC", "b": "Luma Path", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2A", "division": "U11-U12 Girls", "a": "Honey Badgers", "b": "The Predators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2B", "division": "U11-U12 Girls", "a": "Cleats & Chaos", "b": "Flaming Phoenixes", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2C", "division": "U11-U12 Girls", "a": "RED REIGN", "b": "Pink Panthers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2D", "division": "U10 Girls", "a": "CYA U10 Girls (TBD)", "b": "Loudoun Spirit", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2E", "division": "U8 Girls", "a": "Purple Penguins", "b": "Hermosas con botas FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:20 AM", "field": "2F", "division": "U8 Girls", "a": "Squishy Strikers", "b": "GU8 SPFC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1A", "division": "U12 Boys", "a": "War Pandas", "b": "OG 2015 Gold", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1B", "division": "U12 Boys", "a": "Feast Mode", "b": "Infinite Void FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1C", "division": "U12 Boys", "a": "Pre-ECNL B2014/15 Courage", "b": "VA Revolution", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1D", "division": "U9 Boys", "a": "Abdul's Crew", "b": "Loudoun u9s", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1E", "division": "U8 Boys", "a": "Little Bros", "b": "Wildcats", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "1F", "division": "U13-U14 Boys", "a": "Bananas Reunion", "b": "Nonchalant ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2A", "division": "U9 Girls", "a": "Goalden Girls", "b": "Vicious Young Strikers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2B", "division": "U9 Girls", "a": "Soccer Starz", "b": "Chantilly Rise FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2C", "division": "U9 Girls", "a": "Vienna HERRICANES", "b": "AYVA", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2D", "division": "U10 Girls", "a": "U10G Wave", "b": "VYS Flow State", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2E", "division": "U11 Boys", "a": "Scorpions", "b": "Gladiators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "11:55 AM", "field": "2F", "division": "U11 Boys", "a": "VSA All-Stars", "b": "JR FC Ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1A", "division": "U10 Boys", "a": "1st place", "b": "4th place", "stage": "Semifinal 1", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1B", "division": "U10 Boys", "a": "2nd place", "b": "3rd place", "stage": "Semifinal 2", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1C", "division": "U13-U14 Boys", "a": "Feast Mode FC", "b": "Bananas Reunion", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1D", "division": "U9 Boys", "a": "Abdul's Crew", "b": "Valor B2017/18 White", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1E", "division": "U8 Boys", "a": "Loudoun u8", "b": "Wildcats", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "1F", "division": "U13-U14 Boys", "a": "Luma Path", "b": "Gunston SC U14 Premier", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2A", "division": "U11-U12 Girls", "a": "Cleats & Chaos", "b": "RED REIGN", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2B", "division": "U11-U12 Girls", "a": "Flaming Phoenixes", "b": "The Predators", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2C", "division": "U11-U12 Girls", "a": "Honey Badgers", "b": "Pink Panthers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2D", "division": "U10 Girls", "a": "Light blue", "b": "CYA U10 Girls (TBD)", "stage": "Pool", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2E", "division": "U8 Girls", "a": "1st place", "b": "4th place", "stage": "Semifinal 1", "sa": "", "sb": ""}, {"time": "12:30 PM", "field": "2F", "division": "U8 Girls", "a": "2nd place", "b": "3rd place", "stage": "Semifinal 2", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "1A", "division": "U12 Boys", "a": "War Pandas", "b": "Feast Mode", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "1B", "division": "U12 Boys", "a": "VA Revolution", "b": "OG 2015 Gold", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "1C", "division": "U12 Boys", "a": "Pre-ECNL B2014/15 Courage", "b": "Infinite Void FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "1E", "division": "U8 Boys", "a": "Little Bros", "b": "Loudoun u8", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "1F", "division": "U13-U14 Boys", "a": "Feast Mode FC", "b": "Nonchalant ballers", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2A", "division": "U9 Girls", "a": "Goalden Girls", "b": "AYVA", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2B", "division": "U9 Girls", "a": "Vicious Young Strikers", "b": "Chantilly Rise FC", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2C", "division": "U9 Girls", "a": "Vienna HERRICANES", "b": "Soccer Starz", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2D", "division": "U10 Girls", "a": "Loudoun Spirit", "b": "VYS Flow State", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2E", "division": "U11 Boys", "a": "1st place", "b": "4th place", "stage": "Semifinal 1", "sa": "", "sb": ""}, {"time": "1:05 PM", "field": "2F", "division": "U11 Boys", "a": "2nd place", "b": "3rd place", "stage": "Semifinal 2", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "1A", "division": "U10 Boys", "a": "Winner SF1", "b": "Winner SF2", "stage": "Final", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "1B", "division": "U10 Boys", "a": "Loser SF1", "b": "Loser SF2", "stage": "3rd place", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "1D", "division": "U9 Boys", "a": "1st place", "b": "2nd place", "stage": "Final", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "1F", "division": "U13-U14 Boys", "a": "Gunston SC U14 Premier", "b": "Bananas Reunion", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "2B", "division": "U11-U12 Girls", "a": "1st place", "b": "2nd place", "stage": "Final", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "2C", "division": "U11-U12 Girls", "a": "3rd place", "b": "4th place", "stage": "3rd place", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "2D", "division": "U10 Girls", "a": "U10G Wave", "b": "CYA U10 Girls (TBD)", "stage": "Pool", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "2E", "division": "U8 Girls", "a": "Winner SF1", "b": "Winner SF2", "stage": "Final", "sa": "", "sb": ""}, {"time": "1:40 PM", "field": "2F", "division": "U8 Girls", "a": "Loser SF1", "b": "Loser SF2", "stage": "3rd place", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "1A", "division": "U12 Boys", "a": "1st place", "b": "2nd place", "stage": "Final", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "1C", "division": "U12 Boys", "a": "3rd place", "b": "4th place", "stage": "3rd place", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "1E", "division": "U8 Boys", "a": "1st place", "b": "2nd place", "stage": "Final", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "2A", "division": "U9 Girls", "a": "1st place", "b": "2nd place", "stage": "Final", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "2C", "division": "U9 Girls", "a": "3rd place", "b": "4th place", "stage": "3rd place", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "2D", "division": "U10 Girls", "a": "U10G Wave", "b": "Loudoun Spirit", "stage": "Pool", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "2E", "division": "U11 Boys", "a": "Winner SF1", "b": "Winner SF2", "stage": "Final", "sa": "", "sb": ""}, {"time": "2:15 PM", "field": "2F", "division": "U11 Boys", "a": "Loser SF1", "b": "Loser SF2", "stage": "3rd place", "sa": "", "sb": ""}], "teams": [{"division": "U8 Boys", "team": "Little Bros", "age": "U8", "club": "Vienna Youth Soccer", "coach": "Rob Bryden", "assistants": ""}, {"division": "U8 Boys", "team": "Loudoun u8", "age": "U8", "club": "Loudoun Soccer/NVA", "coach": "Justin Cortez", "assistants": ""}, {"division": "U8 Boys", "team": "Wildcats", "age": "U8", "club": "Sya", "coach": "Jaime Trujillo", "assistants": "Diego Achury"}, {"division": "U9 Boys", "team": "Abdul's Crew", "age": "U9", "club": "Virginia Valor FC", "coach": "Stephen Pierce", "assistants": ""}, {"division": "U9 Boys", "team": "Loudoun u9s", "age": "U9", "club": "Loudoun Soccer/NVA", "coach": "Justin Cortez", "assistants": ""}, {"division": "U9 Boys", "team": "Valor B2017/18 White", "age": "U9", "club": "Virginia Valor FC", "coach": "Abel Solomon", "assistants": "Jean Tovar"}, {"division": "U10 Boys", "team": "Big Bros", "age": "U10", "club": "Vienna Youth Soccer", "coach": "Rob Bryden", "assistants": ""}, {"division": "U10 Boys", "team": "Goalazzo Kids", "age": "U10", "club": "Virginia Valor FC", "coach": "Scott Bimba", "assistants": ""}, {"division": "U10 Boys", "team": "Loudoun U10B Madrid", "age": "U10", "club": "Loudoun Soccer Club", "coach": "Derrick Choi", "assistants": ""}, {"division": "U10 Boys", "team": "Reds", "age": "U10", "club": "Alexandria", "coach": "Brandon Bales", "assistants": ""}, {"division": "U11 Boys", "team": "Gladiators", "age": "U11", "club": "Braddock Road Youth Club", "coach": "Sean Deering", "assistants": "Josh Dirsmith"}, {"division": "U11 Boys", "team": "JR FC Ballers", "age": "U11", "club": "Gunston SC", "coach": "Gio Campos", "assistants": ""}, {"division": "U11 Boys", "team": "Scorpions", "age": "U11", "club": "Chantilly Youth Association", "coach": "Fadi Al Hakim", "assistants": ""}, {"division": "U11 Boys", "team": "VSA All-Stars", "age": "U11", "club": "Virginia Soccer Association", "coach": "Sandra Villalobos", "assistants": "Nelson Villalobos"}, {"division": "U12 Boys", "team": "Feast Mode", "age": "U12", "club": "Loudoun Soccer Club", "coach": "Drew Brown", "assistants": ""}, {"division": "U12 Boys", "team": "Infinite Void FC", "age": "U12", "club": "Virginia Valor FC", "coach": "James Christie", "assistants": ""}, {"division": "U12 Boys", "team": "OG 2015 Gold", "age": "U12", "club": "Virginia Valor FC", "coach": "Hakar Sindi", "assistants": ""}, {"division": "U12 Boys", "team": "Pre-ECNL B2014/15 Courage", "age": "U12", "club": "Virginia Valor FC", "coach": "Abel Solomon", "assistants": ""}, {"division": "U12 Boys", "team": "VA Revolution", "age": "U12", "club": "VA Revolution", "coach": "Aaron Fox", "assistants": ""}, {"division": "U12 Boys", "team": "War Pandas", "age": "U12", "club": "Braddock Road Youth Club", "coach": "Dirk McClanahan", "assistants": ""}, {"division": "U13-U14 Boys", "team": "Bananas Reunion", "age": "U14", "club": "Minions United FC", "coach": "Mehmet Uzun", "assistants": "Katie Eydenberg"}, {"division": "U13-U14 Boys", "team": "Feast Mode FC", "age": "U13", "club": "Virginia Soccer Association", "coach": "Robert Patterson", "assistants": ""}, {"division": "U13-U14 Boys", "team": "Gunston SC U14 Premier", "age": "U14", "club": "Gunston SC", "coach": "Scott Fernandez", "assistants": ""}, {"division": "U13-U14 Boys", "team": "Luma Path", "age": "U13", "club": "VA Revolution", "coach": "Karl Sharman", "assistants": ""}, {"division": "U13-U14 Boys", "team": "Nonchalant ballers", "age": "U14", "club": "VA Revolution", "coach": "Joe Kobulyar", "assistants": ""}, {"division": "U8 Girls", "team": "GU8 SPFC", "age": "U8", "club": "Chantilly Youth Association", "coach": "Nicole Peters", "assistants": "Matt Gazda, Ben Mork"}, {"division": "U8 Girls", "team": "Hermosas con botas FC", "age": "U8", "club": "", "coach": "Julio Gamarra", "assistants": ""}, {"division": "U8 Girls", "team": "Purple Penguins", "age": "U8", "club": "Braddock Road Youth Club", "coach": "Sean Deering", "assistants": ""}, {"division": "U8 Girls", "team": "Squishy Strikers", "age": "U8", "club": "", "coach": "Jordan Agudelo", "assistants": ""}, {"division": "U9 Girls", "team": "AYVA", "age": "U9", "club": "Virginia Valor FC", "coach": "Charles Simpson", "assistants": ""}, {"division": "U9 Girls", "team": "Chantilly Rise FC", "age": "U9", "club": "Virginia Valor FC", "coach": "Matt Gazda", "assistants": "Chris Deysher"}, {"division": "U9 Girls", "team": "Goalden Girls", "age": "U9", "club": "Virginia Valor FC", "coach": "Chris Cullerot", "assistants": "RJ Haney"}, {"division": "U9 Girls", "team": "Soccer Starz", "age": "U9", "club": "Virginia Valor FC", "coach": "Sean Day", "assistants": "Chris Chang"}, {"division": "U9 Girls", "team": "Vicious Young Strikers", "age": "U9", "club": "Vienna Youth Soccer", "coach": "Benjamin Racenberg", "assistants": "Andy Morabito"}, {"division": "U9 Girls", "team": "Vienna HERRICANES", "age": "U9", "club": "Vienna Youth Soccer", "coach": "Brian Klesh", "assistants": ""}, {"division": "U10 Girls", "team": "CYA U10 Girls (TBD)", "age": "U10", "club": "Chantilly Youth Association", "coach": "Sean Day", "assistants": ""}, {"division": "U10 Girls", "team": "Light blue", "age": "U10", "club": "", "coach": "Tian Qin", "assistants": ""}, {"division": "U10 Girls", "team": "Loudoun Spirit", "age": "U10", "club": "Loudoun Soccer/NVA", "coach": "Jessi Gomez", "assistants": "Madelyn Cedillos"}, {"division": "U10 Girls", "team": "U10G Wave", "age": "U10", "club": "Loudoun Soccer/NVA", "coach": "Kieran Haney", "assistants": ""}, {"division": "U10 Girls", "team": "VYS Flow State", "age": "U10", "club": "Vienna Youth Soccer", "coach": "Todd Condron", "assistants": "Kevin Edelmann"}, {"division": "U11-U12 Girls", "team": "Cleats & Chaos", "age": "U11", "club": "Virginia Valor FC", "coach": "CJ Downes", "assistants": ""}, {"division": "U11-U12 Girls", "team": "Flaming Phoenixes", "age": "U12", "club": "Virginia Valor FC", "coach": "Steve Macchio", "assistants": ""}, {"division": "U11-U12 Girls", "team": "Honey Badgers", "age": "U11", "club": "Prince William Soccer Inc", "coach": "Jonathan Matthews", "assistants": "Mark Freeman"}, {"division": "U11-U12 Girls", "team": "Pink Panthers", "age": "U12", "club": "Virginia Valor FC", "coach": "Hua Li", "assistants": "Justin Epperson"}, {"division": "U11-U12 Girls", "team": "RED REIGN", "age": "U11", "club": "Vienna Youth Soccer", "coach": "Kevin Cheng", "assistants": ""}, {"division": "U11-U12 Girls", "team": "The Predators", "age": "U12", "club": "", "coach": "John Porter", "assistants": "Eric Mulch"}]};
+
+let data = SNAPSHOT, live = false, lastOk = null;
+let state = { tab: "team", team: null, div: null, schedDiv: "all", schedBy: "team" };
+try { state.team = localStorage.getItem("cup26team") || null; } catch (e) {}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const mins = t => { const m = /(\d+):(\d+)\s*(AM|PM)/i.exec(t || ""); if (!m) return 0; let h = +m[1] % 12; if (/pm/i.test(m[3])) h += 12; return h * 60 + +m[2]; };
+const tparts = t => { const m = /(\d+:\d+)\s*(AM|PM)/i.exec(t || ""); return m ? [m[1], m[2].toUpperCase()] : [t, ""]; };
+const num = v => (v === "" || v == null || isNaN(+v)) ? null : +v;
+const clubName = c => (!c || /^no club$/i.test(c) || /^light blue$/i.test(c)) ? "" : (c === c.toUpperCase() ? c.toLowerCase().replace(/\b\w/g, x => x.toUpperCase()) : c);
+const ord = n => n + (["th","st","nd","rd"][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)] || "th");
+
+function nowET() {
+  const p = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(new Date());
+  const g = k => p.find(x => x.type === k).value;
+  return { date: `${g("year")}-${g("month")}-${g("day")}`, min: (+g("hour") % 24) * 60 + +g("minute") };
+}
+const isNow = t => { const n = nowET(); const s = mins(t); return n.date === EVENT_DATE && n.min >= s && n.min < s + ROUND_MIN; };
+
+/* ---------- standings and playoff resolution ----------
+   Cup rules: 3 points for a win, 1 for a tie. Standings ties break in this order:
+   head-to-head when exactly two teams are level on points, goal difference, fewest goals allowed,
+   most goals scored, then a coin toss at headquarters. Tied playoff games are settled by golden goal
+   and penalties; the sheet's "Tied playoff winner" column records who advanced. */
+const PLACE = /^(1st|2nd|3rd|4th) place$/i, SF = /^(Winner|Loser) SF([12])$/i;
+const done2 = g => g.sa != null && g.sb != null;
+function winnerOf(g) {
+  if (!done2(g)) return null;
+  if (g.sa > g.sb) return "a";
+  if (g.sb > g.sa) return "b";
+  const pk = (g.pk || "").trim().toLowerCase();
+  if (pk && g.A && pk === String(g.A.name).toLowerCase()) return "a";
+  if (pk && g.B && pk === String(g.B.name).toLowerCase()) return "b";
+  return null;
+}
+function rankTable(rows, pool) {
+  const gd = r => r.gf - r.ga;
+  const same = (x, y) => gd(x) === gd(y) && x.ga === y.ga && x.gf === y.gf;
+  const h2h = (x, y) => { let s = 0; for (const g of pool) { if (!done2(g)) continue; if (g.a === x && g.b === y) s += Math.sign(g.sa - g.sb); if (g.a === y && g.b === x) s += Math.sign(g.sb - g.sa); } return s; };
+  const byPts = [...rows].sort((x, y) => y.pts - x.pts || x.team.localeCompare(y.team));
+  const out = [];
+  for (let i = 0; i < byPts.length;) {
+    let j = i; while (j < byPts.length && byPts[j].pts === byPts[i].pts) j++;
+    const grp = byPts.slice(i, j);
+    if (grp.length === 2 && h2h(grp[0].team, grp[1].team) !== 0) {
+      grp.sort((x, y) => -h2h(x.team, y.team));
+    } else {
+      grp.sort((x, y) => gd(y) - gd(x) || x.ga - y.ga || y.gf - x.gf || x.team.localeCompare(y.team));
+    }
+    for (const r of grp) r.toss = false;
+    for (let k = 0; k < grp.length - 1; k++) {
+      const two = grp.length === 2 && h2h(grp[0].team, grp[1].team) !== 0;
+      if (!two && same(grp[k], grp[k + 1])) { grp[k].toss = grp[k + 1].toss = true; }
+    }
+    out.push(...grp); i = j;
+  }
+  return out;
+}
+function model() {
+  const teams = data.teams, games = data.games.map((g, i) => ({ ...g, id: i, sa: num(g.sa), sb: num(g.sb) }));
+  const divs = [...new Set(teams.map(t => t.division))];
+  const byDiv = {};
+  for (const d of divs) {
+    const names = teams.filter(t => t.division === d).map(t => t.team);
+    const pool = games.filter(g => g.division === d && g.stage === "Pool");
+    const rec = Object.fromEntries(names.map(n => [n, { team: n, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 }]));
+    for (const g of pool) {
+      if (!done2(g) || !rec[g.a] || !rec[g.b]) continue;
+      const A = rec[g.a], B = rec[g.b];
+      A.p++; B.p++; A.gf += g.sa; A.ga += g.sb; B.gf += g.sb; B.ga += g.sa;
+      if (g.sa > g.sb) { A.w++; B.l++; A.pts += 3; } else if (g.sa < g.sb) { B.w++; A.l++; B.pts += 3; } else { A.d++; B.d++; A.pts++; B.pts++; }
+    }
+    const table = rankTable(Object.values(rec), pool);
+    const poolDone = pool.length > 0 && pool.every(done2);
+    const started = pool.some(done2);
+    const po = games.filter(g => g.division === d && g.stage !== "Pool");
+    /* which first-round playoff game each standings position feeds, so a coin toss only blocks a seed when it changes a matchup */
+    const feeds = {};
+    for (const g of po) for (const s of ["a", "b"]) { const m = PLACE.exec(g[s]); if (m) feeds[+m[1][0] - 1] = g.id; }
+    const tossBlocks = i => {
+      if (!table[i] || !table[i].toss) return false;
+      let lo = i, hi = i;
+      while (lo > 0 && table[lo - 1].toss && table[lo - 1].pts === table[i].pts) lo--;
+      while (hi < table.length - 1 && table[hi + 1].toss && table[hi + 1].pts === table[i].pts) hi++;
+      const set = new Set(); for (let k = lo; k <= hi; k++) set.add(feeds[k] == null ? "none" : feeds[k]);
+      return set.size > 1;
+    };
+    byDiv[d] = { d, names, table, poolDone, started, pool, po, tossBlocks };
+  }
+  const resolve = (g, side) => {
+    const raw = g[side], D = byDiv[g.division];
+    let m = PLACE.exec(raw);
+    if (m) {
+      const i = +m[1][0] - 1, t = D.table[i] && D.table[i].team;
+      if (D.poolDone && !D.tossBlocks(i)) return { name: t, fixed: true };
+      if (D.poolDone) return { name: raw, hint: "coin toss needed" };
+      return { name: raw, hint: D.started ? "now " + t : null };
+    }
+    m = SF.exec(raw);
+    if (m) {
+      const sf = D.po.find(x => x.stage === "Semifinal " + m[2]);
+      if (sf) {
+        sf.A = sf.A || resolve(sf, "a"); sf.B = sf.B || resolve(sf, "b");
+        const w = sf.A.fixed && sf.B.fixed ? winnerOf(sf) : null;
+        if (w) { const win = w === "a" ? sf.A.name : sf.B.name, lose = w === "a" ? sf.B.name : sf.A.name; return { name: /winner/i.test(m[1]) ? win : lose, fixed: true }; }
+      }
+      return { name: raw };
+    }
+    return { name: raw, fixed: true };
+  };
+  for (const g of games) { g.A = g.A || resolve(g, "a"); g.B = g.B || resolve(g, "b"); }
+  return { teams, games, divs, byDiv };
+}
+
+/* ---------- pieces ---------- */
+const scoreHtml = (x, y) => `<span>${x}</span><i>:</i><span>${y}</span>`;
+function sideName(r) { return r.hint ? `${esc(r.name)} <small>(${esc(r.hint)})</small>` : esc(r.name); }
+const pkNote = g => (done2(g) && g.sa === g.sb && g.stage !== "Pool" && winnerOf(g)) ? `<small class="pk">${esc((winnerOf(g) === "a" ? g.A : g.B).name)} won in extra time or penalties</small>` : "";
+
+function ticket(g, team, M) {
+  const isA = g.A.name === team, isB = g.B.name === team, mine = isA || isB;
+  const done = done2(g);
+  const po = g.stage !== "Pool";
+  const [hm, ap] = tparts(g.time);
+  let opp, note = "", res = "";
+  if (mine) {
+    const o = isA ? g.B : g.A; opp = "vs " + sideName(o);
+    if (done) {
+      const us = isA ? g.sa : g.sb, them = isA ? g.sb : g.sa, w = winnerOf(g);
+      res = us > them ? "W" : us < them ? "L" : po && w ? ((w === "a") === isA ? "W" : "L") : "D";
+      if (po && us === them && w) note = (res === "W" ? "Won" : "Lost") + " in extra time or penalties.";
+    }
+  } else {
+    const D = M.byDiv[g.division];
+    const fields = D.po.filter(x => x.time === g.time).map(x => x.field).join(" or ");
+    opp = g.stage.startsWith("Semifinal") ? "Semifinal" : "Final or 3rd place game";
+    note = D.names.length === 4 ? `All four teams play. Field ${fields}, opponent set by the standings.` : `If you finish in the top 4. Field ${fields}.`;
+  }
+  const cls = ["ticket", po ? "po" : "", done ? "final" : "", isNow(g.time) && !done ? "now" : ""].join(" ");
+  const status = done ? "Final score" : isNow(g.time) ? "Playing now" : !po ? "Pool game" : !mine ? "Playoffs" : g.stage === "3rd place" ? "3rd place game" : g.stage === "Final" ? "Championship" : g.stage;
+  const fieldTxt = mine ? `Field <b>${esc(g.field)}</b>${po ? " &middot; " + esc(g.stage) : ""}` : `${esc(g.stage.startsWith("Semifinal") ? "Semifinals" : "Playoffs")}`;
+  const sc = done && mine ? `<div class="score">${isA ? scoreHtml(g.sa, g.sb) : scoreHtml(g.sb, g.sa)}<span class="res ${res === "W" ? "w" : ""}">${res}</span></div>` : "";
+  return `<article class="${cls}"><div class="stub"><div class="t">${esc(hm)}<small>${ap}</small></div><div class="s">${status}</div></div>
+  <div class="body"><div class="field">${fieldTxt}</div><div class="opp">${opp}</div>${note ? `<div class="note">${esc(note)}</div>` : ""}</div>${sc}</article>`;
+}
+
+function tableHtml(D, me) {
+  const rows = D.table.map((r, i) => `<tr class="${r.team === me ? "me" : ""} ${D.po.length && D.names.length > 4 && i === 3 ? "cut" : ""}"><td>${i + 1}</td><td>${esc(r.team)}${D.poolDone && r.toss ? ' <small class="toss">tied, coin toss</small>' : ""}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td class="hide-s">${r.gf}</td><td class="hide-s">${r.ga}</td><td>${r.gf - r.ga > 0 ? "+" : ""}${r.gf - r.ga}</td><td class="pts">${r.pts}</td></tr>`).join("");
+  const fmt = D.names.length === 3 ? "Each team plays the other two twice. The top 2 meet in the final." : D.names.length === 5 ? "Round robin only. The team in first place wins the division." : D.names.length === 4 ? "Everyone plays a semifinal: 1st vs 4th and 2nd vs 3rd." : "The top 4 after pool play go to the final and 3rd place game.";
+  return `<div class="scroll"><table class="prog"><caption>${esc(D.d)}</caption><thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th class="hide-s">GF</th><th class="hide-s">GA</th><th>GD</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="tablenote">${fmt} Win 3 points, tie 1. Teams level on points are separated by head-to-head result (when exactly two are tied), then goal difference, fewest goals allowed, most goals scored, then a coin toss.${D.poolDone ? "" : D.started ? " Pool play is still going." : " Standings fill in as scores are reported."}</p>`;
+}
+
+function playoffHtml(D) {
+  const fin = D.po.find(g => g.stage === "Final");
+  let champ = "";
+  if (fin) { const w = fin.A.fixed && fin.B.fixed ? winnerOf(fin) : null; if (w) champ = `<p class="champ">${esc(D.d)} champion: ${esc(w === "a" ? fin.A.name : fin.B.name)}</p>`; }
+  else if (D.poolDone && D.table[0]) champ = D.table[0].toss ? `<p class="champ">${esc(D.d)}: first place is tied on every tiebreaker and goes to a coin toss at headquarters.</p>` : `<p class="champ">${esc(D.d)} champion: ${esc(D.table[0].team)}</p>`;
+  if (!D.po.length) return champ;
+  const rows = D.po.map(g => `<div class="po-row"><div class="lbl">${esc(g.stage)}<small>${esc(g.time)}, field ${esc(g.field)}</small></div><div>${sideName(g.A)} vs ${sideName(g.B)}${pkNote(g)}</div><div class="sc"><b>${done2(g) ? scoreHtml(g.sa, g.sb) : ""}</b></div></div>`).join("");
+  return `<div class="po-list"><h3>Playoffs</h3>${rows}</div>${champ}`;
+}
+
+/* ---------- views ---------- */
+function renderTeam(M) {
+  const p = $("#p-team");
+  const t = M.teams.find(x => x.team === state.team);
+  if (!t) { p.innerHTML = `<div class="empty"><strong>Search for your team above.</strong>Type part of a team name or a coach's name. Your games, fields and results show here, and this page remembers your team next time.</div>`; return; }
+  const D = M.byDiv[t.division];
+  const mine = M.games.filter(g => g.division === t.division && (g.A.name === t.team || g.B.name === t.team || (g.stage !== "Pool" && !(g.A.fixed && g.B.fixed))));
+  const poKeys = new Set();
+  const list = mine.filter(g => { if (g.stage === "Pool" || g.A.name === t.team || g.B.name === t.team) return true; const k = g.time; if (poKeys.has(k)) return false; poKeys.add(k); return true; })
+                   .sort((a, b) => mins(a.time) - mins(b.time));
+  const rk = D.table.findIndex(r => r.team === t.team) + 1, rec = D.table[rk - 1];
+  const coaches = [t.coach, t.assistants].filter(Boolean).join(", ");
+  const club = clubName(t.club);
+  p.innerHTML = `<div class="sheet-head"><div><h2 class="wide">${esc(t.team)}</h2><p class="meta">${esc(t.division)}${club ? " &middot; " + esc(club) : ""} &middot; Coach ${esc(coaches)}</p></div>
+    ${D.started ? `<div class="rank"><div class="n wide">${ord(rk)}</div><small>of ${D.names.length} in ${esc(t.division)}<br>${rec.pts} pts from ${rec.p} games</small></div>` : ""}</div>
+    <div class="tickets">${list.map(g => ticket(g, t.team, M)).join("")}</div>
+    <div class="two"><div>${tableHtml(D, t.team)}</div><div>${playoffHtml(D)}</div></div>`;
+}
+
+function renderTable(M) {
+  const p = $("#p-table");
+  if (!state.div || !M.byDiv[state.div]) state.div = (M.teams.find(x => x.team === state.team) || {}).division || M.divs[0];
+  const D = M.byDiv[state.div];
+  p.innerHTML = `<div class="divpick">${M.divs.map(d => `<button data-div="${esc(d)}" aria-pressed="${d === state.div}">${esc(d)}</button>`).join("")}</div>
+    <div class="two"><div>${tableHtml(D, state.team)}</div><div>${playoffHtml(D)}</div></div>`;
+  p.querySelectorAll("[data-div]").forEach(b => b.onclick = () => { state.div = b.dataset.div; renderTable(model()); });
+}
+
+function renderSched(M) {
+  const p = $("#p-sched"), by = state.schedBy || "team";
+  const F = ["1A","1B","1C","1D","1E","1F","2A","2B","2C","2D","2E","2F"];
+  const games = M.games.filter(g => state.schedDiv === "all" || g.division === state.schedDiv);
+  let keys, keyOf, label, sub, m1, m2, order;
+  if (by === "team") {
+    const tl = M.teams.filter(t => state.schedDiv === "all" || t.division === state.schedDiv).sort((a, b) => a.team.localeCompare(b.team));
+    const blocks = tl.map(t => {
+      const D = M.byDiv[t.division], seen = new Set();
+      const list = M.games.filter(g => g.division === t.division && (g.A.name === t.team || g.B.name === t.team || (g.stage !== "Pool" && !(g.A.fixed && g.B.fixed))))
+        .filter(g => { if (g.A.name === t.team || g.B.name === t.team) return true; if (seen.has(g.time)) return false; seen.add(g.time); return true; })
+        .sort((a, b) => mins(a.time) - mins(b.time));
+      const rows = list.map(g => {
+        const isA = g.A.name === t.team, isB = g.B.name === t.team, done = g.sa != null && g.sb != null;
+        if (!isA && !isB) {
+          const fl = D.po.filter(x => x.time === g.time).map(x => x.field).join(" or ");
+          const what = g.stage.startsWith("Semifinal") ? "Semifinal" : "Final or 3rd place game";
+          return `<div class="row tv"><div class="m1">${esc(g.time)}</div><div class="m2">Field ${esc(fl)}<small>Playoffs</small></div><div class="tm"><div class="l">${what}${D.names.length === 4 ? "" : ", if in the top 4"}</div></div><div class="ss"></div></div>`;
+        }
+        const o = isA ? g.B : g.A, us = isA ? g.sa : g.sb, them = isA ? g.sb : g.sa;
+        const w = winnerOf(g), res = done ? (us > them ? "W" : us < them ? "L" : w ? ((w === "a") === isA ? "W" : "L") : "D") : "";
+        const tag = g.stage !== "Pool" ? `<small>${esc(g.stage)}</small>` : "";
+        return `<div class="row tv ${isNow(g.time) && !done ? "now" : ""}"><div class="m1">${esc(g.time)}</div><div class="m2"><span class="fbadge">${esc(g.field)}</span>${tag}</div><div class="tm"><div>vs ${sideName(o)}</div></div><div class="ss">${done ? `<span>${us}<i>:</i>${them} <em class="r${res}">${res}</em></span>` : ""}</div></div>`;
+      }).join("");
+      const club = clubName(t.club);
+      return `<div class="grp ${t.team === state.team ? "mygrp" : ""}"><h3>${esc(t.team)}<small>${esc(t.division)} &middot; Coach ${esc(t.coach)}${club ? " &middot; " + esc(club) : ""}</small></h3>${rows}</div>`;
+    }).join("");
+    p.innerHTML = sbar(by) + (blocks || `<p class="nores">No teams match.</p>`);
+    bindSbar(p); return;
+  }
+  if (by === "field") {
+    keys = F.filter(f => games.some(g => g.field === f)); keyOf = g => g.field; label = k => "Field " + k;
+    sub = k => [...new Set(games.filter(g => g.field === k).map(g => g.division))].join(", ");
+    m1 = g => esc(g.time); m2 = g => esc(g.division); order = (a, b) => mins(a.time) - mins(b.time);
+  } else if (by === "div") {
+    keys = M.divs.filter(d => games.some(g => g.division === d)); keyOf = g => g.division; label = k => k;
+    sub = k => "Fields " + [...new Set(games.filter(g => g.division === k).map(g => g.field))].sort((a, b) => F.indexOf(a) - F.indexOf(b)).join(", ");
+    m1 = g => esc(g.time); m2 = g => `<span class="fbadge">${esc(g.field)}</span>`; order = (a, b) => mins(a.time) - mins(b.time) || F.indexOf(a.field) - F.indexOf(b.field);
+  } else {
+    keys = [...new Set(games.map(g => g.time))].sort((a, b) => mins(a) - mins(b)); keyOf = g => g.time; label = k => k;
+    sub = k => { const n = games.filter(g => g.time === k).length; return n + (n === 1 ? " game" : " games"); };
+    m1 = g => `<span class="fbadge">${esc(g.field)}</span>`; m2 = g => esc(g.division); order = (a, b) => F.indexOf(a.field) - F.indexOf(b.field);
+  }
+  const line = (g, side) => { const w = winnerOf(g); const cls = !done2(g) ? "" : !w ? "" : w === side ? "w" : "l"; return `<div class="${cls}"><span>${sideName(side === "a" ? g.A : g.B)}</span></div>`; };
+  const rows = gs => gs.sort(order).map(g => {
+    const done = g.sa != null && g.sb != null, mine = state.team && (g.A.name === state.team || g.B.name === state.team);
+    const tag = g.stage !== "Pool" ? `<small>${esc(g.stage)}</small>` : "";
+    return `<div class="row ${mine ? "mine" : ""} ${isNow(g.time) && !done ? "now" : ""}"><div class="m1">${m1(g)}</div><div class="m2">${m2(g)}${tag}</div>
+      <div class="tm">${line(g, "a")}${line(g, "b")}${pkNote(g)}</div>
+      <div class="ss"><span>${done ? g.sa : ""}</span><span>${done ? g.sb : ""}</span></div></div>`;
+  }).join("");
+  const groups = keys.map(k => {
+    const gs = games.filter(g => keyOf(g) === k);
+    const nowTag = by === "time" && isNow(k) ? `<span class="nowtag">Playing now</span>` : "";
+    return `<div class="grp"><h3>${esc(label(k))}<small>${esc(sub(k))}</small>${nowTag}</h3>${rows(gs)}</div>`;
+  }).join("");
+  p.innerHTML = sbar(by) + (groups || `<p class="nores">No games match.</p>`);
+  bindSbar(p);
+  function sbar(by) {
+    const opts = `<option value="all">All age groups</option>` + M.divs.map(d => `<option ${d === state.schedDiv ? "selected" : ""}>${esc(d)}</option>`).join("");
+    const btn = (k, l) => `<button data-by="${k}" aria-pressed="${by === k}">${l}</button>`;
+    return `<div class="sbar"><div class="seg"><span>Sort by</span><div>${btn("team", "Team")}${btn("div", "Age group")}${btn("time", "Time")}${btn("field", "Field")}</div></div><label>Show<select id="sd">${opts}</select></label></div>`;
+  }
+  function bindSbar(p) {
+    p.querySelectorAll("[data-by]").forEach(b => b.onclick = () => { state.schedBy = b.dataset.by; renderSched(model()); });
+    $("#sd").onchange = e => { state.schedDiv = e.target.value; renderSched(model()); };
+  }
+}
+
+function render() {
+  const M = model();
+  renderTeam(M); renderTable(M); renderSched(M);
+  const l = $("#live");
+  if (live && lastOk) { l.className = "live"; l.querySelector("span").textContent = "Live scores, updated " + lastOk.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+  else { l.className = "live off"; l.querySelector("span").textContent = "Scores appear here as games are reported."; }
+}
+
+/* ---------- tabs ---------- */
+function setTab(id) {
+  state.tab = id;
+  for (const k of ["team", "table", "sched"]) { $("#t-" + k).setAttribute("aria-selected", k === id); $("#p-" + k).hidden = k !== id; }
+}
+for (const k of ["team", "table", "sched"]) $("#t-" + k).onclick = () => {
+  setTab(k);
+  const nav = $("nav.tabs"), y = nav.getBoundingClientRect().top + window.scrollY - 4;
+  if (window.scrollY > y) window.scrollTo({ top: y });
+};
+
+/* ---------- search ---------- */
+const q = $("#q"), sugg = $("#sugg");
+let hits = [], sel = -1;
+function pick(team) {
+  state.team = team; state.div = null;
+  try { localStorage.setItem("cup26team", team); } catch (e) {}
+  try { history.replaceState(null, "", "#" + slug(team)); } catch (e) {}
+  q.value = ""; closeSugg(); setTab("team"); render();
+  const top = $("nav.tabs").getBoundingClientRect().top + window.scrollY - 4;
+  window.scrollTo({ top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+}
+function closeSugg() { sugg.hidden = true; q.setAttribute("aria-expanded", "false"); sel = -1; }
+function showSugg() {
+  const s = q.value.trim().toLowerCase();
+  if (s.length < 2) { closeSugg(); return; }
+  hits = data.teams.map(t => {
+    const coaches = [t.coach, ...(t.assistants ? t.assistants.split(/,\s*/) : [])];
+    const c = coaches.find(n => n.toLowerCase().includes(s));
+    const m = t.team.toLowerCase().includes(s) ? 0 : c ? 1 : clubName(t.club).toLowerCase().includes(s) ? 2 : -1;
+    return { t, m, c };
+  }).filter(h => h.m >= 0).sort((a, b) => a.m - b.m || a.t.team.localeCompare(b.t.team)).slice(0, 12);
+  sugg.innerHTML = hits.length ? hits.map((h, i) => `<li><button role="option" id="o${i}" aria-selected="${i === sel}" data-i="${i}">${esc(h.t.team)}<small>${esc(h.t.division)} &middot; ${h.m === 1 ? "Coach " + esc(h.c) : "Coach " + esc(h.t.coach)}</small></button></li>`).join("") : `<li class="none">No team or coach matches "${esc(q.value.trim())}".</li>`;
+  sugg.hidden = false; q.setAttribute("aria-expanded", "true");
+  sugg.querySelectorAll("button").forEach(b => b.onclick = () => pick(hits[+b.dataset.i].t.team));
+}
+q.addEventListener("input", () => { sel = -1; showSugg(); });
+q.addEventListener("keydown", e => {
+  if (sugg.hidden || !hits.length) return;
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); sel = (sel + (e.key === "ArrowDown" ? 1 : -1) + hits.length) % hits.length; showSugg(); }
+  else if (e.key === "Enter") { e.preventDefault(); pick(hits[Math.max(sel, 0)].t.team); }
+  else if (e.key === "Escape") closeSugg();
+});
+document.addEventListener("click", e => { if (!e.target.closest(".finder")) closeSugg(); });
+
+/* ---------- data ---------- */
+function fromHash() {
+  const h = decodeURIComponent((location.hash || "").slice(1)) || new URLSearchParams(location.search).get("team") || "";
+  if (!h) return;
+  const t = data.teams.find(x => slug(x.team) === slug(h));
+  if (t) state.team = t.team;
+}
+async function load() {
+  if (!DATA_URL) return;
+  try {
+    const r = await fetch(DATA_URL, { cache: "no-store" });
+    const j = await r.json();
+    if (j && j.games && j.games.length && j.teams && j.teams.length) { data = j; live = true; lastOk = new Date(); render(); }
+  } catch (e) { live = false; render(); }
+}
+fromHash();
+window.addEventListener("hashchange", () => { fromHash(); render(); });
+render();
+load();
+if (DATA_URL) setInterval(load, REFRESH_MS);
+setInterval(render, 60000);
+}
+</script>
+</body>
+</html>
