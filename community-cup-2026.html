@@ -129,6 +129,10 @@
     .ages-note{background:#fff!important;display:flex;align-items:center}
     .ages-note span{margin-top:0;font-size:12.5px;color:var(--muted)}
     .ages-note a{font-weight:700;color:var(--blue-deep)}
+    .sched-callout{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 24px;align-items:center;margin-bottom:20px;padding:20px 22px;background:var(--orange);color:#2a0d00;border-radius:var(--radius)}
+    .sched-callout strong{display:block;font-weight:900;font-stretch:112%;font-size:19px;letter-spacing:-.02em}
+    .sched-callout span{display:block;margin-top:4px;font-size:14px;line-height:1.5;max-width:60ch}
+    @media (max-width:640px){.sched-callout{grid-template-columns:minmax(0,1fr)}.sched-callout .btn{width:100%}}
     .pricing{margin-bottom:20px}
     .pricing-flag{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:15px 22px;background:var(--orange);color:#2a0d00;border-radius:var(--radius) var(--radius) 0 0}
     .pricing-flag strong{font-weight:900;font-stretch:112%;font-size:17px;letter-spacing:-.02em}
@@ -539,7 +543,7 @@
         <a href="#faq" class="hide-sm">FAQ</a>
         <a href="https://www.virginiavalorfc.org/communitycupgear" class="hide-sm" target="_top">Team gear</a>
         <a href="#sponsors" class="hide-sm">Sponsors</a>
-        <a href="#register-step" class="nav-cta" id="nav-register">Register</a>
+        <a href="https://www.virginiavalorfc.org/3v3-schedule" class="nav-cta" target="_top">Schedule</a>
       </nav>
     </div>
   </header>
@@ -570,10 +574,10 @@
           <h1 id="event-title" class="display"><span class="three">3v3.</span><span class="rest">Community<br>Cup.</span></h1>
           <p class="hero-copy">Grab three to six friends, classmates or teammates and play. U8 through U14, boys and girls, no club affiliation required.</p>
           <div class="hero-actions">
-            <a class="btn primary" id="hero-register" href="#register-step">Register your team</a>
+            <a class="btn primary" href="https://www.virginiavalorfc.org/3v3-schedule" target="_top">Schedule and standings</a>
             <a class="btn ghost" href="#how">See how the day works</a>
           </div>
-          <p class="hero-when" id="registration-note"><b>Saturday, November 28, 2026 at Sully Highlands Park.</b> Registration is open now and runs through PlayMetrics.</p>
+          <p class="hero-when"><b>Saturday, November 28, 2026 at Sully Highlands Park.</b> Registration is closed. Every team's games, fields and scores are on the schedule page.</p>
         </div>
         <div class="hero-art">
           <a class="wishlist" href="https://www.amazon.com/hz/wishlist/ls/E6IANMZP6L34?ref_=wl_share" target="_blank" rel="noopener noreferrer">
@@ -613,7 +617,7 @@
           <div class="rule" aria-hidden="true"></div>
           <h2 id="community-title" class="display">Why it is called<br>the Community Cup.</h2>
           <p>The first Community Cup ran alongside a gift drive for DC Candlelighters, which supports families going through childhood cancer treatment. Every team was asked to bring a gift, and they did.</p>
-          <p>The 2026 giving effort will be announced with the tournament date. If you are coming to play, plan on bringing something with you.</p>
+          <p>This year's drive again supports DC Candlelighters. If you are coming to play, bring a gift from the wish list and drop it at headquarters when you check in.</p>
           <div class="beneficiary">
             <img src="images/candlelighters.webp" width="560" height="484" alt="DC Candlelighters Childhood Cancer Foundation" loading="lazy" decoding="async">
             <p><strong>DC Candlelighters Childhood Cancer Foundation</strong>Supporting families across the DC region through a child's cancer diagnosis, treatment and everything that comes after.</p>
@@ -637,29 +641,15 @@
         <div><span>Date</span><strong>Saturday, November 28, 2026</strong></div>
         <div><span>Where</span><strong>Sully Highlands Park, Chantilly</strong></div>
         <div><span>Age groups</span><strong>U8 through U14<br>Boys and girls</strong></div>
-        <div><span>Registration closes</span><strong>Sunday, November 22<br>11:59pm</strong></div>
+        <div><span>First games</span><strong>9:00 AM<br>Check in 30 minutes early</strong></div>
       </div>
 
-      <div class="pricing">
-        <div class="pricing-flag">
-          <strong>Save $20 a team.</strong>
-          <span>Early bird runs through Friday, October 16. Same price at every age group.</span>
+      <div class="sched-callout">
+        <div>
+          <strong>The schedule is out.</strong>
+          <span>Search by team or coach for every kickoff time and field. Scores, standings and playoff matchups update through the day.</span>
         </div>
-        <div class="brackets">
-          <div class="bracket">
-            <span class="ages">Early bird</span>
-            <span class="early">$259</span>
-            <span class="tag">Through Friday, October 16</span>
-            <span class="std">Every age group, U8 through U14</span>
-          </div>
-          <div class="bracket standard">
-            <span class="ages">Standard</span>
-            <span class="early">$279</span>
-            <span class="tag plain">October 17 to November 22</span>
-            <span class="std">Registration closes at 11:59pm on the 22nd</span>
-          </div>
-        </div>
-        <p class="pricing-note">One fee per team, whether you bring three players or six. Paid in PlayMetrics at registration.</p>
+        <a class="btn" href="https://www.virginiavalorfc.org/3v3-schedule" target="_top">Open the schedule</a>
       </div>
 
       <div class="ages-block">
@@ -682,24 +672,24 @@
       <ol class="steps">
         <li class="step">
           <div class="step-n">Step 1</div>
-          <h3>Build your team</h3>
-          <p>Three players minimum, six maximum. Four or five is the sweet spot so nobody plays every minute. Your oldest player sets your age group, and the 2026-27 cutoffs are new, so check them above.</p>
+          <h3>Find your games</h3>
+          <p>Search your team or coach on the schedule page for every kickoff time and field. Every team plays at least four games, and the page remembers your team on your phone.</p>
+          <p class="step-cta"><a class="btn primary" href="https://www.virginiavalorfc.org/3v3-schedule" target="_top">Open the schedule</a></p>
         </li>
-        <li class="step" id="register-step">
+        <li class="step">
           <div class="step-n">Step 2</div>
-          <h3>Register in PlayMetrics</h3>
-          <p>One adult registers the team and pays the entry fee in PlayMetrics. This is the only thing that holds your place in the bracket. Register by October 16 and it is $20 cheaper.</p>
-          <p class="step-cta"><span class="soon" id="register-soon">Opens later this fall</span></p>
+          <h3>Send your roster</h3>
+          <p>If you have not yet, send your roster through our <a href="#roster">roster page</a>, not PlayMetrics. Use the email you registered with so we can match the two. You then get a link to send your families, and each parent signs their child's medical release online.</p>
         </li>
         <li class="step">
           <div class="step-n">Step 3</div>
-          <h3>Send your roster</h3>
-          <p>Once you are registered, send your roster through our <a href="#roster">roster page</a>, not PlayMetrics. Use the email you registered with so we can match the two. You then get a link to send your families, and each parent signs their child's medical release online.</p>
+          <h3>Check in early</h3>
+          <p>Arrive 30 minutes before your first game and report to headquarters, with proof of age on hand for every player in case we ask to see it.</p>
         </li>
         <li class="step">
           <div class="step-n">Step 4</div>
-          <h3>Check in and play</h3>
-          <p>Arrive 30 minutes before your first game with proof of age on hand for every player, in case we ask to see it. Then you get at least four games.</p>
+          <h3>Play and follow along</h3>
+          <p>Scores go up as each game is reported to the scorer's table. Standings and playoff matchups update on the schedule page as the day goes.</p>
         </li>
       </ol>
 
@@ -801,7 +791,7 @@
           <div class="rule-bar" aria-hidden="true"></div>
           <h2 id="roster-title" class="display">Send in<br>your squad.</h2>
           <p>One adult coach or team representative submits the roster for the whole team. You need each player's full name and date of birth.</p>
-          <p class="note"><strong>Register in PlayMetrics first.</strong><br>PlayMetrics handles registration and payment only. Your roster comes to us through the roster page, never through PlayMetrics.</p>
+          <p class="note"><strong>Registration is closed.</strong><br>Rosters are for teams already registered in PlayMetrics. Your roster comes to us through the roster page, never through PlayMetrics.</p>
           <p class="note"><strong>Medical releases are signed online.</strong><br>After you submit, you get a link for your families. Each parent fills in the release and signs with a click. Nothing to print or collect.</p>
           <p class="note"><strong>Proof of age stays with you.</strong><br>Keep a current player card, or a copy or photo of a birth certificate or passport, ready on tournament day in case we ask. Do not upload it.</p>
         </aside>
@@ -885,8 +875,8 @@
   </footer>
 
   <div class="dock" id="dock" aria-hidden="true">
-    <p>Teams of 3 to 6, U8 to U14</p>
-    <a class="btn primary" id="dock-register" href="#register-step">Register</a>
+    <p>Saturday, Nov 28 at Sully Highlands</p>
+    <a class="btn primary" href="https://www.virginiavalorfc.org/3v3-schedule" target="_top">Schedule</a>
   </div>
 
   <script>
@@ -939,10 +929,7 @@
       }
     } catch {}
 
-    if (!registrationLive) {
-      const hb = $('hero-register');
-      if (hb) hb.textContent = 'See registration details';
-    }
+
 
     /* ---------- rules: expand all ---------- */
     const toggle = $('toggle-rules');
@@ -1795,8 +1782,8 @@
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "url": "https://www.virginiavalorfc.org/3v3communitycup",
     "offers": [
-      { "@type": "Offer", "name": "Early bird team entry", "price": "259", "priceCurrency": "USD", "validThrough": "2026-10-16", "availability": "https://schema.org/PreOrder", "url": "https://www.virginiavalorfc.org/3v3communitycup" },
-      { "@type": "Offer", "name": "Standard team entry", "price": "279", "priceCurrency": "USD", "validThrough": "2026-11-22", "availability": "https://schema.org/PreOrder", "url": "https://www.virginiavalorfc.org/3v3communitycup" }
+      { "@type": "Offer", "name": "Early bird team entry", "price": "259", "priceCurrency": "USD", "validThrough": "2026-10-16", "availability": "https://schema.org/SoldOut", "url": "https://www.virginiavalorfc.org/3v3communitycup" },
+      { "@type": "Offer", "name": "Standard team entry", "price": "279", "priceCurrency": "USD", "validThrough": "2026-11-22", "availability": "https://schema.org/SoldOut", "url": "https://www.virginiavalorfc.org/3v3communitycup" }
     ],
     "organizer": {
       "@type": "SportsOrganization",
