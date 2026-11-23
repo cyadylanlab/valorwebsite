@@ -204,6 +204,67 @@ section[role=tabpanel]{padding:28px 0 56px}
   .po-row{grid-template-columns:minmax(0,1fr) auto}
   .po-row .lbl{grid-column:1/-1}
 }
+
+/* inside the Wix embed the frame scrolls on its own, so hide its scrollbar track */
+html.framed{scrollbar-width:none}
+html.framed::-webkit-scrollbar{display:none}
+@media(max-width:400px){
+  body{font-size:15px}
+  .wrap{width:calc(100% - 24px)}
+  .mast{grid-template-columns:60px minmax(0,1fr);gap:12px;padding:14px 0 12px}
+  .crest{width:60px}
+  .mast h1{font-size:26px}
+  .mast .when{font-size:13px}
+  .mast .live{font-size:12.5px;margin-top:4px}
+  .finder{margin:14px 0 4px}
+  .finder label{font-size:13.5px;margin-bottom:6px}
+  .finder input{height:44px;padding:0 12px;border-width:2px;font-size:16px}
+  .sugg{border-width:2px}
+  .tabs{margin-top:14px}
+  .tabs button{min-height:42px;font-size:13.5px;border-bottom-width:3px}
+  section[role=tabpanel]{padding:16px 0 36px}
+  .sbar{gap:10px;margin-bottom:18px}
+  .seg{gap:4px}
+  .seg span,.sbar label{font-size:12px;gap:4px}
+  .seg button{min-height:38px;font-size:13px;border-width:2px}
+  .seg .lg{display:none}
+  .sbar select{height:38px;font-size:16px;font-weight:600;border-width:2px;padding:0 10px}
+  .grp{margin-bottom:22px}
+  .grp h3{font-size:18px;padding-bottom:6px;border-bottom-width:2px;gap:2px 10px}
+  .grp h3 small{font-size:12px}
+  .row{grid-template-columns:70px minmax(0,1fr) 26px;gap:1px 8px;padding:8px 0}
+  .row.tv{grid-template-columns:70px minmax(0,1fr) auto}
+  .row .m1{font-size:13px;padding-left:6px}
+  .row .m2{font-size:12px}
+  .row .tm{font-size:14px}
+  .row .ss{font-size:14px}
+  .fbadge{min-width:32px;font-size:12.5px;padding:1px 3px}
+  .divpick{margin-inline:-12px;padding:2px 12px 6px;margin-bottom:16px}
+  .divpick button{min-height:38px;padding:6px 11px;font-size:13px}
+  .sheet-head h2{font-size:26px}
+  .sheet-head .meta{font-size:13.5px;margin-top:6px}
+  .rank .n{font-size:30px}
+  .tickets{gap:10px;margin-bottom:24px}
+  .ticket{grid-template-columns:78px minmax(0,1fr)}
+  .stub{padding:10px 8px}
+  .stub .t{font-size:19px}
+  .stub .t small{font-size:11.5px}
+  .stub .s{font-size:11px;margin-top:6px}
+  .body{padding:10px 12px}
+  .body .field{font-size:12px}
+  .body .field b{font-size:15px}
+  .body .opp{font-size:15.5px}
+  .body .note{font-size:12.5px}
+  .score{padding:0 12px 10px;font-size:20px}
+  .prog{font-size:13px}
+  .prog caption{font-size:18px}
+  .prog th{font-size:11px;padding:7px 4px}
+  .prog td{padding:8px 4px}
+  .tablenote{font-size:12.5px}
+  .po-row .lbl{font-size:13px}
+  .foot{font-size:12.5px}
+  .foot img{width:104px}
+}
 @media(prefers-reduced-motion:no-preference){
   .ticket{animation:tear .28s ease-out both}
   @keyframes tear{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
@@ -244,6 +305,7 @@ section[role=tabpanel]{padding:28px 0 56px}
   </footer>
 </div>
 
+<script>try{if(window.self!==window.top)document.documentElement.classList.add("framed")}catch(e){document.documentElement.classList.add("framed")}</script>
 <script>
 {
 /* Paste the Apps Script web app /exec URL here. Leave it blank to show the posted schedule without scores. */
@@ -506,7 +568,7 @@ function renderSched(M) {
   function sbar(by) {
     const opts = `<option value="all">All age groups</option>` + M.divs.map(d => `<option ${d === state.schedDiv ? "selected" : ""}>${esc(d)}</option>`).join("");
     const btn = (k, l) => `<button data-by="${k}" aria-pressed="${by === k}">${l}</button>`;
-    return `<div class="sbar"><div class="seg"><span>Sort by</span><div>${btn("team", "Team")}${btn("div", "Age group")}${btn("time", "Time")}${btn("field", "Field")}</div></div><label>Show<select id="sd">${opts}</select></label></div>`;
+    return `<div class="sbar"><div class="seg"><span>Sort by</span><div>${btn("team", "Team")}${btn("div", 'Age<span class="lg"> group</span>')}${btn("time", "Time")}${btn("field", "Field")}</div></div><label>Show<select id="sd">${opts}</select></label></div>`;
   }
   function bindSbar(p) {
     p.querySelectorAll("[data-by]").forEach(b => b.onclick = () => { state.schedBy = b.dataset.by; renderSched(model()); });
