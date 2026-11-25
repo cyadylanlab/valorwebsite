@@ -92,6 +92,68 @@ tr.in td.rk{box-shadow:inset 5px 0 0 var(--blue);padding-left:8px}
 .mapw svg{height:100%;width:auto;max-width:100%}
 .slide p.mapn{margin-top:8px;font-size:17px;line-height:1.3}
 
+/* new result banner, slides down over the header */
+.flash{position:absolute;left:0;right:0;top:12px;height:112px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:28px;padding:0 40px;background:var(--ink);color:#fff;transform:translateY(-140%);transition:transform .55s cubic-bezier(.2,.8,.2,1);z-index:20;border-bottom:8px solid var(--blue)}
+.flash.girls{border-bottom-color:var(--pink)}
+.flash.show{transform:translateY(0)}
+.flash .k{background:var(--blue);color:var(--ink);font-size:30px;font-weight:900;font-stretch:115%;letter-spacing:.02em;padding:10px 18px;text-transform:uppercase}
+.flash.girls .k{background:var(--pink);color:#fff}
+.flash.champ .k{background:#fff;color:var(--ink)}
+.flash .m{min-width:0}
+.flash .m small{display:block;font-size:20px;font-weight:800;color:var(--aqua);letter-spacing:.06em;text-transform:uppercase}
+.flash .m b{display:block;font-size:46px;font-weight:900;font-stretch:90%;letter-spacing:-.02em;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}
+.flash .f{font-size:22px;font-weight:800;color:#c3c8d2;text-align:right;white-space:nowrap}
+/* stats slide */
+.bign{display:flex;align-items:baseline;gap:12px;margin-top:14px}
+.bign b{font-size:84px;font-weight:900;font-stretch:110%;letter-spacing:-.04em;line-height:.9}
+.bign span{font-size:21px;font-weight:800;color:var(--ink-2);line-height:1.2}
+.stat{margin-top:16px;border-top:3px solid var(--ink);padding-top:8px}
+.stat h4{font-size:15px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between}
+.stat h4 em{font-style:normal;color:var(--muted);letter-spacing:0;text-transform:none;font-weight:750}
+.stat p.names{margin-top:6px;font-size:17px;line-height:1.35;font-weight:700;color:var(--ink);font-stretch:85%}
+.stat p.names i{font-style:normal;color:var(--muted);font-weight:650}
+.stat p.sub{margin-top:4px;font-size:14px;color:var(--muted);font-weight:650}
+
+/* photo moment */
+.photo{position:absolute;inset:0;z-index:50;background:#fff;display:none;overflow:hidden}
+.photo.show{display:block}
+.photo .bars{position:absolute;left:0;right:0;height:26px;background:linear-gradient(90deg,var(--blue) 0 30%,var(--pink) 30% 58%,var(--orange) 58% 79%,var(--aqua) 79% 100%)}
+.photo .bars.t{top:0}.photo .bars.b{bottom:0}
+.photo .conf{position:absolute;inset:0;pointer-events:none}
+.photo .conf i{position:absolute;display:block;width:18px;height:42px;opacity:.8;animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(-120px) rotate(0)}to{transform:translateY(1200px) rotate(540deg)}}
+.photo .inner{position:absolute;left:0;right:0;top:40px;bottom:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:0 70px}
+.photo .crestbig{height:250px;width:auto;display:block;flex:none}
+.photo .ev{margin-top:0;font-size:36px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.photo .word{display:inline-block;margin-top:2px;font-size:236px;font-weight:900;font-stretch:120%;letter-spacing:-.03em;line-height:.9;color:var(--pink);cursor:pointer;text-transform:uppercase}
+.photo.fin .word{color:var(--blue)}
+.photo .dv{margin-top:10px;font-size:56px;font-weight:850;color:var(--ink)}
+.photo .tm{margin-top:2px;font-size:168px;font-weight:900;font-stretch:90%;letter-spacing:-.03em;line-height:1;color:var(--ink);white-space:nowrap;max-width:100%}
+.photo .low{position:absolute;left:90px;right:90px;bottom:46px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.photo .low p{font-size:20px;font-weight:750;color:var(--ink-2);order:2}
+.photo .low .lg{display:flex;gap:30px;align-items:center}
+.photo .low .lg img{height:86px;width:auto}
+.photo .close{position:absolute;right:24px;top:40px;font:inherit;font-size:18px;font-weight:800;background:var(--ink);color:#fff;border:0;padding:10px 16px;cursor:pointer;opacity:0;transition:opacity .3s}
+.awake .photo .close{opacity:1}
+/* photo picker */
+.pick{position:absolute;inset:0;z-index:45;background:rgba(16,18,24,.92);display:none;padding:60px 80px;color:#fff;overflow:hidden}
+.pick.show{display:block}
+.pick h2{font-size:48px}
+.pick p.h{margin-top:10px;font-size:20px;color:#c3c8d2;font-weight:600}
+.pick .grid{margin-top:30px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}
+.pick .pd{background:#fff;color:var(--ink);padding:14px 16px 16px}
+.pick .pd h3{font-size:22px;font-weight:900;font-stretch:110%;border-bottom:3px solid var(--ink);padding-bottom:6px}
+.pick button{display:block;width:100%;text-align:left;font:inherit;border:0;cursor:pointer;margin-top:8px;padding:8px 10px;font-size:17px;font-weight:800;font-stretch:85%;background:var(--soft);color:var(--ink)}
+.pick button small{display:block;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-stretch:100%;color:var(--muted)}
+.pick button.c{background:var(--pink);color:#fff}.pick button.c small{color:#fff}
+.pick button.f{background:var(--blue)}.pick button.f small{color:var(--ink)}
+.pick button.o{font-size:14px;padding:5px 8px;margin-top:4px;font-weight:700}
+.pick .x{position:absolute;right:60px;top:56px;width:auto;font-size:20px;background:#fff;padding:12px 20px}
+.photobtn{position:absolute;right:40px;top:132px;z-index:15;font:inherit;font-size:15px;font-weight:850;letter-spacing:.06em;text-transform:uppercase;background:var(--pink);color:#fff;border:0;padding:6px 12px;cursor:pointer;opacity:0;transition:opacity .3s;pointer-events:none}
+.awake .photobtn{opacity:1;pointer-events:auto}
+.awake,.awake *{cursor:default}
+.champ{cursor:pointer}
+
 /* rail */
 .rail{display:grid;grid-template-rows:minmax(0,1fr) auto auto;gap:14px;height:862px}
 .feature{position:relative;border:5px solid var(--ink);background:var(--soft);overflow:hidden}
@@ -178,6 +240,10 @@ tr.in td.rk{box-shadow:inset 5px 0 0 var(--blue);padding-left:8px}
     </aside>
   </div>
 
+  <div class="flash" id="flash" aria-live="polite"></div>
+  <button class="photobtn" id="photobtn" type="button">Photo screen</button>
+  <div class="pick" id="pick"></div>
+  <div class="photo" id="photo"></div>
   <footer class="ticker"><div class="lab" id="tlab">Latest</div><div class="track"><div class="run" id="run"></div></div></footer>
 </div>
 
@@ -366,7 +432,7 @@ function renderBoard(M, R) {
       <h2><span class="wide">${esc(d)}</span><em>${D.names.length} teams</em></h2>
       <table><colgroup><col class="c-rk"><col><col class="c-p"><col class="c-gd"><col class="c-pt"></colgroup>
       <thead><tr><th></th><th class="tm">Team</th><th>GP</th><th>GD</th><th>Pts</th></tr></thead><tbody>${rows}</tbody></table>
-      ${ch ? `<div class="champ"><small>Champion</small><strong>${esc(ch)}</strong></div>` : `<p class="foot">${fmtLine(D, M)}</p>`}
+      ${ch ? `<div class="champ" data-div="${esc(d)}" data-team="${esc(ch)}" title="Open the champions photo screen"><small>Champion</small><strong>${esc(ch)}</strong></div>` : `<p class="foot">${fmtLine(D, M)}</p>`}
     </section>`;
   } };
   document.getElementById("board").innerHTML = cols.map(c => `<div class="colm">${c.map(card).join("")}</div>`).join("");
@@ -385,6 +451,111 @@ function fit() {
     while (el.scrollWidth > el.clientWidth && s > 13) { s -= 0.5; el.style.fontSize = s + "px"; }
   }
 }
+
+/* ---------- fun stats (no single-game scorelines, so nobody is singled out) ---------- */
+function funStats(M) {
+  const rec = {}; let goals = 0, played = 0;
+  const get = (n, d) => rec[n] || (rec[n] = { name: n, div: d, p: 0, l: 0, cs: 0 });
+  for (const g of M.games) {
+    if (!done2(g) || !g.A.fixed || !g.B.fixed) continue;
+    played++; goals += g.sa + g.sb;
+    const A = get(g.A.name, g.division), B = get(g.B.name, g.division);
+    A.p++; B.p++;
+    const w = winnerOf(g);
+    if (w === "a") B.l++; else if (w === "b") A.l++;
+    if (g.sb === 0) A.cs++;
+    if (g.sa === 0) B.cs++;
+  }
+  const all = Object.values(rec).sort((a, b) => ORDER.indexOf(a.div) - ORDER.indexOf(b.div) || a.name.localeCompare(b.name));
+  return { goals, played, unbeaten: all.filter(r => r.p && !r.l), wall: all.filter(r => r.cs).sort((a, b) => b.cs - a.cs || ORDER.indexOf(a.div) - ORDER.indexOf(b.div)) };
+}
+function listNames(rows, max, counts) {
+  const shown = rows.slice(0, max).map(r => `${esc(r.name)}${counts && r.cs > 1 ? ` <i>x${r.cs}</i>` : ""}`).join(", ");
+  return shown + (rows.length > max ? ` <i>and ${rows.length - max} more</i>` : "");
+}
+
+/* ---------- photo screen for champions and finalists ---------- */
+function finalist(D) {
+  const fin = D.po.find(g => g.stage === "Final");
+  if (fin) { if (!(fin.A.fixed && fin.B.fixed)) return null; const w = winnerOf(fin); return w ? (w === "a" ? fin.B.name : fin.A.name) : null; }
+  if (!D.po.length && D.poolDone && D.table[1] && !D.table[1].toss && !D.table[0].toss) return D.table[1].team;
+  return null;
+}
+let photoState = null;
+function openPhoto(div, team, mode) {
+  photoState = { div, team, mode: mode || "champ" };
+  const el = document.getElementById("photo");
+  const cols = ["#00aeeb","#f345ad","#ff743d","#9ce7e9"];
+  let conf = ""; let seed = team.length * 13 + 7; const r = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 34; i++) conf += `<i style="left:${(r() * 100).toFixed(1)}%;background:${cols[i % 4]};animation-duration:${(6 + r() * 7).toFixed(1)}s;animation-delay:-${(r() * 12).toFixed(1)}s;width:${12 + Math.round(r() * 12)}px"></i>`;
+  const fin = photoState.mode === "fin";
+  el.className = "photo show" + (fin ? " fin" : "");
+  el.innerHTML = `<div class="conf">${conf}</div><div class="bars t"></div><div class="bars b"></div>
+    <button class="close" type="button" id="photoclose">Close</button>
+    <div class="inner"><img class="crestbig" src="${document.querySelector(".top .crest").src}" alt="">
+      <div style="max-width:100%"><p class="ev">3v3 Community Cup 2026</p>
+        <span class="word wide" id="photoword" title="Click to switch between Champions and Finalists">${fin ? "Finalists" : "Champions"}</span>
+        <p class="dv">${esc(div)}</p>
+        <p class="tm" id="phototm">${esc(team)}</p></div></div>
+    <div class="low"><p>Sully Highlands Park, November 28, 2026. Gift drive for DC Candlelighters.</p>
+      <div class="lg"><img src="${IMG.moda}" alt="Moda Cafe and Restaurant"><img src="${IMG.barr}" alt="Barr Tea"><img src="${IMG.cl}" alt="DC Candlelighters" style="height:92px"></div></div>`;
+  const tm = document.getElementById("phototm"); let s = 168;
+  while (tm.scrollWidth > tm.clientWidth && s > 60) { s -= 2; tm.style.fontSize = s + "px"; }
+  const wd = document.getElementById("photoword"); let ws = 236;
+  while (wd.offsetWidth > 1780 && ws > 120) { ws -= 4; wd.style.fontSize = ws + "px"; }
+  document.getElementById("photoword").onclick = () => openPhoto(div, team, fin ? "champ" : "fin");
+  document.getElementById("photoclose").onclick = closePhoto;
+  document.getElementById("pick").classList.remove("show");
+}
+function closePhoto() { photoState = null; document.getElementById("photo").className = "photo"; document.getElementById("photo").innerHTML = ""; }
+function openPick() {
+  const M = model(), el = document.getElementById("pick");
+  const divs = ORDER.filter(d => M.byDiv[d]);
+  el.innerHTML = `<button class="x" type="button" id="pickx">Close</button><h2 class="wide">Photo screen</h2>
+    <p class="h">Pick a champion or finalist. If a result is not in yet, pick any team and click the big word on the photo screen to switch between Champions and Finalists. Press Esc to go back.</p>
+    <div class="grid">${divs.map(d => { const D = M.byDiv[d], c = champion(D), f = finalist(D);
+      return `<div class="pd"><h3>${esc(d)}</h3>${c ? `<button class="c" data-d="${esc(d)}" data-t="${esc(c)}" data-m="champ"><small>Champions</small>${esc(c)}</button>` : ""}${f ? `<button class="f" data-d="${esc(d)}" data-t="${esc(f)}" data-m="fin"><small>Finalists</small>${esc(f)}</button>` : ""}${(!c || !f) ? D.names.map(n => `<button class="o" data-d="${esc(d)}" data-t="${esc(n)}" data-m="champ">${esc(n)}</button>`).join("") : ""}</div>`; }).join("")}</div>`;
+  el.classList.add("show");
+  el.querySelectorAll("button[data-t]").forEach(b => b.onclick = () => openPhoto(b.dataset.d, b.dataset.t, b.dataset.m));
+  document.getElementById("pickx").onclick = () => el.classList.remove("show");
+}
+document.addEventListener("click", e => { const c = e.target.closest(".champ[data-team]"); if (c) openPhoto(c.dataset.div, c.dataset.team, "champ"); });
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { if (photoState) closePhoto(); else document.getElementById("pick").classList.remove("show"); }
+  if (e.key === "p" || e.key === "P") openPick();
+});
+let awakeT = null;
+document.addEventListener("mousemove", () => { document.body.classList.add("awake"); clearTimeout(awakeT); awakeT = setTimeout(() => document.body.classList.remove("awake"), 3000); });
+
+/* ---------- new result banner ---------- */
+let seen = null; const flashQ = []; let flashing = false;
+function checkNew(M) {
+  const now = new Map();
+  for (const g of M.games) if (done2(g) && g.A.fixed && g.B.fixed) now.set(g.time + "|" + g.field, g);
+  if (!seen) { seen = new Map([...now].map(([k, g]) => [k, g.sa + "-" + g.sb])); return; }
+  for (const [k, g] of now) {
+    const s = g.sa + "-" + g.sb;
+    if (seen.get(k) !== s) { seen.set(k, s); flashQ.push(g); }
+  }
+  if (!flashing) nextFlash();
+}
+function nextFlash() {
+  const el = document.getElementById("flash");
+  const g = flashQ.shift();
+  if (!g) { flashing = false; el.classList.remove("show"); return; }
+  flashing = true;
+  const girls = /girls/i.test(g.division);
+  const champ = g.stage === "Final" && winnerOf(g);
+  const win = champ ? (winnerOf(g) === "a" ? g.A.name : g.B.name) : null;
+  const pk = done2(g) && g.sa === g.sb && g.stage !== "Pool" && winnerOf(g) ? `, ${esc(win || (winnerOf(g) === "a" ? g.A.name : g.B.name))} advance on golden goal or penalties` : "";
+  el.className = "flash" + (girls ? " girls" : "") + (champ ? " champ" : "");
+  el.innerHTML = champ
+    ? `<span class="k">Champions</span><div class="m"><small>${esc(g.division)}</small><b>${esc(win)}</b></div><span class="f">Won the final<br>on pitch ${esc(g.field)}</span>`
+    : `<span class="k">Final</span><div class="m"><small>${esc(g.division)}${g.stage !== "Pool" ? ", " + esc(g.stage.toLowerCase()) : ""}${pk}</small><b>${esc(g.A.name)} ${g.sa}, ${esc(g.B.name)} ${g.sb}</b></div><span class="f">Pitch ${esc(g.field)}<br>${esc(g.time)}</span>`;
+  requestAnimationFrame(() => el.classList.add("show"));
+  setTimeout(() => { el.classList.remove("show"); setTimeout(nextFlash, 700); }, champ ? 11000 : 7000);
+}
+window.__flash = (n) => { const M = model(); const gs = typeof n === "string" ? M.games.filter(g => done2(g) && g.stage === n).slice(-1) : M.games.filter(done2).slice(-(n || 1)); flashQ.push(...gs); if (!flashing) nextFlash(); };
 
 /* rail slides */
 let slideIdx = 0, slideTimer = null;
@@ -413,6 +584,14 @@ function slides(M, R) {
     out.push(`<span class="kicker">${label}</span><h3 class="wide" style="font-size:28px;margin-top:12px">${esc(showRound)}</h3>
       <ul class="list">${gs.map(g => `<li><span class="f">${esc(g.field)}</span><span class="g">${esc(g.A.name)} vs ${esc(g.B.name)}<small>${esc(g.division)}${g.stage !== "Pool" ? " " + esc(g.stage.toLowerCase()) : ""}</small></span><span class="s">${done2(g) ? g.sa + "-" + g.sb : ""}</span></li>`).join("")}</ul>`);
   }
+  const S = funStats(M);
+  if (S.played) out.push(`<span class="kicker">Today so far</span>
+    <div class="bign"><b>${S.goals}</b><span>goals scored<br>in ${S.played} game${S.played === 1 ? "" : "s"}</span></div>
+    <div class="stat"><h4>Unbeaten <em>${S.unbeaten.length} team${S.unbeaten.length === 1 ? "" : "s"}</em></h4>
+      <p class="names">${S.unbeaten.length ? listNames(S.unbeaten, 14) : "Every team has a loss. Anything can happen."}</p></div>
+    <div class="stat"><h4>Brick wall <em>${S.wall.length} team${S.wall.length === 1 ? "" : "s"}</em></h4>
+      <p class="sub">Held an opponent scoreless, with no goalkeeper</p>
+      <p class="names">${S.wall.length ? listNames(S.wall, 10, true) : "Nobody yet. First shutout gets their name up here."}</p></div>`);
   const doneG = M.games.filter(done2).sort((a, b) => mins(b.time) - mins(a.time) || a.field.localeCompare(b.field)).slice(0, 10);
   if (doneG.length) out.push(`<span class="kicker">Latest results</span>
     <ul class="list" style="margin-top:18px">${doneG.map(g => `<li><span class="f">${esc(g.field)}</span><span class="g">${esc(g.A.name)} vs ${esc(g.B.name)}<small>${esc(g.division)}, ${esc(g.time)}</small></span><span class="s">${g.sa}-${g.sb}</span></li>`).join("")}</ul>`);
@@ -494,7 +673,7 @@ function renderTicker(M) {
 
 function render() {
   const M = model(), R = roundInfo();
-  renderTop(R); renderBoard(M, R); renderNext(M, R); renderRail(M, R); renderTicker(M);
+  renderTop(R); renderBoard(M, R); renderNext(M, R); renderRail(M, R); renderTicker(M); checkNew(M);
 }
 function scale() {
   const s = Math.min(innerWidth / 1920, innerHeight / 1080);
@@ -513,6 +692,7 @@ async function load() {
   render();
 }
 addEventListener("resize", scale);
+document.getElementById("photobtn").onclick = openPick;
 scale();
 if (DEMO) data = demoData(normalize(SNAPSHOT));
 render();
